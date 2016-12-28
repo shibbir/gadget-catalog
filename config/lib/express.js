@@ -1,0 +1,28 @@
+let config = require('../config'),
+    path = require('path'),
+    hbs = require('express-hbs')
+    express = require('express'),
+    bodyParser = require('body-parser');
+
+module.exports = () => {
+    let app = express();
+
+    app.locals.title = config.app.title;
+    app.locals.description = config.app.description;
+
+    app.locals.jsFiles = config.files.client.js;
+    app.locals.cssFiles = config.files.client.css;
+
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+
+    app.use(express.static(path.join(__dirname, '../../public')));
+
+    app.engine('server.view.html', hbs.express4({ extname: '.server.view.html' }));
+    app.set('view engine', 'server.view.html');
+    app.set('views', path.join(__dirname, '../../app/views'));
+
+    app.set('port', config.port);
+
+    return app;
+};

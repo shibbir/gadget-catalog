@@ -1,6 +1,8 @@
 ## Digital Catalog
 > An archive to cataloging your digital stuff
 
+[![Build Status](https://travis-ci.org/shibbir/digital-catalog.svg?branch=master)](https://travis-ci.org/shibbir/digital-catalog)
+[![Dependency Status](https://david-dm.org/shibbir/digital-catalog.svg)](https://david-dm.org/shibbir/digital-catalog)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 ## Installation
