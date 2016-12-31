@@ -16,11 +16,11 @@ module.exports = () => {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
 
-    app.use(express.static(path.join(__dirname, '../../public')));
+    app.use(express.static(path.join(process.cwd(), 'public')));
 
     app.engine('server.view.html', hbs.express4({ extname: '.server.view.html' }));
     app.set('view engine', 'server.view.html');
-    app.set('views', path.join(__dirname, '../../app/views'));
+    app.set('views', path.join(process.cwd(), 'server/views'));
 
     app.set('port', config.port);
 

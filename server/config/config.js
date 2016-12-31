@@ -50,11 +50,11 @@ let initClientFiles = (config, assets) => {
 };
 
 let initGlobalConfig = () => {
-    let defaultConfig = require(path.join(process.cwd(), 'config/env/default'));
-    let environmentConfig = require(path.join(process.cwd(), 'config/env/', process.env.NODE_ENV)) || {};
+    let defaultConfig = require('./env/default');
+    let environmentConfig = require(path.join(process.cwd(), 'server/config/env/', process.env.NODE_ENV)) || {};
 
     let config = _.merge(defaultConfig, environmentConfig);
-    let assets = require(path.join(process.cwd(), 'config/assets'));
+    let assets = require('./assets');
 
     initClientFiles(config, assets);
 

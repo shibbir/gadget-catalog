@@ -1,2 +1,2 @@
-let app = require('./config/lib/app');
+let app = require('./server/config/lib/app');
 let server = app.start();

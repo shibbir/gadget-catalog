@@ -1,6 +1,6 @@
-let path = require('path'),
-    mongoose = require('./mongoose'),
-    config = require('../config');
+let path = require('path');
+let mongoose = require('./mongoose');
+let config = require('../config');
 
 module.exports.initMongo = callback => {
     mongoose.connect(function (db) {
@@ -13,7 +13,7 @@ module.exports.start = () => {
     let app = require('./express')();
 
     _this.initMongo(function(db) {
-        require('../../app/routes/index')(app);
+        require(path.join(process.cwd(), 'server/routes/index/'))(app);
 
         app.listen(app.get('port'), () => {
             console.info("Server running on port %s in %s mode...", app.get('port'), app.settings.env);
