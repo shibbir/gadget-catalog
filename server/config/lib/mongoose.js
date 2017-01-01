@@ -1,9 +1,7 @@
-'use strict';
-
-let config = require('../config'),
-    chalk = require('chalk'),
-    path = require('path'),
-    mongoose = require('mongoose');
+let config = require('../config');
+let chalk = require('chalk');
+let path = require('path');
+let mongoose = require('mongoose');
 
 module.exports.connect = function(callback) {
     let _this = this;

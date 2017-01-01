@@ -19,4 +19,4 @@ Built with:
 - [Webpack](https://webpack.github.io/)
 
 ## License
-<a href="https://opensource.org/licenses/MIT">The MIT License</a> Copyright &copy; 2016 Shibbir Ahmed
+<a href="https://opensource.org/licenses/MIT">The MIT License</a> Copyright &copy; 2017 Shibbir Ahmed

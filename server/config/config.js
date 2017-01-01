@@ -1,6 +1,6 @@
-let _ = require('lodash'),
-    path = require('path'),
-    glob = require('glob');
+let _ = require('lodash');
+let path = require('path');
+let glob = require('glob');
 
 let getGlobbedPaths = function (globPatterns, excludes) {
     let urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
@@ -50,6 +50,8 @@ let initClientFiles = (config, assets) => {
 };
 
 let initGlobalConfig = () => {
+    process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
     let defaultConfig = require('./env/default');
     let environmentConfig = require(path.join(process.cwd(), 'server/config/env/', process.env.NODE_ENV)) || {};
 

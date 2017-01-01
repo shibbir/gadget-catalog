@@ -1,8 +1,8 @@
-let config = require('../config'),
-    path = require('path'),
-    hbs = require('express-hbs')
-    express = require('express'),
-    bodyParser = require('body-parser');
+let config = require('../config');
+let path = require('path');
+let hbs = require('express-hbs');
+let express = require('express');
+let bodyParser = require('body-parser');
 
 module.exports = () => {
     let app = express();

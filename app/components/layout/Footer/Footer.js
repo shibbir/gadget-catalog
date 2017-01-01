@@ -13,7 +13,7 @@ export default class Footer extends React.Component {
                         <li><a href="/about/history/">About</a></li>
                     </ul>
                     <p>
-                        Maintained by the <a href="https://shibbir.io">Shibbir Ahmed</a>.
+                        Maintained by <a href="https://shibbir.io">Shibbir Ahmed</a>.
                         Code licensed <a rel="license" href="https://github.com/shibbir/digital-catalog/blob/master/LICENSE">MIT</a>
                     </p>
                 </div>
