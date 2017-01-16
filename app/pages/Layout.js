@@ -1,9 +1,17 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 
-import Navigation from '../components/layout/Navigation';
-import Footer from '../components/layout/Footer/Footer';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer/Footer';
+import AuthStore from '../stores/AuthStore';
 
 export default class Layout extends React.Component {
+    componentWillMount() {
+        AuthStore.on('loggedOut', function() {
+            browserHistory.push('/');
+        });
+    }
+
     render() {
         const style = {
             marginTop: '10px',
@@ -12,7 +20,7 @@ export default class Layout extends React.Component {
 
         return (
             <div>
-                <Navigation/>
+                <Navbar/>
                 <div class="container" style={style}>
                     {this.props.children}
                 </div>

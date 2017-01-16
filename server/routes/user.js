@@ -9,12 +9,9 @@ let tokenResponse = function(user, provider) {
         email: user[provider].email
     };
 
-    let token = jwt.sign(data, config.tokenSecret, { expiresIn: '2d', issuer: user._id.toString() });
+    data.jwtToken = jwt.sign(data, config.tokenSecret, { expiresIn: '2d', issuer: user._id.toString() });
 
-    return {
-        token,
-        data
-    };
+    return data;
 };
 
 module.exports = function(app, passport) {
