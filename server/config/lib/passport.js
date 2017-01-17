@@ -21,8 +21,8 @@ module.exports = function(passport) {
      =========================================================================
      */
     passport.use('http-bearer', new BearerStrategy(function(token, done) {
-        jwt.verify(token, config.tokenSecret, function(err, decoded) {
-            if (err || decodedToken.exp <= Date.now()) {
+        jwt.verify(token, config.tokenSecret, function(err, decodedToken) {
+            if (err) {
                 return done(null, false);
             }
 

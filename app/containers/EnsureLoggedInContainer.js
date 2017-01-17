@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 
 import AuthStore from '../stores/AuthStore';
 
@@ -8,7 +8,7 @@ export default class EnsureLoggedInContainer extends React.Component {
         const { pathname } = this.props.location;
 
         if (!AuthStore.isLoggedIn()) {
-            browserHistory.replace({ pathname: 'login', query: { return_to: pathname }});
+            hashHistory.replace({ pathname: 'login', query: { return_to: pathname }});
         }
     }
 

@@ -16,14 +16,16 @@ export function login(data) {
         })
     })
     .then(handleErrors)
-    .then(function(data) {
-        dispatcher.dispatch({
-            type: 'LOGIN',
-            data
+    .then(function(response) {
+        response.json().then(function(payload) {
+            dispatcher.dispatch({
+                type: 'LOGIN',
+                data: payload
+            });
         });
     }).catch(function(error) {
         dispatcher.dispatch({
-            type: 'ERROR_LOGIN',
+            type: 'LOGIN_ERROR',
             error
         });
     });
@@ -41,13 +43,13 @@ export function register(data) {
     .then(function(response) {
         response.json().then(function(payload) {
             dispatcher.dispatch({
-                type: 'LOGIN',
+                type: 'REGISTER',
                 data: payload
             });
         });
     }).catch(function(error) {
         dispatcher.dispatch({
-            type: 'ERROR_REGISTER',
+            type: 'REGISTER_ERROR',
             error
         });
     });

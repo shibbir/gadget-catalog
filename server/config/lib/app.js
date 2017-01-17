@@ -18,6 +18,9 @@ module.exports.start = () => {
     _this.initMongo(function(db) {
         require(path.join(process.cwd(), 'server/routes/index/'))(app);
         require(path.join(process.cwd(), 'server/routes/user/'))(app, passport);
+        require(path.join(process.cwd(), 'server/routes/category/'))(app, passport);
+
+        require('../seeder').run();
 
         app.listen(app.get('port'), () => {
             console.info("Server running on port %s in %s mode...", app.get('port'), app.settings.env);

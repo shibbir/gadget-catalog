@@ -17,11 +17,12 @@ export default class Navbar extends React.Component {
                 <div class="container">
                     <IndexLink to="/" class="navbar-brand">Digital Catalog</IndexLink>
                     <div class="collapse navbar-collapse">
-                        <div class="navbar-nav mr-auto">
-                            { isLoggedIn &&
+                        { isLoggedIn &&
+                            <div class="navbar-nav mr-auto">
                                 <Link to="dashboard" activeClassName="active" class="nav-item nav-link">Dashboard</Link>
-                            }
-                        </div>
+                                <Link to="items/add" activeClassName="active" class="nav-item nav-link">Add item</Link>
+                            </div>
+                        }
                         { !isLoggedIn &&
                             <div class="navbar-nav">
                                 <Link to="login" activeClassName="active" class="nav-item nav-link">Sign in</Link>

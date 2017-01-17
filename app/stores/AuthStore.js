@@ -22,6 +22,10 @@ class AuthStore extends EventEmitter {
                 this.login(action.data);
                 break;
             }
+            case 'REGISTER': {
+                this.login(action.data);
+                break;
+            }
             case 'LOGOUT': {
                 this.logout();
                 break;

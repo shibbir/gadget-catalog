@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 
 import AuthStore from '../stores/AuthStore';
 
@@ -11,7 +11,7 @@ export default class EnsureLoggedOutContainer extends React.Component {
     }
 
     returnToPath() {
-        browserHistory.push(this.returnTo);
+        hashHistory.push(this.returnTo);
     }
 
     componentWillMount() {
@@ -26,7 +26,7 @@ export default class EnsureLoggedOutContainer extends React.Component {
         this.returnTo = this.props.location.query.return_to || 'dashboard';
 
         if (AuthStore.isLoggedIn()) {
-            browserHistory.replace(this.returnTo);
+            hashHistory.replace(this.returnTo);
         }
     }
 

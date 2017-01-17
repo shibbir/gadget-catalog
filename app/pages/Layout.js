@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -8,7 +8,7 @@ import AuthStore from '../stores/AuthStore';
 export default class Layout extends React.Component {
     componentWillMount() {
         AuthStore.on('loggedOut', function() {
-            browserHistory.push('/');
+            hashHistory.push('/');
         });
     }
 

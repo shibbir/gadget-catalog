@@ -1,5 +1,5 @@
 ## Digital Catalog
-> An archive to cataloging your digital stuff
+> An archive to cataloging stuff
 
 [![Build Status](https://travis-ci.org/shibbir/digital-catalog.svg?branch=master)](https://travis-ci.org/shibbir/digital-catalog)
 [![Dependency Status](https://david-dm.org/shibbir/digital-catalog.svg)](https://david-dm.org/shibbir/digital-catalog)
