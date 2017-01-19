@@ -3,7 +3,7 @@ let async = require('async');
 let Category = require('../models/category');
 
 let categorySeeder = function(callback) {
-    let array = ['Motherboard', 'Processor', 'Mobile'];
+    let array = ['Motherboard', 'Processor', 'Mobile', 'Miscellaneous'];
 
     async.each(array, function(item, asyncCallback) {
         new Category({

@@ -2,7 +2,13 @@ import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
 
 class CategoryStore extends EventEmitter {
+    constructor() {
+        super();
+        this.categories = [];
+    }
+
     receiveCategories(data) {
+        this.categories = data;
         this.emit('receiveCategories');
     }
 
