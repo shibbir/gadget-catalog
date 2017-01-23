@@ -1,4 +1,5 @@
 import dispatcher from '../dispatcher';
+import ItemConstants from '../constants/ItemConstants';
 
 function handleErrors(response) {
     if (!response.ok) {
@@ -7,14 +8,13 @@ function handleErrors(response) {
     return response;
 }
 
-export function saveItem(data) {
-    dispatcher.dispatch({ type: 'POST_ITEM' });
+export function saveItem(formData) {
+    dispatcher.dispatch({ type: ItemConstants.POST_ITEM });
 
     fetch('/api/items', {
         method: 'post',
-        body: JSON.stringify(data),
+        body: formData,
         headers: new Headers({
-            'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
         })
     })
@@ -22,17 +22,17 @@ export function saveItem(data) {
     .then(function(response) {
         response.json().then(function(payload) {
             dispatcher.dispatch({
-                type: 'RECEIVE_ITEM',
-                data: payload
+                type: ItemConstants.RECEIVE_ITEM,
+                payload
             });
         });
     }).catch(function(error) {
-        dispatcher.dispatch({ type: 'POST_ITEM_ERROR' });
+        dispatcher.dispatch({ type: ItemConstants.POST_ITEM_ERROR });
     });
 }
 
 export function getItem(id) {
-    dispatcher.dispatch({ type: 'FETCH_ITEM' });
+    dispatcher.dispatch({ type: ItemConstants.FETCH_ITEM });
 
     fetch(`/api/items/${id}`, {
         method: 'get',
@@ -44,11 +44,11 @@ export function getItem(id) {
     .then(function(response) {
         response.json().then(function(payload) {
             dispatcher.dispatch({
-                type: 'RECEIVE_ITEM',
-                data: payload
+                type: ItemConstants.RECEIVE_ITEM,
+                payload
             });
         });
     }).catch(function(error) {
-        dispatcher.dispatch({ type: 'FETCH_ITEM_ERROR' });
+        dispatcher.dispatch({ type: ItemConstants.FETCH_ITEM_ERROR });
     });
 }

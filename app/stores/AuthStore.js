@@ -1,13 +1,14 @@
 import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
+import AuthConstants from '../constants/AuthConstants';
 
 class AuthStore extends EventEmitter {
     isLoggedIn() {
         return !!sessionStorage.getItem('jwtToken');
     }
 
-    login(data) {
-        sessionStorage.setItem('jwtToken', data.jwtToken);
+    login(payload) {
+        sessionStorage.setItem('jwtToken', payload.jwtToken);
         this.emit('loggedIn');
     }
 
@@ -18,15 +19,15 @@ class AuthStore extends EventEmitter {
 
     handleActions(action) {
         switch (action.type) {
-            case 'LOGIN': {
-                this.login(action.data);
+            case AuthConstants.LOGIN: {
+                this.login(action.payload);
                 break;
             }
-            case 'REGISTER': {
-                this.login(action.data);
+            case AuthConstants.REGISTER: {
+                this.login(action.payload);
                 break;
             }
-            case 'LOGOUT': {
+            case AuthConstants.LOGOUT: {
                 this.logout();
                 break;
             }

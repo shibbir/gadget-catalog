@@ -3,6 +3,7 @@ let path = require('path');
 let hbs = require('express-hbs');
 let express = require('express');
 let bodyParser = require('body-parser');
+let multer = require('multer');
 
 module.exports = () => {
     let app = express();
@@ -21,6 +22,14 @@ module.exports = () => {
     app.engine('server.view.html', hbs.express4({ extname: '.server.view.html' }));
     app.set('view engine', 'server.view.html');
     app.set('views', path.join(process.cwd(), 'server/views'));
+
+    app.use(multer({
+        dest: './public/uploads/',
+        limits: {
+            files: 1,
+            fileSize: 1024 * 1024 * 100
+        }
+    }).single('file'));
 
     app.set('port', config.port);
 

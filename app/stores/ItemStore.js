@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
+import ItemConstants from '../constants/ItemConstants';
 
 class ItemStore extends EventEmitter {
     constructor() {
@@ -7,8 +8,8 @@ class ItemStore extends EventEmitter {
         this.item = {};
     }
 
-    receiveItem(data) {
-        this.item = data;
+    receiveItem(payload) {
+        this.item = payload;
         this.emit('receiveItem');
     }
 
@@ -18,8 +19,8 @@ class ItemStore extends EventEmitter {
 
     handleActions(action) {
         switch (action.type) {
-            case 'RECEIVE_ITEM': {
-                this.receiveItem(action.data);
+            case ItemConstants.RECEIVE_ITEM: {
+                this.receiveItem(action.payload);
                 break;
             }
         }

@@ -20,6 +20,10 @@ module.exports = function(app, passport) {
             price: req.body.price
         };
 
+        if(req.file) {
+            model.file = req.file.filename;
+        }
+
         new Item(model).save(function(err, doc) {
             if(err) {
                 return res.sendStatus(500);

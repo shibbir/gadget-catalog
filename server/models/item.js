@@ -17,6 +17,7 @@ let ItemSchema = Schema({
         type: Date
     },
     price: Number,
+    file: String,
     date: {
         type: Date,
         default: Date.now

@@ -1,4 +1,5 @@
 import dispatcher from '../dispatcher';
+import AuthConstants from '../constants/AuthConstants';
 
 function handleErrors(response) {
     if (!response.ok) {
@@ -19,13 +20,13 @@ export function login(data) {
     .then(function(response) {
         response.json().then(function(payload) {
             dispatcher.dispatch({
-                type: 'LOGIN',
-                data: payload
+                type: AuthConstants.LOGIN,
+                payload
             });
         });
     }).catch(function(error) {
         dispatcher.dispatch({
-            type: 'LOGIN_ERROR',
+            type: AuthConstants.LOGIN_ERROR,
             error
         });
     });
@@ -43,13 +44,13 @@ export function register(data) {
     .then(function(response) {
         response.json().then(function(payload) {
             dispatcher.dispatch({
-                type: 'REGISTER',
-                data: payload
+                type: AuthConstants.REGISTER,
+                payload
             });
         });
     }).catch(function(error) {
         dispatcher.dispatch({
-            type: 'REGISTER_ERROR',
+            type: AuthConstants.REGISTER_ERROR,
             error
         });
     });
@@ -57,6 +58,6 @@ export function register(data) {
 
 export function logout() {
     dispatcher.dispatch({
-        type: 'LOGOUT'
+        type: AuthConstants.LOGOUT
     });
 }

@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
+import CategoryConstants from '../constants/CategoryConstants';
 
 class CategoryStore extends EventEmitter {
     constructor() {
@@ -7,15 +8,15 @@ class CategoryStore extends EventEmitter {
         this.categories = [];
     }
 
-    receiveCategories(data) {
-        this.categories = data;
+    receiveCategories(payload) {
+        this.categories = payload;
         this.emit('receiveCategories');
     }
 
     handleActions(action) {
         switch (action.type) {
-            case 'RECEIVE_CATEGORIES': {
-                this.receiveCategories(action.data);
+            case CategoryConstants.RECEIVE_CATEGORIES: {
+                this.receiveCategories(action.payload);
                 break;
             }
         }

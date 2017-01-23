@@ -1,4 +1,5 @@
 import dispatcher from '../dispatcher';
+import CategoryConstants from '../constants/CategoryConstants';
 
 function handleErrors(response) {
     if (!response.ok) {
@@ -8,7 +9,7 @@ function handleErrors(response) {
 }
 
 export function getCategories() {
-    dispatcher.dispatch({ type: 'FETCH_CATEGORIES' });
+    dispatcher.dispatch({ type: CategoryConstants.FETCH_CATEGORIES });
 
     fetch('/api/categories', {
         method: 'get',
@@ -21,11 +22,11 @@ export function getCategories() {
     .then(function(response) {
         response.json().then(function(payload) {
             dispatcher.dispatch({
-                type: 'RECEIVE_CATEGORIES',
-                data: payload
+                type: CategoryConstants.RECEIVE_CATEGORIES,
+                payload
             });
         });
     }).catch(function(error) {
-        dispatcher.dispatch({ type: 'FETCH_CATEGORIES_ERROR' });
+        dispatcher.dispatch({ type: CategoryConstants.FETCH_CATEGORIES_ERROR });
     });
 }

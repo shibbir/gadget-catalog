@@ -15,6 +15,7 @@ export default class AddItem extends React.Component {
             category: '',
             purchaseDate: '',
             price: '',
+            file: '',
             categories: CategoryStore.categories
         };
 
@@ -23,6 +24,7 @@ export default class AddItem extends React.Component {
         this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.handlePurchaseDateChange = this.handlePurchaseDateChange.bind(this);
         this.handlePriceChange = this.handlePriceChange.bind(this);
+        this.handleImageChange = this.handleImageChange.bind(this);
         this.addItem = this.addItem.bind(this);
     }
 
@@ -72,16 +74,23 @@ export default class AddItem extends React.Component {
         this.setState({ price: event.target.value });
     }
 
+    handleImageChange(event) {
+        this.setState({ file: event.target.files[0] });
+    }
+
     addItem(event) {
         event.preventDefault();
 
-        ItemActions.saveItem({
-            title: this.state.title,
-            description: this.state.description,
-            category: this.state.category,
-            purchaseDate: this.state.purchaseDate,
-            price: this.state.price
-        });
+        var formData  = new FormData();
+
+        formData.append('title', this.state.title);
+        formData.append('description', this.state.description);
+        formData.append('category', this.state.category);
+        formData.append('purchaseDate', this.state.purchaseDate);
+        formData.append('price', this.state.price);
+        formData.append('file', this.state.file);
+
+        ItemActions.saveItem(formData);
     }
 
     render() {
@@ -123,8 +132,8 @@ export default class AddItem extends React.Component {
                         <input type="number" class="form-control" id="price" value={this.state.price} onChange={this.handlePriceChange}/>
                     </div>
                     <div class="form-group">
-                        <label for="image">Upload image</label>
-                        <input type="file" class="form-control-file" id="image"/>
+                        <label for="file">Upload image</label>
+                        <input type="file" class="form-control-file" id="file" accept="image/*" onChange={this.handleImageChange}/>
                     </div>
                     <button type="submit" class="btn btn-primary">Add item</button>
                 </form>
