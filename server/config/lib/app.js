@@ -19,6 +19,7 @@ module.exports.start = () => {
         require(path.join(process.cwd(), 'server/routes/index/'))(app);
         require(path.join(process.cwd(), 'server/routes/user/'))(app, passport);
         require(path.join(process.cwd(), 'server/routes/category/'))(app, passport);
+        require(path.join(process.cwd(), 'server/routes/brand/'))(app, passport);
         require(path.join(process.cwd(), 'server/routes/item/'))(app, passport);
 
         require('../seeder').run();

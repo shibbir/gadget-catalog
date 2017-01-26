@@ -8,7 +8,7 @@ function handleErrors(response) {
     return response;
 }
 
-export function saveItem(formData) {
+export function createItem(formData) {
     dispatcher.dispatch({ type: ItemConstants.POST_ITEM });
 
     fetch('/api/items', {
@@ -22,12 +22,35 @@ export function saveItem(formData) {
     .then(function(response) {
         response.json().then(function(payload) {
             dispatcher.dispatch({
-                type: ItemConstants.RECEIVE_ITEM,
+                type: ItemConstants.RECEIVE_CREATED_ITEM,
                 payload
             });
         });
     }).catch(function(error) {
         dispatcher.dispatch({ type: ItemConstants.POST_ITEM_ERROR });
+    });
+}
+
+export function updateItem(id, formData) {
+    dispatcher.dispatch({ type: ItemConstants.UPDATE_ITEM });
+
+    fetch(`/api/items/${id}`, {
+        method: 'put',
+        body: formData,
+        headers: new Headers({
+            'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+        })
+    })
+    .then(handleErrors)
+    .then(function(response) {
+        response.json().then(function(payload) {
+            dispatcher.dispatch({
+                type: ItemConstants.RECEIVE_UPDATED_ITEM,
+                payload
+            });
+        });
+    }).catch(function(error) {
+        dispatcher.dispatch({ type: ItemConstants.UPDATE_ITEM_ERROR });
     });
 }
 

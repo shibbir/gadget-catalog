@@ -2,7 +2,7 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let ItemSchema = Schema({
-    title: {
+    name: {
         type: String,
         unique: true,
         required: true
@@ -12,6 +12,10 @@ let ItemSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Category',
         required: true
+    },
+    brand: {
+        type: Schema.Types.ObjectId,
+        ref: 'Brand'
     },
     purchaseDate: {
         type: Date

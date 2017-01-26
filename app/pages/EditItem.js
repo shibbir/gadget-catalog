@@ -1,15 +1,15 @@
 import React from 'react';
-import { hashHistory } from 'react-router';
 let moment = require('moment');
 
 import ItemInputFields from '../components/Item/ItemInputFields';
 import ItemStore from '../stores/ItemStore';
 import * as ItemActions from '../actions/ItemActions';
 
-export default class AddItem extends React.Component {
+export default class EditItem extends React.Component {
     constructor() {
         super();
         this.state = {
+            id: '',
             name: '',
             description: '',
             category: '',
@@ -20,20 +20,30 @@ export default class AddItem extends React.Component {
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.addItem = this.addItem.bind(this);
+        this.handleUpdateItem = this.handleUpdateItem.bind(this);
+    }
+
+    componentDidMount() {
+        ItemActions.getItem(this.props.params.id);
     }
 
     componentWillMount() {
-        ItemStore.on('receiveCreatedItem', () => {
+        ItemStore.on('receiveItem', () => {
             let item = ItemStore.getReceivedItem();
-            hashHistory.push({ pathname: `items/${item._id}` });
+
+            this.setState({ id: item._id });
+            this.setState({ name: item.name });
+            this.setState({ description: item.description });
+            this.setState({ category: item.category });
+            this.setState({ brand: item.brand });
+            this.setState({ purchaseDate: moment(item.purchaseDate).format('Y-MM-DD') });
+            this.setState({ price: item.price });
         });
     }
 
     componentWillUnmount() {
-        ItemStore.removeListener('receiveCreatedItem', () => {
+        ItemStore.removeListener('receiveItem', () => {
             let item = ItemStore.getReceivedItem();
-            hashHistory.push({ pathname: `items/${item._id}` });
         });
     }
 
@@ -47,7 +57,7 @@ export default class AddItem extends React.Component {
         });
     }
 
-    addItem(event) {
+    handleUpdateItem(event) {
         event.preventDefault();
 
         var formData  = new FormData();
@@ -60,18 +70,19 @@ export default class AddItem extends React.Component {
         formData.append('price', this.state.price);
         formData.append('file', this.state.file);
 
-        ItemActions.createItem(formData);
+        ItemActions.updateItem(this.state.id, formData);
     }
 
     render() {
         return (
             <div>
-                <h3>Add a new item</h3>
+                <h3>Edit item</h3>
                 <hr/>
 
-                <form onSubmit={this.addItem}>
+                <form onSubmit={this.handleUpdateItem}>
+                    <input type="hidden" value={this.state.id} onChange={this.handleInputChange}/>
                     <ItemInputFields handleInputChange={this.handleInputChange} fields={this.state}/>
-                    <button type="submit" class="btn btn-primary">Add item</button>
+                    <button type="submit" class="btn btn-primary">Update item</button>
                 </form>
             </div>
         );
