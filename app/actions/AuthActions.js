@@ -1,4 +1,3 @@
-import dispatcher from '../dispatcher';
 import AuthConstants from '../constants/AuthConstants';
 
 function handleErrors(response) {
@@ -8,56 +7,66 @@ function handleErrors(response) {
     return response;
 }
 
-export function login(data) {
-    fetch('/api/login', {
-        method: 'post',
-        body: JSON.stringify(data),
+export function meFromToken(token) {
+    let config = {
+        method: 'get',
         headers: new Headers({
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${token}`
         })
-    })
-    .then(handleErrors)
-    .then(function(response) {
-        response.json().then(function(payload) {
-            dispatcher.dispatch({
-                type: AuthConstants.LOGIN,
-                payload
-            });
-        });
-    }).catch(function(error) {
-        dispatcher.dispatch({
-            type: AuthConstants.LOGIN_ERROR,
-            error
-        });
-    });
+    };
+
+    return {
+        type: AuthConstants.ME_FROM_TOKEN,
+        payload: fetch('/api/profile', config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
 }
 
-export function register(data) {
-    fetch('/api/register', {
+export function login(data) {
+    let config = {
         method: 'post',
         body: JSON.stringify(data),
         headers: new Headers({
             'Content-Type': 'application/json'
         })
-    })
-    .then(handleErrors)
-    .then(function(response) {
-        response.json().then(function(payload) {
-            dispatcher.dispatch({
-                type: AuthConstants.REGISTER,
-                payload
-            });
-        });
-    }).catch(function(error) {
-        dispatcher.dispatch({
-            type: AuthConstants.REGISTER_ERROR,
-            error
-        });
-    });
+    };
+
+    return {
+        type: AuthConstants.LOGIN,
+        payload: fetch('/api/login', config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
 }
+
+// export function register(data) {
+//     fetch('/api/register', {
+//         method: 'post',
+//         body: JSON.stringify(data),
+//         headers: new Headers({
+//             'Content-Type': 'application/json'
+//         })
+//     })
+//     .then(handleErrors)
+//     .then(function(response) {
+//         response.json().then(function(payload) {
+//             dispatcher.dispatch({
+//                 type: AuthConstants.REGISTER,
+//                 payload
+//             });
+//         });
+//     }).catch(function(error) {
+//         dispatcher.dispatch({
+//             type: AuthConstants.REGISTER_ERROR,
+//             error
+//         });
+//     });
+// }
+//
 
 export function logout() {
-    dispatcher.dispatch({
+    return {
         type: AuthConstants.LOGOUT
-    });
+    };
 }

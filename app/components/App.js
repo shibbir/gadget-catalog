@@ -1,15 +1,16 @@
 import React from 'react';
-import { hashHistory } from 'react-router';
 
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer/Footer';
-import AuthStore from '../stores/AuthStore';
+import NavbarContainer from '../containers/NavbarContainer';
 
-export default class Layout extends React.Component {
+export default class App extends React.Component {
     componentWillMount() {
-        AuthStore.on('loggedOut', function() {
-            hashHistory.push('/');
-        });
+        this.props.loadMeFromToken();
+    }
+
+    componentWillUpdate(nextProps) {
+        console.log(nextProps);
     }
 
     render() {
@@ -20,7 +21,9 @@ export default class Layout extends React.Component {
 
         return (
             <div>
-                <Navbar/>
+                <NavbarContainer>
+                    <Navbar/>
+                </NavbarContainer>
                 <div class="container" style={style}>
                     {this.props.children}
                 </div>

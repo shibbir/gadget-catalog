@@ -1,39 +1,18 @@
 import React from 'react';
 import { hashHistory } from 'react-router';
 
-import AuthStore from '../stores/AuthStore';
+import store from '../store';
 
 export default class EnsureLoggedOutContainer extends React.Component {
-    constructor() {
-        super();
-
-        this.returnTo = '';
-    }
-
-    returnToPath() {
-        hashHistory.push(this.returnTo);
-    }
-
     componentWillMount() {
-        AuthStore.on('loggedIn', this.returnToPath.bind(this));
-    }
-
-    componentWillUnmount() {
-        AuthStore.removeListener('loggedIn', this.returnToPath.bind(this));
-    }
-
-    componentDidMount() {
-        this.returnTo = this.props.location.query.return_to || 'dashboard';
-
-        if (AuthStore.isLoggedIn()) {
-            hashHistory.replace(this.returnTo);
+        let returnTo = this.props.location.query.return_to || 'dashboard';
+        let token = localStorage.getItem('jwtToken');
+        if(token) {
+            hashHistory.replace(returnTo);
         }
     }
 
     render() {
-        if (!AuthStore.isLoggedIn()) {
-            return this.props.children;
-        }
-        return null;
+        return this.props.children;
     }
 }

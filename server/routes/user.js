@@ -44,4 +44,8 @@ module.exports = function(app, passport) {
             res.json(tokenResponse(user, 'local'));
         });
     });
+
+    app.get('/api/profile', passport.authenticate('http-bearer', { session: false }), function(req, res) {
+        res.json(tokenResponse(req.user, 'local'));
+    });
 };

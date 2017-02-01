@@ -1,16 +1,13 @@
 import React from 'react';
 import { Link, IndexLink } from 'react-router';
 
-import AuthStore from '../stores/AuthStore';
-import * as AuthActions from '../actions/AuthActions';
-
 export default class Navbar extends React.Component {
     logout() {
-        AuthActions.logout();
+        this.props.logout();
     }
 
     render() {
-        const isLoggedIn = AuthStore.isLoggedIn();
+        const { isLoggedIn } = this.props;
 
         return (
             <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">

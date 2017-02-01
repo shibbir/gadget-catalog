@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import * as AuthActions from '../actions/AuthActions';
+import { login } from '../actions/AuthActions';
+import store from '../store';
 
 export default class Login extends React.Component {
     constructor() {
@@ -24,10 +25,10 @@ export default class Login extends React.Component {
     handleLogin(event) {
         event.preventDefault();
 
-        AuthActions.login({
+        store.dispatch(login({
             email: this.state.email,
             password: this.state.password
-        });
+        }));
     }
 
     render() {
