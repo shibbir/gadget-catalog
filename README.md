@@ -12,6 +12,7 @@ You need to have latest version of [Node.js](https://nodejs.org/en/) installed o
 Built with:
 
 - [React](https://facebook.github.io/react/)
+- [Redux](http://redux.js.org/)
 - [Express](http://expressjs.com/)
 - [Bootstrap](http://getbootstrap.com/)
 - [MongoDB](https://www.mongodb.com/)

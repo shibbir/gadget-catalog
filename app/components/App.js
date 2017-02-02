@@ -9,10 +9,6 @@ export default class App extends React.Component {
         this.props.loadMeFromToken();
     }
 
-    componentWillUpdate(nextProps) {
-        console.log(nextProps);
-    }
-
     render() {
         const style = {
             marginTop: '10px',

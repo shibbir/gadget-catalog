@@ -7,7 +7,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         loadMeFromToken: () => {
             let token = localStorage.getItem('jwtToken');
-            if(!token || token === '') {
+            if(!token) {
                 return;
             }
 

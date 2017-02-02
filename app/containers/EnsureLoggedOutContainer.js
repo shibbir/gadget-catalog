@@ -1,14 +1,34 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 
-import store from '../store';
+const mapStateToProps = (state, ownProps) => {
+    return {
+        isLoggedIn: state.authReducer.isLoggedIn
+    }
+}
 
-export default class EnsureLoggedOutContainer extends React.Component {
+class EnsureLoggedOutContainer extends React.Component {
+    constructor() {
+        super();
+        this.returnTo = '';
+    }
+
+    redirectTo() {
+        hashHistory.replace(this.returnTo);
+    }
+
     componentWillMount() {
-        let returnTo = this.props.location.query.return_to || 'dashboard';
-        let token = localStorage.getItem('jwtToken');
-        if(token) {
-            hashHistory.replace(returnTo);
+        this.returnTo = this.props.location.query.return_to || 'dashboard';
+
+        if (this.props.isLoggedIn) {
+            this.redirectTo();
+        }
+    }
+
+    componentWillUpdate(nextProps) {
+        if (nextProps.isLoggedIn) {
+            this.redirectTo();
         }
     }
 
@@ -16,3 +36,5 @@ export default class EnsureLoggedOutContainer extends React.Component {
         return this.props.children;
     }
 }
+
+export default connect(mapStateToProps)(EnsureLoggedOutContainer);
