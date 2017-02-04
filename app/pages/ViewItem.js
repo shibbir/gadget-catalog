@@ -1,51 +1,46 @@
 import React from 'react';
 import { hashHistory } from 'react-router';
 
-import ItemStore from '../stores/ItemStore';
-import * as ItemActions from '../actions/ItemActions';
+import store from '../store';
+import { fetchItem } from '../actions/ItemActions';
+import ItemConstants from '../constants/ItemConstants';
 
 export default class ViewItem extends React.Component {
     constructor() {
         super();
 
-        this.state = {item: {}};
+        this.post = {};
 
-        this.editItem = this.editItem.bind(this);
-    }
-
-    componentDidMount() {
-        ItemActions.getItem(this.props.params.id);
+        this.gotoEditItemPage = this.gotoEditItemPage.bind(this);
     }
 
     componentWillMount() {
-        ItemStore.on('receiveItem', () => {
-            this.setState({ item: ItemStore.getReceivedItem() });
+        store.dispatch(fetchItem(this.props.params.id)).then(result => {
+            const { type, payload } = result.action;
+
+            if(type === ItemConstants.FETCH_ITEM_FULFILLED) {
+                this.post = payload;
+            }
         });
     }
 
-    componentWillUnmount() {
-        ItemStore.removeListener('receiveItem', () => {
-            this.setState({ item: ItemStore.getReceivedItem() });
-        });
-    }
-
-    editItem() {
-        hashHistory.push({ pathname: `items/${this.state.item._id}/edit` });
+    gotoEditItemPage() {
+        hashHistory.push({ pathname: `items/${this.post._id}/edit` });
     }
 
     render() {
         return (
             <div>
-                <h3>{this.state.item.name}</h3>
+                <h3>{this.post.name}</h3>
                 <hr/>
                 <figure class="figure">
-                    <img src={'/uploads/' + this.state.item.file} class="figure-img img-fluid rounded"/>
+                    <img src={'/uploads/' + this.post.file} class="figure-img img-fluid rounded"/>
                 </figure>
                 <dl>
                     <dt>Description</dt>
-                    <dd>{this.state.item.description}</dd>
+                    <dd>{this.post.description}</dd>
                 </dl>
-                <a href="javascript:void(0)" onClick={this.editItem}>Edit</a>
+                <a href="javascript:void(0)" onClick={this.gotoEditItemPage}>Edit</a>
             </div>
         );
     }

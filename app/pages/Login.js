@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { login } from '../actions/AuthActions';
 import store from '../store';
+import { login } from '../actions/AuthActions';
 
 export default class Login extends React.Component {
     constructor() {

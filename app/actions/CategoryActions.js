@@ -1,4 +1,3 @@
-import dispatcher from '../dispatcher';
 import CategoryConstants from '../constants/CategoryConstants';
 
 function handleErrors(response) {
@@ -9,24 +8,18 @@ function handleErrors(response) {
 }
 
 export function getCategories() {
-    dispatcher.dispatch({ type: CategoryConstants.FETCH_CATEGORIES });
-
-    fetch('/api/categories', {
+    let config = {
         method: 'get',
         headers: new Headers({
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
         })
-    })
-    .then(handleErrors)
-    .then(function(response) {
-        response.json().then(function(payload) {
-            dispatcher.dispatch({
-                type: CategoryConstants.RECEIVE_CATEGORIES,
-                payload
-            });
-        });
-    }).catch(function(error) {
-        dispatcher.dispatch({ type: CategoryConstants.FETCH_CATEGORIES_ERROR });
-    });
+    };
+
+    return {
+        type: CategoryConstants.FETCH_CATEGORIES,
+        payload: fetch('/api/categories', config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
 }

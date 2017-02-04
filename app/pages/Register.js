@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as AuthActions from '../actions/AuthActions';
+import store from '../store';
+import { register } from '../actions/AuthActions';
 
 export default class Register extends React.Component {
     constructor() {
@@ -28,11 +29,11 @@ export default class Register extends React.Component {
     handleRegistration(event) {
         event.preventDefault();
 
-        AuthActions.register({
+        store.dispatch(register({
             name: this.state.name,
             email: this.state.email,
             password: this.state.password
-        });
+        }));
     }
 
     render() {

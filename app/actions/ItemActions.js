@@ -1,4 +1,3 @@
-import dispatcher from '../dispatcher';
 import ItemConstants from '../constants/ItemConstants';
 
 function handleErrors(response) {
@@ -9,69 +8,34 @@ function handleErrors(response) {
 }
 
 export function createItem(formData) {
-    dispatcher.dispatch({ type: ItemConstants.POST_ITEM });
-
-    fetch('/api/items', {
+    let config = {
         method: 'post',
         body: formData,
         headers: new Headers({
-            'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
         })
-    })
-    .then(handleErrors)
-    .then(function(response) {
-        response.json().then(function(payload) {
-            dispatcher.dispatch({
-                type: ItemConstants.RECEIVE_CREATED_ITEM,
-                payload
-            });
-        });
-    }).catch(function(error) {
-        dispatcher.dispatch({ type: ItemConstants.POST_ITEM_ERROR });
-    });
+    };
+
+    return {
+        type: ItemConstants.POST_ITEM,
+        payload: fetch('/api/items', config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
 }
 
-export function updateItem(id, formData) {
-    dispatcher.dispatch({ type: ItemConstants.UPDATE_ITEM });
-
-    fetch(`/api/items/${id}`, {
-        method: 'put',
-        body: formData,
-        headers: new Headers({
-            'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-        })
-    })
-    .then(handleErrors)
-    .then(function(response) {
-        response.json().then(function(payload) {
-            dispatcher.dispatch({
-                type: ItemConstants.RECEIVE_UPDATED_ITEM,
-                payload
-            });
-        });
-    }).catch(function(error) {
-        dispatcher.dispatch({ type: ItemConstants.UPDATE_ITEM_ERROR });
-    });
-}
-
-export function getItem(id) {
-    dispatcher.dispatch({ type: ItemConstants.FETCH_ITEM });
-
-    fetch(`/api/items/${id}`, {
+export function fetchItem(id) {
+    let config = {
         method: 'get',
         headers: new Headers({
-            'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
         })
-    })
-    .then(handleErrors)
-    .then(function(response) {
-        response.json().then(function(payload) {
-            dispatcher.dispatch({
-                type: ItemConstants.RECEIVE_ITEM,
-                payload
-            });
-        });
-    }).catch(function(error) {
-        dispatcher.dispatch({ type: ItemConstants.FETCH_ITEM_ERROR });
-    });
+    };
+
+    return {
+        type: ItemConstants.FETCH_ITEM,
+        payload: fetch(`/api/items/${id}`, config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Navbar from '../components/Navbar';
 import Footer from '../components/Footer/Footer';
 import NavbarContainer from '../containers/NavbarContainer';
 
@@ -17,9 +16,7 @@ export default class App extends React.Component {
 
         return (
             <div>
-                <NavbarContainer>
-                    <Navbar/>
-                </NavbarContainer>
+                <NavbarContainer/>
                 <div class="container" style={style}>
                     {this.props.children}
                 </div>

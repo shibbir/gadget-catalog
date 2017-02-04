@@ -9,9 +9,9 @@ import Welcome from './pages/Welcome';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import AddItem from './pages/AddItem';
+import AddItemPage from './pages/AddItemPage';
 import EditItem from './pages/EditItem';
-import ViewItem from './pages/ViewItem';
+import ItemDetailsPage from './pages/ItemDetailsPage';
 import EnsureLoggedInContainer from './containers/EnsureLoggedInContainer';
 import EnsureLoggedOutContainer from './containers/EnsureLoggedOutContainer';
 
@@ -28,8 +28,8 @@ ReactDOM.render(
 
                 <Route component={EnsureLoggedInContainer}>
                     <Route path="dashboard" component={Dashboard}/>
-                    <Route path="items/add" component={AddItem}/>
-                    <Route path="items/:id" component={ViewItem}/>
+                    <Route path="items/add" component={AddItemPage}/>
+                    <Route path="items/:id" component={ItemDetailsPage}/>
                     <Route path="items/:id/edit" component={EditItem}/>
                 </Route>
             </Route>

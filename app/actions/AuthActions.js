@@ -40,30 +40,22 @@ export function login(data) {
     };
 }
 
-// export function register(data) {
-//     fetch('/api/register', {
-//         method: 'post',
-//         body: JSON.stringify(data),
-//         headers: new Headers({
-//             'Content-Type': 'application/json'
-//         })
-//     })
-//     .then(handleErrors)
-//     .then(function(response) {
-//         response.json().then(function(payload) {
-//             dispatcher.dispatch({
-//                 type: AuthConstants.REGISTER,
-//                 payload
-//             });
-//         });
-//     }).catch(function(error) {
-//         dispatcher.dispatch({
-//             type: AuthConstants.REGISTER_ERROR,
-//             error
-//         });
-//     });
-// }
-//
+export function register(data) {
+    let config = {
+        method: 'post',
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    };
+
+    return {
+        type: AuthConstants.REGISTER,
+        payload: fetch('/api/register', config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
+}
 
 export function logout() {
     return {
