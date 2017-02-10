@@ -1,62 +1,36 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 let moment = require('moment');
 
-export default class ItemForm extends React.Component {
-    constructor() {
-        super();
+import { FileInput, TextInput, DropdownField, TextareaField } from '../FieldInputs';
 
-        this.state = {
-            name: '',
-            description: '',
-            category: '',
-            brand: '',
-            purchaseDate: '',
-            price: '',
-            file: ''
-        };
+const required = value => value ? undefined : 'This field must not be empty';
+const number = value => value && isNaN(Number(value)) ? 'Please enter a decimal number' : undefined;
 
-        this.handleSubmission = this.handleSubmission.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-    }
-
+class ItemForm extends React.Component {
     componentWillMount() {
         this.props.getBrands();
         this.props.getCategories();
+
+        if(this.props.itemId) {
+            this.props.fetchItem(this.props.itemId);
+        }
     }
 
-    handleInputChange(event) {
-        const target = event.target;
-        const name = target.name;
-        const value = target.type === 'file' ? target.files[0] : target.value;
-
-        this.setState({
-            [name]: value
-        });
-    }
-
-    handleSubmission(event) {
-        event.preventDefault();
-
-        var formData  = new FormData();
-
-        formData.append('name', this.state.name);
-        formData.append('description', this.state.description);
-        formData.append('category', this.state.category);
-        formData.append('brand', this.state.brand);
-        formData.append('purchaseDate', moment(this.state.purchaseDate).toISOString());
-        formData.append('price', this.state.price);
-        formData.append('file', this.state.file);
-
-        this.props.handleSubmission(formData);
+    handleSubmit(formValues) {
+        console.log(formValues);
     }
 
     render() {
+        const { handleSubmit, pristine, reset, submitting, submitButtonText } = this.props;
+
         let categoryOptions = this.props.categories.map(function(option) {
             return (
                 <option key={option._id} value={option._id}>
                     {option.name}
                 </option>
-            )
+            );
         });
 
         let brandOptions = this.props.brands.map(function(option) {
@@ -64,49 +38,40 @@ export default class ItemForm extends React.Component {
                 <option key={option._id} value={option._id}>
                     {option.name}
                 </option>
-            )
+            );
         });
 
         return (
             <div>
-                <form onSubmit={this.handleSubmission}>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value={this.state.name} onChange={this.handleInputChange}/>
+                <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
+                    <Field name="name" id="name" label="Name" type="text" component={TextInput} validate={[ required ]}/>
+                    <Field name="description" id="description" label="Description" component={TextareaField}/>
+                    <Field name="category" id="category" label="Category" defaultOption="Select category" options={categoryOptions} component={DropdownField} validate={[ required ]}/>
+                    <Field name="brand" id="brand" label="Brand" defaultOption="Select brand" options={brandOptions} component={DropdownField} validate={[ required ]}/>
+                    <Field name="purchaseDate" id="purchaseDate" label="Purchase date" type="date" component={TextInput} validate={[ required ]}/>
+                    <Field name="price" id="price" label="Price" type="number" component={TextInput}/>
+                    <Field name="file" id="file" label="Upload" component={FileInput}/>
+                    <hr/>
+                    <div class="clearfix">
+                        <button type="buton" class="btn btn-secondary float-right" disabled={submitting || pristine} onClick={reset}>Reset form</button>
+                        <button type="submit" class="btn btn-primary float-right mr-2" disabled={submitting || pristine}>{submitButtonText}</button>
                     </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea rows="10" class="form-control" id="description" name="description" value={this.state.description} onChange={this.handleInputChange}></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="category">Category</label>
-                        <select class="form-control" id="category" name="category" value={this.state.category} onChange={this.handleInputChange}>
-                            <option value="">Select category</option>
-                            {categoryOptions}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="brand">Brand</label>
-                        <select class="form-control" id="brand" name="brand" value={this.state.brand} onChange={this.handleInputChange}>
-                            <option value="">Select brand</option>
-                            {brandOptions}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="purchase-date">Purchase date</label>
-                        <input type="date" class="form-control" id="purchase-date" name="purchaseDate" value={this.state.purchaseDate} onChange={this.handleInputChange}/>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <input type="number" class="form-control" id="price" name="price" value={this.state.price} onChange={this.handleInputChange}/>
-                    </div>
-                    <div class="form-group">
-                        <label for="file">Upload image</label>
-                        <input type="file" class="form-control-file" id="file" name="file" accept="image/*" onChange={this.handleInputChange}/>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add item</button>
                 </form>
             </div>
         );
     }
 }
+
+ItemForm = reduxForm({
+    form: 'ItemForm',
+    enableReinitialize: true,
+    keepDirtyOnReinitialize: true
+})(ItemForm);
+
+ItemForm = connect(
+    state => ({
+        initialValues: state.itemReducer.activeItem.item
+    })
+)(ItemForm);
+
+export default ItemForm;

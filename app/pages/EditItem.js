@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AddItemFormContainer from '../containers/AddItemFormContainer';
+import ItemFormContainer from '../containers/ItemFormContainer';
 
 export default class EditItem extends React.Component {
     render() {
@@ -9,7 +9,7 @@ export default class EditItem extends React.Component {
                 <h3>Edit item</h3>
                 <hr/>
 
-                <AddItemFormContainer id={this.props.params.id}/>
+                <ItemFormContainer id={this.props.params.id}/>
             </div>
         );
     }

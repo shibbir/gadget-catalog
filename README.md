@@ -5,10 +5,6 @@
 [![Dependency Status](https://david-dm.org/shibbir/digital-catalog.svg)](https://david-dm.org/shibbir/digital-catalog)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
-## Installation
-
-You need to have latest version of [Node.js](https://nodejs.org/en/) installed on your machine before running the followings:
-
 Built with:
 
 - [React](https://facebook.github.io/react/)
@@ -18,6 +14,15 @@ Built with:
 - [MongoDB](https://www.mongodb.com/)
 - [Passport](http://passportjs.org/)
 - [Webpack](https://webpack.github.io/)
+
+## Installation
+
+You need to have latest version of [Node.js](https://nodejs.org/en/) installed on your machine before running the followings:
+
+```bash
+$ cd /path/to/source
+$ npm start
+```
 
 ## License
 <a href="https://opensource.org/licenses/MIT">The MIT License</a> Copyright &copy; 2017 Shibbir Ahmed

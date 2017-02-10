@@ -9,6 +9,9 @@ import ItemForm from '../components/Item/ItemForm';
 
 const mapStateToProps = (state, ownProps) => {
     return {
+        itemId: ownProps.id,
+        submitButtonText: ownProps.submitButtonText || 'Submit',
+        activeItem: state.itemReducer.activeItem,
         brands: state.brandReducer.brands,
         categories: state.categoryReducer.categories
     }
@@ -22,7 +25,7 @@ const mapDispatchToProps = (dispatch) => {
         getCategories: () => {
             dispatch(getCategories());
         },
-        handleSubmission: (formData) => {
+        handleSubmission: formData => {
             dispatch(createItem(formData)).then(result => {
                 const { type, payload } = result.action;
 
@@ -30,6 +33,9 @@ const mapDispatchToProps = (dispatch) => {
                     hashHistory.push({ pathname: `items/${payload._id}` });
                 }
             });
+        },
+        fetchItem: itemId => {
+            dispatch(fetchItem(itemId));
         }
     };
 }
