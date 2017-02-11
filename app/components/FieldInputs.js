@@ -7,7 +7,7 @@ export const FileInput = ({ input: { name, onChange }, id, label, meta: { touche
     return (
         <div class={formGroupClass}>
             <label for={id}>{label}</label>
-            <input type="file" name={name} class={formControlClass} id={id} onChange={e => onChange(e.target.files[0])}/>
+            <input type="file" name={name} class={formControlClass} id={id} accept="image/*" onChange={e => onChange(e.target.files[0])}/>
             <div class="form-control-feedback">
                 {touched && (error && <span>{error}</span>)}
             </div>

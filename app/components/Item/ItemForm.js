@@ -19,7 +19,19 @@ class ItemForm extends React.Component {
     }
 
     handleSubmit(formValues) {
-        console.log(formValues);
+        var formData  = new FormData();
+
+        for(let key in formValues) {
+            if(formValues.hasOwnProperty(key)) {
+                formData.append(key, formValues[key]);
+            }
+        }
+
+        if(this.props.itemId) {
+            this.props.updateItem(formData, this.props.itemId);
+        } else {
+            this.props.createItem(formData);
+        }
     }
 
     render() {

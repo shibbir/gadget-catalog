@@ -24,6 +24,23 @@ export function createItem(formData) {
     };
 }
 
+export function updateItem(formData, id) {
+    let config = {
+        method: 'put',
+        body: formData,
+        headers: new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+        })
+    };
+
+    return {
+        type: ItemConstants.PUT_ITEM,
+        payload: fetch(`api/items/${id}`, config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
+}
+
 export function fetchItem(id) {
     let config = {
         method: 'get',
@@ -33,7 +50,7 @@ export function fetchItem(id) {
     };
 
     return {
-        type: ItemConstants.FETCH_ITEM,
+        type: ItemConstants.GET_ITEM,
         payload: fetch(`/api/items/${id}`, config)
             .then(handleErrors)
             .then(response => response.json())

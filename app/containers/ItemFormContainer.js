@@ -3,7 +3,7 @@ import { hashHistory } from 'react-router';
 
 import { getBrands } from '../actions/BrandActions';
 import { getCategories } from '../actions/CategoryActions';
-import { createItem, fetchItem } from '../actions/ItemActions';
+import { createItem, updateItem, fetchItem } from '../actions/ItemActions';
 import ItemConstants from '../constants/ItemConstants';
 import ItemForm from '../components/Item/ItemForm';
 
@@ -25,7 +25,7 @@ const mapDispatchToProps = (dispatch) => {
         getCategories: () => {
             dispatch(getCategories());
         },
-        handleSubmission: formData => {
+        createItem: (formData) => {
             dispatch(createItem(formData)).then(result => {
                 const { type, payload } = result.action;
 
@@ -33,6 +33,9 @@ const mapDispatchToProps = (dispatch) => {
                     hashHistory.push({ pathname: `items/${payload._id}` });
                 }
             });
+        },
+        updateItem: (formData, itemId) => {
+            dispatch(updateItem(formData, itemId));
         },
         fetchItem: itemId => {
             dispatch(fetchItem(itemId));
