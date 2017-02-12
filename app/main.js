@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { IntlProvider } from 'react-intl';
 
 import store from './store';
 import App from './pages/App';
@@ -17,23 +18,25 @@ import EnsureLoggedOutContainer from './containers/EnsureLoggedOutContainer';
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router history={hashHistory}>
-            <Route path="/" component={App}>
-                <IndexRoute component={Welcome}></IndexRoute>
+        <IntlProvider locale='en'>
+            <Router history={hashHistory}>
+                <Route path="/" component={App}>
+                    <IndexRoute component={Welcome}></IndexRoute>
 
-                <Route component={EnsureLoggedOutContainer}>
-                    <Route path="login" component={Login}/>
-                    <Route path="register" component={Register}/>
-                </Route>
+                    <Route component={EnsureLoggedOutContainer}>
+                        <Route path="login" component={Login}/>
+                        <Route path="register" component={Register}/>
+                    </Route>
 
-                <Route component={EnsureLoggedInContainer}>
-                    <Route path="dashboard" component={Dashboard}/>
-                    <Route path="items/add" component={AddItemPage}/>
-                    <Route path="items/:id" component={ItemDetailsPage}/>
-                    <Route path="items/:id/edit" component={EditItemPage}/>
+                    <Route component={EnsureLoggedInContainer}>
+                        <Route path="dashboard" component={Dashboard}/>
+                        <Route path="items/add" component={AddItemPage}/>
+                        <Route path="items/:id" component={ItemDetailsPage}/>
+                        <Route path="items/:id/edit" component={EditItemPage}/>
+                    </Route>
                 </Route>
-            </Route>
-        </Router>
+            </Router>
+        </IntlProvider>
     </Provider>,
     document.getElementById('app')
 );

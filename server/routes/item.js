@@ -2,12 +2,19 @@ let Item = require('../models/item');
 
 module.exports = function(app, passport) {
     app.get('/api/items/:id', passport.authenticate('http-bearer', { session: false }), function(req, res) {
-        Item.findOne({ _id: req.params.id }, function(err, doc) {
-            if(err) {
-                return res.sendStatus(500);
-            }
+        Item
+            .findOne({ _id: req.params.id })
+            .populate('brand', 'name')
+            .populate('category', 'name')
+            .exec(function(err, doc) {
+                if(err) {
+                    return res.sendStatus(500);
+                }
 
-            res.json(doc);
+                doc.category = doc.category[0];
+                doc.brand = doc.brand[0];
+
+                res.json(doc);
         });
     });
 
@@ -15,8 +22,8 @@ module.exports = function(app, passport) {
         let model = {
             name: req.body.name,
             description: req.body.description,
-            category: req.body.category,
-            brand: req.body.brand,
+            categoryId: req.body.categoryId,
+            brandId: req.body.brandId,
             purchaseDate: req.body.purchaseDate,
             price: req.body.price
         };
@@ -42,8 +49,8 @@ module.exports = function(app, passport) {
 
             doc.name = req.body.name;
             doc.description = req.body.description;
-            doc.category = req.body.category;
-            doc.brand = req.body.brand;
+            doc.categoryId = req.body.categoryId;
+            doc.brandId = req.body.brandId;
             doc.purchaseDate = req.body.purchaseDate;
             doc.price = req.body.price;
 

@@ -8,15 +8,11 @@ let ItemSchema = Schema({
         required: true
     },
     description: String,
-    category: {
+    categoryId: {
         type: Schema.Types.ObjectId,
-        ref: 'Category',
         required: true
     },
-    brand: {
-        type: Schema.Types.ObjectId,
-        ref: 'Brand'
-    },
+    brandId: Schema.Types.ObjectId,
     purchaseDate: {
         type: Date
     },
@@ -26,6 +22,18 @@ let ItemSchema = Schema({
         type: Date,
         default: Date.now
     }
+}, { toJSON: { virtuals: true } });
+
+ItemSchema.virtual('category', {
+    ref: 'Category',
+    localField: 'categoryId',
+    foreignField: '_id'
+});
+
+ItemSchema.virtual('brand', {
+    ref: 'Brand',
+    localField: 'brandId',
+    foreignField: '_id'
 });
 
 module.exports = mongoose.model('Item', ItemSchema);

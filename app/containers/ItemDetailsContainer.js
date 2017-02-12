@@ -8,7 +8,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         activeItem: state.itemReducer.activeItem,
         itemId: ownProps.id
-    }
+    };
 }
 
 const mapDispatchToProps = (dispatch) => {

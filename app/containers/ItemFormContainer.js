@@ -40,7 +40,7 @@ const mapDispatchToProps = (dispatch) => {
         fetchItem: (itemId) => {
             dispatch(fetchItem(itemId));
         },
-        resetForm: () => {
+        resetItemState: () => {
             dispatch(resetItemState());
         }
     };
