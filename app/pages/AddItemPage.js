@@ -9,7 +9,7 @@ export default class AddItemPage extends React.Component {
                 <h3>Add a new item</h3>
                 <hr/>
 
-                <ItemFormContainer/>
+                <ItemFormContainer form="Create"/>
             </div>
         );
     }

@@ -56,3 +56,9 @@ export function fetchItem(id) {
             .then(response => response.json())
     };
 }
+
+export function resetItemState() {
+    return {
+        type: ItemConstants.RESET_ITEM_STATE
+    };
+}

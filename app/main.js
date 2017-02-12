@@ -10,7 +10,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import AddItemPage from './pages/AddItemPage';
-import EditItem from './pages/EditItem';
+import EditItemPage from './pages/EditItemPage';
 import ItemDetailsPage from './pages/ItemDetailsPage';
 import EnsureLoggedInContainer from './containers/EnsureLoggedInContainer';
 import EnsureLoggedOutContainer from './containers/EnsureLoggedOutContainer';
@@ -30,7 +30,7 @@ ReactDOM.render(
                     <Route path="dashboard" component={Dashboard}/>
                     <Route path="items/add" component={AddItemPage}/>
                     <Route path="items/:id" component={ItemDetailsPage}/>
-                    <Route path="items/:id/edit" component={EditItem}/>
+                    <Route path="items/:id/edit" component={EditItemPage}/>
                 </Route>
             </Route>
         </Router>

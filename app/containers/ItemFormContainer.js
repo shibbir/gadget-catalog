@@ -3,18 +3,18 @@ import { hashHistory } from 'react-router';
 
 import { getBrands } from '../actions/BrandActions';
 import { getCategories } from '../actions/CategoryActions';
-import { createItem, updateItem, fetchItem } from '../actions/ItemActions';
+import { createItem, updateItem, fetchItem, resetItemState } from '../actions/ItemActions';
 import ItemConstants from '../constants/ItemConstants';
 import ItemForm from '../components/Item/ItemForm';
 
 const mapStateToProps = (state, ownProps) => {
     return {
         itemId: ownProps.id,
+        form: `${ownProps.form}ItemForm`,
         submitButtonText: ownProps.submitButtonText || 'Submit',
-        activeItem: state.itemReducer.activeItem,
         brands: state.brandReducer.brands,
         categories: state.categoryReducer.categories
-    }
+    };
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -37,8 +37,11 @@ const mapDispatchToProps = (dispatch) => {
         updateItem: (formData, itemId) => {
             dispatch(updateItem(formData, itemId));
         },
-        fetchItem: itemId => {
+        fetchItem: (itemId) => {
             dispatch(fetchItem(itemId));
+        },
+        resetForm: () => {
+            dispatch(resetItemState());
         }
     };
 }

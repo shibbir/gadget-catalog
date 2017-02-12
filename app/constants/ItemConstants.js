@@ -10,5 +10,6 @@ export default keyMirror({
     GET_ITEM: null,
     GET_ITEM_PENDING: null,
     GET_ITEM_FULFILLED: null,
-    GET_ITEM_REJECTED: null
+    GET_ITEM_REJECTED: null,
+    RESET_ITEM_STATE: null
 });

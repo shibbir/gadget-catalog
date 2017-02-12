@@ -15,11 +15,13 @@ class ItemForm extends React.Component {
 
         if(this.props.itemId) {
             this.props.fetchItem(this.props.itemId);
+        } else {
+            this.props.resetForm();
         }
     }
 
     handleSubmit(formValues) {
-        var formData  = new FormData();
+        var formData = new FormData();
 
         for(let key in formValues) {
             if(formValues.hasOwnProperty(key)) {
@@ -54,28 +56,25 @@ class ItemForm extends React.Component {
         });
 
         return (
-            <div>
-                <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-                    <Field name="name" id="name" label="Name" type="text" component={TextInput} validate={[ required ]}/>
-                    <Field name="description" id="description" label="Description" component={TextareaField}/>
-                    <Field name="category" id="category" label="Category" defaultOption="Select category" options={categoryOptions} component={DropdownField} validate={[ required ]}/>
-                    <Field name="brand" id="brand" label="Brand" defaultOption="Select brand" options={brandOptions} component={DropdownField} validate={[ required ]}/>
-                    <Field name="purchaseDate" id="purchaseDate" label="Purchase date" type="date" component={TextInput} validate={[ required ]}/>
-                    <Field name="price" id="price" label="Price" type="number" component={TextInput}/>
-                    <Field name="file" id="file" label="Upload" component={FileInput}/>
-                    <hr/>
-                    <div class="clearfix">
-                        <button type="buton" class="btn btn-secondary float-right" disabled={submitting || pristine} onClick={reset}>Reset form</button>
-                        <button type="submit" class="btn btn-primary float-right mr-2" disabled={submitting || pristine}>{submitButtonText}</button>
-                    </div>
-                </form>
-            </div>
+            <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
+                <Field name="name" id="name" label="Name" type="text" component={TextInput} validate={[ required ]}/>
+                <Field name="description" id="description" label="Description" component={TextareaField}/>
+                <Field name="category" id="category" label="Category" defaultOption="Select category" options={categoryOptions} component={DropdownField} validate={[ required ]}/>
+                <Field name="brand" id="brand" label="Brand" defaultOption="Select brand" options={brandOptions} component={DropdownField} validate={[ required ]}/>
+                <Field name="purchaseDate" id="purchaseDate" label="Purchase date" type="date" component={TextInput} validate={[ required ]}/>
+                <Field name="price" id="price" label="Price" type="number" component={TextInput}/>
+                <Field name="file" id="file" label="Upload" component={FileInput}/>
+                <hr/>
+                <div class="clearfix">
+                    <button type="buton" class="btn btn-secondary float-right" disabled={submitting || pristine} onClick={reset}>Reset form</button>
+                    <button type="submit" class="btn btn-primary float-right mr-2" disabled={submitting || pristine}>{submitButtonText}</button>
+                </div>
+            </form>
         );
     }
 }
 
 ItemForm = reduxForm({
-    form: 'ItemForm',
     enableReinitialize: true,
     keepDirtyOnReinitialize: true
 })(ItemForm);
