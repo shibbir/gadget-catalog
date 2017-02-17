@@ -1,6 +1,37 @@
 let Item = require('../models/item');
 
 module.exports = function(app, passport) {
+    app.get('/api/items', passport.authenticate('http-bearer', { session: false }), function(req, res) {
+        let page = req.query.page ? +req.query.page : 1;
+        let size = req.query.size ? +req.query.size : 10;
+        let skip = page > 0 ? ((page - 1) * size) : 0;
+
+        Item.where({}).count(function(err, count) {
+            if (err) {
+                return res.sendStatus(500);
+            }
+
+            Item.find({}).skip(skip).limit(size).populate('category', 'name').exec(function(err, docs) {
+                if(err) {
+                    return res.sendStatus(500);
+                }
+
+                docs = docs.map(function(doc) {
+                    doc.category = doc.category[0];
+                    return doc;
+                });
+
+                res.json({
+                    pagination: {
+                        page,
+                        pages: Math.floor(count / size)
+                    },
+                    data: docs
+                });
+            });
+        });
+    });
+
     app.get('/api/items/:id', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         Item
             .findOne({ _id: req.params.id })

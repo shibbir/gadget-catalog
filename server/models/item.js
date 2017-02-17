@@ -13,9 +13,7 @@ let ItemSchema = Schema({
         required: true
     },
     brandId: Schema.Types.ObjectId,
-    purchaseDate: {
-        type: Date
-    },
+    purchaseDate: Date,
     price: Number,
     file: String,
     date: {

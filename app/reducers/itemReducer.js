@@ -3,6 +3,7 @@ let moment = require('moment');
 import ItemConstants from '../constants/ItemConstants';
 
 const initialState = {
+    items: { data: [], pagination: { pages: [] }},
     activeItem: { item: null }
 };
 
@@ -12,14 +13,11 @@ export default function reducer(state=initialState, action) {
             return { ...state, activeItem: { ...state.activeItem }};
         }
         case ItemConstants.GET_ITEM_FULFILLED: {
-            let state = {
-                activeItem: {
-                    item: action.payload
-                }
-            };
-            state.activeItem.item.purchaseDate = moment(state.activeItem.item.purchaseDate).format('Y-MM-DD');
-
-            return state;
+            action.payload.purchaseDate = moment(action.payload.purchaseDate).format('Y-MM-DD');
+            return { ...state, activeItem: { item: action.payload }};
+        }
+        case ItemConstants.GET_ITEMS_FULFILLED: {
+            return { ...state, items: { data: action.payload.data, pagination: action.payload.pagination }};
         }
         case ItemConstants.RESET_ITEM_STATE: {
             return { ...state, activeItem: { item: null }};

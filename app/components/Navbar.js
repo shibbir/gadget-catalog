@@ -17,6 +17,7 @@ export default class Navbar extends React.Component {
                         { isLoggedIn &&
                             <div class="navbar-nav mr-auto">
                                 <Link to="dashboard" activeClassName="active" class="nav-item nav-link">Dashboard</Link>
+                                <Link to="items" activeClassName="active" class="nav-item nav-link">Item list</Link>
                                 <Link to="items/add" activeClassName="active" class="nav-item nav-link">Add item</Link>
                             </div>
                         }

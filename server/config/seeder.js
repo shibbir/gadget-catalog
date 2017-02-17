@@ -4,7 +4,7 @@ let Category = require('../models/category');
 let Brand = require('../models/brand');
 
 let categorySeeder = function(callback) {
-    let array = ['Motherboard', 'Processor', 'Mobile', 'Miscellaneous'];
+    let array = ['Motherboard', 'Processor', 'Mobile', 'Miscellaneous', 'GPU'];
 
     async.each(array, function(item, asyncCallback) {
         new Category({
@@ -18,7 +18,7 @@ let categorySeeder = function(callback) {
 };
 
 let brandSeeder = function(callback) {
-    let array = ['Apple', 'Asus', 'Dell', 'Intel', 'Nokia', 'Nvidia', 'Samsung'];
+    let array = ['Apple', 'Asus', 'Dell', 'Intel', 'Nokia', 'Nvidia', 'Samsung', 'NVIDIA'];
 
     async.each(array, function(item, asyncCallback) {
         new Brand({

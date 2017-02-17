@@ -57,6 +57,22 @@ export function fetchItem(id) {
     };
 }
 
+export function fetchItems() {
+    let config = {
+        method: 'get',
+        headers: new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+        })
+    };
+
+    return {
+        type: ItemConstants.GET_ITEMS,
+        payload: fetch('/api/items', config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
+}
+
 export function resetItemState() {
     return {
         type: ItemConstants.RESET_ITEM_STATE

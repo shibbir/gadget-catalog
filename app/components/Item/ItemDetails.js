@@ -25,7 +25,7 @@ export default class ItemDetails extends React.Component {
                     <img src={'/uploads/' + item.file} class="figure-img img-fluid rounded" alt="{item.name}"/>
                 </figure>
                 <p>Brand: <Link to={`/brands/${item.brand._id}`}>{item.brand.name}</Link></p>
-                <p>Price: <FormattedNumber value={item.price} format="currency"/> BDT</p>
+                <p>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></p>
                 <p>Purchase Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></p>
                 <dl>
                     <dt>Description</dt>
