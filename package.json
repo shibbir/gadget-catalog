@@ -23,6 +23,7 @@
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.16.0",
     "bootstrap": "4.0.0-alpha.6",
+    "cloudinary": "^1.7.0",
     "cross-env": "^3.1.4",
     "css-loader": "^0.26.1",
     "express": "^4.14.0",

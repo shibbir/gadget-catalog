@@ -1,6 +1,10 @@
-let Item = require('../models/item');
+let fs = require('fs');
+let async = require('async');
 
-module.exports = function(app, passport) {
+let Item = require('../models/item');
+let File = require('../models/sub-documents/file');
+
+module.exports = function(app, passport, cloudinary) {
     app.get('/api/items', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         let page = req.query.page ? +req.query.page : 1;
         let size = req.query.size ? +req.query.size : 10;
@@ -11,12 +15,13 @@ module.exports = function(app, passport) {
                 return res.sendStatus(500);
             }
 
-            Item.find({}).skip(skip).limit(size).populate('category', 'name').exec(function(err, docs) {
+            Item.find({}).skip(skip).limit(size).populate('category', 'name').populate('brand', 'name').exec(function(err, docs) {
                 if(err) {
                     return res.sendStatus(500);
                 }
 
                 docs = docs.map(function(doc) {
+                    doc.brand = doc.brand[0];
                     doc.category = doc.category[0];
                     return doc;
                 });
@@ -50,25 +55,49 @@ module.exports = function(app, passport) {
     });
 
     app.post('/api/items', passport.authenticate('http-bearer', { session: false }), function(req, res) {
-        let model = {
+        let item = new Item({
             name: req.body.name,
             description: req.body.description,
             categoryId: req.body.categoryId,
             brandId: req.body.brandId,
             purchaseDate: req.body.purchaseDate,
             price: req.body.price
-        };
+        });
 
-        if(req.file) {
-            model.file = req.file.filename;
-        }
+        async.waterfall([
+            function(callback) {
+                if(!req.file) {
+                    return callback(null);
+                }
 
-        new Item(model).save(function(err, doc) {
+                cloudinary.uploader.upload(req.file.path, function(response) {
+                    const { public_id, resource_type, type, format } = response;
+
+                    item.files = [{
+                        public_id,
+                        resource_type,
+                        type,
+                        format,
+                        default: true
+                    }];
+
+                    fs.unlinkSync(req.file.path);
+
+                    callback(null);
+                }, { folder: 'gadgets' });
+            }
+        ], function (err) {
             if(err) {
                 return res.sendStatus(500);
             }
 
-            res.json(doc);
+            item.save(function(err, doc) {
+                if(err) {
+                    return res.sendStatus(500);
+                }
+
+                res.json(doc);
+            });
         });
     });
 
@@ -85,13 +114,76 @@ module.exports = function(app, passport) {
             doc.purchaseDate = req.body.purchaseDate;
             doc.price = req.body.price;
 
-            if(req.file) {
-                doc.file = req.file.filename;
+            async.waterfall([
+                function(callback) {
+                    if(!req.file) {
+                        return callback(null);
+                    }
+
+                    cloudinary.uploader.upload(req.file.path, function(result) {
+                        callback(null, result);
+                    }, { folder: 'gadgets' });
+                }
+            ], function (err, result) {
+                if(err) {
+                    return res.sendStatus(500);
+                }
+
+                const { public_id, resource_type, type, format } = result;
+
+                doc.files.push({
+                    public_id,
+                    resource_type,
+                    type,
+                    format,
+                    default: true
+                });
+
+                doc.save();
+                res.json(doc);
+            });
+        });
+    });
+
+    app.put('/api/items/:itemId/images/:fileId', passport.authenticate('http-bearer', { session: false }), function(req, res) {
+        Item.findOneAndUpdate({ _id: req.params.itemId, 'files._id': req.params.fileId }, {
+            '$set': {
+                'files.$.default': true
+            }
+        }, function(err, doc) {
+            if(err) {
+                return res.sendStatus(500);
+            }
+            res.json(doc);
+        });
+    });
+
+    app.delete('/api/items/:itemId/images/:fileId', passport.authenticate('http-bearer', { session: false }), function(req, res) {
+        Item.findOne({ _id: req.params.itemId }, function(err, doc) {
+            if(err) {
+                return res.sendStatus(500);
             }
 
-            doc.save();
+            var file = doc.files.id(req.params.fileId).remove();
 
-            res.json(doc);
+            if(!file) {
+                return callback(null);
+            }
+
+            async.waterfall([
+                function(callback) {
+                    cloudinary.uploader.destroy(file.public_id, function() {
+                        callback(null);
+                    }, { invalidate: true });
+                }
+            ], function (err) {
+                if(err) {
+                    return res.sendStatus(500);
+                }
+
+                doc.save();
+                res.json(doc);
+            });
         });
     });
 };

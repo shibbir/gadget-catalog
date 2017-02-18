@@ -18,7 +18,7 @@ let categorySeeder = function(callback) {
 };
 
 let brandSeeder = function(callback) {
-    let array = ['Apple', 'Asus', 'Dell', 'Intel', 'Nokia', 'Nvidia', 'Samsung', 'NVIDIA'];
+    let array = ['Apple', 'Asus', 'Dell', 'Intel', 'Nokia', 'Nvidia', 'Samsung', 'NVIDIA', 'Palit', 'SPARKLE', 'Cooler Master'];
 
     async.each(array, function(item, asyncCallback) {
         new Brand({

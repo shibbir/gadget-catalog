@@ -5,7 +5,7 @@ let express = require('express');
 let bodyParser = require('body-parser');
 let multer = require('multer');
 
-module.exports = () => {
+module.exports = function() {
     let app = express();
 
     app.locals.title = config.app.title;

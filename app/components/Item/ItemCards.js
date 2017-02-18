@@ -2,32 +2,31 @@ import React from 'react';
 import { Link } from 'react-router';
 import { FormattedDate, FormattedNumber } from 'react-intl';
 
+require('./item-cards.css');
+
 export default class ItemCards extends React.Component {
     componentWillMount() {
         this.props.fetchItems();
     }
 
     render() {
-        const style = {
-            width: '20rem'
-        };
-
-        const cardImgTopStyle = {
-            width: '15rem'
-        };
-
         const { items: { data, pagination } = items, location } = this.props;
 
         let cards = data.map(function(item) {
+            let defaultFile = item.files.filter(x => x.default)[0];
+
             return (
-                <div class="card" style={style} key={item._id}>
-                    <img class="card-img-top" src={'/uploads/' + item.file} alt={item.name} style={cardImgTopStyle}/>
+                <div class="card" key={item._id}>
+                    <h6 class="card-header">{item.name}</h6>
+                    <img class="card-img-top rounded mx-auto d-block" src={defaultFile && defaultFile.url || item.defaultImage} alt={item.name}/>
                     <div class="card-block">
-                        <h5 class="card-title">{item.name}</h5>
-                        <p>Category: {item.category.name}</p>
-                        <p>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></p>
-                        <p>Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></p>
-                        <Link to={`items/${item._id}`} class="btn btn-primary">Details</Link>
+                        <div>Category: {item.category.name}</div>
+                        <div>Brand: {item.brand.name}</div>
+                        <div>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></div>
+                        <div>Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></div>
+                    </div>
+                    <div class="card-footer">
+                        <Link to={`items/${item._id}`} class="btn btn-outline-info btn-sm">Details</Link>
                     </div>
                 </div>
             );

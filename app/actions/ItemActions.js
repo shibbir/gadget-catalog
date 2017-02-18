@@ -78,3 +78,35 @@ export function resetItemState() {
         type: ItemConstants.RESET_ITEM_STATE
     };
 }
+
+export function markAsDefaultImage(itemId, fileId) {
+    let config = {
+        method: 'put',
+        headers: new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+        })
+    };
+
+    return {
+        type: ItemConstants.DELETE_ITEM_IMAGE,
+        payload: fetch(`/api/items/${itemId}/images/${fileId}`, config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
+}
+
+export function deleteImage(itemId, fileId) {
+    let config = {
+        method: 'delete',
+        headers: new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+        })
+    };
+
+    return {
+        type: ItemConstants.DELETE_ITEM_IMAGE,
+        payload: fetch(`/api/items/${itemId}/images/${fileId}`, config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
+}

@@ -1,6 +1,8 @@
 let path = require('path');
 let mongoose = require('./mongoose');
 let config = require('../config');
+let cloudinary = require('./cloudinary')();
+
 let passport = require('passport');
 
 module.exports.initMongo = callback => {
@@ -20,7 +22,7 @@ module.exports.start = () => {
         require(path.join(process.cwd(), 'server/routes/user/'))(app, passport);
         require(path.join(process.cwd(), 'server/routes/category/'))(app, passport);
         require(path.join(process.cwd(), 'server/routes/brand/'))(app, passport);
-        require(path.join(process.cwd(), 'server/routes/item/'))(app, passport);
+        require(path.join(process.cwd(), 'server/routes/item/'))(app, passport, cloudinary);
 
         require('../seeder').run();
 

@@ -1,6 +1,9 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
+let config = require('../config/config');
+let FileSchema = require('./sub-documents/file');
+
 let ItemSchema = Schema({
     name: {
         type: String,
@@ -12,10 +15,13 @@ let ItemSchema = Schema({
         type: Schema.Types.ObjectId,
         required: true
     },
-    brandId: Schema.Types.ObjectId,
+    brandId: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
     purchaseDate: Date,
     price: Number,
-    file: String,
+    files: [ FileSchema ],
     date: {
         type: Date,
         default: Date.now
@@ -32,6 +38,10 @@ ItemSchema.virtual('brand', {
     ref: 'Brand',
     localField: 'brandId',
     foreignField: '_id'
+});
+
+ItemSchema.virtual('defaultImage').get(function () {
+    return config.defaultImageUrl;
 });
 
 module.exports = mongoose.model('Item', ItemSchema);

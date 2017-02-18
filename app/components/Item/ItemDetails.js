@@ -8,11 +8,13 @@ export default class ItemDetails extends React.Component {
     }
 
     render() {
-        const { item, loading } = this.props.activeItem;
+        const { item } = this.props.activeItem;
 
-        if(loading || !item) {
+        if(!item) {
             return <h2>Loading...</h2>;
         }
+
+        let defaultFile = item.files.filter(x => x.default)[0];
 
         return (
             <div>
@@ -22,8 +24,16 @@ export default class ItemDetails extends React.Component {
                 </p>
                 <hr/>
                 <figure class="figure">
-                    <img src={'/uploads/' + item.file} class="figure-img img-fluid rounded" alt="{item.name}"/>
+                    <img src={defaultFile && defaultFile.url || item.defaultImage} class="figure-img img-fluid rounded" alt="{item.name}"/>
                 </figure>
+                <div class="d-flex flex-row">
+                    {item.files.map((file) =>
+                        <div class="p-2" key={file._id}>
+                            <img class="img-thumbnail rounded mx-auto d-block" src={file.url} style={{ width: '15rem', height: '15rem' }}/>
+                        </div>
+                    )}
+                </div>
+
                 <p>Brand: <Link to={`/brands/${item.brand._id}`}>{item.brand.name}</Link></p>
                 <p>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></p>
                 <p>Purchase Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></p>
@@ -31,7 +41,7 @@ export default class ItemDetails extends React.Component {
                     <dt>Description</dt>
                     <dd>{item.description}</dd>
                 </dl>
-                <Link to={`/items/${item._id}/edit`}>Edit</Link>
+                <Link to={`/items/${item._id}/edit`}>Edit</Link> | <Link to={`/items/${item._id}/images`}>Manage images</Link>
             </div>
         );
     }

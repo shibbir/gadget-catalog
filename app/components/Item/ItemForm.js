@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-let moment = require('moment');
 
 import { FileInput, TextInput, DropdownField, TextareaField } from '../FieldInputs';
 

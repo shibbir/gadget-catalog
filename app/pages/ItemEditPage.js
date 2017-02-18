@@ -2,14 +2,14 @@ import React from 'react';
 
 import ItemFormContainer from '../containers/ItemFormContainer';
 
-export default class AddItemPage extends React.Component {
+export default class ItemEditPage extends React.Component {
     render() {
         return (
             <div>
-                <h3>Add a new item</h3>
+                <h3>Edit item</h3>
                 <hr/>
 
-                <ItemFormContainer form="Create"/>
+                <ItemFormContainer id={this.props.params.id} form="Update"/>
             </div>
         );
     }
