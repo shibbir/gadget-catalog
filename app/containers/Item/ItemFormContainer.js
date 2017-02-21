@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 
-import { getBrands } from '../actions/BrandActions';
-import { getCategories } from '../actions/CategoryActions';
-import { createItem, updateItem, fetchItem, resetItemState } from '../actions/ItemActions';
-import ItemConstants from '../constants/ItemConstants';
-import ItemForm from '../components/Item/ItemForm';
+import { getBrands } from '../../actions/BrandActions';
+import { getCategories } from '../../actions/CategoryActions';
+import { createItem, updateItem, fetchItem, resetItemState } from '../../actions/ItemActions';
+import ItemConstants from '../../constants/ItemConstants';
+import ItemForm from '../../components/Item/ItemForm';
 
 const mapStateToProps = (state, ownProps) => {
     return {

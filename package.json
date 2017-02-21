@@ -26,6 +26,8 @@
     "cloudinary": "^1.7.0",
     "cross-env": "^3.1.4",
     "css-loader": "^0.26.1",
+    "draft-js": "^0.10.0",
+    "draft-js-export-html": "^0.5.2",
     "express": "^4.14.0",
     "express-hbs": "^1.0.4",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -51,6 +53,7 @@
     "redux-thunk": "^2.2.0",
     "style-loader": "^0.13.1",
     "tether": "^1.4.0",
+    "validator": "^6.2.1",
     "webpack": "^1.14.0",
     "webpack-merge": "^2.5.0"
   },

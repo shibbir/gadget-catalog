@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ItemImageContainer from '../containers/ItemImageContainer';
+import ItemImageContainer from '../containers/Item/ItemImageContainer';
 
 export default class ItemImagePage extends React.Component {
     render() {

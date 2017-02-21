@@ -1,5 +1,6 @@
 let fs = require('fs');
 let async = require('async');
+let validator = require('validator');
 
 let Item = require('../models/item');
 let File = require('../models/sub-documents/file');
@@ -47,6 +48,7 @@ module.exports = function(app, passport, cloudinary) {
                     return res.sendStatus(500);
                 }
 
+                doc.description = validator.unescape(doc.description);
                 doc.category = doc.category[0];
                 doc.brand = doc.brand[0];
 
@@ -57,7 +59,7 @@ module.exports = function(app, passport, cloudinary) {
     app.post('/api/items', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         let item = new Item({
             name: req.body.name,
-            description: req.body.description,
+            description: validator.escape(req.body.description),
             categoryId: req.body.categoryId,
             brandId: req.body.brandId,
             purchaseDate: req.body.purchaseDate,
@@ -108,7 +110,7 @@ module.exports = function(app, passport, cloudinary) {
             }
 
             doc.name = req.body.name;
-            doc.description = req.body.description;
+            doc.description = validator.escape(req.body.description);
             doc.categoryId = req.body.categoryId;
             doc.brandId = req.body.brandId;
             doc.purchaseDate = req.body.purchaseDate;
@@ -121,24 +123,23 @@ module.exports = function(app, passport, cloudinary) {
                     }
 
                     cloudinary.uploader.upload(req.file.path, function(result) {
-                        callback(null, result);
+                        const { public_id, resource_type, type, format } = result;
+
+                        doc.files.push({
+                            public_id,
+                            resource_type,
+                            type,
+                            format,
+                            default: true
+                        });
+
+                        callback(null);
                     }, { folder: 'gadgets' });
                 }
-            ], function (err, result) {
+            ], function (err) {
                 if(err) {
                     return res.sendStatus(500);
                 }
-
-                const { public_id, resource_type, type, format } = result;
-
-                doc.files.push({
-                    public_id,
-                    resource_type,
-                    type,
-                    format,
-                    default: true
-                });
-
                 doc.save();
                 res.json(doc);
             });
@@ -147,7 +148,7 @@ module.exports = function(app, passport, cloudinary) {
 
     app.put('/api/items/:itemId/images/:fileId', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         Item.findOneAndUpdate({ _id: req.params.itemId, 'files._id': req.params.fileId }, {
-            '$set': {
+            $set: {
                 'files.$.default': true
             }
         }, function(err, doc) {
@@ -164,7 +165,7 @@ module.exports = function(app, passport, cloudinary) {
                 return res.sendStatus(500);
             }
 
-            var file = doc.files.id(req.params.fileId).remove();
+            let file = doc.files.id(req.params.fileId).remove();
 
             if(!file) {
                 return callback(null);

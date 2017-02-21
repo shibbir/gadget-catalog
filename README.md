@@ -1,5 +1,5 @@
-## Digital Catalog
-> An archive to cataloging stuff
+## Gadgets-Catalog
+> An application for cataloging gadgets
 
 [![Build Status](https://travis-ci.org/shibbir/digital-catalog.svg?branch=master)](https://travis-ci.org/shibbir/digital-catalog)
 [![Dependency Status](https://david-dm.org/shibbir/digital-catalog.svg)](https://david-dm.org/shibbir/digital-catalog)
@@ -8,6 +8,7 @@
 Built with:
 
 - [React](https://facebook.github.io/react/)
+- [Draft.js](https://facebook.github.io/draft-js/)
 - [Redux](http://redux.js.org/)
 - [Express](http://expressjs.com/)
 - [Bootstrap](http://getbootstrap.com/)
@@ -21,6 +22,7 @@ You need to have latest version of [Node.js](https://nodejs.org/en/) installed o
 
 ```bash
 $ cd /path/to/source
+$ npm install
 $ npm start
 ```
 

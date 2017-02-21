@@ -1,4 +1,5 @@
 import React from 'react';
+import DraftEditor from './DraftEditor';
 
 export const FileInput = ({ input: { name, onChange }, id, label, meta: { touched, error } }) => {
     let formGroupClass = touched && error ? 'form-group has-danger' : 'form-group';
@@ -59,6 +60,15 @@ export const TextareaField = ({ input, id, label, meta: { touched, error } }) =>
             <div class="form-control-feedback">
                 {touched && (error && <span>{error}</span>)}
             </div>
+        </div>
+    );
+};
+
+export const RichEditorInput = ({ input, id, label }) => {
+    return (
+        <div class="form-group">
+            <label for={id}>{label}</label>
+            <DraftEditor {...input} onBlur={() => input.onBlur()}/>
         </div>
     );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { FileInput, TextInput, DropdownField, TextareaField } from '../FieldInputs';
+import { FileInput, TextInput, DropdownField, RichEditorInput } from '../FieldInput/FieldInputs';
 
 const required = value => value ? undefined : 'This field must not be empty';
 const number = value => value && isNaN(Number(value)) ? 'Please enter a decimal number' : undefined;
@@ -57,7 +57,7 @@ class ItemForm extends React.Component {
         return (
             <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
                 <Field name="name" id="name" label="Name" type="text" component={TextInput} validate={[ required ]}/>
-                <Field name="description" id="description" label="Description" component={TextareaField}/>
+                <Field name="description" id="description" label="Description" component={RichEditorInput}/>
                 <Field name="categoryId" id="category" label="Category" defaultOption="Select category" options={categoryOptions} component={DropdownField} validate={[ required ]}/>
                 <Field name="brandId" id="brand" label="Brand" defaultOption="Select brand" options={brandOptions} component={DropdownField} validate={[ required ]}/>
                 <Field name="purchaseDate" id="purchaseDate" label="Purchase date" type="date" component={TextInput} validate={[ required ]}/>

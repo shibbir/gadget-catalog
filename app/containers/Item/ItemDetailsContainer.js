@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { fetchItem } from '../actions/ItemActions';
-import ItemDetails from '../components/Item/ItemDetails';
+import { fetchItem } from '../../actions/ItemActions';
+import ItemDetails from '../../components/Item/ItemDetails';
 
 const mapStateToProps = (state, ownProps) => {
     return {

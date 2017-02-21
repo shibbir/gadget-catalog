@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ItemFormContainer from '../containers/ItemFormContainer';
+import ItemFormContainer from '../containers/Item/ItemFormContainer';
 
 export default class ItemAddPage extends React.Component {
     render() {

@@ -37,10 +37,10 @@ export default class ItemDetails extends React.Component {
                 <p>Brand: <Link to={`/brands/${item.brand._id}`}>{item.brand.name}</Link></p>
                 <p>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></p>
                 <p>Purchase Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></p>
-                <dl>
-                    <dt>Description</dt>
-                    <dd>{item.description}</dd>
-                </dl>
+                <div>
+                    <p>Description</p>
+                    <div dangerouslySetInnerHTML={{ __html: item.description }}></div>
+                </div>
                 <Link to={`/items/${item._id}/edit`}>Edit</Link> | <Link to={`/items/${item._id}/images`}>Manage images</Link>
             </div>
         );
