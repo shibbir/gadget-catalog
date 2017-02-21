@@ -1,8 +1,7 @@
 {
-  "name": "digital-catalog",
+  "name": "gadget-catalog",
   "version": "0.1.0",
-  "description": "An archive to cataloging your digital stuff",
-  "repository": "https://github.com/shibbir/digital-catalog",
+  "description": "A react application for cataloging gadgets",
   "author": "Shibbir Ahmed",
   "license": "MIT",
   "scripts": {

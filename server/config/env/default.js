@@ -1,7 +1,7 @@
 module.exports = {
     app: {
-        title: 'Digital Catalog',
-        description: 'An archive to cataloging your digital stuff'
+        title: 'Gadget Catalog',
+        description: 'A react application for cataloging gadgets'
     },
     port: process.env.PORT || 4040,
     db: {

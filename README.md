@@ -1,8 +1,8 @@
-## Gadgets-Catalog
-> An application for cataloging gadgets
+## Gadget-Catalog
+> A React application for cataloging gadgets
 
-[![Build Status](https://travis-ci.org/shibbir/digital-catalog.svg?branch=master)](https://travis-ci.org/shibbir/digital-catalog)
-[![Dependency Status](https://david-dm.org/shibbir/digital-catalog.svg)](https://david-dm.org/shibbir/digital-catalog)
+[![Build Status](https://travis-ci.org/shibbir/gadget-catalog.svg?branch=master)](https://travis-ci.org/shibbir/gadget-catalog)
+[![Dependency Status](https://david-dm.org/shibbir/gadget-catalog.svg)](https://david-dm.org/shibbir/gadget-catalog)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 Built with:
