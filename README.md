@@ -13,6 +13,7 @@ Built with:
 - [Express](http://expressjs.com/)
 - [Bootstrap](http://getbootstrap.com/)
 - [MongoDB](https://www.mongodb.com/)
+- [Cloudinary](http://cloudinary.com/documentation/solution_overview)
 - [Passport](http://passportjs.org/)
 - [Webpack](https://webpack.github.io/)
 

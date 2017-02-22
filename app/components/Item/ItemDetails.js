@@ -14,7 +14,11 @@ export default class ItemDetails extends React.Component {
             return <h2>Loading...</h2>;
         }
 
-        let defaultFile = item.files.filter(x => x.default)[0];
+        let activeImage = item.files[0];
+        let activeImageUrl = activeImage ? activeImage.url : '';
+
+        activeImage = item.files.filter(x => x.active)[0];
+        activeImageUrl = activeImage ? activeImage.url : '';
 
         return (
             <div>
@@ -22,17 +26,34 @@ export default class ItemDetails extends React.Component {
                 <p class="lead">
                     Category: <Link to={`/categories/${item.category._id}`}>{item.category.name}</Link>
                 </p>
+
                 <hr/>
-                <figure class="figure">
-                    <img src={defaultFile && defaultFile.url || item.defaultImage} class="figure-img img-fluid rounded" alt="{item.name}"/>
-                </figure>
-                <div class="d-flex flex-row">
-                    {item.files.map((file) =>
-                        <div class="p-2" key={file._id}>
-                            <img class="img-thumbnail rounded mx-auto d-block" src={file.url} style={{ width: '15rem', height: '15rem' }}/>
+
+                {item.files.length > 0 &&
+                    <div>
+                        <figure class="figure">
+                            <img src={activeImageUrl} class="figure-img img-fluid rounded" alt={item.name}/>
+                        </figure>
+                        <div class="d-flex flex-row">
+                            {item.files.map((file) =>
+                                <div class="p-2" key={file._id}>
+                                    <img class="img-thumbnail rounded mx-auto d-block"
+                                        src={file.url}
+                                        onClick={() => activeImageUrl = file.url}
+                                        style={{ width: 'auto', height: '10rem', cursor: 'pointer' }}
+                                    />
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
+                    </div>
+                }
+
+                {item.files.length === 0 &&
+                    <div class="alert alert-info" role="alert">
+                        <h4 class="alert-heading">Warning!</h4>
+                        <strong>No images are found for this item.</strong>
+                    </div>
+                }
 
                 <p>Brand: <Link to={`/brands/${item.brand._id}`}>{item.brand.name}</Link></p>
                 <p>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></p>
@@ -41,7 +62,7 @@ export default class ItemDetails extends React.Component {
                     <p>Description</p>
                     <div dangerouslySetInnerHTML={{ __html: item.description }}></div>
                 </div>
-                <Link to={`/items/${item._id}/edit`}>Edit</Link> | <Link to={`/items/${item._id}/images`}>Manage images</Link>
+                <Link to={`/items/${item._id}/edit`}>Edit</Link> {item.files.length > 0 && <span> | <Link to={`/items/${item._id}/images`}>Manage images</Link></span>}
             </div>
         );
     }

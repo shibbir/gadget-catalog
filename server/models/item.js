@@ -40,8 +40,8 @@ ItemSchema.virtual('brand', {
     foreignField: '_id'
 });
 
-ItemSchema.virtual('defaultImage').get(function () {
-    return config.defaultImageUrl;
+ItemSchema.virtual('noImageUrl').get(function () {
+    return config.noImageUrl;
 });
 
 module.exports = mongoose.model('Item', ItemSchema);

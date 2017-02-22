@@ -80,7 +80,7 @@ module.exports = function(app, passport, cloudinary) {
                         resource_type,
                         type,
                         format,
-                        default: true
+                        active: true
                     }];
 
                     fs.unlinkSync(req.file.path);
@@ -130,7 +130,7 @@ module.exports = function(app, passport, cloudinary) {
                             resource_type,
                             type,
                             format,
-                            default: true
+                            active: true
                         });
 
                         callback(null);
@@ -149,7 +149,7 @@ module.exports = function(app, passport, cloudinary) {
     app.put('/api/items/:itemId/images/:fileId', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         Item.findOneAndUpdate({ _id: req.params.itemId, 'files._id': req.params.fileId }, {
             $set: {
-                'files.$.default': true
+                'files.$.active': true
             }
         }, function(err, doc) {
             if(err) {

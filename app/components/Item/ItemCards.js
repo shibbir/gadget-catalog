@@ -13,12 +13,14 @@ export default class ItemCards extends React.Component {
         const { items: { data, pagination } = items, location } = this.props;
 
         let cards = data.map(function(item) {
-            let defaultFile = item.files.filter(x => x.default)[0];
+            let activeImage = item.files.filter(x => x.active)[0];
+            activeImage = activeImage ? activeImage : item.files[0];
+            activeImage = activeImage ? activeImage.url : item.noImageUrl;
 
             return (
                 <div class="card" key={item._id}>
                     <h6 class="card-header">{item.name}</h6>
-                    <img class="card-img-top rounded mx-auto d-block" src={defaultFile && defaultFile.url || item.defaultImage} alt={item.name}/>
+                    <img class="card-img-top rounded mx-auto d-block" src={activeImage} alt={item.name}/>
                     <div class="card-block">
                         <div>Category: {item.category.name}</div>
                         <div>Brand: {item.brand.name}</div>

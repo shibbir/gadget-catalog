@@ -7,5 +7,5 @@ module.exports = {
     db: {
         promise: global.Promise
     },
-    defaultImageUrl: 'https://res.cloudinary.com/shibbir/image/upload/v1487437653/miscellaneous/no-img.png'
+    noImageUrl: 'https://res.cloudinary.com/shibbir/image/upload/v1487437653/miscellaneous/no-img.png'
 };
