@@ -86,7 +86,7 @@ module.exports = function(app, passport, cloudinary) {
                     fs.unlinkSync(req.file.path);
 
                     callback(null);
-                }, { folder: 'gadgets' });
+                }, { folder: 'gadgets', invalidate: true });
             }
         ], function (err) {
             if(err) {
@@ -116,10 +116,15 @@ module.exports = function(app, passport, cloudinary) {
             doc.purchaseDate = req.body.purchaseDate;
             doc.price = req.body.price;
 
+            doc.files = doc.files.map(function(x) {
+                x.active = false;
+                return x;
+            });
+
             async.waterfall([
                 function(callback) {
                     if(!req.file) {
-                        return callback(null);
+                        return callback();
                     }
 
                     cloudinary.uploader.upload(req.file.path, function(result) {
@@ -133,13 +138,10 @@ module.exports = function(app, passport, cloudinary) {
                             active: true
                         });
 
-                        callback(null);
+                        callback();
                     }, { folder: 'gadgets' });
                 }
-            ], function (err) {
-                if(err) {
-                    return res.sendStatus(500);
-                }
+            ], function () {
                 doc.save();
                 res.json(doc);
             });
@@ -147,15 +149,39 @@ module.exports = function(app, passport, cloudinary) {
     });
 
     app.put('/api/items/:itemId/images/:fileId', passport.authenticate('http-bearer', { session: false }), function(req, res) {
-        Item.findOneAndUpdate({ _id: req.params.itemId, 'files._id': req.params.fileId }, {
-            $set: {
-                'files.$.active': true
+        async.waterfall([
+            function(callback) {
+                Item.findOne({ _id: req.params.itemId }, 'files', function(err, doc) {
+                    if(err) {
+                        return callback(err);
+                    }
+
+                    doc.files = doc.files.map(function(x) {
+                        x.active = false;
+                        return x;
+                    });
+
+                    doc.save(function() {
+                        callback();
+                    });
+                });
+            }, function(callback) {
+                Item.findOneAndUpdate({ _id: req.params.itemId, 'files._id': req.params.fileId }, {
+                    $set: {
+                        'files.$.active': true
+                    }
+                }, { new: true }, function(err, doc) {
+                    if(err) {
+                        return callback(err);
+                    }
+                    callback(null, doc);
+                });
             }
-        }, function(err, doc) {
+        ], function(err, result) {
             if(err) {
                 return res.sendStatus(500);
             }
-            res.json(doc);
+            res.json(result);
         });
     });
 
@@ -165,16 +191,13 @@ module.exports = function(app, passport, cloudinary) {
                 return res.sendStatus(500);
             }
 
-            let file = doc.files.id(req.params.fileId).remove();
-
-            if(!file) {
-                return callback(null);
-            }
+            let file = doc.files.id(req.params.fileId);
+            doc.files.id(req.params.fileId).remove();
 
             async.waterfall([
                 function(callback) {
                     cloudinary.uploader.destroy(file.public_id, function() {
-                        callback(null);
+                        callback();
                     }, { invalidate: true });
                 }
             ], function (err) {

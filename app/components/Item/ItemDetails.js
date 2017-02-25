@@ -3,22 +3,40 @@ import { Link } from 'react-router';
 import { FormattedDate, FormattedNumber } from 'react-intl';
 
 export default class ItemDetails extends React.Component {
+    constructor() {
+        super();
+        this.state = { item: null, activeImageUrl: ''};
+    }
+
     componentWillMount() {
         this.props.fetchItem(this.props.itemId);
     }
 
+    componentWillReceiveProps(nextProps) {
+        const { item } = nextProps.activeItem;
+
+        if(item) {
+            this.setState({ item });
+
+            if(item.files && item.files.length) {
+                let activeImageUrl = item.files[0].url;
+
+                let files = item.files.filter(x => x.active);
+                if(files && files.length) {
+                    activeImageUrl = files[0].url;
+                }
+
+                this.setState({ activeImageUrl });
+            }
+        }
+    }
+
     render() {
-        const { item } = this.props.activeItem;
+        let { item, activeImageUrl } = this.state;
 
         if(!item) {
             return <h2>Loading...</h2>;
         }
-
-        let activeImage = item.files[0];
-        let activeImageUrl = activeImage ? activeImage.url : '';
-
-        activeImage = item.files.filter(x => x.active)[0];
-        activeImageUrl = activeImage ? activeImage.url : '';
 
         return (
             <div>
@@ -39,7 +57,7 @@ export default class ItemDetails extends React.Component {
                                 <div class="p-2" key={file._id}>
                                     <img class="img-thumbnail rounded mx-auto d-block"
                                         src={file.url}
-                                        onClick={() => activeImageUrl = file.url}
+                                        onClick={() => this.setState({ activeImageUrl: file.url })}
                                         style={{ width: 'auto', height: '10rem', cursor: 'pointer' }}
                                     />
                                 </div>

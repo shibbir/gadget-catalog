@@ -18,6 +18,10 @@ let FileSchema = Schema({
     format: {
         type: String,
         required: true
+    },
+    active: {
+        type: Boolean,
+        default: true
     }
 }, { toJSON: { virtuals: true } });
 

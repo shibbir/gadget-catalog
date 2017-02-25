@@ -22,6 +22,10 @@ export default function reducer(state=initialState, action) {
         case ItemConstants.RESET_ITEM_STATE: {
             return { ...state, activeItem: { item: null }};
         }
+        case ItemConstants.UPDATE_ITEM_IMAGE_FULFILLED:
+        case ItemConstants.DELETE_ITEM_IMAGE_FULFILLED: {
+            return { ...state, activeItem: { item: { ...state.activeItem.item, files: action.payload.files }}};
+        }
     }
     return state;
 }

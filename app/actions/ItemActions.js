@@ -79,7 +79,7 @@ export function resetItemState() {
     };
 }
 
-export function markAsDefaultImage(itemId, fileId) {
+export function setAsActiveImage(itemId, fileId) {
     let config = {
         method: 'put',
         headers: new Headers({
@@ -88,7 +88,7 @@ export function markAsDefaultImage(itemId, fileId) {
     };
 
     return {
-        type: ItemConstants.DELETE_ITEM_IMAGE,
+        type: ItemConstants.UPDATE_ITEM_IMAGE,
         payload: fetch(`/api/items/${itemId}/images/${fileId}`, config)
             .then(handleErrors)
             .then(response => response.json())
