@@ -44,40 +44,36 @@ export default class DraftEditor extends React.Component {
     }
 
     _toggleBlockType(blockType) {
-        this.onChange(
-            RichUtils.toggleBlockType(
-                this.state.editorState,
-                blockType
-            )
-        );
+        this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
     }
 
     _toggleInlineStyle(inlineStyle) {
-        this.onChange(
-            RichUtils.toggleInlineStyle(
-                this.state.editorState,
-                inlineStyle
-            )
-        );
+        this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle));
     }
 
-    _updateEditorState({ value } = props) {
-        let contentState = this.state.editorState.getCurrentContent();
+    _updateEditorState(value) {
+        let editorState = EditorState.createEmpty();
 
-        if (value.trim() !== '' && !contentState.hasText()) {
+        if (value && value.trim() !== '') {
             const blocksFromHTML = convertFromHTML(value);
-            contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+            const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
 
-            this.setState({ editorState: EditorState.createWithContent(contentState) });
+            editorState = EditorState.createWithContent(contentState);
         }
+        this.setState({ editorState });
     }
 
     componentDidMount() {
-        this._updateEditorState(this.props);
+        this._updateEditorState(this.props.value);
     }
 
     componentWillReceiveProps(nextProps) {
-        this._updateEditorState(nextProps);
+        !nextProps.value && this._updateEditorState(nextProps.value);
+
+        if(!this.receivedData && nextProps.value) {
+            this.receivedData = true;
+            this._updateEditorState(nextProps.value);
+        }
     }
 
     render() {

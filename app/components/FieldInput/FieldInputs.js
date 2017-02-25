@@ -68,7 +68,7 @@ export const RichEditorInput = ({ input, id, label }) => {
     return (
         <div class="form-group">
             <label for={id}>{label}</label>
-            <DraftEditor {...input} onBlur={() => input.onBlur()}/>
+            <DraftEditor {...input}/>
         </div>
     );
 };
