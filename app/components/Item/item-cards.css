@@ -1,22 +1,22 @@
-.card {
+#product-cards .card {
     min-width: 20rem;
     max-width: 20rem;
     margin-left: 0;
     margin-bottom: 10px;
 }
 
-.card-header {
+#product-cards .card-header {
     padding-left: 10px;
     padding-right: 10px;
 }
 
-.card-img-top {
+#product-cards .card-img-top {
     width: 15rem;
     margin: 5px;
 }
 
 @media (min-width: 576px) {
-    .card-deck .card:not(:first-child) {
+    #product-cards .card-deck .card:not(:first-child) {
         margin-left: 0;
     }
 }

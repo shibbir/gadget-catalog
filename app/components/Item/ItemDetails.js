@@ -3,13 +3,11 @@ import { Link } from 'react-router';
 import { FormattedDate, FormattedNumber } from 'react-intl';
 
 export default class ItemDetails extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = { item: null, activeImageUrl: ''};
-    }
 
-    componentWillMount() {
-        this.props.fetchItem(this.props.itemId);
+        props.fetchItem(props.itemId);
     }
 
     componentWillReceiveProps(nextProps) {

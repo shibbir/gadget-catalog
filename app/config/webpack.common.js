@@ -1,6 +1,6 @@
-let webpack = require('webpack');
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
-let helpers = require('./helpers');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const helpers = require('./helpers');
 
 module.exports = {
     entry: {
@@ -27,6 +27,14 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+            },
+            {
+                test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+                loader: 'file-loader?name=fonts/[name].[ext]'
+            },
+            {
+                test: /\.(jpe?g|gif|png)$/,
+                loader: 'file-loader?emitFile=false&name=[path][name].[ext]'
             }
         ]
     },

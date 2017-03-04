@@ -55,7 +55,7 @@ export default class ItemCards extends React.Component {
         });
 
         return (
-            <div>
+            <div id="product-cards">
                 <div class="card-deck">
                     {cards}
                 </div>

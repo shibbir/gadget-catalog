@@ -1,8 +1,8 @@
-let gulp = require('gulp');
-let _ = require('lodash');
-let path = require('path');
-let plugins = require('gulp-load-plugins')({ lazy: true });
-let assets = require(path.join(process.cwd(), 'server/config/assets'));
+const gulp = require('gulp');
+const _ = require('lodash');
+const path = require('path');
+const plugins = require('gulp-load-plugins')({ lazy: true });
+const assets = require(path.join(process.cwd(), 'server/config/assets'));
 
 gulp.task('nodemon', () => {
     return plugins.nodemon({

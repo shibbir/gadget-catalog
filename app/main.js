@@ -9,7 +9,7 @@ import App from './pages/App';
 import Welcome from './pages/Welcome';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
+import DashboardPage from './pages/DashboardPage';
 import ItemListPage from './pages/ItemListPage';
 import ItemAddPage from './pages/ItemAddPage';
 import ItemEditPage from './pages/ItemEditPage';
@@ -31,7 +31,7 @@ ReactDOM.render(
                     </Route>
 
                     <Route component={EnsureLoggedInContainer}>
-                        <Route path="dashboard" component={Dashboard}/>
+                        <Route path="dashboard" component={DashboardPage}/>
                         <Route path="items" component={ItemListPage}/>
                         <Route path="items/add" component={ItemAddPage}/>
                         <Route path="items/:id" component={ItemDetailsPage}/>
