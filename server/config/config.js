@@ -1,6 +1,6 @@
-let _ = require('lodash');
-let path = require('path');
-let glob = require('glob');
+const _ = require('lodash');
+const path = require('path');
+const glob = require('glob');
 
 let getGlobbedPaths = function (globPatterns, excludes) {
     let urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');

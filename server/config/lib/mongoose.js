@@ -1,7 +1,7 @@
-let config = require('../config');
-let chalk = require('chalk');
-let path = require('path');
-let mongoose = require('mongoose');
+const config = require('../config');
+const chalk = require('chalk');
+const path = require('path');
+const mongoose = require('mongoose');
 
 module.exports.connect = function(callback) {
     let _this = this;

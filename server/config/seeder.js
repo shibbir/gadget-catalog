@@ -1,7 +1,7 @@
-let _ = require('lodash');
-let async = require('async');
-let Category = require('../models/category');
-let Brand = require('../models/brand');
+const _ = require('lodash');
+const async = require('async');
+const Category = require('../models/category');
+const Brand = require('../models/brand');
 
 let categorySeeder = function(callback) {
     let array = ['Motherboard', 'Processor', 'Mobile', 'Miscellaneous', 'GPU'];
@@ -13,7 +13,7 @@ let categorySeeder = function(callback) {
             asyncCallback();
         });
     }, function() {
-        callback(null, "Category seeder completed.");
+        callback(null, "Category seeder completed!");
     });
 };
 
@@ -27,7 +27,7 @@ let brandSeeder = function(callback) {
             asyncCallback();
         });
     }, function() {
-        callback(null, "Brand seeder completed.");
+        callback(null, "Brand seeder completed!");
     });
 };
 

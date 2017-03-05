@@ -1,9 +1,9 @@
-let fs = require('fs');
-let async = require('async');
-let validator = require('validator');
+const fs = require('fs');
+const async = require('async');
+const validator = require('validator');
 
-let Item = require('../models/item');
-let File = require('../models/sub-documents/file');
+const Item = require('../models/item');
+const File = require('../models/sub-documents/file');
 
 module.exports = function(app, passport, cloudinary) {
     app.get('/api/items', passport.authenticate('http-bearer', { session: false }), function(req, res) {

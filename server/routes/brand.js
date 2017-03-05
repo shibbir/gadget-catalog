@@ -1,4 +1,4 @@
-let Brand = require('../models/brand');
+const Brand = require('../models/brand');
 
 module.exports = function(app, passport) {
     app.get('/api/brands', passport.authenticate('http-bearer', { session: false }), function(req, res) {

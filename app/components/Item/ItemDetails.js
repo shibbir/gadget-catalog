@@ -4,7 +4,7 @@ import { FormattedDate, FormattedNumber } from 'react-intl';
 
 export default class ItemDetails extends React.Component {
     constructor(props) {
-        super(props);
+        super();
         this.state = { item: null, activeImageUrl: ''};
 
         props.fetchItem(props.itemId);

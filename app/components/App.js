@@ -4,8 +4,9 @@ import Footer from '../components/Footer/Footer';
 import NavbarContainer from '../containers/NavbarContainer';
 
 export default class App extends React.Component {
-    componentWillMount() {
-        this.props.loadMeFromToken();
+    constructor(props) {
+        super();
+        props.loadMeFromToken();
     }
 
     render() {

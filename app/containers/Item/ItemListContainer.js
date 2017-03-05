@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { fetchItems } from '../../actions/ItemActions';
-import ItemCards from '../../components/Item/ItemCards';
+import ItemList from '../../components/Item/ItemList';
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -18,4 +18,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ItemCards);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemList);

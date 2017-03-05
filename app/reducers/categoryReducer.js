@@ -12,9 +12,6 @@ export default function reducer(state=initialState, action) {
                 categories: action.payload
             };
         }
-        case CategoryConstants.FETCH_CATEGORIES_REJECTED: {
-            return state;
-        }
     }
     return state;
 }

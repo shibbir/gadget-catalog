@@ -1,5 +1,5 @@
-let config = require('../config');
-let cloudinary = require('cloudinary');
+const config = require('../config');
+const cloudinary = require('cloudinary');
 
 module.exports = function() {
     cloudinary.config(config.cloudinary);

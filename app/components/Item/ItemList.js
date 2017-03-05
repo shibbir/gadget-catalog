@@ -4,9 +4,10 @@ import { FormattedDate, FormattedNumber } from 'react-intl';
 
 require('./item-cards.css');
 
-export default class ItemCards extends React.Component {
-    componentWillMount() {
-        this.props.fetchItems();
+export default class ItemList extends React.Component {
+    constructor(props) {
+        super();
+        props.fetchItems();
     }
 
     render() {
@@ -55,7 +56,7 @@ export default class ItemCards extends React.Component {
         });
 
         return (
-            <div id="product-cards">
+            <div id="cards-container">
                 <div class="card-deck">
                     {cards}
                 </div>

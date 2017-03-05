@@ -19,6 +19,7 @@ export default class Navbar extends React.Component {
                                 <Link to="dashboard" activeClassName="active" class="nav-item nav-link">Dashboard</Link>
                                 <Link to="items" activeClassName="active" class="nav-item nav-link">Item list</Link>
                                 <Link to="items/add" activeClassName="active" class="nav-item nav-link">Add item</Link>
+                                <Link to="categories" activeClassName="active" class="nav-item nav-link">Categories</Link>
                             </div>
                         }
                         { !isLoggedIn &&

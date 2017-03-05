@@ -1,8 +1,8 @@
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-let config = require('../config/config');
-let FileSchema = require('./sub-documents/file');
+const config = require('../config/config');
+const FileSchema = require('./sub-documents/file');
 
 let ItemSchema = Schema({
     name: {
@@ -40,7 +40,7 @@ ItemSchema.virtual('brand', {
     foreignField: '_id'
 });
 
-ItemSchema.virtual('noImageUrl').get(function () {
+ItemSchema.virtual('noImageUrl').get(function() {
     return config.noImageUrl;
 });
 

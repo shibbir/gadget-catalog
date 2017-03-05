@@ -1,9 +1,9 @@
-let path = require('path');
-let mongoose = require('./mongoose');
-let config = require('../config');
-let cloudinary = require('./cloudinary')();
+const path = require('path');
+const mongoose = require('./mongoose');
+const config = require('../config');
+const cloudinary = require('./cloudinary')();
 
-let passport = require('passport');
+const passport = require('passport');
 
 module.exports.initMongo = callback => {
     mongoose.connect(function (db) {

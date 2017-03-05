@@ -1,9 +1,9 @@
-let config = require('../config');
-let path = require('path');
-let hbs = require('express-hbs');
-let express = require('express');
-let bodyParser = require('body-parser');
-let multer = require('multer');
+const config = require('../config');
+const path = require('path');
+const hbs = require('express-hbs');
+const express = require('express');
+const bodyParser = require('body-parser');
+const multer = require('multer');
 
 module.exports = function() {
     let app = express();

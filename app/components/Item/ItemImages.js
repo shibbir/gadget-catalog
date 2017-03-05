@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from 'react-router';
 
 export default class ItemImages extends React.Component {
-    componentWillMount() {
-        this.props.fetchItem(this.props.itemId);
+    constructor(props) {
+        super();
+        props.fetchItem(props.itemId);
     }
 
     render() {

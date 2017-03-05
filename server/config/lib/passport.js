@@ -1,8 +1,8 @@
-let User = require('../../models/user');
-let jwt = require('jsonwebtoken');
-let config = require('../config');
-let LocalStrategy = require('passport-local').Strategy;
-let BearerStrategy = require('passport-http-bearer').Strategy;
+const User = require('../../models/user');
+const jwt = require('jsonwebtoken');
+const config = require('../config');
+const LocalStrategy = require('passport-local').Strategy;
+const BearerStrategy = require('passport-http-bearer').Strategy;
 
 module.exports = function(passport) {
     passport.serializeUser(function(user, done) {

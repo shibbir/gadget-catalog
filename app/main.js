@@ -15,6 +15,7 @@ import ItemAddPage from './pages/ItemAddPage';
 import ItemEditPage from './pages/ItemEditPage';
 import ItemDetailsPage from './pages/ItemDetailsPage';
 import ItemImagePage from './pages/ItemImagePage';
+import CategoriesPage from './pages/CategoriesPage';
 import EnsureLoggedInContainer from './containers/EnsureLoggedInContainer';
 import EnsureLoggedOutContainer from './containers/EnsureLoggedOutContainer';
 
@@ -37,6 +38,7 @@ ReactDOM.render(
                         <Route path="items/:id" component={ItemDetailsPage}/>
                         <Route path="items/:id/edit" component={ItemEditPage}/>
                         <Route path="items/:id/images" component={ItemImagePage}/>
+                        <Route path="categories" component={CategoriesPage}/>
                     </Route>
                 </Route>
             </Router>

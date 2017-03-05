@@ -1,6 +1,7 @@
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
-let config = require('../../config/config');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const config = require('../../config/config');
 
 let FileSchema = Schema({
     public_id: {

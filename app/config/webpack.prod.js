@@ -1,8 +1,8 @@
-let webpack = require('webpack');
-let webpackMerge = require('webpack-merge');
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
-let commonConfig = require('./webpack.common.js');
-let helpers = require('./helpers');
+const webpack = require('webpack');
+const webpackMerge = require('webpack-merge');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const commonConfig = require('./webpack.common.js');
+const helpers = require('./helpers');
 
 module.exports = webpackMerge(commonConfig, {
     devtool: 'source-map',

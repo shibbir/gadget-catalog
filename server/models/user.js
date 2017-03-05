@@ -1,6 +1,6 @@
-let mongoose = require('mongoose');
-let bcrypt = require('bcrypt-nodejs');
-let Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
+const Schema = mongoose.Schema;
 
 let UserSchema = Schema({
     local: {
