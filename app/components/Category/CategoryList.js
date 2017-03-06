@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-require('../Item/item-cards.css');
-
 export default class CategoryList extends React.Component {
     constructor(props) {
         super();
@@ -21,7 +19,14 @@ export default class CategoryList extends React.Component {
                     <h6 class="card-header">{category.name}</h6>
                     <img class="card-img-top rounded mx-auto d-block" src={activeImage} alt={category.name}/>
                     <div class="card-footer">
-                        <Link to={`categories/${category._id}/items`} class="btn btn-outline-info btn-sm">{`See all ${category.items.length} items`}</Link>
+                        { category.items.length <= 0 &&
+                            <small class="card-text">Nothing found for this category!</small>
+                        }
+                        { category.items.length > 0 &&
+                            <Link to={`items?filter_by=category&filter_id=${category._id}`} class="btn btn-outline-info btn-sm">
+                                {`See all ${category.items.length} items`}
+                            </Link>
+                        }
                     </div>
                 </div>
             );

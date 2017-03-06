@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import App from '../components/App';
+import App from '../components/App/App';
 import { meFromToken } from '../actions/AuthActions';
 
 const mapDispatchToProps = (dispatch) => {

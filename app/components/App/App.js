@@ -1,7 +1,9 @@
 import React from 'react';
 
-import Footer from '../components/Footer/Footer';
-import NavbarContainer from '../containers/NavbarContainer';
+import Footer from '../../components/Footer/Footer';
+import NavbarContainer from '../../containers/NavbarContainer';
+
+require('./app.css');
 
 export default class App extends React.Component {
     constructor(props) {

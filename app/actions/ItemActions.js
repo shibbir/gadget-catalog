@@ -57,7 +57,7 @@ export function fetchItem(id) {
     };
 }
 
-export function fetchItems() {
+export function fetchItems(query = '') {
     let config = {
         method: 'get',
         headers: new Headers({
@@ -67,7 +67,7 @@ export function fetchItems() {
 
     return {
         type: ItemConstants.GET_ITEMS,
-        payload: fetch('/api/items', config)
+        payload: fetch(`/api/items${query}`, config)
             .then(handleErrors)
             .then(response => response.json())
     };

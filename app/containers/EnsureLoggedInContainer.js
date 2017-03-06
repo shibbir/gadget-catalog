@@ -9,9 +9,9 @@ const mapStateToProps = (state) => {
 }
 
 class EnsureLoggedInContainer extends React.Component {
-    constructor() {
+    constructor(props) {
         super();
-        this.returnTo = '';
+        this.returnTo = props.location.pathname + props.location.search;
     }
 
     redirectTo() {
@@ -19,8 +19,6 @@ class EnsureLoggedInContainer extends React.Component {
     }
 
     componentWillMount() {
-        this.returnTo = this.props.location.pathname;
-
         if (!this.props.isLoggedIn) {
             this.redirectTo();
         }

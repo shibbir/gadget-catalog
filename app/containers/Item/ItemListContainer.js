@@ -12,8 +12,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchItems: () => {
-            dispatch(fetchItems());
+        fetchItems: (query) => {
+            dispatch(fetchItems(query));
         }
     };
 }

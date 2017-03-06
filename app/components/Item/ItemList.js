@@ -2,12 +2,16 @@ import React from 'react';
 import { Link } from 'react-router';
 import { FormattedDate, FormattedNumber } from 'react-intl';
 
-require('./item-cards.css');
-
 export default class ItemList extends React.Component {
     constructor(props) {
         super();
-        props.fetchItems();
+        props.fetchItems(props.location.search);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(this.props.location.search !== nextProps.location.search) {
+            this.props.fetchItems(nextProps.location.search);
+        }
     }
 
     render() {
@@ -40,7 +44,7 @@ export default class ItemList extends React.Component {
         for(let idx = 1; idx <= pagination.pages; idx++) {
             paginationLinks.push({
                 idx,
-                link: `/items?page=${idx}`,
+                link: { pathname: location.pathname, query: { ...location.query, page: idx }},
                 isActive: !location.query.page && idx === 1 || +location.query.page === idx
             });
         }
@@ -49,7 +53,7 @@ export default class ItemList extends React.Component {
             let paginationLinkClass = page.isActive ? 'page-item active' : 'page-item';
 
             return (
-                <li class={paginationLinkClass} key={page.idx} >
+                <li class={paginationLinkClass} key={page.idx}>
                     <Link to={page.link} class="page-link">{page.idx}</Link>
                 </li>
             );
@@ -61,11 +65,13 @@ export default class ItemList extends React.Component {
                     {cards}
                 </div>
 
-                <nav>
-                    <ul class="pagination justify-content-center">
-                        {paginationLinks}
-                    </ul>
-                </nav>
+                { pagination.pages !== 1 &&
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            {paginationLinks}
+                        </ul>
+                    </nav>
+                }
             </div>
         );
     }

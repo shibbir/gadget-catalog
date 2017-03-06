@@ -7,16 +7,27 @@ const File = require('../models/sub-documents/file');
 
 module.exports = function(app, passport, cloudinary) {
     app.get('/api/items', passport.authenticate('http-bearer', { session: false }), function(req, res) {
-        let page = req.query.page ? +req.query.page : 1;
-        let size = req.query.size ? +req.query.size : 10;
-        let skip = page > 0 ? ((page - 1) * size) : 0;
+        const page = req.query.page ? +req.query.page : 1;
+        const size = req.query.size ? +req.query.size : 10;
+        const skip = page > 0 ? ((page - 1) * size) : 0;
 
-        Item.where({}).count(function(err, count) {
+        const filterBy = req.query.filter_by;
+        const filterId = req.query.filter_id;
+
+        let query = {};
+
+        if(filterBy && filterBy.toLowerCase() === 'category') {
+            query = { categoryId: filterId }
+        } else if(filterBy && filterBy.toLowerCase() === 'brand') {
+            query = { brandId: filterId }
+        }
+
+        Item.where(query).count(function(err, count) {
             if (err) {
                 return res.sendStatus(500);
             }
 
-            Item.find({}).skip(skip).limit(size).populate('category', 'name').populate('brand', 'name').exec(function(err, docs) {
+            Item.find(query).skip(skip).limit(size).populate('category', 'name').populate('brand', 'name').exec(function(err, docs) {
                 if(err) {
                     return res.sendStatus(500);
                 }
@@ -30,7 +41,7 @@ module.exports = function(app, passport, cloudinary) {
                 res.json({
                     pagination: {
                         page,
-                        pages: Math.floor(count / size)
+                        pages: Math.ceil(count / size)
                     },
                     data: docs
                 });
