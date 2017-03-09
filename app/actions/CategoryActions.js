@@ -17,9 +17,48 @@ export function getCategories() {
     };
 
     return {
-        type: CategoryConstants.FETCH_CATEGORIES,
+        type: CategoryConstants.GET_CATEGORIES,
         payload: fetch('/api/categories', config)
             .then(handleErrors)
             .then(response => response.json())
+    };
+}
+
+export function updateCategory(formData, id) {
+    let config = {
+        method: 'put',
+        body: formData,
+        headers: new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+        })
+    };
+
+    return {
+        type: CategoryConstants.PUT_CATEGORY,
+        payload: fetch(`api/categories/${id}`, config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
+}
+
+export function fetchCategory(id) {
+    let config = {
+        method: 'get',
+        headers: new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+        })
+    };
+
+    return {
+        type: CategoryConstants.GET_CATEGORY,
+        payload: fetch(`/api/categories/${id}`, config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
+}
+
+export function resetCategoryState() {
+    return {
+        type: CategoryConstants.RESET_CATEGORY_STATE
     };
 }

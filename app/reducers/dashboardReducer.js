@@ -6,7 +6,7 @@ const initialState = {
 
 export default function reducer(state=initialState, action) {
     switch (action.type) {
-        case CategoryConstants.FETCH_CATEGORIES_FULFILLED: {
+        case CategoryConstants.GET_CATEGORIES_FULFILLED: {
             let data = [];
 
             for(let idx = 0; idx < action.payload.length; idx++) {

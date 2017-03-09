@@ -10,7 +10,7 @@ let CategorySchema = Schema({
         unique: true,
         required: true
     },
-    image: FileSchema,
+    file: FileSchema,
     date: {
         type: Date,
         default: Date.now

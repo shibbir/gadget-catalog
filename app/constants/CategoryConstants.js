@@ -1,7 +1,15 @@
 let keyMirror = require('fbjs/lib/keyMirror');
 
 export default keyMirror({
-    FETCH_CATEGORIES: null,
-    FETCH_CATEGORIES_FULFILLED: null,
-    FETCH_CATEGORIES_REJECTED: null
+    GET_CATEGORIES: null,
+    GET_CATEGORIES_FULFILLED: null,
+    GET_CATEGORIES_REJECTED: null,
+    PUT_CATEGORY: null,
+    PUT_CATEGORY_FULFILLED: null,
+    PUT_CATEGORY_REJECTED: null,
+    GET_CATEGORY: null,
+    GET_CATEGORY_PENDING: null,
+    GET_CATEGORY_FULFILLED: null,
+    GET_CATEGORY_REJECTED: null,
+    RESET_CATEGORY_STATE: null
 });
