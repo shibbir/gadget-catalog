@@ -8,14 +8,16 @@ const required = value => value ? undefined : 'This field must not be empty';
 const number = value => value && isNaN(Number(value)) ? 'Please enter a decimal number' : undefined;
 
 class ItemForm extends React.Component {
-    componentWillMount() {
-        this.props.getBrands();
-        this.props.getCategories();
+    constructor(props) {
+        super();
 
-        if(this.props.itemId) {
-            this.props.fetchItem(this.props.itemId);
+        props.getBrands();
+        props.getCategories();
+
+        if(props.itemId) {
+            props.fetchItem(props.itemId);
         } else {
-            this.props.resetItemState();
+            props.resetItemState();
         }
     }
 

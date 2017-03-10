@@ -16,10 +16,10 @@ module.exports = function(app, passport, cloudinary) {
 
         let query = {};
 
-        if(filterBy && filterBy.toLowerCase() === 'category') {
-            query = { categoryId: filterId }
-        } else if(filterBy && filterBy.toLowerCase() === 'brand') {
-            query = { brandId: filterId }
+        if(filterId && filterBy && filterBy.toLowerCase() === 'category') {
+            query = { categoryId: filterId };
+        } else if(filterId && filterBy && filterBy.toLowerCase() === 'brand') {
+            query = { brandId: filterId };
         }
 
         Item.where(query).count(function(err, count) {

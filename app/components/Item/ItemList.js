@@ -1,11 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, hashHistory } from 'react-router';
 import { FormattedDate, FormattedNumber } from 'react-intl';
 
 export default class ItemList extends React.Component {
     constructor(props) {
         super();
+
+        props.getBrands();
+        props.getCategories();
         props.fetchItems(props.location.search);
+
+        this.filterBy = this.filterBy.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -14,8 +19,36 @@ export default class ItemList extends React.Component {
         }
     }
 
+    filterBy(event) {
+        let newLocation = {
+            pathname: 'items'
+        };
+
+        if(event.target.value) {
+            newLocation.query = { ...this.props.location.query, filter_by: event.target.id, filter_id: event.target.value };
+        }
+
+        hashHistory.push(newLocation);
+    }
+
     render() {
-        const { items: { data, pagination } = items, location } = this.props;
+        const { items: { data, pagination } = items, location, brands, categories } = this.props;
+
+        let categoryOptions = categories.map(function(option) {
+            return (
+                <option key={option._id} value={option._id}>
+                    {option.name}
+                </option>
+            );
+        });
+
+        let brandOptions = brands.map(function(option) {
+            return (
+                <option key={option._id} value={option._id}>
+                    {option.name}
+                </option>
+            );
+        });
 
         let cards = data.map(function(item) {
             let activeImage = item.files.filter(x => x.active)[0];
@@ -60,18 +93,34 @@ export default class ItemList extends React.Component {
         });
 
         return (
-            <div id="cards-container">
-                <div class="card-deck">
-                    {cards}
-                </div>
+            <div>
+                <form class="form-inline">
+                    <label class="mr-sm-2" for="category">Filter By Category:</label>
+                    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="category" onChange={this.filterBy} value={location.query.filter_id}>
+                        <option value="">None</option>
+                        {categoryOptions}
+                    </select>
 
-                { pagination.pages !== 1 &&
-                    <nav>
-                        <ul class="pagination justify-content-center">
-                            {paginationLinks}
-                        </ul>
-                    </nav>
-                }
+                    <label class="mr-sm-2" for="brand">Filter By Brand:</label>
+                    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="brand" onChange={this.filterBy} value={location.query.filter_id}>
+                        <option value="">None</option>
+                        {brandOptions}
+                    </select>
+                </form>
+                <hr/>
+                <div id="cards-container">
+                    <div class="card-deck">
+                        {cards}
+                    </div>
+
+                    { pagination.pages !== 1 &&
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                {paginationLinks}
+                            </ul>
+                        </nav>
+                    }
+                </div>
             </div>
         );
     }
