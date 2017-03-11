@@ -16,14 +16,14 @@ export const FileInput = ({ input: { name, onChange }, id, label, meta: { touche
     );
 };
 
-export const TextInput = ({ input, label, id, type, meta: { touched, error } }) => {
+export const TextInput = ({ input, label, id, type, placeholder, meta: { touched, error } }) => {
     let formGroupClass = touched && error ? 'form-group has-danger' : 'form-group';
     let formControlClass = touched && error ? 'form-control form-control-danger' : 'form-control';
 
     return (
         <div class={formGroupClass}>
             <label for={id}>{label}</label>
-            <input class={formControlClass} {...input} id={id} type={type}/>
+            <input class={formControlClass} {...input} id={id} type={type} placeholder={placeholder}/>
             <div class="form-control-feedback">
                 {touched && (error && <span>{error}</span>)}
             </div>

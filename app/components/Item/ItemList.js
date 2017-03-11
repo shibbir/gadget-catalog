@@ -108,19 +108,27 @@ export default class ItemList extends React.Component {
                     </select>
                 </form>
                 <hr/>
-                <div id="cards-container">
-                    <div class="card-deck">
-                        {cards}
-                    </div>
+                { cards.length > 0 &&
+                    <div id="cards-container">
+                        <div class="card-deck">
+                            {cards}
+                        </div>
 
-                    { pagination.pages !== 1 &&
-                        <nav>
-                            <ul class="pagination justify-content-center">
-                                {paginationLinks}
-                            </ul>
-                        </nav>
-                    }
-                </div>
+                        { pagination.pages !== 1 &&
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    {paginationLinks}
+                                </ul>
+                            </nav>
+                        }
+                    </div>
+                }
+                { cards.length === 0 &&
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">Nothing found!</h4>
+                        To add an item please <Link to="items/add" class="alert-link">click here</Link>.
+                    </div>
+                }
             </div>
         );
     }

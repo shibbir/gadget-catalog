@@ -1,49 +1,36 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { Field, reduxForm } from 'redux-form';
 
 import store from '../store';
 import { login } from '../actions/AuthActions';
+import { TextInput } from '../components/FieldInput/FieldInputs';
 
-export default class Login extends React.Component {
-    constructor() {
-        super();
-        this.state = { email: '', password: '' };
+const required = value => value ? undefined : 'This field must not be empty';
 
-        this.handleEmailChange = this.handleEmailChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleLogin = this.handleLogin.bind(this);
-    }
-
-    handleEmailChange(event) {
-        this.setState({ email: event.target.value });
-    }
-
-    handlePasswordChange(event) {
-        this.setState({ password: event.target.value });
-    }
-
-    handleLogin(event) {
-        event.preventDefault();
-
+class Login extends React.Component {
+    handleSubmit(formValues) {
         store.dispatch(login({
-            email: this.state.email,
-            password: this.state.password
+            email: formValues.email,
+            password: formValues.password
         }));
     }
 
     render() {
+        const { handleSubmit, pristine, submitting } = this.props;
+
         return (
-            <form onSubmit={this.handleLogin}>
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" class="form-control" id="email" placeholder="Email address" value={this.state.email} onChange={this.handleEmailChange}/>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}/>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button> | <Link to="register">Sign up for a new account</Link>
+            <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
+                <Field name="email" id="email" label="Email" type="email" placeholder="Email address" component={TextInput} validate={[ required ]}/>
+                <Field name="password" id="password" label="Email" type="password" placeholder="Password" component={TextInput} validate={[ required ]}/>
+                <button type="submit" class="btn btn-primary" disabled={submitting || pristine}>Login</button> | <Link to="register">Sign up for a new account</Link>
             </form>
         );
     }
 }
+
+Login = reduxForm({
+    form: 'Login'
+})(Login);
+
+export default Login;

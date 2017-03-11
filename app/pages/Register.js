@@ -1,58 +1,37 @@
 import React from 'react';
+import { Field, reduxForm } from 'redux-form';
 
 import store from '../store';
 import { register } from '../actions/AuthActions';
+import { TextInput } from '../components/FieldInput/FieldInputs';
 
-export default class Register extends React.Component {
-    constructor() {
-        super();
-        this.state = { name: '', email: '', password: '' };
+const required = value => value ? undefined : 'This field must not be empty';
 
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleEmailChange = this.handleEmailChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleRegistration = this.handleRegistration.bind(this);
-    }
-
-    handleNameChange(event) {
-        this.setState({ name: event.target.value });
-    }
-
-    handleEmailChange(event) {
-        this.setState({ email: event.target.value });
-    }
-
-    handlePasswordChange(event) {
-        this.setState({ password: event.target.value });
-    }
-
-    handleRegistration(event) {
-        event.preventDefault();
-
+class Register extends React.Component {
+    handleSubmit(formValues) {
         store.dispatch(register({
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password
+            name: formValues.name,
+            email: formValues.email,
+            password: formValues.password
         }));
     }
 
     render() {
+        const { handleSubmit, pristine, submitting } = this.props;
+
         return (
-            <form onSubmit={this.handleRegistration}>
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Name" value={this.state.name} onChange={this.handleNameChange}/>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" class="form-control" id="email" placeholder="Email address" value={this.state.email} onChange={this.handleEmailChange}/>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}/>
-                </div>
-                <button type="submit" class="btn btn-primary">Register</button>
+            <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
+                <Field name="name" id="name" label="Name" type="text" placeholder="Name" component={TextInput} validate={[ required ]}/>
+                <Field name="email" id="email" label="Email" type="email" placeholder="Email address" component={TextInput} validate={[ required ]}/>
+                <Field name="password" id="password" label="Email" type="password" placeholder="Password" component={TextInput} validate={[ required ]}/>
+                <button type="submit" class="btn btn-primary" disabled={submitting || pristine}>Register</button>
             </form>
         );
     }
 }
+
+Register = reduxForm({
+    form: 'Register'
+})(Register);
+
+export default Register;
