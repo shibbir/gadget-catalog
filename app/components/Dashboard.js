@@ -6,13 +6,13 @@ import ColumnChart from './Chart/ColumnChart';
 export default class Dashboard extends React.Component {
     render() {
         return (
-            <div>
+            <div id="dashboard">
                 <div class="card">
                     <div class="card-header">
                         Category Chart
                     </div>
                     <div class="card-block">
-                        <PieChart data={this.props.categoryPieChartData} getCategories={this.props.getCategories}/>
+                        <PieChart data={this.props.categories} getCategories={this.props.getCategories}/>
                     </div>
                 </div>
                 <div class="card">
@@ -20,7 +20,7 @@ export default class Dashboard extends React.Component {
                         Yearly report
                     </div>
                     <div class="card-block">
-                        <ColumnChart data={this.props.categoryColumnChartData} getCategories={this.props.getCategories}/>
+                        <ColumnChart data={this.props.itemCountsPerYear} fetchItemCountsByYearRange={this.props.fetchItemCountsByYearRange}/>
                     </div>
                 </div>
             </div>

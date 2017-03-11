@@ -3,34 +3,51 @@ import Highcharts from 'highcharts';
 
 export default class ColumnChart extends React.Component {
     constructor(props) {
-        super(props);
+        super();
+        const yearRange = `${new Date().getFullYear() - 5}-${new Date().getFullYear()}`;
+        this.state = { yearRange };
+
+        props.fetchItemCountsByYearRange(yearRange);
     }
 
-    componentWillReceiveProps(nextProps) {
+    fetchItemCountsByYearRange(event) {
+        this.setState({ yearRange: event.target.value });
+        this.props.fetchItemCountsByYearRange(event.target.value);
+    }
+
+    componentWillReceiveProps({ data } = nextProps) {
+        let years = [];
+        let itemsPerYear = [];
+
+        for(let key in data) {
+            if (data.hasOwnProperty(key)) {
+                years.push(key);
+                itemsPerYear.push(data[key]);
+            }
+        }
+
         Highcharts.chart('columnChart', {
             chart: {
                 type: 'column'
             },
             title: {
-                text: 'Total items bought in 2016'
+                text: `Yearly report (${this.state.yearRange})`
             },
             xAxis: {
-                categories: [
-                    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-                ],
+                categories: years,
                 crosshair: true
             },
             yAxis: {
                 min: 0,
                 title: {
                     text: 'Number of items'
-                }
+                },
+                allowDecimals: false
             },
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                    '<td style="padding:0"><b>{point.y}</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -43,7 +60,7 @@ export default class ColumnChart extends React.Component {
             },
             series: [{
                 name: 'Total items',
-                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+                data: itemsPerYear
 
             }],
             credits: {
@@ -56,6 +73,15 @@ export default class ColumnChart extends React.Component {
     }
 
     render() {
-        return <div id="columnChart"></div>;
+        return (
+            <div>
+                <select onChange={this.fetchItemCountsByYearRange.bind(this)}>
+                    <option value="2012-2017">2012-2017</option>
+                    <option value="2006-2011">2006-2011</option>
+                    <option value="2000-2005">2000-2005</option>
+                </select>
+                <div id="columnChart"></div>
+            </div>
+        );
     }
 }

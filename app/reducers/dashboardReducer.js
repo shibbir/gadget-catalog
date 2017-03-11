@@ -1,23 +1,23 @@
+import ItemConstants from '../constants/ItemConstants';
 import CategoryConstants from '../constants/CategoryConstants';
 
 const initialState = {
-    categoryPieChartData: []
+    categories: [],
+    itemCountsPerYear: []
 }
 
 export default function reducer(state=initialState, action) {
     switch (action.type) {
         case CategoryConstants.GET_CATEGORIES_FULFILLED: {
-            let data = [];
-
-            for(let idx = 0; idx < action.payload.length; idx++) {
-                data.push({
-                    name: action.payload[idx].name,
-                    y: action.payload[idx].items.length
-                });
-            }
             return {
                 ...state,
-                categoryPieChartData: data
+                categories: action.payload
+            };
+        }
+        case ItemConstants.GET_ITEM_COUNTS_BY_YEAR_FULFILLED: {
+            return {
+                ...state,
+                itemCountsPerYear: action.payload
             };
         }
     }

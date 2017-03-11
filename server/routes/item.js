@@ -221,4 +221,31 @@ module.exports = function(app, passport, cloudinary) {
             });
         });
     });
+
+    app.get('/api/items/yearRange/:yearRange', passport.authenticate('http-bearer', { session: false }), function(req, res) {
+        const yearRange = req.params.yearRange.split('-');
+        const startYear = yearRange[0];
+        const endYear = yearRange[1];
+
+        const query = { purchaseDate: { $lte: new Date(endYear, 11, 31), $gte: new Date(startYear, 0, 1) }};
+
+        Item.find(query, 'purchaseDate').exec(function(err, docs) {
+            if(err) {
+                return res.sendStatus(500);
+            }
+
+            let data = {};
+
+            for(let i = startYear; i <= endYear; i++) {
+                data[i] = 0;
+            }
+
+            docs.forEach(function(x) {
+                data[`${x.purchaseDate.getFullYear()}`] = data[`${x.purchaseDate.getFullYear()}`] || 0;
+                data[`${x.purchaseDate.getFullYear()}`]++;
+            });
+
+            res.json(data);
+        });
+    });
 };

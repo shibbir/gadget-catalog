@@ -3,11 +3,20 @@ import Highcharts from 'highcharts';
 
 export default class PieChart extends React.Component {
     constructor(props) {
-        super(props);
+        super();
         props.getCategories();
     }
 
     componentWillReceiveProps(nextProps) {
+        let data = [];
+
+        for(let idx = 0; idx < nextProps.data.length; idx++) {
+            data.push({
+                name: nextProps.data[idx].name,
+                y: nextProps.data[idx].items.length
+            });
+        }
+
         Highcharts.chart('pieChart', {
             chart: {
                 plotBackgroundColor: null,
@@ -34,7 +43,7 @@ export default class PieChart extends React.Component {
             series: [{
                 name: 'Categories',
                 colorByPoint: true,
-                data: nextProps.data
+                data: data
             }],
             credits: {
 	            enabled: false

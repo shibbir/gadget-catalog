@@ -96,7 +96,7 @@ export function setAsActiveImage(itemId, fileId) {
 }
 
 export function deleteImage(itemId, fileId) {
-    let config = {
+    const config = {
         method: 'delete',
         headers: new Headers({
             'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
@@ -106,6 +106,22 @@ export function deleteImage(itemId, fileId) {
     return {
         type: ItemConstants.DELETE_ITEM_IMAGE,
         payload: fetch(`/api/items/${itemId}/images/${fileId}`, config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
+}
+
+export function fetchItemCountsByYearRange(yearRange) {
+    const config = {
+        method: 'get',
+        headers: new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+        })
+    };
+
+    return {
+        type: ItemConstants.GET_ITEM_COUNTS_BY_YEAR,
+        payload: fetch(`/api/items/yearRange/${yearRange}`, config)
             .then(handleErrors)
             .then(response => response.json())
     };
