@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const helpers = require('./helpers');
+const path = require('path');
 
 module.exports = {
     entry: {
@@ -9,24 +10,30 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['', '.js']
+        extensions: ['.js'],
+        modules: [ path.resolve(__dirname, 'app'), 'node_modules' ]
     },
 
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js?$/,
-                exlcude: /(node_modules|bower_components)/,
-                loader: 'babel-loader',
-                query: {
-                    compact: false,
-                    presets: ['react', 'es2015', 'stage-0'],
-                    plugins: ['react-html-attrs', 'transform-class-properties']
-                }
+                use: [{
+                    loader: 'babel-loader',
+                    query: {
+                        compact: false,
+                        presets: ['react', 'es2015', 'stage-0'],
+                        plugins: ['react-html-attrs', 'transform-class-properties']
+                    }
+                }],
+                exclude: /(node_modules|bower_components)/
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader'
+                })
             },
             {
                 test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
