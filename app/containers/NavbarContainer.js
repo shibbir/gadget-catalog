@@ -3,13 +3,6 @@ import { connect } from 'react-redux';
 import Navbar from '../components/Navbar';
 import { logout } from '../actions/AuthActions';
 
-const mapStateToProps = (state) => {
-    return {
-        isLoggedIn: state.authReducer.isLoggedIn,
-        user: state.authReducer.user
-    }
-}
-
 const mapDispatchToProps = (dispatch) => {
     return {
         logout: () => {
@@ -18,4 +11,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default connect(null, mapDispatchToProps)(Navbar);

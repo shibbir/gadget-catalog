@@ -3,6 +3,12 @@ import { connect } from 'react-redux';
 import App from '../components/App/App';
 import { meFromToken } from '../actions/AuthActions';
 
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.authReducer.isLoggedIn
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         loadMeFromToken: () => {
@@ -16,4 +22,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

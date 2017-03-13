@@ -1,6 +1,7 @@
 import React from 'react';
+import { Container } from 'semantic-ui-react';
 
-import Footer from '../../components/Footer/Footer';
+import Footer from '../../components/Footer';
 import NavbarContainer from '../../containers/NavbarContainer';
 
 require('./app.css');
@@ -12,17 +13,14 @@ export default class App extends React.Component {
     }
 
     render() {
-        const style = {
-            marginTop: '10px',
-            marginBottom: '10px'
-        };
-
         return (
             <div>
-                <NavbarContainer/>
-                <div class="container" style={style}>
+                { this.props.isLoggedIn &&
+                    <NavbarContainer/>
+                }
+                <Container>
                     {this.props.children}
-                </div>
+                </Container>
                 <Footer/>
             </div>
         );

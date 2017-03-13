@@ -1,5 +1,6 @@
 import React from 'react';
 import Highcharts from 'highcharts';
+import { Select } from 'semantic-ui-react';
 
 export default class ColumnChart extends React.Component {
     constructor(props) {
@@ -10,9 +11,9 @@ export default class ColumnChart extends React.Component {
         props.fetchItemCountsByYearRange(yearRange);
     }
 
-    fetchItemCountsByYearRange(event) {
-        this.setState({ yearRange: event.target.value });
-        this.props.fetchItemCountsByYearRange(event.target.value);
+    fetchItemCountsByYearRange(event, data) {
+        this.setState({ yearRange: data.value });
+        this.props.fetchItemCountsByYearRange(data.value);
     }
 
     componentWillReceiveProps({ data } = nextProps) {
@@ -73,13 +74,14 @@ export default class ColumnChart extends React.Component {
     }
 
     render() {
+        const options = [
+            { key: '2012-2017', value: '2012-2017', text: '2012-2017' },
+            { key: '2006-2011', value: '2006-2011', text: '2006-2011' },
+            { key: '2000-2005', value: '2000-2005', text: '2000-2005' }
+        ];
         return (
             <div>
-                <select onChange={this.fetchItemCountsByYearRange.bind(this)}>
-                    <option value="2012-2017">2012-2017</option>
-                    <option value="2006-2011">2006-2011</option>
-                    <option value="2000-2005">2000-2005</option>
-                </select>
+                <Select onChange={this.fetchItemCountsByYearRange.bind(this)} options={options} defaultValue={options[0].value}/>
                 <div id="columnChart"></div>
             </div>
         );

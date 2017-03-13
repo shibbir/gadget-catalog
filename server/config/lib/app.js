@@ -19,7 +19,7 @@ module.exports.start = () => {
 
     _this.initMongo(function(db) {
         require(path.join(process.cwd(), 'server/routes/index/'))(app);
-        require(path.join(process.cwd(), 'server/routes/user/'))(app, passport);
+        require(path.join(process.cwd(), 'server/routes/account/'))(app, passport);
         require(path.join(process.cwd(), 'server/routes/category/'))(app, passport, cloudinary);
         require(path.join(process.cwd(), 'server/routes/brand/'))(app, passport);
         require(path.join(process.cwd(), 'server/routes/item/'))(app, passport, cloudinary);

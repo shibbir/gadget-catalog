@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 const LocalStrategy = require('passport-local').Strategy;
 const BearerStrategy = require('passport-http-bearer').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 
 module.exports = function(passport) {
     passport.serializeUser(function(user, done) {
@@ -80,6 +81,64 @@ module.exports = function(passport) {
                     }
                     done(null, newUser);
                 });
+            });
+        });
+    }));
+
+    /*
+     =========================================================================
+     =============================== FACEBOOK ================================
+     =========================================================================
+     */
+
+    passport.use(new FacebookStrategy({
+        clientID: config.oauth.facebook.clientID,
+        clientSecret: config.oauth.facebook.clientSecret,
+        callbackURL: config.oauth.facebook.callbackURL,
+        profileFields: config.oauth.facebook.profileFields
+    }, function(token, refreshToken, profile, done) {
+        process.nextTick(function() {
+            User.findOne({ $or: [
+                { 'facebook.id' : profile.id },
+                { 'local.email': profile.emails[0].value }
+            ]}, function(err, user) {
+                if (err) {
+                    return done(err);
+                }
+
+                if (user) {
+                    if (!user.facebook.id) {
+                        user.facebook.id = profile.id;
+                        user.facebook.token = token;
+                        user.facebook.name = profile.displayName;
+                        user.facebook.email = profile.emails[0].value;
+
+                        user.save(function(err) {
+                            if (err) {
+                                return done(err);
+                            }
+                            done(null, user);
+                        });
+                    } else {
+                        done(null, user);
+                    }
+                } else {
+                    var newUser = new User();
+
+                    newUser.facebook.id = profile.id;
+                    newUser.facebook.token = token;
+                    newUser.facebook.name = profile.displayName;
+                    newUser.facebook.email = profile.emails[0].value;
+
+                    newUser.displayName = profile.displayName;
+
+                    newUser.save(function(err) {
+                        if (err) {
+                            throw err;
+                        }
+                        done(null, newUser);
+                    });
+                }
             });
         });
     }));

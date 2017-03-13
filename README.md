@@ -11,7 +11,7 @@ Built with:
 - [Draft.js](https://facebook.github.io/draft-js/)
 - [Redux](http://redux.js.org/)
 - [Express](http://expressjs.com/)
-- [Bootstrap](http://getbootstrap.com/)
+- [Semantic UI](https://semantic-ui.com/)
 - [MongoDB](https://www.mongodb.com/)
 - [Cloudinary](http://cloudinary.com/documentation/solution_overview)
 - [Passport](http://passportjs.org/)

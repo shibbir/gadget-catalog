@@ -48,4 +48,16 @@ module.exports = function(app, passport) {
     app.get('/api/profile', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         res.json(tokenResponse(req.user, 'local'));
     });
+
+    app.get('/auth/facebook', passport.authenticate('facebook', { authType: 'rerequest' }));
+
+    app.get('/auth/facebook/callback', function(req, res, next) {
+        passport.authenticate('facebook', function(err, user, info) {
+            if(err || !user) {
+                return res.redirect('http://localhost:4040/#/provider=facebook&error=' + info.message);
+            }
+
+            res.redirect('http://localhost:4040/#/provider=facebook&token=' + user.facebook.token);
+        })(req, res, next);
+    });
 };

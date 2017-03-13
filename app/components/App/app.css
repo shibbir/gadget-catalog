@@ -21,6 +21,11 @@
     }
 }
 
-#dashboard .card {
-    margin-bottom: 10px;
+.footer.segment {
+    padding: 3em 0;
+}
+
+.field-validation-error {
+    color: #d0021b;
+    font-weight: bold;
 }

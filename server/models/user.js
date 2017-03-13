@@ -12,6 +12,12 @@ let UserSchema = Schema({
         password: String,
         name: String
     },
+    facebook: {
+        id: String,
+        name: String,
+        email: String,
+        token: String
+    },
     displayName: {
         type: String,
         required: true
