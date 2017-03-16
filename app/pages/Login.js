@@ -5,7 +5,7 @@ import { Button, Form, Segment, Header, Icon, Divider } from 'semantic-ui-react'
 
 import store from '../store';
 import { login } from '../actions/AuthActions';
-import { TextInput } from '../components/FieldInput/SemanticFieldInputs';
+import { TextInput } from '../components/FieldInput/FieldInputs';
 
 const required = value => value ? undefined : 'This field must not be empty';
 
@@ -39,7 +39,7 @@ class Login extends React.Component {
                         <Form className="large" onSubmit={handleSubmit(this.handleSubmit.bind(this))} error={invalid}>
                             <Segment class="stacked">
                                 <Field name="email"
-                                    attributes={{ id: 'email', type: 'text', placeholder: 'E-mail address', icon: 'mail', iconPosition: 'left'}}
+                                    attributes={{ id: 'email', type: 'email', placeholder: 'E-mail address', icon: 'mail', iconPosition: 'left'}}
                                     component={TextInput}
                                     validate={[ required ]}/>
                                 <Field name="password"
@@ -52,7 +52,7 @@ class Login extends React.Component {
                         <Divider hidden/>
                         <Segment class="stacked center aligned">
                             <Link to="register">Sign up for a new account</Link>
-                            <Divider horizontal>or, use social login</Divider>
+                            <Divider horizontal>or, use social service</Divider>
                             <div>
                                 <Button color="facebook" href="/auth/facebook">
                                     <Icon name="facebook"/> Facebook

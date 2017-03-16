@@ -1,26 +1,3 @@
-#cards-container .card {
-    min-width: 20rem;
-    max-width: 20rem;
-    margin-left: 0;
-    margin-bottom: 10px;
-}
-
-#cards-container .card-header {
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-#cards-container .card-img-top {
-    width: 15rem;
-    margin: 5px;
-}
-
-@media (min-width: 576px) {
-    #cards-container .card-deck .card:not(:first-child) {
-        margin-left: 0;
-    }
-}
-
 .footer.segment {
     padding: 3em 0;
 }

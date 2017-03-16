@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import { Form, Divider, Button } from 'semantic-ui-react';
 
 import { FileInput, TextInput } from '../FieldInput/FieldInputs';
 
@@ -32,18 +33,19 @@ class CategoryForm extends React.Component {
     }
 
     render() {
-        const { handleSubmit, pristine, reset, submitting, submitButtonText } = this.props;
+        const { handleSubmit, reset, submitting, submitButtonText } = this.props;
 
         return (
-            <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-                <Field name="name" id="name" label="Name" type="text" component={TextInput} validate={[ required ]}/>
-                <Field name="file" id="file" label="Upload" component={FileInput}/>
-                <hr/>
-                <div class="clearfix">
-                    <button type="buton" class="btn btn-secondary float-right" disabled={submitting || pristine} onClick={reset}>Reset form</button>
-                    <button type="submit" class="btn btn-primary float-right mr-2" disabled={submitting || pristine}>{submitButtonText}</button>
-                </div>
-            </form>
+            <Form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
+                <Field name="name" label="Name" attributes={{ type: 'text'}} component={TextInput} validate={[ required ]}/>
+                <Field name="file" label="Upload" component={FileInput}/>
+                <Divider hidden/>
+                <Button.Group>
+                    <Button positive type="submit" disabled={submitting}>{submitButtonText}</Button>
+                    <Button.Or />
+                    <Button disabled={submitting} onClick={reset}>Reset form</Button>
+                </Button.Group>
+            </Form>
         );
     }
 }

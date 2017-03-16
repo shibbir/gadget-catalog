@@ -8,7 +8,7 @@ export default class Dashboard extends React.Component {
     render() {
         return (
             <div id="dashboard">
-                <div class="ui card fluid">
+                <div class="ui raised card fluid">
                     <div class="content">
                         <div class="header">Category Chart</div>
                     </div>
@@ -16,7 +16,7 @@ export default class Dashboard extends React.Component {
                         <PieChart data={this.props.categories} getCategories={this.props.getCategories}/>
                     </div>
                 </div>
-                <div class="ui card fluid">
+                <div class="ui raised card fluid">
                     <div class="content">
                         <div class="card-header">
                             Yearly report

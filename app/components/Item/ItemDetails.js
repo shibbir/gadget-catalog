@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedDate, FormattedNumber } from 'react-intl';
+import { Message, Icon } from 'semantic-ui-react';
 
 export default class ItemDetails extends React.Component {
     constructor(props) {
@@ -65,10 +66,13 @@ export default class ItemDetails extends React.Component {
                 }
 
                 {item.files.length === 0 &&
-                    <div class="alert alert-info" role="alert">
-                        <h4 class="alert-heading">Warning!</h4>
-                        <strong>No images are found for this item.</strong>
-                    </div>
+                    <Message warning>
+                        <Message.Header>
+                            <Icon name='warning sign' size='large'/>
+                            Warning!
+                        </Message.Header>
+                        <p>No images are found for this item.</p>
+                    </Message>
                 }
 
                 <p>Brand: <Link to={`/brands/${item.brand._id}`}>{item.brand.name}</Link></p>

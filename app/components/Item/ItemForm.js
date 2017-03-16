@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import { Form, Divider, Button } from 'semantic-ui-react';
 
-import { FileInput, TextInput, DropdownField, RichEditorInput } from '../FieldInput/FieldInputs';
+import { TextInput, RichEditorInput, DropdownField, FileInput } from '../FieldInput/FieldInputs';
 
 const required = value => value ? undefined : 'This field must not be empty';
 const number = value => value && isNaN(Number(value)) ? 'Please enter a decimal number' : undefined;
@@ -38,39 +39,32 @@ class ItemForm extends React.Component {
     }
 
     render() {
-        const { handleSubmit, pristine, reset, submitting, submitButtonText } = this.props;
+        const { handleSubmit, reset, submitting, submitButtonText } = this.props;
 
-        let categoryOptions = this.props.categories.map(function(option) {
-            return (
-                <option key={option._id} value={option._id}>
-                    {option.name}
-                </option>
-            );
+        const categoryOptions = this.props.categories.map(function(option) {
+            return { key: option._id, value: option._id, text: option.name };
         });
 
-        let brandOptions = this.props.brands.map(function(option) {
-            return (
-                <option key={option._id} value={option._id}>
-                    {option.name}
-                </option>
-            );
+        const brandOptions = this.props.brands.map(function(option) {
+            return { key: option._id, value: option._id, text: option.name };
         });
 
         return (
-            <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-                <Field name="name" id="name" label="Name" type="text" component={TextInput} validate={[ required ]}/>
-                <Field name="description" id="description" label="Description" component={RichEditorInput}/>
-                <Field name="categoryId" id="category" label="Category" defaultOption="Select category" options={categoryOptions} component={DropdownField} validate={[ required ]}/>
-                <Field name="brandId" id="brand" label="Brand" defaultOption="Select brand" options={brandOptions} component={DropdownField} validate={[ required ]}/>
-                <Field name="purchaseDate" id="purchaseDate" label="Purchase date" type="date" component={TextInput} validate={[ required ]}/>
-                <Field name="price" id="price" label="Price" type="number" component={TextInput}/>
-                <Field name="file" id="file" label="Upload" component={FileInput}/>
-                <hr/>
-                <div class="clearfix">
-                    <button type="buton" class="btn btn-secondary float-right" disabled={submitting || pristine} onClick={reset}>Reset form</button>
-                    <button type="submit" class="btn btn-primary float-right mr-2" disabled={submitting || pristine}>{submitButtonText}</button>
-                </div>
-            </form>
+            <Form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
+                <Field name="name" label="Name" attributes={{ type: 'text'}} component={TextInput} validate={[ required ]}/>
+                <Field name="description" label="Description" component={RichEditorInput}/>
+                <Field name="categoryId" label="Category" placeholder="Select category" options={categoryOptions} component={DropdownField} validate={[ required ]}/>
+                <Field name="brandId" label="Brand" placeholder="Select brand" options={brandOptions} component={DropdownField} validate={[ required ]}/>
+                <Field name="purchaseDate" label="Purchase date" attributes={{ type: 'date'}} component={TextInput} validate={[ required ]}/>
+                <Field name="price" label="Price" attributes={{ type: 'number'}} component={TextInput}/>
+                <Field name="file" label="Upload" component={FileInput}/>
+                <Divider hidden/>
+                <Button.Group>
+                    <Button positive type="submit">{submitButtonText}</Button>
+                    <Button.Or />
+                    <Button onClick={reset}>Reset</Button>
+                </Button.Group>
+            </Form>
         );
     }
 }

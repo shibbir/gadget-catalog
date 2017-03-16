@@ -1,74 +1,65 @@
 import React from 'react';
+import { Form, Input, Select } from 'semantic-ui-react';
+
 import DraftEditor from './DraftEditor';
 
-export const FileInput = ({ input: { name, onChange }, id, label, meta: { touched, error } }) => {
-    let formGroupClass = touched && error ? 'form-group has-danger' : 'form-group';
-    let formControlClass = touched && error ? 'form-control-file form-control-danger' : 'form-control-file';
-
+export const TextInput = ({ input, attributes, label, meta: { touched, error } }) => {
     return (
-        <div class={formGroupClass}>
-            <label for={id}>{label}</label>
-            <input type="file" name={name} class={formControlClass} id={id} accept="image/*" onChange={e => onChange(e.target.files[0])}/>
-            <div class="form-control-feedback">
-                {touched && (error && <span>{error}</span>)}
-            </div>
-        </div>
+        <Form.Field>
+            { label &&
+                <label>{label}</label>
+            }
+            <Input {...input} {...attributes} fluid/>
+            { touched && error &&
+                <div class="field-validation-error">
+                    {error}
+                </div>
+            }
+        </Form.Field>
     );
 };
 
-export const TextInput = ({ input, label, id, type, placeholder, meta: { touched, error } }) => {
-    let formGroupClass = touched && error ? 'form-group has-danger' : 'form-group';
-    let formControlClass = touched && error ? 'form-control form-control-danger' : 'form-control';
-
+export const RichEditorInput = ({ input, attributes, label }) => {
     return (
-        <div class={formGroupClass}>
-            <label for={id}>{label}</label>
-            <input class={formControlClass} {...input} id={id} type={type} placeholder={placeholder}/>
-            <div class="form-control-feedback">
-                {touched && (error && <span>{error}</span>)}
-            </div>
-        </div>
-    );
-};
-
-export const DropdownField = ({ input, id, label, options, defaultOption, meta: { touched, error } }) => {
-    let formGroupClass = touched && error ? 'form-group has-danger' : 'form-group';
-    let formControlClass = touched && error ? 'form-control form-control-danger' : 'form-control';
-
-    return (
-        <div class={formGroupClass}>
-            <label for={id}>{label}</label>
-            <select class={formControlClass} {...input} id={id}>
-                <option value="">{defaultOption}</option>
-                {options}
-            </select>
-            <div class="form-control-feedback">
-                {touched && (error && <span>{error}</span>)}
-            </div>
-        </div>
-    );
-};
-
-export const TextareaField = ({ input, id, label, meta: { touched, error } }) => {
-    let formGroupClass = touched && error ? 'form-group has-danger' : 'form-group';
-    let formControlClass = touched && error ? 'form-control form-control-danger' : 'form-control';
-
-    return (
-        <div class={formGroupClass}>
-            <label for={id}>{label}</label>
-            <textarea class={formControlClass} {...input} id={id} rows="10"></textarea>
-            <div class="form-control-feedback">
-                {touched && (error && <span>{error}</span>)}
-            </div>
-        </div>
-    );
-};
-
-export const RichEditorInput = ({ input, id, label }) => {
-    return (
-        <div class="form-group">
-            <label for={id}>{label}</label>
+        <Form.Field>
+            { label &&
+                <label>{label}</label>
+            }
             <DraftEditor {...input}/>
-        </div>
+        </Form.Field>
+    );
+};
+
+export const DropdownField = ({ input: { name, onChange }, label, options, placeholder, meta: { touched, error } }) => {
+    return (
+        <Form.Field>
+            { label &&
+                <label>{label}</label>
+            }
+
+            <Select name={name} options={options} placeholder={placeholder} onChange={(e, d) => onChange(e, d.value)}/>
+
+            { touched && error &&
+                <div class="field-validation-error">
+                    {error}
+                </div>
+            }
+        </Form.Field>
+    );
+};
+
+export const FileInput = ({ input: { name, onChange }, label, meta: { touched, error } }) => {
+    return (
+        <Form.Field>
+            { label &&
+                <label>{label}</label>
+            }
+            <Input type="file" name={name} accept="image/*" onChange={e => onChange(e.target.files[0])}/>
+            { touched && error &&
+                <div class="field-validation-error">
+                    {error}
+                </div>
+            }
+        </Form.Field>
     );
 };

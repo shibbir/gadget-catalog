@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { Card, Icon } from 'semantic-ui-react';
 
 export default class CategoryList extends React.Component {
     constructor(props) {
@@ -15,41 +16,32 @@ export default class CategoryList extends React.Component {
             activeImage = activeImage ? activeImage.url : category.noImageUrl;
 
             return (
-                <div class="card" key={category._id}>
-                    <div class="container card-header">
-                        <div class="row">
-                            <div class="col-6">
-                                <h6>{category.name}</h6>
-                            </div>
-                            <div class="offset-md-4 col-2">
-                                <Link to={`categories/${category._id}/edit`} class="card-link">
-                                    Edit
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+                <Card key={category._id} raised>
+                    <Card.Content>
+                        <Card.Header>{category.name}</Card.Header>
+                    </Card.Content>
 
-                    <img class="card-img-top rounded mx-auto d-block" src={activeImage} alt={category.name}/>
-                    <div class="card-block"></div>
-                    <div class="card-footer">
-                        { category.items.length <= 0 &&
-                            <small class="card-text">Nothing found for this category!</small>
-                        }
-                        { category.items.length > 0 &&
-                            <Link to={`items?filter_by=category&filter_id=${category._id}`} class="btn btn-outline-info btn-sm">
-                                {`See all ${category.items.length} items`}
+                    <img class="ui image" src={activeImage} alt={category.name}/>
+
+                    <Card.Content extra>
+                        <Link to={`items?filter_by=category&filter_id=${category._id}`}>
+                            {`See all ${category.items.length} items`}
+                        </Link>
+                        <div class="right floated">
+                            <Link to={`categories/${category._id}/edit`} class="ui compact positive button">
+                                <Icon name='edit'/> Edit
                             </Link>
-                        }
-                    </div>
-                </div>
+                        </div>
+                    </Card.Content>
+                </Card>
             );
         });
 
         return (
             <div id="cards-container">
-                <div class="card-deck">
+                <Card.Group>
                     {cards}
-                </div>
+                </Card.Group>
             </div>
         );
     }
