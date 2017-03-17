@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { Card, Image, Button, Label, Message, Icon, Segment } from 'semantic-ui-react';
 
 export default class ItemImages extends React.Component {
     constructor(props) {
@@ -17,30 +18,48 @@ export default class ItemImages extends React.Component {
         return (
             <div>
                 {item.files.length > 0 &&
-                    <div class="d-flex flex-row">
+                    <Card.Group>
                         {item.files.map((file) => {
-                            let activeButtonClass = file.active ? 'btn btn-outline-success btn-sm active' : 'btn btn-outline-success btn-sm';
-                            let activeButtonText = file.active ? 'Default selected' : 'Set default';
-
                             return (
-                                <div class="p-2" key={file._id}>
-                                    <img class="img-thumbnail rounded mx-auto d-block" src={file.url} style={{ width: '15rem', height: '15rem' }}/>
-                                    <div class="btn-group" role="group">
-                                        <a href="javascript:void(0)" class={activeButtonClass}
-                                            onClick={this.props.setAsActiveImage.bind(null, this.props.itemId, file._id)}>{activeButtonText}</a>
-                                        <a href="javascript:void(0)" class="btn btn-outline-danger btn-sm"
-                                            onClick={this.props.deleteImage.bind(null, this.props.itemId, file._id)}>Discard</a>
-                                    </div>
-                                </div>
+                                <Card key={file._id}>
+                                    <Segment raised>
+                                        { file.active &&
+                                            <Label color="teal" ribbon>
+                                                <Icon name="pin"/> Default
+                                            </Label>
+                                        }
+                                        <Image
+                                            fluid
+                                            src={file.url}/>
+                                        <Card.Content extra>
+                                            <div className="ui two buttons">
+                                                <Button
+                                                    color="green"
+                                                    disabled={file.active}
+                                                    onClick={this.props.setAsActiveImage.bind(null, this.props.itemId, file._id)}>
+                                                    Set as default
+                                                </Button>
+                                                <Button
+                                                    color="red"
+                                                    onClick={this.props.deleteImage.bind(null, this.props.itemId, file._id)}>
+                                                    Discard
+                                                </Button>
+                                            </div>
+                                        </Card.Content>
+                                    </Segment>
+                                </Card>
                             );
                         })}
-                    </div>
+                    </Card.Group>
                 }
                 {item.files.length === 0 &&
-                    <div class="alert alert-warning" role="alert">
-                        <h4 class="alert-heading">Warning!</h4>
-                        <strong>No images are found for this item.</strong> <Link to={`/items/${item._id}/edit`} class="alert-link">Consider editing the item</Link>.
-                    </div>
+                    <Message warning>
+                        <Message.Header>
+                            <Icon name="warning sign" size="large"/>
+                            Warning!
+                        </Message.Header>
+                        No images are found for this item. <Link to={`/items/${item._id}/edit`}>Consider editing the item</Link>.
+                    </Message>
                 }
             </div>
         );

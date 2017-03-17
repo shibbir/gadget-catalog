@@ -1,4 +1,5 @@
 import React from 'react';
+import { Divider } from 'semantic-ui-react';
 
 import ItemImageContainer from '../containers/Item/ItemImageContainer';
 
@@ -7,7 +8,7 @@ export default class ItemImagePage extends React.Component {
         return (
             <div>
                 <h3>Manage images</h3>
-                <hr/>
+                <Divider section />
 
                 <ItemImageContainer id={this.props.params.id}/>
             </div>

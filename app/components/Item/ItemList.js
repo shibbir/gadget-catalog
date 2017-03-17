@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, hashHistory } from 'react-router';
 import { FormattedDate, FormattedNumber } from 'react-intl';
-import { Card, Select, Form, Divider, Button, Label, Message, Icon } from 'semantic-ui-react';
+import { Card, Select, Form, Divider, Button, Label, Message, Icon, Menu, Container, Image } from 'semantic-ui-react';
 
 export default class ItemList extends React.Component {
     constructor(props) {
@@ -54,7 +54,7 @@ export default class ItemList extends React.Component {
             return (
                 <Card key={item._id} raised>
                     <Card.Content header={item.name}/>
-                    <img class="ui image" src={activeImage} alt={item.name}/>
+                    <Image src={activeImage} alt={item.name}/>
                     <Card.Content>
                         <Card.Description>
                             <div>Category: {item.category.name}</div>
@@ -81,12 +81,10 @@ export default class ItemList extends React.Component {
         }
 
         paginationLinks = paginationLinks.map(function(page) {
-            let paginationLinkClass = page.isActive ? 'page-item active' : 'page-item';
-
             return (
-                <li class={paginationLinkClass} key={page.idx}>
-                    <Link to={page.link} class="page-link">{page.idx}</Link>
-                </li>
+                <Menu.Item active={page.isActive} key={page.idx}>
+                    <Link to={page.link}>{page.idx}</Link>
+                </Menu.Item>
             );
         });
 
@@ -97,12 +95,12 @@ export default class ItemList extends React.Component {
                 <Form>
                     <Form.Group>
                         <Form.Field>
-                            <Label pointing='below' color='teal'>Filter By Category</Label>
-                            <Select size='medium' name="category" onChange={this.filterBy} options={categoryOptions} defaultValue={defaultValue}/>
+                            <Label pointing="below" color="orange">Filter By Category</Label>
+                            <Select size="medium" name="category" onChange={this.filterBy} options={categoryOptions} defaultValue={defaultValue}/>
                         </Form.Field>
 
                         <Form.Field>
-                            <Label pointing='below' color='teal'>Filter By Brand</Label>
+                            <Label pointing="below" color="orange">Filter By Brand</Label>
                             <Select name="brand" onChange={this.filterBy} options={brandOptions} defaultValue={defaultValue}/>
                         </Form.Field>
                     </Form.Group>
@@ -117,21 +115,21 @@ export default class ItemList extends React.Component {
                         </Card.Group>
 
                         { pagination.pages !== 1 &&
-                            <nav>
-                                <ul class="pagination justify-content-center">
+                            <Container textAlign="center">
+                                <Menu pagination>
                                     {paginationLinks}
-                                </ul>
-                            </nav>
+                                </Menu>
+                            </Container>
                         }
                     </div>
                 }
                 { cards.length === 0 &&
                     <Message warning>
                         <Message.Header>
-                            <Icon name='warning sign' size='large'/>
+                            <Icon name="warning sign" size="large"/>
                             Nothing found!
                         </Message.Header>
-                        To add an item please <Link to="items/add" class="alert-link">click here</Link>.
+                        To add an item please <Link to="items/add">click here</Link>.
                     </Message>
                 }
             </div>
