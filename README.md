@@ -22,7 +22,7 @@ Built with:
 
 > This application requires [Cloudinary](http://cloudinary.com/documentation/solution_overview), which is a Software-as-a-Service (SaaS) solution for managing media assets in the cloud.
 
-Edit the below environment files to configure Cloudinary. You can find your configuration parameters in the cloudinary Management Console.
+Edit the environment files to configure Cloudinary. You can find your configuration parameters in the cloudinary Management Console.
 
 - For development: */server/config/env/development.js*
 - For production: */server/config/env/production.js*
@@ -32,6 +32,24 @@ cloudinary: {
     cloud_name: 'your_cloudinary_name',
     api_key: 'your_cloudinary_api_key',
     api_secret: 'your_cloudinary_api_secret'
+}
+```
+
+## Setup OAuth
+
+Edit the environment files to configure OAuth.
+
+- For development: */server/config/env/development.js*
+- For production: */server/config/env/production.js*
+
+```bash
+oauth: {
+    facebook: {
+        clientID: 'client_id',
+        clientSecret: 'client_secret',
+        callbackURL: 'callback_url',
+        profileFields: ['id', 'displayName', 'email']
+    }
 }
 ```
 

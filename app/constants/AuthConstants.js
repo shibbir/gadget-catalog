@@ -10,5 +10,7 @@ export default keyMirror({
     REGISTER_REJECTED: null,
     LOGOUT: null,
     ME_FROM_TOKEN: null,
-    ME_FROM_TOKEN_FULFILLED: null
+    ME_FROM_TOKEN_FULFILLED: null,
+    ME_FROM_EXTERNAL_TOKEN: null,
+    ME_FROM_EXTERNAL_TOKEN_FULFILLED: null
 });

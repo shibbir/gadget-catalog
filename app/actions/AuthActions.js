@@ -7,8 +7,8 @@ function handleErrors(response) {
     return response;
 }
 
-export function meFromToken(token) {
-    let config = {
+export function meFromApplicationToken(token) {
+    const config = {
         method: 'get',
         headers: new Headers({
             Authorization: `Bearer ${token}`
@@ -23,8 +23,23 @@ export function meFromToken(token) {
     };
 }
 
+export function meFromExternalToken(provider, token) {
+    const config = {
+        method: 'get'
+    };
+
+    const query = `provider=${provider}&token=${token}`;
+
+    return {
+        type: AuthConstants.ME_FROM_EXTERNAL_TOKEN,
+        payload: fetch(`/api/oauth/profile?${query}`, config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
+}
+
 export function login(data) {
-    let config = {
+    const config = {
         method: 'post',
         body: JSON.stringify(data),
         headers: new Headers({
@@ -41,7 +56,7 @@ export function login(data) {
 }
 
 export function register(data) {
-    let config = {
+    const config = {
         method: 'post',
         body: JSON.stringify(data),
         headers: new Headers({

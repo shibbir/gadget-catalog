@@ -9,7 +9,13 @@ require('./app.css');
 export default class App extends React.Component {
     constructor(props) {
         super();
-        props.loadMeFromToken();
+        const { provider, token } = props.location.query;
+
+        if(provider && token) {
+            props.loadMeFromExternalApplicationToken(provider, token);
+        } else {
+            props.loadMeFromApplicationToken();
+        }
     }
 
     render() {

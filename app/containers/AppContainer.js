@@ -1,23 +1,28 @@
 import { connect } from 'react-redux';
 
 import App from '../components/App/App';
-import { meFromToken } from '../actions/AuthActions';
+import { meFromApplicationToken, meFromExternalToken } from '../actions/AuthActions';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
+        location: ownProps.location,
         isLoggedIn: state.authReducer.isLoggedIn
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        loadMeFromToken: () => {
-            let token = localStorage.getItem('jwtToken');
-            if(!token) {
-                return;
-            }
+        loadMeFromApplicationToken: () => {
+            const token = localStorage.getItem('jwtToken');
 
-            dispatch(meFromToken(token));
+            if(token) {
+                dispatch(meFromApplicationToken(token));
+            }
+        },
+        loadMeFromExternalApplicationToken: (provider, token) => {
+            if(provider && token) {
+                dispatch(meFromExternalToken(provider, token));
+            }
         }
     };
 }

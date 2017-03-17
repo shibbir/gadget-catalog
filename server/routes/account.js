@@ -49,15 +49,30 @@ module.exports = function(app, passport) {
         res.json(tokenResponse(req.user, 'local'));
     });
 
+    app.get('/api/oauth/profile', function(req, res) {
+        const { provider, token } = req.query;
+        const query = JSON.parse(`{"${provider}.token": "${token}"}`);
+
+        User.findOne(query, 'facebook', function(err, user) {
+            if(err || !user) {
+                return res.status(401).json({
+                    type: 'ValidationError',
+                    messages: ['Invalid access token or oauth provider.']
+                });
+            }
+            res.json(tokenResponse(user, provider));
+        });
+    });
+
     app.get('/auth/facebook', passport.authenticate('facebook', { authType: 'rerequest' }));
 
     app.get('/auth/facebook/callback', function(req, res, next) {
         passport.authenticate('facebook', function(err, user, info) {
             if(err || !user) {
-                return res.redirect('http://localhost:4040/#/provider=facebook&error=' + info.message);
+                return res.redirect('http://localhost:4040/#/?provider=facebook&error=' + info.message);
             }
 
-            res.redirect('http://localhost:4040/#/provider=facebook&token=' + user.facebook.token);
+            res.redirect('http://localhost:4040/#/?provider=facebook&token=' + user.facebook.token);
         })(req, res, next);
     });
 };
