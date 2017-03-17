@@ -24,6 +24,23 @@ export function getCategories() {
     };
 }
 
+export function createCategory(formData) {
+    let config = {
+        method: 'post',
+        body: formData,
+        headers: new Headers({
+            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+        })
+    };
+
+    return {
+        type: CategoryConstants.POST_CATEGORY,
+        payload: fetch(`api/categories`, config)
+            .then(handleErrors)
+            .then(response => response.json())
+    };
+}
+
 export function updateCategory(formData, id) {
     let config = {
         method: 'put',

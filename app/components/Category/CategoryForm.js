@@ -29,6 +29,8 @@ class CategoryForm extends React.Component {
 
         if(this.props.categoryId) {
             this.props.updateCategory(formData, this.props.categoryId);
+        } else {
+            this.props.createCategory(formData);
         }
     }
 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 
-import { updateCategory, fetchCategory, resetCategoryState } from '../../actions/CategoryActions';
+import { createCategory, updateCategory, fetchCategory, resetCategoryState } from '../../actions/CategoryActions';
 import CategoryConstants from '../../constants/CategoryConstants';
 import CategoryForm from '../../components/Category/CategoryForm';
 
@@ -15,6 +15,15 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        createCategory: (formData) => {
+            dispatch(createCategory(formData)).then(result => {
+                const { type, payload } = result.action;
+
+                if(type === CategoryConstants.POST_CATEGORY_FULFILLED) {
+                    hashHistory.push({ pathname: `categories/${payload._id}` });
+                }
+            });
+        },
         updateCategory: (formData, itemId) => {
             dispatch(updateCategory(formData, itemId));
         },

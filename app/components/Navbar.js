@@ -20,10 +20,15 @@ export default class Navbar extends React.Component {
                     <Dropdown item text='Item'>
                         <Dropdown.Menu>
                             <Link to="items" activeClassName="active" class="item">Item list</Link>
-                            <Link to="items/add" activeClassName="active" class="item">Add item</Link>
+                            <Link to="items/add" activeClassName="active" class="item">Add new item</Link>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Link to="categories" activeClassName="active" class="item">Categories</Link>
+                    <Dropdown item text='Category'>
+                        <Dropdown.Menu>
+                            <Link to="categories" activeClassName="active" class="item">Category list</Link>
+                            <Link to="categories/add" activeClassName="active" class="item">Add new category</Link>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     <Menu.Menu position='right'>
                         <a href="javascript:void(0)" class="item" onClick={this.logout.bind(this)}>Sign out</a>
                     </Menu.Menu>

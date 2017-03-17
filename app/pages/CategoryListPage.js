@@ -2,7 +2,7 @@ import React from 'react';
 
 import CategoryListContainer from '../containers/Category/CategoryListContainer';
 
-export default class CategoriesPage extends React.Component {
+export default class CategoryListPage extends React.Component {
     render() {
         return (
             <CategoryListContainer/>

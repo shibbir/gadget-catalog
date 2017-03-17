@@ -12,8 +12,10 @@ export default class ColumnChart extends React.Component {
     }
 
     fetchItemCountsByYearRange(event, data) {
-        this.setState({ yearRange: data.value });
-        this.props.fetchItemCountsByYearRange(data.value);
+        if(this.state.yearRange !== data.value) {
+            this.setState({ yearRange: data.value });
+            this.props.fetchItemCountsByYearRange(data.value);
+        }
     }
 
     componentWillReceiveProps({ data } = nextProps) {

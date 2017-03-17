@@ -4,6 +4,8 @@ export default keyMirror({
     GET_CATEGORIES: null,
     GET_CATEGORIES_FULFILLED: null,
     GET_CATEGORIES_REJECTED: null,
+    POST_CATEGORY: null,
+    POST_CATEGORY_FULFILLED: null,
     PUT_CATEGORY: null,
     PUT_CATEGORY_FULFILLED: null,
     PUT_CATEGORY_REJECTED: null,
