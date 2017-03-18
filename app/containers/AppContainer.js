@@ -8,7 +8,7 @@ const mapStateToProps = (state, ownProps) => {
         location: ownProps.location,
         isLoggedIn: state.authReducer.isLoggedIn
     }
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -25,6 +25,6 @@ const mapDispatchToProps = (dispatch) => {
             }
         }
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

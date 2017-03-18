@@ -19,9 +19,15 @@ let ItemSchema = Schema({
         type: Schema.Types.ObjectId,
         required: true
     },
+    tags: Array,
     purchaseDate: Date,
     price: Number,
     files: [ FileSchema ],
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now

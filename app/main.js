@@ -8,6 +8,7 @@ import store from './store';
 import App from './pages/App';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ProfilePage from './pages/ProfilePage';
 import DashboardPage from './pages/DashboardPage';
 import ItemListPage from './pages/ItemListPage';
 import ItemAddPage from './pages/ItemAddPage';
@@ -34,6 +35,7 @@ ReactDOM.render(
 
                     <Route component={EnsureLoggedInContainer}>
                         <Route path="dashboard" component={DashboardPage}/>
+                        <Route path="profile" component={ProfilePage}/>
                         <Route path="items" component={ItemListPage}/>
                         <Route path="items/add" component={ItemAddPage}/>
                         <Route path="items/:id" component={ItemDetailsPage}/>

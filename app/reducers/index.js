@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
+import messageReducer from './messageReducer';
 import authReducer from './authReducer';
 import itemReducer from './itemReducer';
 import brandReducer from './brandReducer';
@@ -13,5 +14,6 @@ export default combineReducers({
     itemReducer,
     brandReducer,
     categoryReducer,
-    dashboardReducer
+    dashboardReducer,
+    messageReducer
 })

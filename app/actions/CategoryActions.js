@@ -1,76 +1,53 @@
+import axios from 'axios';
+
+import { getAxiosRequestObject } from '../config/helpers';
 import CategoryConstants from '../constants/CategoryConstants';
 
-function handleErrors(response) {
-    if (!response.ok) {
-        throw Error(response.statusText);
-    }
-    return response;
-}
-
 export function getCategories() {
-    let config = {
-        method: 'get',
-        headers: new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+    const config = {
+        url: '/api/categories'
     };
 
     return {
         type: CategoryConstants.GET_CATEGORIES,
-        payload: fetch('/api/categories', config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getAxiosRequestObject(config))
     };
 }
 
 export function createCategory(formData) {
-    let config = {
+    const config = {
+        url: 'api/categories',
         method: 'post',
-        body: formData,
-        headers: new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+        data: formData
     };
 
     return {
         type: CategoryConstants.POST_CATEGORY,
-        payload: fetch(`api/categories`, config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getAxiosRequestObject(config))
     };
 }
 
 export function updateCategory(formData, id) {
-    let config = {
+    const config = {
+        url: `api/categories/${id}`,
         method: 'put',
-        body: formData,
-        headers: new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+        data: formData
     };
 
     return {
         type: CategoryConstants.PUT_CATEGORY,
-        payload: fetch(`api/categories/${id}`, config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getAxiosRequestObject(config))
     };
 }
 
 export function fetchCategory(id) {
-    let config = {
-        method: 'get',
-        headers: new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+    const config = {
+        url: `/api/categories/${id}`
     };
 
     return {
         type: CategoryConstants.GET_CATEGORY,
-        payload: fetch(`/api/categories/${id}`, config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getAxiosRequestObject(config))
     };
 }
 

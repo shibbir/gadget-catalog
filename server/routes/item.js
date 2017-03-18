@@ -14,12 +14,14 @@ module.exports = function(app, passport, cloudinary) {
         const filterBy = req.query.filter_by;
         const filterId = req.query.filter_id;
 
-        let query = {};
+        let query = {
+            createdBy: req.user._id
+        };
 
         if(filterId && filterBy && filterBy.toLowerCase() === 'category') {
-            query = { categoryId: filterId };
+            query.categoryId = filterId;
         } else if(filterId && filterBy && filterBy.toLowerCase() === 'brand') {
-            query = { brandId: filterId };
+            query.brandId = filterId;
         }
 
         Item.where(query).count(function(err, count) {
@@ -51,12 +53,16 @@ module.exports = function(app, passport, cloudinary) {
 
     app.get('/api/items/:id', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         Item
-            .findOne({ _id: req.params.id })
+            .findOne({ _id: req.params.id, createdBy: req.user._id })
             .populate('brand', 'name')
             .populate('category', 'name')
             .exec(function(err, doc) {
                 if(err) {
                     return res.sendStatus(500);
+                }
+
+                if(!doc) {
+                    return res.status(400).json({ type: 'error', message: 'Operation failed or you don\'t have the permission!'});
                 }
 
                 doc.description = validator.unescape(doc.description);
@@ -74,7 +80,8 @@ module.exports = function(app, passport, cloudinary) {
             categoryId: req.body.categoryId,
             brandId: req.body.brandId,
             purchaseDate: req.body.purchaseDate,
-            price: req.body.price
+            price: req.body.price,
+            createdBy: req.user._id
         });
 
         async.waterfall([
@@ -115,9 +122,13 @@ module.exports = function(app, passport, cloudinary) {
     });
 
     app.put('/api/items/:id', passport.authenticate('http-bearer', { session: false }), function(req, res) {
-        Item.findOne({ _id: req.params.id }, function(err, doc) {
+        Item.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
             if(err) {
                 return res.sendStatus(500);
+            }
+
+            if(!doc) {
+                return res.status(400).json({ type: 'error', message: 'Operation failed or you don\'t have the permission!'});
             }
 
             doc.name = req.body.name;
@@ -162,9 +173,13 @@ module.exports = function(app, passport, cloudinary) {
     app.put('/api/items/:itemId/images/:fileId', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         async.waterfall([
             function(callback) {
-                Item.findOne({ _id: req.params.itemId }, 'files', function(err, doc) {
+                Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, 'files', function(err, doc) {
                     if(err) {
                         return callback(err);
+                    }
+
+                    if(!doc) {
+                        return callback();
                     }
 
                     doc.files = doc.files.map(function(x) {
@@ -177,7 +192,7 @@ module.exports = function(app, passport, cloudinary) {
                     });
                 });
             }, function(callback) {
-                Item.findOneAndUpdate({ _id: req.params.itemId, 'files._id': req.params.fileId }, {
+                Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, 'files._id': req.params.fileId }, {
                     $set: {
                         'files.$.active': true
                     }
@@ -197,9 +212,13 @@ module.exports = function(app, passport, cloudinary) {
     });
 
     app.delete('/api/items/:itemId/images/:fileId', passport.authenticate('http-bearer', { session: false }), function(req, res) {
-        Item.findOne({ _id: req.params.itemId }, function(err, doc) {
+        Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, function(err, doc) {
             if(err) {
                 return res.sendStatus(500);
+            }
+
+            if(!doc) {
+                return res.status(400).json({ type: 'error', message: 'Operation failed or you don\'t have the permission!'});
             }
 
             let file = doc.files.id(req.params.fileId);
@@ -227,7 +246,10 @@ module.exports = function(app, passport, cloudinary) {
         const startYear = yearRange[0];
         const endYear = yearRange[1];
 
-        const query = { purchaseDate: { $lte: new Date(endYear, 11, 31), $gte: new Date(startYear, 0, 1) }};
+        const query = {
+            createdBy: req.user._id,
+            purchaseDate: { $lte: new Date(endYear, 11, 31), $gte: new Date(startYear, 0, 1)}
+        };
 
         Item.find(query, 'purchaseDate').exec(function(err, docs) {
             if(err) {

@@ -6,7 +6,7 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.authReducer.isLoggedIn
     };
-}
+};
 
 class EnsureLoggedInContainer extends React.Component {
     constructor(props) {

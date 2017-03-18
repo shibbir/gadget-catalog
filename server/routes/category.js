@@ -2,10 +2,13 @@ const fs = require('fs');
 const async = require('async');
 
 const Category = require('../models/category');
+const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 
 module.exports = function(app, passport, cloudinary) {
     app.get('/api/categories', passport.authenticate('http-bearer', { session: false }), function(req, res) {
-        Category.find({}).populate('items').exec(function(err, docs) {
+        Category.find({
+            $or: [{ createdBy: req.user._id }, { createdBy: req.authInfo.adminId }]
+        }).populate('items').sort('name').exec(function(err, docs) {
             if(err) {
                 return res.sendStatus(500);
             }
@@ -16,7 +19,9 @@ module.exports = function(app, passport, cloudinary) {
 
     app.post('/api/categories', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         let model = new Category({
-            name: req.body.name
+            name: req.body.name,
+            slug: convertToSlug(req.body.name),
+            createdBy: req.user._id
         });
 
         async.waterfall([
@@ -67,9 +72,13 @@ module.exports = function(app, passport, cloudinary) {
     });
 
     app.put('/api/categories/:id', passport.authenticate('http-bearer', { session: false }), function(req, res) {
-        Category.findOne({ _id: req.params.id }, function(err, doc) {
+        Category.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
             if(err) {
                 return res.sendStatus(500);
+            }
+
+            if(!doc) {
+                return res.status(400).json({ type: 'error', message: 'Operation failed or you don\'t have the permission!'});
             }
 
             doc.name = req.body.name;

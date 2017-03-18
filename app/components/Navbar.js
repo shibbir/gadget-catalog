@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, IndexLink } from 'react-router';
-import { Menu, Dropdown, Container } from 'semantic-ui-react';
+import { Menu, Dropdown, Container, Icon } from 'semantic-ui-react';
 
 export default class Navbar extends React.Component {
     logout() {
@@ -30,7 +30,16 @@ export default class Navbar extends React.Component {
                         </Dropdown.Menu>
                     </Dropdown>
                     <Menu.Menu position='right'>
-                        <a href="javascript:void(0)" class="item" onClick={this.logout.bind(this)}>Sign out</a>
+                        <Dropdown item text={this.props.user.name}>
+                            <Dropdown.Menu>
+                                <Link to="profile" activeClassName="active" class="item">
+                                    <Icon name="edit"/> Edit profile
+                                </Link>
+                                <a href="javascript:void(0)" class="item" onClick={this.logout.bind(this)}>
+                                    <Icon name="sign out"/> Sign out
+                                </a>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Menu.Menu>
                 </Menu>
             </Container>

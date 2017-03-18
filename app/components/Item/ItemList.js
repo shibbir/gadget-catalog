@@ -96,12 +96,12 @@ export default class ItemList extends React.Component {
                     <Form.Group>
                         <Form.Field>
                             <Label pointing="below" color="orange">Filter By Category</Label>
-                            <Select size="medium" name="category" onChange={this.filterBy} options={categoryOptions} defaultValue={defaultValue}/>
+                            <Select search size="medium" name="category" onChange={this.filterBy} options={categoryOptions} defaultValue={defaultValue}/>
                         </Form.Field>
 
                         <Form.Field>
                             <Label pointing="below" color="orange">Filter By Brand</Label>
-                            <Select name="brand" onChange={this.filterBy} options={brandOptions} defaultValue={defaultValue}/>
+                            <Select search name="brand" onChange={this.filterBy} options={brandOptions} defaultValue={defaultValue}/>
                         </Form.Field>
                     </Form.Group>
                 </Form>

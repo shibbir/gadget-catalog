@@ -1,10 +1,20 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let BrandSchema = Schema({
+const BrandSchema = Schema({
     name: {
         type: String,
         unique: true,
+        required: true
+    },
+    slug: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     date: {

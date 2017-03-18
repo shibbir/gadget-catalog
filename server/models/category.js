@@ -10,7 +10,17 @@ let CategorySchema = Schema({
         unique: true,
         required: true
     },
+    slug: {
+        type: String,
+        unique: true,
+        required: true
+    },
     file: FileSchema,
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now

@@ -26,12 +26,12 @@ export const RichEditorInput = ({ input, attributes, label }) => {
     );
 };
 
-export const DropdownField = ({ input, label, options, meta: { touched, error } }) => {
+export const DropdownField = ({ input, label, options, placeholder, meta: { touched, error } }) => {
     return (
         <Form.Field>
             { label && <label>{label}</label> }
 
-            <Select {...input} options={options} onChange={(e, d) => input.onChange(d.value)}/>
+            <Select {...input} options={options} placeholder={placeholder} onChange={(e, d) => input.onChange(d.value)}/>
 
             { touched && error &&
                 <div class="field-validation-error">

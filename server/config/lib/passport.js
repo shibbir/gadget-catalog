@@ -34,7 +34,13 @@ module.exports = function(passport) {
                 if (!user) {
                     return done(null, false);
                 }
-                return done(null, user, { scope: 'read' });
+
+                User.findOne({ role: 'admin' }, '_id', function(err, adminId) {
+                    if (err) {
+                        return done(err);
+                    }
+                    return done(null, user, { scope: 'read', adminId });
+                });
             });
         });
     }));

@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
         categories: state.dashboardReducer.categories,
         itemCountsPerYear: state.dashboardReducer.itemCountsPerYear
     }
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -20,6 +20,6 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(fetchItemCountsByYearRange(yearRange));
         }
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

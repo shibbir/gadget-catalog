@@ -19,9 +19,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(createCategory(formData)).then(result => {
                 const { type, payload } = result.action;
 
-                if(type === CategoryConstants.POST_CATEGORY_FULFILLED) {
-                    hashHistory.push({ pathname: `categories/${payload._id}` });
-                }
+                console.info(payload.data);
             });
         },
         updateCategory: (formData, itemId) => {

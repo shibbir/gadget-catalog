@@ -49,15 +49,12 @@ class ItemForm extends React.Component {
             return { key: option._id, value: option._id, text: option.name };
         });
 
-        brandOptions.unshift({ key: '-1', value: '-1', text: 'Select brand' });
-        categoryOptions.unshift({ key: '-1', value: '-1', text: 'Select category' });
-
         return (
             <Form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
                 <Field name="name" label="Name" attributes={{type: 'text'}} component={TextInput} validate={[ required ]}/>
                 <Field name="description" label="Description" component={RichEditorInput}/>
-                <Field name="categoryId" label="Category" options={categoryOptions} component={DropdownField} validate={[ required ]}/>
-                <Field name="brandId" label="Brand" options={brandOptions} component={DropdownField} validate={[ required ]}/>
+                <Field name="categoryId" placeholder="Select category" label="Category" options={categoryOptions} component={DropdownField} validate={[ required ]}/>
+                <Field name="brandId" placeholder="Select brand" label="Brand" options={brandOptions} component={DropdownField} validate={[ required ]}/>
                 <Field name="purchaseDate" label="Purchase date" attributes={{type: 'date'}} component={TextInput} validate={[ required ]}/>
                 <Field name="price" label="Price" attributes={{type: 'number'}} component={TextInput}/>
                 <Field name="file" label="Upload" component={FileInput}/>

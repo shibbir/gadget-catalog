@@ -22,6 +22,11 @@ let UserSchema = Schema({
         type: String,
         required: true
     },
+    role: {
+        type: String,
+        enum: [ 'admin', 'basic' ],
+        default: 'basic'
+    },
     date: {
         type: Date,
         default: Date.now
