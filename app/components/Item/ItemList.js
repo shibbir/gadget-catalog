@@ -54,7 +54,9 @@ export default class ItemList extends React.Component {
             return (
                 <Card key={item._id} raised>
                     <Card.Content header={item.name}/>
-                    <Image src={activeImage} alt={item.name}/>
+                    <Card.Content>
+                        <Image src={activeImage} alt={item.name}/>
+                    </Card.Content>
                     <Card.Content>
                         <Card.Description>
                             <div>Category: {item.category.name}</div>
@@ -109,7 +111,7 @@ export default class ItemList extends React.Component {
                 <Divider section />
 
                 { cards.length > 0 &&
-                    <div id="cards-container">
+                    <div id="item-cards-container">
                         <Card.Group>
                             {cards}
                         </Card.Group>

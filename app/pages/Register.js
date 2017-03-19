@@ -60,8 +60,8 @@ class Register extends React.Component {
                                 <Button color="facebook" href="/auth/facebook">
                                     <Icon name="facebook"/> Facebook
                                 </Button>
-                                <Button color="twitter" href="/auth/twitter">
-                                    <Icon name="twitter"/> Twitter
+                                <Button color="google plus" href="/auth/google">
+                                    <Icon name="google plus"/> Google
                                 </Button>
                             </div>
                         </Segment>

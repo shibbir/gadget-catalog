@@ -53,7 +53,7 @@ module.exports = function(app, passport) {
         const { provider, token } = req.query;
         const query = JSON.parse(`{"${provider}.token": "${token}"}`);
 
-        User.findOne(query, 'facebook', function(err, user) {
+        User.findOne(query, 'facebook displayName', function(err, user) {
             if(err || !user) {
                 return res.status(401).json({
                     type: 'ValidationError',
@@ -73,6 +73,18 @@ module.exports = function(app, passport) {
             }
 
             res.redirect('http://localhost:4040/#/?provider=facebook&token=' + user.facebook.token);
+        })(req, res, next);
+    });
+
+    app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+    app.get('/auth/google/callback', function(req, res, next) {
+        passport.authenticate('google', function(err, user, info) {
+            if(err || !user) {
+                return res.redirect('http://localhost:4040/#/?provider=google&error=' + info.message);
+            }
+
+            res.redirect('http://localhost:4040/#/?provider=google&token=' + user.google.token);
         })(req, res, next);
     });
 };

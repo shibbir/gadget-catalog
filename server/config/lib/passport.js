@@ -4,6 +4,7 @@ const config = require('../config');
 const LocalStrategy = require('passport-local').Strategy;
 const BearerStrategy = require('passport-http-bearer').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 module.exports = function(passport) {
     passport.serializeUser(function(user, done) {
@@ -35,11 +36,11 @@ module.exports = function(passport) {
                     return done(null, false);
                 }
 
-                User.findOne({ role: 'admin' }, '_id', function(err, adminId) {
+                User.findOne({ role: 'admin' }, '_id', function(err, admin) {
                     if (err) {
                         return done(err);
                     }
-                    return done(null, user, { scope: 'read', adminId });
+                    return done(null, user, { scope: 'read', adminId: admin._id });
                 });
             });
         });
@@ -60,7 +61,9 @@ module.exports = function(passport) {
 
         process.nextTick(function() {
             User.findOne({ $or: [
-                { 'local.email': email }
+                { 'local.email': email },
+                { 'facebook.email': email },
+                { 'google.email': email }
             ]}, function(err, user) {
                 if (err) {
                     return done(err);
@@ -106,6 +109,7 @@ module.exports = function(passport) {
         process.nextTick(function() {
             User.findOne({ $or: [
                 { 'facebook.id' : profile.id },
+                { 'google.email': profile.emails[0].value },
                 { 'local.email': profile.emails[0].value }
             ]}, function(err, user) {
                 if (err) {
@@ -129,18 +133,75 @@ module.exports = function(passport) {
                         done(null, user);
                     }
                 } else {
-                    var newUser = new User();
+                    let newUser = new User();
 
                     newUser.facebook.id = profile.id;
                     newUser.facebook.token = token;
                     newUser.facebook.name = profile.displayName;
                     newUser.facebook.email = profile.emails[0].value;
-
                     newUser.displayName = profile.displayName;
 
                     newUser.save(function(err) {
                         if (err) {
                             throw err;
+                        }
+                        done(null, newUser);
+                    });
+                }
+            });
+        });
+    }));
+
+    /**
+     =========================================================================
+     ================================ GOOGLE =================================
+     =========================================================================
+     */
+
+    passport.use(new GoogleStrategy({
+        clientID: config.oauth.google.clientID,
+        clientSecret: config.oauth.google.clientSecret,
+        callbackURL: config.oauth.google.callbackURL
+    },
+    function(token, refreshToken, profile, done) {
+        process.nextTick(function() {
+            User.findOne({ $or: [
+                { 'google.id': profile.id },
+                { 'facebook.email': profile.emails[0].value },
+                { 'local.email': profile.emails[0].value }
+            ]}, function(err, user) {
+                if (err) {
+                    return done(err);
+                }
+
+                if (user) {
+                    if (!user.google.id) {
+                        user.google.id = profile.id;
+                        user.google.token = token;
+                        user.google.name = profile.displayName;
+                        user.google.email = profile.emails[0].value;
+
+                        user.save(function(err) {
+                            if (err) {
+                                return done(err);
+                            }
+                            done(null, user);
+                        });
+                    } else {
+                        done(null, user);
+                    }
+                } else {
+                    let newUser = new User();
+
+                    newUser.google.id = profile.id;
+                    newUser.google.token = token;
+                    newUser.google.name = profile.displayName;
+                    newUser.google.email = profile.emails[0].value;
+                    newUser.displayName = profile.displayName;
+
+                    newUser.save(function(err) {
+                        if (err) {
+                            return done(err);
                         }
                         done(null, newUser);
                     });

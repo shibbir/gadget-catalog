@@ -8,10 +8,26 @@ module.exports = function(app, passport, cloudinary) {
     app.get('/api/categories', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         Category.find({
             $or: [{ createdBy: req.user._id }, { createdBy: req.authInfo.adminId }]
-        }).populate('items').sort('name').exec(function(err, docs) {
+        }).populate({
+            path: 'items',
+            match: { createdBy: req.user._id },
+            select: '_id',
+            options: { lean: true }
+        })
+        .sort('name')
+        .exec(function(err, docs) {
             if(err) {
                 return res.sendStatus(500);
             }
+
+            docs = docs.map(function(x) {
+                if(x.createdBy.toString() === req.authInfo.adminId.toString() &&
+                    req.user._id.toString() !== req.authInfo.adminId.toString()) {
+                        x = x.toJSON();
+                        x.readonly = true;
+                }
+                return x;
+            });
 
             res.json(docs);
         });

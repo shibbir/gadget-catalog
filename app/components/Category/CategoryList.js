@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Card, Icon } from 'semantic-ui-react';
+import { Card, Icon, Label, Image, Button } from 'semantic-ui-react';
 
 export default class CategoryList extends React.Component {
     constructor(props) {
@@ -21,16 +21,20 @@ export default class CategoryList extends React.Component {
                         <Card.Header>{category.name}</Card.Header>
                     </Card.Content>
 
-                    <img class="ui image" src={activeImage} alt={category.name}/>
+                    <Label color="red" corner="right" size="mini">
+                        <Icon name="lock"/>
+                    </Label>
+
+                    <Image src={activeImage} alt={category.name}/>
 
                     <Card.Content extra>
                         <Link to={`items?filter_by=category&filter_id=${category._id}`}>
                             {`See all ${category.items.length} items`}
                         </Link>
                         <div class="right floated">
-                            <Link to={`categories/${category._id}/edit`} class="ui compact positive button">
-                                <Icon name='edit'/> Edit
-                            </Link>
+                            <Button positive compact disabled={category.readonly} href={`categories/${category._id}/edit`}>
+                                <Icon name="edit"/> Edit
+                            </Button>
                         </div>
                     </Card.Content>
                 </Card>

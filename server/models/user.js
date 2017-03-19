@@ -18,6 +18,12 @@ let UserSchema = Schema({
         email: String,
         token: String
     },
+    google: {
+        id: String,
+        name: String,
+        email: String,
+        token: String
+    },
     displayName: {
         type: String,
         required: true

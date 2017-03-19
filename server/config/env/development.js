@@ -18,6 +18,11 @@ module.exports = {
             clientSecret: 'client_secret',
             callbackURL: 'callback_url',
             profileFields: ['id', 'displayName', 'email']
+        },
+        google: {
+            clientID: 'client_id',
+            clientSecret: 'client_secret',
+            callbackURL: 'callback_url',
         }
     }
 };

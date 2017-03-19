@@ -65,7 +65,9 @@ module.exports = function(app, passport, cloudinary) {
                     return res.status(400).json({ type: 'error', message: 'Operation failed or you don\'t have the permission!'});
                 }
 
-                doc.description = validator.unescape(doc.description);
+                if(doc.description) {
+                    doc.description = validator.unescape(doc.description);
+                }
                 doc.category = doc.category[0];
                 doc.brand = doc.brand[0];
 
