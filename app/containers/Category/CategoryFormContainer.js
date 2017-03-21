@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 
-import { createCategory, updateCategory, fetchCategory, resetCategoryState } from '../../actions/CategoryActions';
 import CategoryConstants from '../../constants/CategoryConstants';
 import CategoryForm from '../../components/Category/CategoryForm';
+import { createCategory, updateCategory, fetchCategory, resetCategoryState } from '../../actions/CategoryActions';
 
 const mapStateToProps = (state, ownProps) => {
     return {

@@ -19,7 +19,7 @@ class CategoryForm extends React.Component {
     }
 
     handleSubmit(formValues) {
-        var formData = new FormData();
+        let formData = new FormData();
 
         for(let key in formValues) {
             if(formValues.hasOwnProperty(key)) {
@@ -43,9 +43,9 @@ class CategoryForm extends React.Component {
                 <Field name="file" label="Upload" component={FileInput}/>
                 <Divider hidden/>
                 <Button.Group>
-                    <Button positive type="submit" disabled={submitting}>{submitButtonText}</Button>
-                    <Button.Or />
-                    <Button disabled={submitting} onClick={reset}>Reset form</Button>
+                    <Button type="submit" positive disabled={submitting}>{submitButtonText}</Button>
+                    <Button.Or/>
+                    <Button type="button" disabled={submitting} onClick={reset}>Reset form</Button>
                 </Button.Group>
             </Form>
         );

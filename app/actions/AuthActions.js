@@ -1,4 +1,6 @@
+import axios from 'axios';
 import AuthConstants from '../constants/AuthConstants';
+import { getAxiosRequestObject } from '../config/helpers';
 
 function handleErrors(response) {
     if (!response.ok) {
@@ -75,5 +77,18 @@ export function register(data) {
 export function logout() {
     return {
         type: AuthConstants.LOGOUT
+    };
+}
+
+export function changePassword(formData) {
+    const config = {
+        url: '/api/profile/password',
+        method: 'put',
+        data: formData
+    };
+
+    return {
+        type: AuthConstants.CHANGE_PASSWORD,
+        payload: axios(getAxiosRequestObject(config))
     };
 }

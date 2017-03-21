@@ -23,7 +23,7 @@ class ItemForm extends React.Component {
     }
 
     handleSubmit(formValues) {
-        var formData = new FormData();
+        let formData = new FormData();
 
         for(let key in formValues) {
             if(formValues.hasOwnProperty(key)) {
@@ -60,9 +60,9 @@ class ItemForm extends React.Component {
                 <Field name="file" label="Upload" component={FileInput}/>
                 <Divider hidden/>
                 <Button.Group>
-                    <Button positive type="submit">{submitButtonText}</Button>
-                    <Button.Or />
-                    <Button onClick={reset}>Reset</Button>
+                    <Button type="submit" positive>{submitButtonText}</Button>
+                    <Button.Or/>
+                    <Button type="button" onClick={reset}>Reset</Button>
                 </Button.Group>
             </Form>
         );

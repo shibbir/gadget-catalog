@@ -49,6 +49,23 @@ module.exports = function(app, passport) {
         res.json(tokenResponse(req.user, 'local'));
     });
 
+    app.put('/api/profile/password', passport.authenticate('http-bearer', { session: false }), function(req, res) {
+        User.findOne({ _id: req.user._id }, 'local', function(err, user) {
+            if(err) {
+                return res.sendStatus(500);
+            }
+
+            if(!user || !user.validPassword(req.body.currentPassword)) {
+                return res.status(401).json({ type: 'error', message: 'Invalid credentials.' });
+            }
+
+            user.local.password = user.generateHash(req.body.newPassword);
+            user.save();
+
+            res.sendStatus(200);
+        });
+    });
+
     app.get('/api/oauth/profile', function(req, res) {
         const { provider, token } = req.query;
         const query = JSON.parse(`{"${provider}.token": "${token}"}`);

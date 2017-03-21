@@ -18,7 +18,7 @@ class Login extends React.Component {
     }
 
     render() {
-        const { handleSubmit, submitting, invalid } = this.props;
+        const { handleSubmit, submitting } = this.props;
 
         const loginPageStyle = {
             paddingTop: '60px'
@@ -36,7 +36,7 @@ class Login extends React.Component {
                                 Log-in to your account
                             </div>
                         </Header>
-                        <Form className="large" onSubmit={handleSubmit(this.handleSubmit.bind(this))} error={invalid}>
+                        <Form className="large" onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
                             <Segment class="stacked">
                                 <Field name="email"
                                     attributes={{ id: 'email', type: 'email', placeholder: 'E-mail address', icon: 'mail', iconPosition: 'left'}}

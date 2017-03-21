@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import { getAxiosRequestObject } from '../config/helpers';
 import CategoryConstants from '../constants/CategoryConstants';
 
