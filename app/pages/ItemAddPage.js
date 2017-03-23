@@ -8,7 +8,7 @@ export default class ItemAddPage extends React.Component {
         return (
             <div>
                 <h3>Add a new item</h3>
-                <Divider section />
+                <Divider section/>
 
                 <ItemFormContainer form="Create"/>
             </div>

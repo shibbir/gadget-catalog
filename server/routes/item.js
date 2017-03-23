@@ -78,13 +78,16 @@ module.exports = function(app, passport, cloudinary) {
     app.post('/api/items', passport.authenticate('http-bearer', { session: false }), function(req, res) {
         let item = new Item({
             name: req.body.name,
-            description: validator.escape(req.body.description),
             categoryId: req.body.categoryId,
             brandId: req.body.brandId,
             purchaseDate: req.body.purchaseDate,
             price: req.body.price,
             createdBy: req.user._id
         });
+
+        if(req.body.description) {
+            item.description = validator.escape(req.body.description);
+        }
 
         async.waterfall([
             function(callback) {
@@ -134,11 +137,14 @@ module.exports = function(app, passport, cloudinary) {
             }
 
             doc.name = req.body.name;
-            doc.description = validator.escape(req.body.description);
             doc.categoryId = req.body.categoryId;
             doc.brandId = req.body.brandId;
             doc.purchaseDate = req.body.purchaseDate;
             doc.price = req.body.price;
+
+            if(req.body.description) {
+                doc.description = validator.escape(req.body.description);
+            }
 
             doc.files = doc.files.map(function(x) {
                 x.active = false;

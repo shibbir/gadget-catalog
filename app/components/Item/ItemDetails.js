@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedDate, FormattedNumber } from 'react-intl';
-import { Message, Icon } from 'semantic-ui-react';
+import { Message, Icon, Card, Divider } from 'semantic-ui-react';
 
 export default class ItemDetails extends React.Component {
     constructor(props) {
         super();
-        this.state = { item: null, activeImageUrl: ''};
+        this.state = { item: null };
 
         props.fetchItem(props.itemId);
     }
@@ -16,22 +16,11 @@ export default class ItemDetails extends React.Component {
 
         if(item) {
             this.setState({ item });
-
-            if(item.files && item.files.length) {
-                let activeImageUrl = item.files[0].url;
-
-                let files = item.files.filter(x => x.active);
-                if(files && files.length) {
-                    activeImageUrl = files[0].url;
-                }
-
-                this.setState({ activeImageUrl });
-            }
         }
     }
 
     render() {
-        let { item, activeImageUrl } = this.state;
+        let { item } = this.state;
 
         if(!item) {
             return <h2>Loading...</h2>;
@@ -44,36 +33,27 @@ export default class ItemDetails extends React.Component {
                     Category: <Link to={`/categories/${item.category._id}`}>{item.category.name}</Link>
                 </p>
 
-                <hr/>
+                <Divider section/>
 
                 {item.files.length > 0 &&
-                    <div>
-                        <figure class="figure">
-                            <img src={activeImageUrl} class="figure-img img-fluid rounded" alt={item.name}/>
-                        </figure>
-                        <div class="d-flex flex-row">
-                            {item.files.map((file) =>
-                                <div class="p-2" key={file._id}>
-                                    <img class="img-thumbnail rounded mx-auto d-block"
-                                        src={file.url}
-                                        onClick={() => this.setState({ activeImageUrl: file.url })}
-                                        style={{ width: 'auto', height: '10rem', cursor: 'pointer' }}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <Card.Group>
+                        {item.files.map((file) =>
+                            <Card raised key={file._id} image={file.url}/>
+                        )}
+                    </Card.Group>
                 }
 
                 {item.files.length === 0 &&
                     <Message warning>
                         <Message.Header>
-                            <Icon name='warning sign' size='large'/>
+                            <Icon name="warning sign" size="large"/>
                             Warning!
                         </Message.Header>
                         <p>No images are found for this item.</p>
                     </Message>
                 }
+
+                <Divider hidden/>
 
                 <p>Brand: <Link to={`/brands/${item.brand._id}`}>{item.brand.name}</Link></p>
                 <p>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></p>
