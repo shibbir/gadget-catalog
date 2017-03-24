@@ -17,7 +17,7 @@ export default function reducer(state=initialState, action) {
         case ItemConstants.GET_ITEM_COUNTS_BY_YEAR_FULFILLED: {
             return {
                 ...state,
-                itemCountsPerYear: action.payload
+                itemCountsPerYear: action.payload.data
             };
         }
     }

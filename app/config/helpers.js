@@ -7,14 +7,25 @@ function root(args) {
     return path.join.apply(path, [_root].concat(args));
 }
 
-function getAxiosRequestObject(options) {
+function getRequestObject(options) {
     return _.merge({
-        method: 'get',
+        method: 'post'
+    }, options);
+}
+
+function getBearerRequestObject(options) {
+    const token = localStorage.getItem('jwtToken');
+
+    if(!token || typeof token === 'undefined') return null;
+
+    return _.merge({
+        method: 'post',
         headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('jwtToken')
+            Authorization: `Bearer ${token}`
         }
     }, options);
 }
 
 exports.root = root;
-exports.getAxiosRequestObject = getAxiosRequestObject;
+exports.getRequestObject = getRequestObject;
+exports.getBearerRequestObject = getBearerRequestObject;

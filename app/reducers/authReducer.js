@@ -11,10 +11,10 @@ export default function reducer(state=initialState, action) {
         case AuthConstants.REGISTER_FULFILLED:
         case AuthConstants.ME_FROM_TOKEN_FULFILLED:
         case AuthConstants.ME_FROM_EXTERNAL_TOKEN_FULFILLED: {
-            localStorage.setItem('jwtToken', action.payload.jwtToken);
+            localStorage.setItem('jwtToken', action.payload.data.jwtToken);
             return {
                 ...state,
-                user: action.payload,
+                user: action.payload.data,
                 isLoggedIn: true
             };
         }
@@ -30,6 +30,7 @@ export default function reducer(state=initialState, action) {
                 isLoggedIn: false
             };
         }
+        case AuthConstants.INVALID_TOKEN: {}
     }
     return state;
 }

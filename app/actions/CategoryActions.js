@@ -1,28 +1,28 @@
 import axios from 'axios';
-import { getAxiosRequestObject } from '../config/helpers';
+import { getBearerRequestObject } from '../config/helpers';
 import CategoryConstants from '../constants/CategoryConstants';
 
 export function getCategories() {
     const config = {
-        url: '/api/categories'
+        url: '/api/categories',
+        method: 'get'
     };
 
     return {
         type: CategoryConstants.GET_CATEGORIES,
-        payload: axios(getAxiosRequestObject(config))
+        payload: axios(getBearerRequestObject(config))
     };
 }
 
 export function createCategory(formData) {
     const config = {
         url: 'api/categories',
-        method: 'post',
         data: formData
     };
 
     return {
         type: CategoryConstants.POST_CATEGORY,
-        payload: axios(getAxiosRequestObject(config))
+        payload: axios(getBearerRequestObject(config))
     };
 }
 
@@ -35,18 +35,19 @@ export function updateCategory(formData, id) {
 
     return {
         type: CategoryConstants.PUT_CATEGORY,
-        payload: axios(getAxiosRequestObject(config))
+        payload: axios(getBearerRequestObject(config))
     };
 }
 
 export function fetchCategory(id) {
     const config = {
-        url: `/api/categories/${id}`
+        url: `/api/categories/${id}`,
+        method: 'get'
     };
 
     return {
         type: CategoryConstants.GET_CATEGORY,
-        payload: axios(getAxiosRequestObject(config))
+        payload: axios(getBearerRequestObject(config))
     };
 }
 

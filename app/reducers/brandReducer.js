@@ -9,7 +9,7 @@ export default function reducer(state=initialState, action) {
         case BrandConstants.FETCH_BRANDS_FULFILLED: {
             return {
                 ...state,
-                brands: action.payload
+                brands: action.payload.data
             };
         }
         case BrandConstants.FETCH_BRANDS_REJECTED: {

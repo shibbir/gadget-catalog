@@ -23,7 +23,15 @@ export default class ItemDetails extends React.Component {
         let { item } = this.state;
 
         if(!item) {
-            return <h2>Loading...</h2>;
+            return (
+                <Message warning>
+                    <Message.Header>
+                        <Icon name="warning sign" size="large"/>
+                        Warning!
+                    </Message.Header>
+                    <p>Item not found.</p>
+                </Message>
+            );
         }
 
         return (

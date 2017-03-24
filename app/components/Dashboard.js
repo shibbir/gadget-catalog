@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'semantic-ui-react';
+import { Card, Icon } from 'semantic-ui-react';
 
 import PieChart from './Chart/PieChart';
 import ColumnChart from './Chart/ColumnChart';
@@ -10,7 +10,10 @@ export default class Dashboard extends React.Component {
             <div id="dashboard">
                 <div class="ui raised card fluid">
                     <div class="content">
-                        <div class="header">Category Chart</div>
+                        <div class="card-header">
+                            <Icon name="pie chart"/>
+                            Category Chart
+                        </div>
                     </div>
                     <div class="content">
                         <PieChart data={this.props.categories} getCategories={this.props.getCategories}/>
@@ -19,6 +22,7 @@ export default class Dashboard extends React.Component {
                 <div class="ui raised card fluid">
                     <div class="content">
                         <div class="card-header">
+                            <Icon name="bar chart"/>
                             Yearly report
                         </div>
                     </div>

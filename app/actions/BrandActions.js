@@ -1,25 +1,15 @@
+import axios from 'axios';
 import BrandConstants from '../constants/BrandConstants';
-
-function handleErrors(response) {
-    if (!response.ok) {
-        throw Error(response.statusText);
-    }
-    return response;
-}
+import { getBearerRequestObject } from '../config/helpers';
 
 export function getBrands() {
-    let config = {
-        method: 'get',
-        headers: new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+    const config = {
+        url: '/api/brands',
+        method: 'get'
     };
 
     return {
         type: BrandConstants.FETCH_BRANDS,
-        payload: fetch('/api/brands', config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getBearerRequestObject(config))
     };
 }

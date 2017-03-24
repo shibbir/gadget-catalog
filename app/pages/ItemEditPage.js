@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Divider } from 'semantic-ui-react';
 import ItemFormContainer from '../containers/Item/ItemFormContainer';
 
 export default class ItemEditPage extends React.Component {
@@ -7,7 +7,7 @@ export default class ItemEditPage extends React.Component {
         return (
             <div>
                 <h3>Edit item</h3>
-                <hr/>
+                <Divider section/>
 
                 <ItemFormContainer id={this.props.params.id} form="Update"/>
             </div>

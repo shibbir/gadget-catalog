@@ -1,75 +1,53 @@
+import axios from 'axios';
+import { getBearerRequestObject } from '../config/helpers';
 import ItemConstants from '../constants/ItemConstants';
 
-function handleErrors(response) {
-    if (!response.ok) {
-        throw Error(response.statusText);
-    }
-    return response;
-}
-
 export function createItem(formData) {
-    let config = {
-        method: 'post',
-        body: formData,
-        headers: new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+    const config = {
+        url: '/api/items',
+        data: formData
     };
 
     return {
         type: ItemConstants.POST_ITEM,
-        payload: fetch('/api/items', config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getBearerRequestObject(config))
     };
 }
 
 export function updateItem(formData, id) {
-    let config = {
+    const config = {
+        url: `api/items/${id}`,
         method: 'put',
-        body: formData,
-        headers: new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+        data: formData
     };
 
     return {
         type: ItemConstants.PUT_ITEM,
-        payload: fetch(`api/items/${id}`, config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getBearerRequestObject(config))
     };
 }
 
 export function fetchItem(id) {
-    let config = {
-        method: 'get',
-        headers: new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+    const config = {
+        url: `/api/items/${id}`,
+        method: 'get'
     };
 
     return {
         type: ItemConstants.GET_ITEM,
-        payload: fetch(`/api/items/${id}`, config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getBearerRequestObject(config))
     };
 }
 
 export function fetchItems(query = '') {
-    let config = {
-        method: 'get',
-        headers: new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+    const config = {
+        url: `/api/items${query}`,
+        method: 'get'
     };
 
     return {
         type: ItemConstants.GET_ITEMS,
-        payload: fetch(`/api/items${query}`, config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getBearerRequestObject(config))
     };
 }
 
@@ -80,49 +58,37 @@ export function resetItemState() {
 }
 
 export function setAsActiveImage(itemId, fileId) {
-    let config = {
-        method: 'put',
-        headers: new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+    const config = {
+        url: `/api/items/${itemId}/images/${fileId}`,
+        method: 'put'
     };
 
     return {
         type: ItemConstants.UPDATE_ITEM_IMAGE,
-        payload: fetch(`/api/items/${itemId}/images/${fileId}`, config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getBearerRequestObject(config))
     };
 }
 
 export function deleteImage(itemId, fileId) {
     const config = {
-        method: 'delete',
-        headers: new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+        url: `/api/items/${itemId}/images/${fileId}`,
+        method: 'delete'
     };
 
     return {
         type: ItemConstants.DELETE_ITEM_IMAGE,
-        payload: fetch(`/api/items/${itemId}/images/${fileId}`, config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getBearerRequestObject(config))
     };
 }
 
 export function fetchItemCountsByYearRange(yearRange) {
     const config = {
-        method: 'get',
-        headers: new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
-        })
+        url: `/api/items/yearRange/${yearRange}`,
+        method: 'get'
     };
 
     return {
         type: ItemConstants.GET_ITEM_COUNTS_BY_YEAR,
-        payload: fetch(`/api/items/yearRange/${yearRange}`, config)
-            .then(handleErrors)
-            .then(response => response.json())
+        payload: axios(getBearerRequestObject(config))
     };
 }

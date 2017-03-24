@@ -18,10 +18,7 @@ module.exports = function(app, passport) {
     app.post('/api/register', function(req, res, next) {
         passport.authenticate('local-signup', function(err, user, info) {
             if(err || !user) {
-                return res.status(400).json({
-                    type: 'ValidationError',
-                    messages: [ info.message ]
-                });
+                return res.status(400).json({ type: 'error', message: info.message });
             }
 
             res.json(tokenResponse(user, 'local'));
@@ -35,10 +32,7 @@ module.exports = function(app, passport) {
             }
 
             if(!user || !user.validPassword(req.body.password)) {
-                return res.status(401).json({
-                    type: 'ValidationError',
-                    messages: [ 'Invalid credentials.' ]
-                });
+                return res.status(401).json({ type: 'error', message: 'Invalid credentials.' });
             }
 
             res.json(tokenResponse(user, 'local'));
@@ -72,10 +66,7 @@ module.exports = function(app, passport) {
 
         User.findOne(query, 'facebook displayName', function(err, user) {
             if(err || !user) {
-                return res.status(401).json({
-                    type: 'ValidationError',
-                    messages: ['Invalid access token or oauth provider.']
-                });
+                return res.status(401).json({ type: 'error', message: 'Invalid access token or oauth provider.' });
             }
             res.json(tokenResponse(user, provider));
         });

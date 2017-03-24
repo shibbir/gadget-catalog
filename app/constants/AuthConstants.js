@@ -14,5 +14,6 @@ export default keyMirror({
     ME_FROM_EXTERNAL_TOKEN: null,
     ME_FROM_EXTERNAL_TOKEN_FULFILLED: null,
     CHANGE_PASSWORD: null,
-    CHANGE_PASSWORD_FULFILLED: null
+    CHANGE_PASSWORD_FULFILLED: null,
+    INVALID_TOKEN: null
 });

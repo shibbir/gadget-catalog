@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container } from 'semantic-ui-react';
-
 import Footer from '../../components/Footer';
 import MessageContainer from '../../containers/MessageContainer';
 import NavbarContainer from '../../containers/NavbarContainer';

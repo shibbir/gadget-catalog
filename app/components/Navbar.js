@@ -16,7 +16,10 @@ export default class Navbar extends React.Component {
             <Container style={navBarStyle}>
                 <Menu stackable>
                     <Menu.Item header>Gadget Catalog</Menu.Item>
-                    <Link to="dashboard" activeClassName="active" class="item">Dashboard</Link>
+                    <Link to="dashboard" activeClassName="active" class="item">
+                        <Icon name="dashboard"/>
+                        Dashboard
+                    </Link>
                     <Dropdown item text='Item'>
                         <Dropdown.Menu>
                             <Link to="items" activeClassName="active" class="item">Item list</Link>
