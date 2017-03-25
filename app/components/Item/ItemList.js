@@ -108,7 +108,7 @@ export default class ItemList extends React.Component {
                     </Form.Group>
                 </Form>
 
-                <Divider section />
+                <Divider section/>
 
                 { cards.length > 0 &&
                     <div id="item-cards-container">
