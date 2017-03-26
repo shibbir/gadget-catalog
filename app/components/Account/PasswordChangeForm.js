@@ -9,12 +9,11 @@ const matchPassword = (values, allValues) => allValues.newPassword === allValues
 
 class PasswordChangeForm extends React.Component {
     handleSubmit(formValues) {
-        console.log(formValues);
         this.props.changePassword(formValues);
     }
 
     render() {
-        const { handleSubmit, reset, submitting } = this.props;
+        const { handleSubmit, reset, pristine, submitting } = this.props;
 
         return (
             <div>
@@ -29,7 +28,7 @@ class PasswordChangeForm extends React.Component {
                     <Button.Group>
                         <Button type="submit" positive disabled={submitting}>Change password</Button>
                         <Button.Or/>
-                        <Button type="button" disabled={submitting} onClick={reset}>Reset</Button>
+                        <Button type="button" disabled={pristine || submitting} onClick={reset}>Reset</Button>
                     </Button.Group>
                 </Form>
             </div>

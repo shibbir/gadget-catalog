@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Form, Divider, Button } from 'semantic-ui-react';
-
 import { TextInput, RichEditorInput, DropdownField, FileInput } from '../FieldInput/FieldInputs';
 
 const required = value => value ? undefined : 'This field must not be empty';
@@ -39,7 +38,7 @@ class ItemForm extends React.Component {
     }
 
     render() {
-        const { handleSubmit, reset, submitting, submitButtonText } = this.props;
+        const { handleSubmit, reset, submitting, pristine, submitButtonText } = this.props;
 
         const categoryOptions = this.props.categories.map(function(option) {
             return { key: option._id, value: option._id, text: option.name };
@@ -60,9 +59,9 @@ class ItemForm extends React.Component {
                 <Field name="file" label="Upload" component={FileInput}/>
                 <Divider hidden/>
                 <Button.Group>
-                    <Button type="submit" positive>{submitButtonText}</Button>
+                    <Button type="submit" positive disabled={submitting}>{submitButtonText}</Button>
                     <Button.Or/>
-                    <Button type="button" onClick={reset}>Reset</Button>
+                    <Button type="button" disabled={pristine || submitting} onClick={reset}>Reset</Button>
                 </Button.Group>
             </Form>
         );

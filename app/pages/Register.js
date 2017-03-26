@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 import { Button, Form, Segment, Header, Icon, Divider } from 'semantic-ui-react';
-
 import store from '../store';
 import { register } from '../actions/AuthActions';
 import { TextInput } from '../components/FieldInput/FieldInputs';
@@ -51,6 +51,8 @@ class Register extends React.Component {
                                     component={TextInput}
                                     validate={[ required ]}/>
                                 <Button fluid type="submit" class="large teal" disabled={submitting}>Register</Button>
+                                <Divider hidden/>
+                                Already have an account? <Link to="login">Sign in</Link>.
                             </Segment>
                         </Form>
                         <Divider hidden/>

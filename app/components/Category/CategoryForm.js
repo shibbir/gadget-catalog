@@ -35,7 +35,7 @@ class CategoryForm extends React.Component {
     }
 
     render() {
-        const { handleSubmit, reset, submitting, submitButtonText } = this.props;
+        const { handleSubmit, reset, submitting, pristine, submitButtonText } = this.props;
 
         return (
             <Form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
@@ -45,7 +45,7 @@ class CategoryForm extends React.Component {
                 <Button.Group>
                     <Button type="submit" positive disabled={submitting}>{submitButtonText}</Button>
                     <Button.Or/>
-                    <Button type="button" disabled={submitting} onClick={reset}>Reset form</Button>
+                    <Button type="button" disabled={pristine || submitting} onClick={reset}>Reset form</Button>
                 </Button.Group>
             </Form>
         );

@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 import { Button, Form, Segment, Header, Icon, Divider } from 'semantic-ui-react';
-
 import store from '../store';
 import { login } from '../actions/AuthActions';
 import { TextInput } from '../components/FieldInput/FieldInputs';
