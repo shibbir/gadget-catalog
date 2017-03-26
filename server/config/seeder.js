@@ -1,7 +1,7 @@
 const async = require('async');
-const Category = require('../models/category');
-const Brand = require('../models/brand');
-const User = require('../models/user');
+const Category = require('../models/category.model');
+const Brand = require('../models/brand.model');
+const User = require('../models/user.model');
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 

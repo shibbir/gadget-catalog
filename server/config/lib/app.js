@@ -1,8 +1,6 @@
 const path = require('path');
 const mongoose = require('./mongoose');
 const config = require('../config');
-const cloudinary = require('./cloudinary')();
-
 const passport = require('passport');
 
 module.exports.initMongo = callback => {
@@ -12,17 +10,16 @@ module.exports.initMongo = callback => {
 };
 
 module.exports.start = () => {
-    let _this = this;
-    let app = require('./express')();
+    const app = require('./express')();
 
     require('./passport')(passport);
 
-    _this.initMongo(function(db) {
-        require(path.join(process.cwd(), 'server/routes/index/'))(app);
-        require(path.join(process.cwd(), 'server/routes/account/'))(app, passport);
-        require(path.join(process.cwd(), 'server/routes/category/'))(app, passport, cloudinary);
-        require(path.join(process.cwd(), 'server/routes/brand/'))(app, passport);
-        require(path.join(process.cwd(), 'server/routes/item/'))(app, passport, cloudinary);
+    this.initMongo(function(db) {
+        require(path.join(process.cwd(), 'server/routes/index.routes'))(app);
+        require(path.join(process.cwd(), 'server/routes/account.routes'))(app, passport);
+        require(path.join(process.cwd(), 'server/routes/category.routes'))(app, passport);
+        require(path.join(process.cwd(), 'server/routes/brand.routes'))(app, passport);
+        require(path.join(process.cwd(), 'server/routes/item.routes'))(app, passport);
 
         require('../seeder').run();
 

@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
 const config = require('../config/config');
-const FileSchema = require('./sub-documents/file');
+const FileSchema = require('./sub-documents/file.model');
 
 let ItemSchema = Schema({
     name: {
