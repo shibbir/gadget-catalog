@@ -2,16 +2,12 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const helpers = require('./helpers');
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: {
         vendor: './app/vendor.js',
         app: './app/main.js'
-    },
-
-    resolve: {
-        extensions: ['.js'],
-        modules: [ path.resolve(__dirname, 'app'), 'node_modules' ]
     },
 
     module: {
@@ -51,10 +47,10 @@ module.exports = {
             name: ['app', 'vendor']
         }),
 
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery'
+        new CleanWebpackPlugin(['bundles'], {
+            root: path.resolve(__dirname, '../../public'),
+            verbose: true,
+            dry: false
         })
     ]
 };

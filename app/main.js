@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route, hashHistory, IndexRedirect } from 'react-router';
 import { IntlProvider } from 'react-intl';
+import { Router, Route, hashHistory, IndexRedirect } from 'react-router';
 
 import store from './store';
 import App from './pages/App';

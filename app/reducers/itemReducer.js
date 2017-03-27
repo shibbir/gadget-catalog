@@ -1,4 +1,4 @@
-const moment = require('moment');
+import moment from 'moment';
 import ItemConstants from '../constants/ItemConstants';
 
 const initialState = {
