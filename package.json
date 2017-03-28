@@ -5,12 +5,12 @@
   "author": "Shibbir Ahmed",
   "license": "MIT",
   "scripts": {
-    "start": "run-p webpack server",
-    "production": "webpack:prod && server:prod",
-    "server": "cross-env NODE_ENV=development gulp nodemon",
-    "webpack": "cross-env NODE_ENV=development webpack --watch --colors --progress",
-    "server:prod": "cross-env NODE_ENV=production gulp nodemon",
-    "webpack:prod": "cross-env NODE_ENV=production webpack --colors --progress"
+    "start": "gulp",
+    "npm-run-all": "run-p webpack:watch server",
+    "server": "gulp server",
+    "webpack": "webpack --colors --progress",
+    "webpack:watch": "webpack --watch --colors --progress",
+    "production": "gulp production"
   },
   "engines": {
     "node": "6.10.0"
@@ -30,7 +30,6 @@
     "body-parser": "^1.17.1",
     "clean-webpack-plugin": "^0.1.16",
     "cloudinary": "^1.8.0",
-    "cross-env": "^3.2.3",
     "css-loader": "^0.27.1",
     "draft-js": "^0.10.0",
     "draft-js-export-html": "^0.5.2",
@@ -38,6 +37,10 @@
     "express-hbs": "^1.0.4",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-shell": "^0.6.3",
     "highcharts": "^5.0.9",
     "jsonwebtoken": "^7.3.0",
     "lodash": "^4.17.4",
@@ -60,17 +63,13 @@
     "redux-logger": "^3.0.0",
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0",
+    "run-sequence": "^1.2.2",
     "semantic-ui-css": "^2.2.9",
     "semantic-ui-react": "^0.67.0",
-    "style-loader": "^0.15.0",
+    "style-loader": "^0.16.1",
     "toastr": "^2.1.2",
     "validator": "^7.0.0",
     "webpack": "^2.2.1",
     "webpack-merge": "^4.0.0"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-load-plugins": "^1.5.0",
-    "gulp-nodemon": "^2.2.1"
   }
 }

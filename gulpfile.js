@@ -3,8 +3,17 @@ const _ = require('lodash');
 const path = require('path');
 const plugins = require('gulp-load-plugins')({ lazy: true });
 const assets = require(path.join(process.cwd(), 'server/config/assets'));
+const runSequence = require('run-sequence');
 
-gulp.task('nodemon', () => {
+gulp.task('env:production', function() {
+    process.env.NODE_ENV = 'production';
+});
+
+gulp.task('env:development', function() {
+    process.env.NODE_ENV = 'development';
+});
+
+gulp.task('server', function() {
     return plugins.nodemon({
         script: 'server.js',
         nodeArgs: ['--debug'],
@@ -12,4 +21,15 @@ gulp.task('nodemon', () => {
         verbose: true,
         watch: _.union(assets.server.views, assets.server.allJS)
     });
+});
+
+gulp.task('webpack', plugins.shell.task('npm run webpack'));
+gulp.task('npm-run-all', plugins.shell.task('npm run npm-run-all'));
+
+gulp.task('production', function(done) {
+    runSequence('env:production', 'webpack', 'server', done);
+});
+
+gulp.task('default', function(done) {
+    runSequence('env:development', 'npm-run-all', done);
 });
