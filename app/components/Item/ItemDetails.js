@@ -37,7 +37,7 @@ export default class ItemDetails extends React.Component {
         return (
             <div>
                 <h3>{item.name}</h3>
-                <p class="lead">
+                <p className="lead">
                     Category: <Link to={`/categories/${item.category._id}`}>{item.category.name}</Link>
                 </p>
 

@@ -4,6 +4,7 @@ const hbs = require('express-hbs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const compression = require('compression');
 
 module.exports = function() {
     let app = express();
@@ -16,6 +17,8 @@ module.exports = function() {
 
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
+
+    app.use(compression());
 
     app.use(express.static(path.join(process.cwd(), 'public')));
 

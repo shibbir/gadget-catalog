@@ -31,7 +31,7 @@ export default class CategoryList extends React.Component {
                         <Link to={`items?filter_by=category&filter_id=${category._id}`}>
                             {`See all ${category.items.length} items`}
                         </Link>
-                        <div class="right floated">
+                        <div className="right floated">
                             <Button positive compact disabled={category.readonly} href={`#/categories/${category._id}/edit`}>
                                 <Icon name="edit"/> Edit
                             </Button>

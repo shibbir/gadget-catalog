@@ -7,12 +7,12 @@ const helpers = require('./helpers');
 module.exports = webpackMerge(commonConfig, {
     output: {
         path: helpers.root('public/bundles'),
-        filename: '[name].[chunkhash].js',
-        chunkFilename: '[id].[chunkhash].chunk.js'
+        filename: '[name].js',
+        chunkFilename: '[id].chunk.js'
     },
 
     plugins: [
-        new ExtractTextPlugin('[name].[chunkhash].css'),
+        new ExtractTextPlugin('[name].css'),
 
         new webpack.DefinePlugin({
             'process.env': {

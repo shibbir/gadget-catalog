@@ -66,7 +66,7 @@ export default class ItemList extends React.Component {
                         </Card.Description>
                     </Card.Content>
                     <Card.Content extra>
-                        <Link to={`items/${item._id}`} class="ui button teal">Details</Link>
+                        <Link to={`items/${item._id}`} className="ui button teal">Details</Link>
                     </Card.Content>
                 </Card>
             );

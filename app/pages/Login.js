@@ -28,15 +28,15 @@ class Login extends React.Component {
 
         return (
             <div style={loginPageStyle}>
-                <div class="ui middle aligned center aligned grid">
+                <div className="ui middle aligned center aligned grid">
                     <div style={columnStyle}>
-                        <Header as="h2" class="teal center aligned">
-                            <div class="content">
+                        <Header as="h2" className="teal center aligned">
+                            <div className="content">
                                 Log-in to your account
                             </div>
                         </Header>
                         <Form className="large" onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-                            <Segment class="stacked">
+                            <Segment className="stacked">
                                 <Field name="email"
                                     attributes={{ id: 'email', type: 'email', placeholder: 'E-mail address', icon: 'mail', iconPosition: 'left'}}
                                     component={TextInput}
@@ -45,11 +45,11 @@ class Login extends React.Component {
                                     attributes={{ id: 'password', type: 'password', placeholder: 'Password', icon: 'lock', iconPosition: 'left'}}
                                     component={TextInput}
                                     validate={[ required ]}/>
-                                <Button fluid type="submit" class="large teal" disabled={submitting}>Login</Button>
+                                <Button fluid type="submit" className="large teal" disabled={submitting}>Login</Button>
                             </Segment>
                         </Form>
                         <Divider hidden/>
-                        <Segment class="stacked center aligned">
+                        <Segment className="stacked center aligned">
                             <Link to="register">Sign up for a new account</Link>
                             <Divider horizontal>or, use social service</Divider>
                             <div>

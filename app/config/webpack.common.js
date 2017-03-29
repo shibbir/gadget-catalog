@@ -6,8 +6,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: {
-        vendor: './app/vendor.js',
         app: './app/main.js'
+    },
+
+    resolve: {
+        modules: [ path.join(process.cwd(), 'app'), 'node_modules' ],
+        extensions: ['.js']
     },
 
     module: {
@@ -18,9 +22,9 @@ module.exports = {
                     loader: 'babel-loader',
                     query: {
                         compact: false,
-                        presets: ['react', 'es2015', 'stage-0'],
-                        plugins: ['react-html-attrs', 'transform-class-properties']
-                    }
+                        presets: ['react', ['es2015', { modules: false }]],
+                        plugins: ['transform-object-rest-spread']
+                    },
                 }],
                 exclude: /(node_modules|bower_components)/
             },
@@ -44,7 +48,7 @@ module.exports = {
 
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['app', 'vendor']
+            name: ['app']
         }),
 
         new CleanWebpackPlugin(['bundles'], {

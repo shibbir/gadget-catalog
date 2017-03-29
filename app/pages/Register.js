@@ -29,15 +29,15 @@ class Register extends React.Component {
 
         return (
             <div style={loginPageStyle}>
-                <div class="ui middle aligned center aligned grid">
+                <div className="ui middle aligned center aligned grid">
                     <div style={columnStyle}>
-                        <Header as="h2" class="teal center aligned">
-                            <div class="content">
+                        <Header as="h2" className="teal center aligned">
+                            <div className="content">
                                 Sign up for a new account
                             </div>
                         </Header>
                         <Form className="large" onSubmit={handleSubmit(this.handleSubmit.bind(this))} error={invalid}>
-                            <Segment class="stacked">
+                            <Segment className="stacked">
                                 <Field name="name"
                                     attributes={{ id: 'name', type: 'text', placeholder: 'Name', icon: 'users', iconPosition: 'left'}}
                                     component={TextInput}
@@ -50,13 +50,13 @@ class Register extends React.Component {
                                     attributes={{ id: 'password', type: 'password', placeholder: 'Password', icon: 'lock', iconPosition: 'left'}}
                                     component={TextInput}
                                     validate={[ required ]}/>
-                                <Button fluid type="submit" class="large teal" disabled={submitting}>Register</Button>
+                                <Button fluid type="submit" className="large teal" disabled={submitting}>Register</Button>
                                 <Divider hidden/>
                                 Already have an account? <Link to="login">Sign in</Link>.
                             </Segment>
                         </Form>
                         <Divider hidden/>
-                        <Segment class="stacked center aligned">
+                        <Segment className="stacked center aligned">
                             <Divider horizontal>or, use social service</Divider>
                             <div>
                                 <Button color="facebook" href="/auth/facebook">
