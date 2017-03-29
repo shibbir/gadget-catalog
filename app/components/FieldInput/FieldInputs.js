@@ -9,7 +9,7 @@ export const TextInput = ({ input, attributes, label, meta: { touched, error } }
             { label && <label>{label}</label> }
             <Input {...input} {...attributes} fluid/>
             { touched && error &&
-                <div class="field-validation-error">
+                <div className="field-validation-error">
                     {error}
                 </div>
             }
@@ -34,7 +34,7 @@ export const DropdownField = ({ input, label, options, placeholder, meta: { touc
             <Select {...input} options={options} placeholder={placeholder} onChange={(e, d) => input.onChange(d.value)}/>
 
             { touched && error &&
-                <div class="field-validation-error">
+                <div className="field-validation-error">
                     {error}
                 </div>
             }
@@ -50,7 +50,7 @@ export const FileInput = ({ input: { name, onChange }, label, meta: { touched, e
             <Input type="file" name={name} accept="image/*" onChange={e => onChange(e.target.files[0])}/>
 
             { touched && error &&
-                <div class="field-validation-error">
+                <div className="field-validation-error">
                     {error}
                 </div>
             }
