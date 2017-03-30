@@ -4,7 +4,6 @@ module.exports = {
         description: 'A react application for cataloging gadgets'
     },
     port: process.env.PORT || 4040,
-    tokenSecret: 'a17dd903-6ffa-46d4-901a-3d34b55fce2b',
     db: {
         promise: global.Promise
     },

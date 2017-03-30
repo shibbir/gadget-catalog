@@ -4,6 +4,7 @@ module.exports = {
     app: {
         title: defaultEnvConfig.app.title
     },
+    tokenSecret: process.env.TOKEN_SECRET || 'application_secret_token',
     db: {
         uri: process.env.MONGOHQ_URL || process.env.MONGODB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/gadget-catalog'
     },
@@ -14,15 +15,14 @@ module.exports = {
     },
     oauth: {
         facebook: {
-            clientID: process.env.FACEBOOK_CLIENT_ID || 'client_id',
-            clientSecret: process.env.FACEBOOK_CLIENT_SECRET || 'client_secret',
-            callbackURL: process.env.FACEBOOK_CALLBACK_URL || 'callback_url',
-            profileFields: ['id', 'displayName', 'email']
+            clientID: process.env.FACEBOOK_CLIENT_ID || 'facebook_client_id',
+            clientSecret: process.env.FACEBOOK_CLIENT_SECRET || 'facebook_client_secret',
+            callbackURL: '/auth/facebook/callback'
         },
         google: {
-            clientID: process.env.GOOGLE_CLIENT_ID || 'client_id',
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'client_secret',
-            callbackURL: process.env.GOOGLE_CALLBACK_URL || 'callback_url'
+            clientID: process.env.GOOGLE_CLIENT_ID || 'google_client_id',
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'google_client_secret',
+            callbackURL: '/auth/google/callback'
         }
     }
 };

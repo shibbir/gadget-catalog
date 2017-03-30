@@ -43,17 +43,15 @@ Edit the environment files to configure OAuth.
 - For production: */server/config/env/production.js*
 
 ```bash
+tokenSecret: 'application_secret_token',
 oauth: {
     facebook: {
-        clientID: 'client_id',
-        clientSecret: 'client_secret',
-        callbackURL: 'callback_url',
-        profileFields: ['id', 'displayName', 'email']
+        clientID: 'facebook_client_id',
+        clientSecret: 'facebook_client_secret'
     },
     google: {
-        clientID: 'client_id',
-        clientSecret: 'client_secret',
-        callbackURL: 'callback_url',
+        clientID: 'google_client_id',
+        clientSecret: 'google_client_secret'
     }
 }
 ```

@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "gulp",
-    "npm-run-all": "run-p webpack:watch server",
-    "server": "gulp server",
+    "npm-run-all": "run-p webpack:watch serve:development",
+    "serve:development": "gulp serve:development",
     "webpack": "webpack --colors --progress",
     "webpack:watch": "webpack --watch --colors --progress",
     "production": "gulp production"
@@ -28,7 +28,7 @@
     "clean-webpack-plugin": "^0.1.16",
     "cloudinary": "^1.8.0",
     "compression": "^1.6.2",
-    "css-loader": "^0.27.1",
+    "css-loader": "^0.28.0",
     "draft-js": "^0.10.0",
     "draft-js-export-html": "^0.5.2",
     "express": "^4.15.2",

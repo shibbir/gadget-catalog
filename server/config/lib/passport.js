@@ -104,7 +104,7 @@ module.exports = function(passport) {
         clientID: config.oauth.facebook.clientID,
         clientSecret: config.oauth.facebook.clientSecret,
         callbackURL: config.oauth.facebook.callbackURL,
-        profileFields: config.oauth.facebook.profileFields
+        profileFields: ['id', 'displayName', 'email']
     }, function(token, refreshToken, profile, done) {
         process.nextTick(function() {
             User.findOne({ $or: [

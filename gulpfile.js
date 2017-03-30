@@ -13,7 +13,7 @@ gulp.task('env:development', function() {
     process.env.NODE_ENV = 'development';
 });
 
-gulp.task('server', function() {
+gulp.task('serve:development', function() {
     return plugins.nodemon({
         script: 'server.js',
         nodeArgs: ['--debug'],
@@ -25,9 +25,10 @@ gulp.task('server', function() {
 
 gulp.task('webpack', plugins.shell.task('npm run webpack'));
 gulp.task('npm-run-all', plugins.shell.task('npm run npm-run-all'));
+gulp.task('serve:production', plugins.shell.task('node server.js'));
 
 gulp.task('production', function(done) {
-    runSequence('env:production', 'webpack', 'server', done);
+    runSequence('env:production', 'webpack', 'serve:production', done);
 });
 
 gulp.task('default', function(done) {

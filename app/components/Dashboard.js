@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Icon } from 'semantic-ui-react';
-
 import PieChart from './Chart/PieChart';
 import ColumnChart from './Chart/ColumnChart';
 

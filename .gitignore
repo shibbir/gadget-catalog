@@ -12,6 +12,7 @@ node_modules
 .bower-*/
 bower_components
 coverage
+*.env
 
 # General
 # =======
