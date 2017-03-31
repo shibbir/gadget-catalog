@@ -77,10 +77,10 @@ module.exports = function(app, passport) {
     app.get('/auth/facebook/callback', function(req, res, next) {
         passport.authenticate('facebook', function(err, user, info) {
             if(err || !user) {
-                return res.redirect('http://localhost:4040/#/?provider=facebook&error=' + info.message);
+                return res.redirect('/#/?provider=facebook&error=' + info.message);
             }
 
-            res.redirect('http://localhost:4040/#/?provider=facebook&token=' + user.facebook.token);
+            res.redirect('/#/?provider=facebook&token=' + user.facebook.token);
         })(req, res, next);
     });
 
@@ -89,10 +89,10 @@ module.exports = function(app, passport) {
     app.get('/auth/google/callback', function(req, res, next) {
         passport.authenticate('google', function(err, user, info) {
             if(err || !user) {
-                return res.redirect('http://localhost:4040/#/?provider=google&error=' + info.message);
+                return res.redirect('/#/?provider=google&error=' + info.message);
             }
 
-            res.redirect('http://localhost:4040/#/?provider=google&token=' + user.google.token);
+            res.redirect('/#/?provider=google&token=' + user.google.token);
         })(req, res, next);
     });
 };
