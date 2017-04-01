@@ -24,3 +24,9 @@ a[disabled] {
 #item-cards-container .ui.cards > .card > .content {
     border: none;
 }
+
+.ui.loader {
+    top: 50% !important;
+    left: 50% !important;
+    position: fixed !important;
+}

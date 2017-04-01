@@ -1,4 +1,4 @@
-const keyMirror = require('fbjs/lib/keyMirror');
+import keyMirror from 'fbjs/lib/keyMirror';
 
 export default keyMirror({
     POST_ITEM: null,

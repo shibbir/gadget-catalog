@@ -18,10 +18,6 @@ export default function reducer(state=initialState, action) {
                 isLoggedIn: true
             };
         }
-        case AuthConstants.LOGIN_REJECTED:
-        case AuthConstants.REGISTER_REJECTED: {
-            return state;
-        }
         case AuthConstants.LOGOUT: {
             localStorage.removeItem('jwtToken');
             return {
@@ -30,7 +26,6 @@ export default function reducer(state=initialState, action) {
                 isLoggedIn: false
             };
         }
-        case AuthConstants.INVALID_TOKEN: {}
     }
     return state;
 }

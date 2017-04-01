@@ -9,10 +9,6 @@ export default class MessageComponent extends React.Component {
             toastr[type](message);
         }
 
-        return (
-            <div>
-                {this.props.children}
-            </div>
-        );
+        return <div/>;
     }
 }
