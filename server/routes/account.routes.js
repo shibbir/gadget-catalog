@@ -56,7 +56,7 @@ module.exports = function(app, passport) {
             user.local.password = user.generateHash(req.body.newPassword);
             user.save();
 
-            res.sendStatus(200);
+            return res.status(200).json({ type: 'success', message: 'Passward changed successfully.' });
         });
     });
 

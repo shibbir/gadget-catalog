@@ -30,7 +30,9 @@ export default class App extends React.Component {
                 <Container>
                     {this.props.children}
                 </Container>
-                <Footer/>
+                { this.props.isLoggedIn &&
+                    <Footer/>
+                }
                 <MessageContainer/>
             </div>
         );

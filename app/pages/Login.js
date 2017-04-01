@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
-import { Button, Form, Segment, Header, Icon, Divider } from 'semantic-ui-react';
+import { Button, Form, Segment, Header, Icon, Divider, Image } from 'semantic-ui-react';
 import store from '../store';
 import { login } from '../actions/AuthActions';
 import { TextInput } from '../components/FieldInput/FieldInputs';
@@ -19,18 +19,19 @@ class Login extends React.Component {
     render() {
         const { handleSubmit, submitting } = this.props;
 
-        const loginPageStyle = {
-            paddingTop: '60px'
+        const pageStyle = {
+            paddingTop: '85px'
         };
         const columnStyle = {
             maxWidth: '450px'
         };
 
         return (
-            <div style={loginPageStyle}>
+            <div style={pageStyle}>
                 <div className="ui middle aligned center aligned grid">
                     <div style={columnStyle}>
                         <Header as="h2" className="teal center aligned">
+                            <Image src={`images/logo.png`}/>
                             <div className="content">
                                 Log-in to your account
                             </div>

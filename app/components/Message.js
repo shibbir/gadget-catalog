@@ -5,7 +5,7 @@ export default class MessageComponent extends React.Component {
     render() {
         const { type, message } = this.props;
 
-        if(message) {
+        if(type && message) {
             toastr[type](message);
         }
 
