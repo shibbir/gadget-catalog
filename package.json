@@ -8,16 +8,18 @@
     "start": "gulp",
     "npm-run-all": "run-p webpack:watch serve:development",
     "serve:development": "gulp serve:development",
+    "serve:production": "gulp serve:production",
     "webpack": "webpack --colors --progress",
     "webpack:watch": "webpack --watch --colors --progress",
-    "production": "gulp production"
+    "production": "gulp production",
+    "heroku": "run-p webpack serve:production"
   },
   "engines": {
     "node": "6.10.0"
   },
   "dependencies": {
     "async": "^2.1.5",
-    "axios": "^0.15.3",
+    "axios": "^0.16.0",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.4.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
