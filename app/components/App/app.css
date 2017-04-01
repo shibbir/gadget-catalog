@@ -28,9 +28,3 @@ a[disabled] {
 #loader {
     display: none;
 }
-
-.ui.loader {
-    top: 50% !important;
-    left: 50% !important;
-    position: fixed !important;
-}
