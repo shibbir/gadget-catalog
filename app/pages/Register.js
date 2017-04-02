@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 import { Button, Form, Segment, Header, Icon, Divider, Image } from 'semantic-ui-react';
 import store from '../store';
+import SocialAuthService from '../components/SocialAuthService';
 import { register } from '../actions/AuthActions';
 import { TextInput } from '../components/FieldInput/FieldInputs';
 
@@ -56,18 +57,7 @@ class Register extends React.Component {
                                 Already have an account? <Link to="login">Sign in</Link>.
                             </Segment>
                         </Form>
-                        <Divider hidden/>
-                        <Segment className="stacked center aligned">
-                            <Divider horizontal>or, use social service</Divider>
-                            <div>
-                                <Button color="facebook" href="/auth/facebook">
-                                    <Icon name="facebook"/> Facebook
-                                </Button>
-                                <Button color="google plus" href="/auth/google">
-                                    <Icon name="google plus"/> Google
-                                </Button>
-                            </div>
-                        </Segment>
+                        <SocialAuthService/>
                     </div>
                 </div>
             </div>

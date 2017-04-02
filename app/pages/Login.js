@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 import { Button, Form, Segment, Header, Icon, Divider, Image } from 'semantic-ui-react';
 import store from '../store';
+import SocialAuthService from '../components/SocialAuthService';
 import { login } from '../actions/AuthActions';
 import { TextInput } from '../components/FieldInput/FieldInputs';
 
@@ -47,21 +48,11 @@ class Login extends React.Component {
                                     component={TextInput}
                                     validate={[ required ]}/>
                                 <Button fluid type="submit" className="large teal" disabled={submitting}>Login</Button>
+                                <Divider hidden/>
+                                Don't have an account? <Link to="register">Sign up</Link>.
                             </Segment>
                         </Form>
-                        <Divider hidden/>
-                        <Segment className="stacked center aligned">
-                            <Link to="register">Sign up for a new account</Link>
-                            <Divider horizontal>or, use social service</Divider>
-                            <div>
-                                <Button color="facebook" href="/auth/facebook">
-                                    <Icon name="facebook"/> Facebook
-                                </Button>
-                                <Button color="google plus" href="/auth/google">
-                                    <Icon name="google plus"/> Google
-                                </Button>
-                            </div>
-                        </Segment>
+                        <SocialAuthService/>
                     </div>
                 </div>
             </div>

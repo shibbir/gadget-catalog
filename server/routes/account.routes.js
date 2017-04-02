@@ -49,6 +49,10 @@ module.exports = function(app, passport) {
                 return res.sendStatus(500);
             }
 
+            if(!user.local.password) {
+                return res.status(400).json({ type: 'error', message: 'You don\'t have a local account.' });
+            }
+
             if(!user || !user.validPassword(req.body.currentPassword)) {
                 return res.status(401).json({ type: 'error', message: 'Invalid credentials.' });
             }

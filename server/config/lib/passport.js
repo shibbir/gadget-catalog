@@ -106,11 +106,15 @@ module.exports = function(passport) {
         callbackURL: config.oauth.facebook.callbackURL,
         profileFields: ['id', 'displayName', 'email']
     }, function(token, refreshToken, profile, done) {
+        const { id, displayName, emails } = profile;
+
+        let email = emails ? emails[0].value : '';
+
         process.nextTick(function() {
             User.findOne({ $or: [
-                { 'facebook.id' : profile.id },
-                { 'google.email': profile.emails[0].value },
-                { 'local.email': profile.emails[0].value }
+                { 'facebook.id' : id },
+                { 'google.email': email },
+                { 'local.email': email }
             ]}, function(err, user) {
                 if (err) {
                     return done(err);
@@ -118,10 +122,13 @@ module.exports = function(passport) {
 
                 if (user) {
                     if (!user.facebook.id) {
-                        user.facebook.id = profile.id;
+                        user.facebook.id = id;
                         user.facebook.token = token;
-                        user.facebook.name = profile.displayName;
-                        user.facebook.email = profile.emails[0].value;
+                        user.facebook.name = displayName;
+
+                        if(emails) {
+                            user.facebook.email = emails[0].value;
+                        }
 
                         user.save(function(err) {
                             if (err) {
@@ -135,11 +142,14 @@ module.exports = function(passport) {
                 } else {
                     let newUser = new User();
 
-                    newUser.facebook.id = profile.id;
+                    newUser.facebook.id = id;
                     newUser.facebook.token = token;
-                    newUser.facebook.name = profile.displayName;
-                    newUser.facebook.email = profile.emails[0].value;
-                    newUser.displayName = profile.displayName;
+                    newUser.facebook.name = displayName;
+                    newUser.displayName = displayName;
+
+                    if(emails) {
+                        user.facebook.email = emails[0].value;
+                    }
 
                     newUser.save(function(err) {
                         if (err) {
@@ -164,11 +174,13 @@ module.exports = function(passport) {
         callbackURL: config.oauth.google.callbackURL
     },
     function(token, refreshToken, profile, done) {
+        const { id, displayName, emails } = profile;
+
         process.nextTick(function() {
             User.findOne({ $or: [
-                { 'google.id': profile.id },
-                { 'facebook.email': profile.emails[0].value },
-                { 'local.email': profile.emails[0].value }
+                { 'google.id': id },
+                { 'facebook.email': emails[0].value },
+                { 'local.email': emails[0].value }
             ]}, function(err, user) {
                 if (err) {
                     return done(err);
@@ -176,10 +188,10 @@ module.exports = function(passport) {
 
                 if (user) {
                     if (!user.google.id) {
-                        user.google.id = profile.id;
+                        user.google.id = id;
                         user.google.token = token;
-                        user.google.name = profile.displayName;
-                        user.google.email = profile.emails[0].value;
+                        user.google.name = displayName;
+                        user.google.email = emails[0].value;
 
                         user.save(function(err) {
                             if (err) {
@@ -193,11 +205,11 @@ module.exports = function(passport) {
                 } else {
                     let newUser = new User();
 
-                    newUser.google.id = profile.id;
+                    newUser.google.id = id;
                     newUser.google.token = token;
-                    newUser.google.name = profile.displayName;
-                    newUser.google.email = profile.emails[0].value;
-                    newUser.displayName = profile.displayName;
+                    newUser.google.email = emails[0].value;
+                    newUser.google.name = displayName;
+                    newUser.displayName = displayName;
 
                     newUser.save(function(err) {
                         if (err) {

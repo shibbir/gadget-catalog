@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-
 import { changePassword } from '../actions/AuthActions';
 import Profile from '../components/Account/Profile';
 
