@@ -2,13 +2,14 @@
 > A React application for cataloging gadgets
 
 [![Build Status](https://travis-ci.org/shibbir/gadget-catalog.svg?branch=master)](https://travis-ci.org/shibbir/gadget-catalog)
+[![Coverage Status](https://coveralls.io/repos/github/shibbir/gadget-catalog/badge.svg?branch=master)](https://coveralls.io/github/shibbir/gadget-catalog?branch=master)
 [![Dependency Status](https://david-dm.org/shibbir/gadget-catalog.svg)](https://david-dm.org/shibbir/gadget-catalog)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 Built with:
 
 - [React](https://facebook.github.io/react/)
-- [Draft.js](https://facebook.github.io/draft-js/)
+- [Draft.js](https://draftjs.org/)
 - [Redux](http://redux.js.org/)
 - [Redux Form](http://redux-form.com)
 - [Semantic-UI-React](http://react.semantic-ui.com)
@@ -16,7 +17,7 @@ Built with:
 - [MongoDB](https://www.mongodb.com/)
 - [Cloudinary](http://cloudinary.com/documentation/solution_overview)
 - [Passport](http://passportjs.org/)
-- [Webpack](https://webpack.github.io/)
+- [Webpack](https://webpack.js.org/)
 
 ## Setup Cloudinary
 
@@ -63,7 +64,26 @@ You need to have latest version of [Node.js](https://nodejs.org/en/) installed o
 ```bash
 $ cd /path/to/root
 $ npm install
+
+## for development preview
 $ npm start
+
+## for production preview
+$ npm run production
+```
+
+## Running Unit Tests
+
+```bash
+$ cd /path/to/root
+$ npm test
+```
+
+## Code Coverage
+
+```bash
+$ cd /path/to/root
+$ npm run coverage
 ```
 
 ## License

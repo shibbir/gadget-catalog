@@ -6,6 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "gulp",
+    "test": "mocha server/tests/**/*.spec.js --reporter spec --timeout 3000",
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha server/tests/**/*.spec.js -- -R spec",
     "npm-run-all": "run-p webpack:watch serve:development",
     "serve:development": "gulp serve:development",
     "serve:production": "gulp serve:production",
@@ -71,5 +73,12 @@
     "validator": "^7.0.0",
     "webpack": "^2.2.1",
     "webpack-merge": "^4.0.0"
+  },
+  "devDependencies": {
+    "coveralls": "^2.13.0",
+    "faker": "^4.1.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0"
   }
 }
