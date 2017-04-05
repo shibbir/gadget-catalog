@@ -25,7 +25,9 @@ export default class CategoryList extends React.Component {
                         <Icon name="lock"/>
                     </Label>
 
-                    <Image src={activeImage} alt={category.name}/>
+                    <Card.Content className="ui center aligned">
+                        <Image src={activeImage} alt={category.name}/>
+                    </Card.Content>
 
                     <Card.Content extra>
                         <Link to={`items?filter_by=category&filter_id=${category._id}`}>
@@ -42,7 +44,7 @@ export default class CategoryList extends React.Component {
         });
 
         return (
-            <div id="cards-container">
+            <div id="category-cards-container">
                 <Card.Group>
                     {cards}
                 </Card.Group>

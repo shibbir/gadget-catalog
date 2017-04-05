@@ -71,7 +71,7 @@ function createCategory(req, res) {
                 callback(null);
             }, { folder: 'categories', invalidate: true });
         }
-    ], function (err) {
+    ], function(err) {
         if(err) {
             return res.sendStatus(500);
         }
@@ -97,14 +97,17 @@ function updateCategory(req, res) {
         }
 
         doc.name = req.body.name;
+        doc.slug = convertToSlug(req.body.name);
+
+        let oldFile = null;
 
         async.waterfall([
             function(callback) {
                 if(!req.file) {
-                    return callback();
+                    return callback(null);
                 }
 
-                const oldFile = doc.file;
+                oldFile = doc.file;
 
                 cloudinary.uploader.upload(req.file.path, function(result) {
                     const { public_id, resource_type, type, format } = result;
@@ -118,21 +121,24 @@ function updateCategory(req, res) {
                     };
 
                     fs.unlinkSync(req.file.path);
-                    callback(null, oldFile);
+                    callback(null);
                 }, { folder: 'categories' });
             },
-            function(oldFile, callback) {
+            function(callback) {
                 if(!oldFile) {
-                    return callback();
+                    return callback(null);
                 }
 
                 cloudinary.uploader.destroy(oldFile.public_id, function() {
-                    callback();
+                    callback(null);
                 }, { invalidate: true });
             }
-        ], function () {
+        ], function(err) {
+            if(err) {
+                return res.sendStatus(500);
+            }
             doc.save();
-            res.json(doc);
+            res.json({ type: 'success', message: 'Category updated successfully.', doc });
         });
     });
 }

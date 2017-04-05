@@ -12,16 +12,21 @@ a[disabled] {
 }
 
 .ui.cards > .card {
-    width: 320px;
-    margin-right: 20px;
     margin-bottom: 20px;
+    margin-right: 25px;
 }
 
-#item-cards-container .ui.cards > .card > .content > .header:not(.ui) {
+#item-cards-container .ui.cards > .card {
+    width: 320px;
+}
+
+#item-cards-container .ui.cards > .card > .content > .header:not(.ui),
+#category-cards-container .ui.cards > .card > .content > .header:not(.ui) {
     font-size: 1.1em;
 }
 
-#item-cards-container .ui.cards > .card > .content {
+#item-cards-container .ui.cards > .card > .content,
+#category-cards-container .ui.cards > .card > .content {
     border: none;
 }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import { getCategories } from '../../actions/CategoryActions';
 import CategoryList from '../../components/Category/CategoryList';
 
