@@ -5,7 +5,7 @@ const passport = require('passport');
 
 module.exports.initMongo = callback => {
     mongoose.connect(function (db) {
-        if (callback) callback(db);
+        if(callback) callback(db);
     });
 };
 
@@ -21,7 +21,9 @@ module.exports.start = () => {
         require(path.join(process.cwd(), 'server/routes/brand.routes'))(app, passport);
         require(path.join(process.cwd(), 'server/routes/item.routes'))(app, passport);
 
-        require('../seeder').run();
+        if(config.db.seedDB) {
+            require('../seeder').run();
+        }
 
         app.listen(app.get('port'), () => {
             console.info("Server running on port %s in %s mode...", app.get('port'), app.settings.env);

@@ -30,8 +30,9 @@ const userSeeder = function(callback) {
 
 const categorySeeder = function(user, callback) {
     const array = [
-        'Laptop', 'Motherboard', 'Processor', 'Mobile', 'Memory', 'Miscellaneous', 'Gaming consoles & peripherals',
-        'Networking', 'PSU', 'GPU', 'Storage', 'Monitor', 'Chassis', 'Sound system', 'Computer Accessories'
+        'Laptop', 'Motherboard', 'Processor', 'Mobile', 'Tablet', 'Memory', 'Gaming console & peripheral',
+        'Networking', 'PSU', 'GPU', 'Storage', 'Monitor', 'Chassis', 'Sound system', 'Computer accessories',
+        'Optical drive', 'Keyboard & Mouse'
     ].sort();
 
     async.each(array, function(item, asyncCallback) {
