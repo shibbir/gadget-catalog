@@ -16,7 +16,7 @@ function getItem(req, res) {
             }
 
             if(!doc) {
-                return res.status(400).json({ type: 'error', message: 'Operation failed or you don\'t have the permission!'});
+                return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!'});
             }
 
             if(doc.description) {
@@ -52,16 +52,10 @@ function getItems(req, res) {
             return res.sendStatus(500);
         }
 
-        Item.find(query).skip(skip).limit(size).populate('category', 'name').populate('brand', 'name').exec(function(err, docs) {
+        Item.find(query).skip(skip).limit(size).exec(function(err, docs) {
             if(err) {
                 return res.sendStatus(500);
             }
-
-            docs = docs.map(function(doc) {
-                doc.brand = doc.brand[0];
-                doc.category = doc.category[0];
-                return doc;
-            });
 
             res.json({
                 pagination: {
@@ -132,7 +126,7 @@ function updateItem(req, res) {
         }
 
         if(!doc) {
-            return res.status(400).json({ type: 'error', message: 'Operation failed or you don\'t have the permission!'});
+            return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!'});
         }
 
         doc.name = req.body.name;
@@ -225,7 +219,7 @@ function deleteImage(req, res) {
         }
 
         if(!doc) {
-            return res.status(400).json({ type: 'error', message: 'Operation failed or you don\'t have the permission!'});
+            return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!'});
         }
 
         let file = doc.files.id(req.params.fileId);

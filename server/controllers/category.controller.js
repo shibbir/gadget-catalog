@@ -93,7 +93,7 @@ function updateCategory(req, res) {
         }
 
         if(!doc) {
-            return res.status(400).json({ type: 'error', message: 'Operation failed or you don\'t have the permission!'});
+            return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!'});
         }
 
         doc.name = req.body.name;
@@ -138,7 +138,7 @@ function updateCategory(req, res) {
                 return res.sendStatus(500);
             }
             doc.save();
-            res.json({ type: 'success', message: 'Category updated successfully.', doc });
+            res.json({ message: 'Category updated successfully.', doc });
         });
     });
 }

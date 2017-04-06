@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, hashHistory } from 'react-router';
-import { FormattedDate, FormattedNumber } from 'react-intl';
-import { Card, Select, Form, Divider, Button, Label, Message, Icon, Menu, Container, Image } from 'semantic-ui-react';
+import { Card, Select, Form, Divider, Label, Message, Icon, Menu, Container, Image } from 'semantic-ui-react';
 
 export default class ItemList extends React.Component {
     constructor(props) {
@@ -52,21 +51,10 @@ export default class ItemList extends React.Component {
             activeImage = activeImage ? activeImage.url : item.noImageUrl;
 
             return (
-                <Card key={item._id} raised>
-                    <Card.Content header={item.name}/>
-                    <Card.Content>
+                <Card key={item._id} raised href={`#/items/${item._id}`}>
+                    <Card.Content header={item.name} className="ui center aligned"/>
+                    <Card.Content className="ui center aligned">
                         <Image src={activeImage} alt={item.name}/>
-                    </Card.Content>
-                    <Card.Content>
-                        <Card.Description>
-                            <div>Category: {item.category.name}</div>
-                            <div>Brand: {item.brand.name}</div>
-                            <div>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></div>
-                            <div>Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></div>
-                        </Card.Description>
-                    </Card.Content>
-                    <Card.Content extra>
-                        <Link to={`items/${item._id}`} className="ui button teal">Details</Link>
                     </Card.Content>
                 </Card>
             );

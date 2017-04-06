@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-
 import { getBrands } from '../../actions/BrandActions';
 import { getCategories } from '../../actions/CategoryActions';
 import { fetchItems } from '../../actions/ItemActions';

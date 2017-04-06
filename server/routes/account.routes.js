@@ -18,7 +18,7 @@ module.exports = function(app, passport) {
     app.post('/api/register', function(req, res, next) {
         passport.authenticate('local-signup', function(err, user, info) {
             if(err || !user) {
-                return res.status(400).json({ type: 'error', message: info.message });
+                return res.status(400).json({ message: info.message });
             }
 
             res.json(tokenResponse(user, 'local'));
@@ -32,7 +32,7 @@ module.exports = function(app, passport) {
             }
 
             if(!user || !user.validPassword(req.body.password)) {
-                return res.status(401).json({ type: 'error', message: 'Invalid credentials.' });
+                return res.status(401).json({ message: 'Invalid credentials.' });
             }
 
             res.json(tokenResponse(user, 'local'));
@@ -50,17 +50,17 @@ module.exports = function(app, passport) {
             }
 
             if(!user.local.password) {
-                return res.status(400).json({ type: 'error', message: 'You don\'t have a local account.' });
+                return res.sendStatus(400);
             }
 
             if(!user || !user.validPassword(req.body.currentPassword)) {
-                return res.status(401).json({ type: 'error', message: 'Invalid credentials.' });
+                return res.sendStatus(401);
             }
 
             user.local.password = user.generateHash(req.body.newPassword);
             user.save();
 
-            return res.status(200).json({ type: 'success', message: 'Passward changed successfully.' });
+            return res.status(200).json({ message: 'Passward changed successfully.' });
         });
     });
 
@@ -70,7 +70,7 @@ module.exports = function(app, passport) {
 
         User.findOne(query, 'facebook displayName', function(err, user) {
             if(err || !user) {
-                return res.status(401).json({ type: 'error', message: 'Invalid access token or oauth provider.' });
+                return res.status(401).json({ message: 'Invalid access token or oauth provider.' });
             }
             res.json(tokenResponse(user, provider));
         });

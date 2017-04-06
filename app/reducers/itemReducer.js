@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export default function reducer(state=initialState, action) {
-    switch (action.type) {
+    switch(action.type) {
         case ItemConstants.GET_ITEM_PENDING: {
             return { ...state, activeItem: { ...state.activeItem }};
         }
