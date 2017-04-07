@@ -28,7 +28,7 @@ export default class Footer extends React.Component {
                             <div className="eight wide right floated column">
                                 <h4 className="ui inverted teal header">Help Preserve This Project</h4>
                                 <p>
-                                    Maintained by <a href="https://shibbir.io">Shibbir Ahmed</a>.
+                                    Developed by <a href="https://shibbir.io">Shibbir Ahmed</a>.
                                     Code licensed <a rel="license" href="https://github.com/shibbir/gadget-catalog/blob/master/LICENSE">MIT</a>
                                 </p>
                                 <p>

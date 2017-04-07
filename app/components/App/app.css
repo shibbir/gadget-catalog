@@ -26,6 +26,10 @@ a[disabled] {
     border: none;
 }
 
+#item-images .ui.cards > .card {
+    width: 175px;
+}
+
 #loader {
     display: none;
 }

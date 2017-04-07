@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedDate, FormattedNumber } from 'react-intl';
-import { Message, Icon, Card, Divider } from 'semantic-ui-react';
+import { Message, Icon, Divider, Grid, Image, Item, Button, Header, Card } from 'semantic-ui-react';
 
 export default class ItemDetails extends React.Component {
     constructor(props) {
         super();
-        this.state = { item: null };
+        this.state = { item: null, framedImage: '//res.cloudinary.com/shibbir/image/upload/v1487437653/miscellaneous/no-img.png' };
 
         props.fetchItem(props.itemId);
+
+        this.setAsFramedImage = this.setAsFramedImage.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -16,7 +18,15 @@ export default class ItemDetails extends React.Component {
 
         if(item) {
             this.setState({ item });
+
+            if(item.files && item.files.length) {
+                this.setAsFramedImage(item.files[0]);
+            }
         }
+    }
+
+    setAsFramedImage(file) {
+        this.setState({ framedImage: file.url });
     }
 
     render() {
@@ -36,41 +46,66 @@ export default class ItemDetails extends React.Component {
 
         return (
             <div>
-                <h3>{item.name}</h3>
-                <p className="lead">
-                    Category: <Link to={`/categories/${item.category._id}`}>{item.category.name}</Link>
-                </p>
+                <Header as='h2'>{item.name}</Header>
 
-                <Divider section/>
+                <Grid>
+                    <Grid.Column width={10}>
+                        <Card raised fluid>
+                            <Card.Content className="center aligned">
+                                <Image src={this.state.framedImage}/>
+                            </Card.Content>
+                        </Card>
+                    </Grid.Column>
+                    <Grid.Column width={6}>
+                        <Item>
+                            <Item.Content>
+                                <Divider horizontal>Meta Informations</Divider>
+                                <Item.Meta>
+                                    <div>Category: <Link to={`/categories/${item.category._id}`}>{item.category.name}</Link></div>
+                                    <div>Brand: <Link to={`/brands/${item.brand._id}`}>{item.brand.name}</Link></div>
+                                    <div>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></div>
+                                    <div>Purchase Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></div>
+                                </Item.Meta>
+                                <Divider horizontal>Description</Divider>
+                                <Item.Description>
+                                    { item.description &&
+                                        <div dangerouslySetInnerHTML={{ __html: item.description }}></div>
+                                    }
+                                    { !item.description &&
+                                        <div>Not available at the moment.</div>
+                                    }
+                                </Item.Description>
+                            </Item.Content>
+                        </Item>
 
-                {item.files.length > 0 &&
-                    <Card.Group>
-                        {item.files.map((file) =>
-                            <Card raised key={file._id} image={file.url}/>
-                        )}
-                    </Card.Group>
+                        <Divider section/>
+
+                        <Button color="blue" href={`#/items/${item._id}/edit`}>
+                            <Icon name="pencil"/> Edit
+                        </Button>
+
+                        { item.files.length > 0 &&
+                            <Button color="violet" href={`#/items/${item._id}/images`}>
+                                <Icon name="image"/> Manage images
+                            </Button>
+                        }
+                    </Grid.Column>
+                </Grid>
+
+                { item.files.length > 0 &&
+                    <div id="item-images">
+                        <Divider hidden/>
+                        <Card.Group>
+                            { item.files.map((file) =>
+                                <Card key={file._id} raised onClick={this.setAsFramedImage.bind(this, file)}>
+                                    <Card.Content className="center aligned">
+                                        <Image src={file.url} size="small"/>
+                                    </Card.Content>
+                                </Card>
+                            )}
+                        </Card.Group>
+                    </div>
                 }
-
-                {item.files.length === 0 &&
-                    <Message warning>
-                        <Message.Header>
-                            <Icon name="warning sign" size="large"/>
-                            Warning!
-                        </Message.Header>
-                        <p>No images are found for this item.</p>
-                    </Message>
-                }
-
-                <Divider hidden/>
-
-                <p>Brand: <Link to={`/brands/${item.brand._id}`}>{item.brand.name}</Link></p>
-                <p>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></p>
-                <p>Purchase Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></p>
-                <div>
-                    <p>Description</p>
-                    <div dangerouslySetInnerHTML={{ __html: item.description }}></div>
-                </div>
-                <Link to={`/items/${item._id}/edit`}>Edit</Link> {item.files.length > 0 && <span> | <Link to={`/items/${item._id}/images`}>Manage images</Link></span>}
             </div>
         );
     }

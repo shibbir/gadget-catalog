@@ -17,14 +17,14 @@ export default class ItemImages extends React.Component {
 
         return (
             <div>
-                {item.files.length > 0 &&
+                { item.files.length > 0 &&
                     <Card.Group>
-                        {item.files.map((file) => {
+                        { item.files.map((file) => {
                             return (
                                 <Card key={file._id} raised>
                                     { file.active &&
                                         <Label color="teal" corner="right" size="small">
-                                            <Icon name="bookmark"/>
+                                            <Icon name="pin"/>
                                         </Label>
                                     }
 
@@ -50,7 +50,7 @@ export default class ItemImages extends React.Component {
                         })}
                     </Card.Group>
                 }
-                {item.files.length === 0 &&
+                { item.files.length === 0 &&
                     <Message warning>
                         <Message.Header>
                             <Icon name="warning sign" size="large"/>
