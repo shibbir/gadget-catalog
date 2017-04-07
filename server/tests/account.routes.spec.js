@@ -9,17 +9,17 @@ const config = require('../config/env/test');
 require('../config/lib/passport')(passport);
 require('../routes/account.routes')(app, passport);
 
-describe('Account routes', function() {
-    let user = null;
+describe('Account Routes', function() {
+    let admin = {};
 
     before(function(done) {
         mongoose.connect(config.db.uri);
 
-        helpers.createLocalAccount(function(err, doc) {
-            if (err) {
+        helpers.createAccount('admin', function(err, doc) {
+            if(err) {
                 throw err;
             }
-            user = doc;
+            admin = doc;
             done();
         });
     });
@@ -31,7 +31,7 @@ describe('Account routes', function() {
         });
     });
 
-    describe('POST /api/register', function() {
+    describe('User login & registration', function() {
         it('Should create a local account', function(done) {
             request(app)
                 .post('/api/register')
@@ -47,15 +47,43 @@ describe('Account routes', function() {
                 });
         });
 
-        it('Should return error if email address already exists', function(done) {
+        it('Should login with valid credentials', function(done) {
             request(app)
-                .post('/api/register')
+                .post('/api/login')
                 .send({
-                    name: faker.name.findName(),
-                    email: user.email,
+                    email: admin.email,
                     password: 'xxx-xxx-xxx'
                 })
-                .expect(400)
+                .expect(200)
+                .end(function(err, res) {
+                    if(err) throw err;
+                    done();
+                });
+        });
+    });
+
+    describe('User profile', function() {
+        let user = {};
+
+        before(function(done) {
+            helpers.createAccount('basic', function(err, doc) {
+                if(err) {
+                    throw err;
+                }
+                user = doc;
+                done();
+            });
+        });
+
+        it('Should allow user to update the password', function(done) {
+            request(app)
+                .put('/api/profile/password')
+                .set('Authorization', `Bearer ${user.jwtToken}`)
+                .send({
+                    currentPassword: 'xxx-xxx-xxx',
+                    newPassword: 'xxx-xxx-xxx-xxx'
+                })
+                .expect(200)
                 .end(function(err, res) {
                     if(err) throw err;
                     done();

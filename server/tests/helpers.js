@@ -16,13 +16,14 @@ let tokenResponse = function(user, provider) {
     return data;
 };
 
-exports.createLocalAccount = function(callback) {
+exports.createAccount = function(role, callback) {
     let user = new User();
 
     user.local.name = faker.name.findName();
     user.displayName = user.local.name;
     user.local.email = faker.internet.email().toLowerCase();
     user.local.password = user.generateHash('xxx-xxx-xxx');
+    user.role = role;
 
     user.save(function(err, doc) {
         if(err) {

@@ -24,20 +24,21 @@ module.exports = function(passport) {
      */
     passport.use('http-bearer', new BearerStrategy(function(token, done) {
         jwt.verify(token, config.tokenSecret, function(err, decodedToken) {
-            if (err) {
+            if(err) {
                 return done(null, false);
             }
 
             User.findOne({ _id: decodedToken.iss }, function(err, user) {
-                if (err) {
+                if(err) {
                     return done(err);
                 }
-                if (!user) {
+
+                if(!user) {
                     return done(null, false);
                 }
 
                 User.findOne({ role: 'admin' }, '_id', function(err, admin) {
-                    if (err) {
+                    if(err) {
                         return done(err);
                     }
                     return done(null, user, { scope: 'read', adminId: admin._id });
@@ -65,15 +66,15 @@ module.exports = function(passport) {
                 { 'facebook.email': email },
                 { 'google.email': email }
             ]}, function(err, user) {
-                if (err) {
+                if(err) {
                     return done(err);
                 }
 
-                if (user) {
+                if(user) {
                     return done(null, false, { message: 'This email address is already registered.' });
                 }
 
-                if (!req.body.name) {
+                if(!req.body.name) {
                     return done(null, false, { message: 'The name field is required.' });
                 }
 
@@ -85,7 +86,7 @@ module.exports = function(passport) {
                 newUser.local.password = newUser.generateHash(password);
 
                 newUser.save(function(err) {
-                    if (err) {
+                    if(err) {
                         return done(err);
                     }
                     done(null, newUser);
@@ -116,11 +117,11 @@ module.exports = function(passport) {
                 { 'google.email': email },
                 { 'local.email': email }
             ]}, function(err, user) {
-                if (err) {
+                if(err) {
                     return done(err);
                 }
 
-                if (user) {
+                if(user) {
                     if (!user.facebook.id) {
                         user.facebook.id = id;
                         user.facebook.token = token;
@@ -152,7 +153,7 @@ module.exports = function(passport) {
                     }
 
                     newUser.save(function(err) {
-                        if (err) {
+                        if(err) {
                             throw err;
                         }
                         done(null, newUser);
@@ -182,11 +183,11 @@ module.exports = function(passport) {
                 { 'facebook.email': emails[0].value },
                 { 'local.email': emails[0].value }
             ]}, function(err, user) {
-                if (err) {
+                if(err) {
                     return done(err);
                 }
 
-                if (user) {
+                if(user) {
                     if (!user.google.id) {
                         user.google.id = id;
                         user.google.token = token;
@@ -194,7 +195,7 @@ module.exports = function(passport) {
                         user.google.email = emails[0].value;
 
                         user.save(function(err) {
-                            if (err) {
+                            if(err) {
                                 return done(err);
                             }
                             done(null, user);
@@ -212,7 +213,7 @@ module.exports = function(passport) {
                     newUser.displayName = displayName;
 
                     newUser.save(function(err) {
-                        if (err) {
+                        if(err) {
                             return done(err);
                         }
                         done(null, newUser);

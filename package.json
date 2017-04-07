@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "gulp",
-    "test": "mocha server/tests/**/*.spec.js --reporter spec --timeout 3000",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha server/tests/**/*.spec.js -- -R spec",
+    "test": "cross-env NODE_ENV=test mocha server/tests/**/*.spec.js --reporter spec --timeout 3000",
+    "coverage": "cross-env NODE_ENV=test istanbul cover node_modules/mocha/bin/_mocha server/tests/**/*.spec.js -- -R spec",
     "npm-run-all": "run-p webpack:watch serve:development",
     "serve:development": "gulp serve:development",
     "serve:production": "gulp serve:production",
@@ -76,6 +76,7 @@
   },
   "devDependencies": {
     "coveralls": "^2.13.0",
+    "cross-env": "^4.0.0",
     "faker": "^4.1.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
