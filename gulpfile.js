@@ -4,6 +4,7 @@ const path = require('path');
 const plugins = require('gulp-load-plugins')({ lazy: true });
 const assets = require(path.join(process.cwd(), 'server/config/assets'));
 const runSequence = require('run-sequence');
+const specReporter = require('jasmine-spec-reporter').SpecReporter;
 
 gulp.task('env:production', function() {
     process.env.NODE_ENV = 'production';
@@ -11,6 +12,10 @@ gulp.task('env:production', function() {
 
 gulp.task('env:development', function() {
     process.env.NODE_ENV = 'development';
+});
+
+gulp.task('env:test', function() {
+    process.env.NODE_ENV = 'test';
 });
 
 gulp.task('serve:development', function() {
@@ -29,6 +34,13 @@ gulp.task('serve:production', plugins.shell.task('node server.js'));
 
 gulp.task('production', function(done) {
     runSequence('env:production', 'webpack', 'serve:production', done);
+});
+
+gulp.task('test', ['env:test'], function(done) {
+    gulp.src('server/spec/**/*[sS]pec.js').pipe(plugins.jasmine({
+        config: require('./jasmine.json'),
+        reporter: new specReporter()
+    }));
 });
 
 gulp.task('default', function(done) {

@@ -8,5 +8,8 @@ sudo: false
 branches:
   only: master
 
+env:
+  - NODE_ENV=test
+
 after_script:
-  - istanbul cover node_modules/mocha/bin/_mocha server/tests/**/*.spec.js -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+  - istanbul cover node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
