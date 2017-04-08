@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
         form: `${ownProps.form}CategoryForm`,
         submitButtonText: ownProps.submitButtonText || 'Submit'
     };
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -28,6 +28,6 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(resetCategoryState());
         }
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryForm);

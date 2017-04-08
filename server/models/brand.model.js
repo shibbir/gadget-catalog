@@ -4,12 +4,10 @@ const Schema = mongoose.Schema;
 const BrandSchema = Schema({
     name: {
         type: String,
-        unique: true,
         required: true
     },
     slug: {
         type: String,
-        unique: true,
         required: true
     },
     createdBy: {

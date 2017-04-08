@@ -18,6 +18,9 @@ import ItemImagePage from './pages/ItemImagePage';
 import CategoryListPage from './pages/CategoryListPage';
 import CategoryAddPage from './pages/CategoryAddPage';
 import CategoryEditPage from './pages/CategoryEditPage';
+import BrandListPage from './pages/BrandListPage';
+import BrandAddPage from './pages/BrandAddPage';
+import BrandEditPage from './pages/BrandEditPage';
 import EnsureLoggedInContainer from './containers/EnsureLoggedInContainer';
 import EnsureLoggedOutContainer from './containers/EnsureLoggedOutContainer';
 
@@ -44,6 +47,9 @@ ReactDOM.render(
                         <Route path="categories" component={CategoryListPage}/>
                         <Route path="categories/add" component={CategoryAddPage}/>
                         <Route path="categories/:id/edit" component={CategoryEditPage}/>
+                        <Route path="brands" component={BrandListPage}/>
+                        <Route path="brands/add" component={BrandAddPage}/>
+                        <Route path="brands/:id/edit" component={BrandEditPage}/>
                     </Route>
                 </Route>
             </Router>

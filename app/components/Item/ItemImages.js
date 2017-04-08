@@ -28,7 +28,9 @@ export default class ItemImages extends React.Component {
                                         </Label>
                                     }
 
-                                    <Image src={file.url}/>
+                                    <Card.Content className="ui center aligned">
+                                        <Image src={file.url}/>
+                                    </Card.Content>
 
                                     <Card.Content extra>
                                         <div className="ui two buttons">

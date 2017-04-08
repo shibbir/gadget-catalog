@@ -36,6 +36,12 @@ export default class Navbar extends React.Component {
                             }
                         </Dropdown.Menu>
                     </Dropdown>
+                    <Dropdown item text='Brand'>
+                        <Dropdown.Menu>
+                            <Link to="brands" activeClassName="active" className="item">Brand list</Link>
+                            <Link to="brands/add" activeClassName="active" className="item">Add new brand</Link>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     <Menu.Menu position='right'>
                         <Dropdown item text={user.name}>
                             <Dropdown.Menu>

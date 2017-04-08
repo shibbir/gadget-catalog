@@ -51,7 +51,7 @@ const categorySeeder = function(user, callback) {
 const brandSeeder = function(user, callback) {
     const array = [
         'Acer', 'Apple', 'Asus', 'AMD', 'Cooler Master', 'Corsair', 'Dell', 'HP', 'Intel', 'Microsoft', 'MSI', 'Nokia',
-        'Nvidia', 'Samsung', 'Sony', 'Thermaltake', 'HTC', 'Lenovo'
+        'Nvidia', 'Samsung', 'Sony', 'Thermaltake', 'HTC', 'Lenovo', 'ZOTAC'
     ].sort();
 
     async.each(array, function(item, asyncCallback) {

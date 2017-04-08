@@ -95,7 +95,7 @@ function updateCategory(req, res) {
         }
 
         if(!doc) {
-            return res.status(400).json({ message: 'Category not found!'});
+            return res.status(400).json({ message: 'Category not found.'});
         }
 
         doc.name = req.body.name;

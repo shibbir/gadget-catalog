@@ -1,19 +1,23 @@
 import BrandConstants from '../constants/BrandConstants';
 
 const initialState = {
-    brands: []
+    brands: [],
+    activeBrand: { brand: null }
 }
 
 export default function reducer(state=initialState, action) {
     switch (action.type) {
-        case BrandConstants.FETCH_BRANDS_FULFILLED: {
+        case BrandConstants.GET_BRANDS_FULFILLED: {
             return {
                 ...state,
                 brands: action.payload.data
             };
         }
-        case BrandConstants.FETCH_BRANDS_REJECTED: {
-            return state;
+        case BrandConstants.GET_BRAND_FULFILLED: {
+            return { ...state, activeBrand: { brand: action.payload.data }};
+        }
+        case BrandConstants.RESET_BRAND_STATE: {
+            return { ...state, activeBrand: { brand: null }};
         }
     }
     return state;
