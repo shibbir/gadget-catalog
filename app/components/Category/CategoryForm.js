@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { Form, Divider, Button } from 'semantic-ui-react';
-
+import { Form, Divider, Button, Message, Icon } from 'semantic-ui-react';
 import { FileInput, TextInput } from '../FieldInput/FieldInputs';
 
 const required = value => value ? undefined : 'This field must not be empty';
@@ -35,19 +34,32 @@ class CategoryForm extends React.Component {
     }
 
     render() {
-        const { handleSubmit, reset, submitting, pristine, submitButtonText } = this.props;
+        const { user, handleSubmit, reset, submitting, pristine, submitButtonText } = this.props;
 
         return (
-            <Form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-                <Field name="name" label="Name" attributes={{ type: 'text'}} component={TextInput} validate={[ required ]}/>
-                <Field name="file" label="Upload" component={FileInput}/>
-                <Divider hidden/>
-                <Button.Group>
-                    <Button type="submit" positive disabled={submitting}>{submitButtonText}</Button>
-                    <Button.Or/>
-                    <Button type="button" disabled={pristine || submitting} onClick={reset}>Reset form</Button>
-                </Button.Group>
-            </Form>
+            <div>
+                { user && user.isAdmin &&
+                    <Form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
+                        <Field name="name" label="Name" attributes={{ type: 'text'}} component={TextInput} validate={[ required ]}/>
+                        <Field name="file" label="Upload" component={FileInput}/>
+                        <Divider hidden/>
+                        <Button.Group>
+                            <Button type="submit" positive disabled={submitting}>{submitButtonText}</Button>
+                            <Button.Or/>
+                            <Button type="button" disabled={pristine || submitting} onClick={reset}>Reset form</Button>
+                        </Button.Group>
+                    </Form>
+                }
+
+                { !user || !user.isAdmin &&
+                    <Message negative>
+                        <Message.Header>
+                            <Icon name="lock" size="large"/>
+                            You don't have the permission!
+                        </Message.Header>
+                    </Message>
+                }
+            </div>
         );
     }
 }

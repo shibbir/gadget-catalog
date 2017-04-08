@@ -10,6 +10,7 @@ let tokenResponse = function(user, provider) {
     };
 
     data.jwtToken = jwt.sign(data, config.tokenSecret, { expiresIn: '2d', issuer: user._id.toString() });
+    data.isAdmin = user.role === 'admin';
 
     return data;
 };

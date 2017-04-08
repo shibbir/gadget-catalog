@@ -31,7 +31,7 @@ export const DropdownField = ({ input, label, options, placeholder, meta: { touc
         <Form.Field>
             { label && <label>{label}</label> }
 
-            <Select {...input} options={options} placeholder={placeholder} onChange={(e, d) => input.onChange(d.value)}/>
+            <Select search {...input} options={options} placeholder={placeholder} onChange={(e, d) => input.onChange(d.value)}/>
 
             { touched && error &&
                 <div className="field-validation-error">

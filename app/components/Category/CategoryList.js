@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Card, Icon, Label, Image, Button } from 'semantic-ui-react';
+import { Card, Icon, Image, Button } from 'semantic-ui-react';
 
 export default class CategoryList extends React.Component {
     constructor(props) {
@@ -9,7 +9,7 @@ export default class CategoryList extends React.Component {
     }
 
     render() {
-        const { categories } = this.props;
+        const { categories, user } = this.props;
 
         let cards = categories.map(function(category) {
             let activeImage = category.file;
@@ -21,10 +21,6 @@ export default class CategoryList extends React.Component {
                         <Card.Header>{category.name}</Card.Header>
                     </Card.Content>
 
-                    <Label color="red" corner="right" size="mini">
-                        <Icon name="lock"/>
-                    </Label>
-
                     <Card.Content className="ui center aligned">
                         <Image src={activeImage} alt={category.name}/>
                     </Card.Content>
@@ -33,11 +29,13 @@ export default class CategoryList extends React.Component {
                         <Link to={`items?filter_by=category&filter_id=${category._id}`}>
                             {`See all ${category.items.length} items`}
                         </Link>
-                        <div className="right floated">
-                            <Button positive compact disabled={category.readonly} href={`#/categories/${category._id}/edit`}>
-                                <Icon name="edit"/> Edit
-                            </Button>
-                        </div>
+                        { user && user.isAdmin &&
+                            <div className="right floated">
+                                <Button positive compact href={`#/categories/${category._id}/edit`}>
+                                    <Icon name="edit"/> Edit
+                                </Button>
+                            </div>
+                        }
                     </Card.Content>
                 </Card>
             );

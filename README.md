@@ -9,15 +9,16 @@
 Built with:
 
 - [React](https://facebook.github.io/react/)
-- [Draft.js](https://draftjs.org/)
 - [Redux](http://redux.js.org/)
 - [Redux Form](http://redux-form.com)
-- [Semantic-UI-React](http://react.semantic-ui.com)
 - [Express](http://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/)
+- [Draft.js](https://draftjs.org/)
+- [Semantic-UI-React](http://react.semantic-ui.com)
 - [Cloudinary](http://cloudinary.com/documentation/solution_overview)
 - [Passport](http://passportjs.org/)
 - [Webpack](https://webpack.js.org/)
+- [Jasmine](https://jasmine.github.io/)
 
 ## Setup Cloudinary
 

@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
-
 import { getBrands } from '../../actions/BrandActions';
 import { getCategories } from '../../actions/CategoryActions';
 import { createItem, updateItem, fetchItem, resetItemState } from '../../actions/ItemActions';
@@ -30,7 +29,7 @@ const mapDispatchToProps = (dispatch) => {
                 const { type, payload } = result.action;
 
                 if(type === ItemConstants.POST_ITEM_FULFILLED) {
-                    hashHistory.push({ pathname: `items/${payload._id}` });
+                    hashHistory.push({ pathname: `items/${payload.data._id}` });
                 }
             });
         },

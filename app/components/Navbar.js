@@ -12,6 +12,8 @@ export default class Navbar extends React.Component {
             marginBottom: '10px'
         };
 
+        const { user } = this.props;
+
         return (
             <Container style={navBarStyle}>
                 <Menu stackable>
@@ -29,11 +31,13 @@ export default class Navbar extends React.Component {
                     <Dropdown item text='Category'>
                         <Dropdown.Menu>
                             <Link to="categories" activeClassName="active" className="item">Category list</Link>
-                            <Link to="categories/add" activeClassName="active" className="item">Add new category</Link>
+                            { user && user.isAdmin &&
+                                <Link to="categories/add" activeClassName="active" className="item">Add new category</Link>
+                            }
                         </Dropdown.Menu>
                     </Dropdown>
                     <Menu.Menu position='right'>
-                        <Dropdown item text={this.props.user.name}>
+                        <Dropdown item text={user.name}>
                             <Dropdown.Menu>
                                 <Link to="profile" activeClassName="active" className="item">
                                     <Icon name="edit"/> Edit profile

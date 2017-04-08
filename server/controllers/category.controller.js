@@ -5,6 +5,10 @@ const cloudinary = require('../config/lib/cloudinary')();
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 
 function getCategory(req, res) {
+    if(req.user._id.toString() !== req.authInfo.adminId.toString()) {
+        return res.sendStatus(401);
+    }
+
     Category.findOne({ _id: req.params.id }).exec(function(err, doc) {
         if(err) {
             return res.sendStatus(500);
@@ -15,34 +19,28 @@ function getCategory(req, res) {
 }
 
 function getCategories(req, res) {
-    Category.find({
-        $or: [{ createdBy: req.user._id }, { createdBy: req.authInfo.adminId }]
-    }).populate({
-        path: 'items',
-        match: { createdBy: req.user._id },
-        select: '_id',
-        options: { lean: true }
-    })
-    .sort('name')
-    .exec(function(err, docs) {
-        if(err) {
-            return res.sendStatus(500);
-        }
-
-        docs = docs.map(function(x) {
-            if(x.createdBy.toString() === req.authInfo.adminId.toString() &&
-                req.user._id.toString() !== req.authInfo.adminId.toString()) {
-                    x = x.toJSON();
-                    x.readonly = true;
+    Category
+        .find({})
+        .populate({
+            path: 'items',
+            match: { createdBy: req.user._id },
+            select: '_id',
+            options: { lean: true }
+        })
+        .sort('name')
+        .exec(function(err, docs) {
+            if(err) {
+                return res.sendStatus(500);
             }
-            return x;
+            res.json(docs);
         });
-
-        res.json(docs);
-    });
 }
 
 function createCategory(req, res) {
+    if(req.user._id.toString() !== req.authInfo.adminId.toString()) {
+        return res.sendStatus(401);
+    }
+
     let model = new Category({
         name: req.body.name,
         slug: convertToSlug(req.body.name),
@@ -87,13 +85,17 @@ function createCategory(req, res) {
 }
 
 function updateCategory(req, res) {
-    Category.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
+    if(req.user._id.toString() !== req.authInfo.adminId.toString()) {
+        return res.sendStatus(401);
+    }
+
+    Category.findOne({ _id: req.params.id }, function(err, doc) {
         if(err) {
             return res.sendStatus(500);
         }
 
         if(!doc) {
-            return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!'});
+            return res.status(400).json({ message: 'Category not found!'});
         }
 
         doc.name = req.body.name;

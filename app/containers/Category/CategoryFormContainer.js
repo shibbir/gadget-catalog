@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
-
 import CategoryConstants from '../../constants/CategoryConstants';
 import CategoryForm from '../../components/Category/CategoryForm';
 import { createCategory, updateCategory, fetchCategory, resetCategoryState } from '../../actions/CategoryActions';
 
 const mapStateToProps = (state, ownProps) => {
     return {
+        user: state.authReducer.user,
         categoryId: ownProps.id,
         form: `${ownProps.form}CategoryForm`,
         submitButtonText: ownProps.submitButtonText || 'Submit'
@@ -16,11 +16,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         createCategory: (formData) => {
-            dispatch(createCategory(formData)).then(result => {
-                const { type, payload } = result.action;
-
-                console.info(payload.data);
-            });
+            dispatch(createCategory(formData));
         },
         updateCategory: (formData, itemId) => {
             dispatch(updateCategory(formData, itemId));

@@ -52,7 +52,7 @@ function getItems(req, res) {
             return res.sendStatus(500);
         }
 
-        Item.find(query).skip(skip).limit(size).exec(function(err, docs) {
+        Item.find(query).sort({ purchaseDate: 'descending' }).skip(skip).limit(size).exec(function(err, docs) {
             if(err) {
                 return res.sendStatus(500);
             }
@@ -126,7 +126,7 @@ function updateItem(req, res) {
         }
 
         if(!doc) {
-            return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!'});
+            return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!' });
         }
 
         doc.name = req.body.name;
@@ -164,9 +164,9 @@ function updateItem(req, res) {
                     callback();
                 }, { folder: 'gadgets' });
             }
-        ], function () {
+        ], function() {
             doc.save();
-            res.json(doc);
+            res.json({ message: 'Successfully updated!'});
         });
     });
 }
@@ -231,7 +231,7 @@ function deleteImage(req, res) {
                     callback();
                 }, { invalidate: true });
             }
-        ], function (err) {
+        ], function(err) {
             if(err) {
                 return res.sendStatus(500);
             }
