@@ -7,7 +7,7 @@ require('../config/lib/passport')(passport);
 require('../routes/brand.routes')(app, passport);
 
 describe('Brand Routes', function() {
-    it('Should create brand', function(done) {
+    it('Should get all brands', function(done) {
         request(app)
             .get('/api/brands')
             .set('Authorization', `Bearer ${admin.jwtToken}`)

@@ -6,6 +6,7 @@ const config = require('../../config/env/test');
 const User = require('../../models/user.model');
 const Category = require('../../models/category.model');
 const Brand = require('../../models/brand.model');
+const Item = require('../../models/item.model');
 
 exports.admin = function() {
     let data = {
@@ -19,6 +20,8 @@ exports.admin = function() {
 
     return data;
 };
+
+exports.convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 
 beforeAll(function(done) {
     mongoose.connect(config.db.uri);
@@ -51,6 +54,11 @@ afterAll(function(done) {
         },
         function(callback) {
             Brand.remove({}, function() {
+                callback();
+            });
+        },
+        function(callback) {
+            Item.remove({}, function() {
                 callback();
             });
         }
