@@ -3,7 +3,6 @@ const _ = require('lodash');
 const path = require('path');
 const plugins = require('gulp-load-plugins')({ lazy: true });
 const runSequence = require('run-sequence');
-const specReporter = require('jasmine-spec-reporter').SpecReporter;
 const defaultAssets = require(path.join(process.cwd(), 'server/config/assets/default'));
 const testAssets = require(path.join(process.cwd(), 'server/config/assets/test'));
 
@@ -39,6 +38,8 @@ gulp.task('production', function(done) {
 });
 
 gulp.task('test', ['env:test'], function(done) {
+    let specReporter = require('jasmine-spec-reporter').SpecReporter;
+
     gulp.src(testAssets.tests.server).pipe(plugins.jasmine({
         config: require('./jasmine.json'),
         reporter: new specReporter()
