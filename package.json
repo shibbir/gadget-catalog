@@ -7,7 +7,8 @@
   "scripts": {
     "start": "gulp",
     "test": "gulp test",
-    "coverage": "istanbul cover node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json",
+    "coverage": "gulp test:coverage",
+    "istanbul": "istanbul cover node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json",
     "run-all:watch": "run-p webpack:watch nodemon:watch",
     "nodemon:watch": "gulp nodemon:watch",
     "serve:production": "gulp serve:production",
