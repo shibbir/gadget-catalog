@@ -6,13 +6,13 @@ const helpers = require('./helpers');
 
 module.exports = webpackMerge(commonConfig, {
     output: {
-        path: helpers.root('public/bundles'),
-        filename: '[name].js',
-        chunkFilename: '[id].chunk.js'
+        path: helpers.root('public/dist'),
+        filename: '[name].[chunkhash].js',
+        chunkFilename: '[name].[chunkhash].js'
     },
 
     plugins: [
-        new ExtractTextPlugin('[name].css'),
+        new ExtractTextPlugin('[name].[chunkhash].css'),
 
         new webpack.DefinePlugin({
             'process.env': {
@@ -34,7 +34,13 @@ module.exports = webpackMerge(commonConfig, {
             },
             compress: {
                 screw_ie8: true,
-                warnings: false
+                warnings: false,
+                sequences: true,
+                dead_code: true,
+                conditionals: true,
+                booleans: true,
+                if_return: true,
+                join_vars: true
             },
             comments: false
         })

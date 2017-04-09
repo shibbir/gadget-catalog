@@ -18,7 +18,9 @@ gulp.task('env:test', function() {
     process.env.NODE_ENV = 'test';
 });
 
-gulp.task('serve:development', function() {
+gulp.task('serve:production', ['env:production'], plugins.shell.task('node server.js'));
+
+gulp.task('nodemon:watch', function() {
     return plugins.nodemon({
         script: 'server.js',
         nodeArgs: ['--debug'],
@@ -29,11 +31,10 @@ gulp.task('serve:development', function() {
 });
 
 gulp.task('webpack', plugins.shell.task('npm run webpack'));
-gulp.task('npm-run-all', plugins.shell.task('npm run npm-run-all'));
-gulp.task('serve:production', plugins.shell.task('node server.js'));
+gulp.task('run-all:watch', plugins.shell.task('npm run run-all:watch'));
 
 gulp.task('production', function(done) {
-    runSequence('env:production', 'webpack', 'serve:production', done);
+    runSequence('env:production', 'webpack', 'nodemon:watch', done);
 });
 
 gulp.task('test', ['env:test'], function(done) {
@@ -44,5 +45,5 @@ gulp.task('test', ['env:test'], function(done) {
 });
 
 gulp.task('default', function(done) {
-    runSequence('env:development', 'npm-run-all', done);
+    runSequence('env:development', 'run-all:watch', done);
 });

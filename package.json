@@ -8,16 +8,15 @@
     "start": "gulp",
     "test": "gulp test",
     "coverage": "istanbul cover node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json",
-    "npm-run-all": "run-p webpack:watch serve:development",
-    "serve:development": "gulp serve:development",
+    "run-all:watch": "run-p webpack:watch nodemon:watch",
+    "nodemon:watch": "gulp nodemon:watch",
     "serve:production": "gulp serve:production",
     "webpack": "webpack --colors --progress",
-    "webpack:watch": "webpack --watch --colors --progress",
-    "production": "gulp production",
-    "heroku": "run-p webpack serve:production"
+    "webpack:watch": "npm run webpack -- --watch",
+    "production": "gulp production"
   },
   "engines": {
-    "node": "6.10.0"
+    "node": "7.7.0"
   },
   "dependencies": {
     "async": "^2.1.5",
@@ -49,7 +48,6 @@
     "moment": "^2.17.1",
     "mongoose": "^4.8.6",
     "multer": "^1.3.0",
-    "npm-run-all": "^4.0.2",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth20": "^1.0.0",
@@ -81,6 +79,7 @@
     "istanbul": "^0.4.5",
     "jasmine": "^2.5.3",
     "jasmine-spec-reporter": "^3.2.0",
+    "npm-run-all": "^4.0.2",
     "supertest": "^3.0.0"
   }
 }

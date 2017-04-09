@@ -105,11 +105,14 @@ export default class ItemList extends React.Component {
                         </Card.Group>
 
                         { pagination.pages !== 1 &&
-                            <Container textAlign="center">
-                                <Menu pagination>
-                                    {paginationLinks}
-                                </Menu>
-                            </Container>
+                            <div>
+                                <Divider hidden/>
+                                <Container textAlign="center">
+                                    <Menu pagination>
+                                        {paginationLinks}
+                                    </Menu>
+                                </Container>
+                            </div>
                         }
                     </div>
                 }

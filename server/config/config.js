@@ -43,8 +43,8 @@ let initClientFiles = (config, assets) => {
         server: {}
     };
 
-    config.files.client.js = assets.client.js;
-    config.files.client.css = assets.client.css;
+    config.files.client.js = getGlobbedPaths(assets.client[process.env.NODE_ENV].js, ['public/']);
+    config.files.client.css = getGlobbedPaths(assets.client[process.env.NODE_ENV].css, ['public/']);
 
     config.files.server.models = getGlobbedPaths(assets.server.models);
 };

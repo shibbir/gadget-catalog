@@ -51,7 +51,7 @@ module.exports = {
             name: ['app']
         }),
 
-        new CleanWebpackPlugin(['bundles'], {
+        new CleanWebpackPlugin(['bundles', 'dist'], {
             root: path.resolve(__dirname, '../../public'),
             verbose: true,
             dry: false

@@ -1,11 +1,21 @@
 module.exports = {
     client: {
-        css: [
-            'bundles/app.css'
-        ],
-        js: [
-            'bundles/app.js'
-        ]
+        development: {
+            css: [
+                'bundles/app.css'
+            ],
+            js: [
+                'bundles/app.js'
+            ]
+        },
+        production: {
+            css: [
+                'public/dist/app*.css'
+            ],
+            js: [
+                'public/dist/app*.js'
+            ]
+        }
     },
     server: {
         gulpConfig: ['gulpfile.js'],
