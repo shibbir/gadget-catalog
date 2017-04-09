@@ -43,20 +43,20 @@ let initClientFiles = (config, assets) => {
         server: {}
     };
 
-    config.files.client.js = getGlobbedPaths(assets.client[process.env.NODE_ENV].js, ['public/']);
-    config.files.client.css = getGlobbedPaths(assets.client[process.env.NODE_ENV].css, ['public/']);
+    config.files.client.js = getGlobbedPaths(assets.client.js, ['public/']);
+    config.files.client.css = getGlobbedPaths(assets.client.css, ['public/']);
 
     config.files.server.models = getGlobbedPaths(assets.server.models);
 };
 
 let initGlobalConfig = () => {
-    process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+    let defaultAssets = require(path.join(process.cwd(), 'server/config/assets/default'));
+    let environmentAssets = require(path.join(process.cwd(), 'server/config/assets/', process.env.NODE_ENV)) || {};
+    let assets = _.merge(defaultAssets, environmentAssets);
 
     let defaultConfig = require('./env/default');
     let environmentConfig = require(path.join(process.cwd(), 'server/config/env/', process.env.NODE_ENV)) || {};
-
     let config = _.merge(defaultConfig, environmentConfig);
-    let assets = require('./assets');
 
     initClientFiles(config, assets);
 
