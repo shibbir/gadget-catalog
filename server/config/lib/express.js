@@ -36,5 +36,7 @@ module.exports = function() {
 
     app.set('port', config.port);
 
+    app.enable('trust proxy');
+
     return app;
 };
