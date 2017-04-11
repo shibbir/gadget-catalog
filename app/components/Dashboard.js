@@ -7,28 +7,28 @@ export default class Dashboard extends React.Component {
     render() {
         return (
             <div id="dashboard">
-                <div className="ui raised card fluid">
-                    <div className="content">
-                        <div className="card-header">
+                <Card raised fluid>
+                    <Card.Content>
+                        <Card.Header>
                             <Icon name="pie chart"/>
                             Category Chart
-                        </div>
-                    </div>
-                    <div className="content">
+                        </Card.Header>
+                    </Card.Content>
+                    <Card.Content>
                         <PieChart data={this.props.categories} getCategories={this.props.getCategories}/>
-                    </div>
-                </div>
-                <div className="ui raised card fluid">
-                    <div className="content">
-                        <div className="card-header">
+                    </Card.Content>
+                </Card>
+                <Card raised fluid>
+                    <Card.Content>
+                        <Card.Header>
                             <Icon name="bar chart"/>
                             Yearly report
-                        </div>
-                    </div>
-                    <div className="content">
+                        </Card.Header>
+                    </Card.Content>
+                    <Card.Content>
                         <ColumnChart data={this.props.itemCountsPerYear} fetchItemCountsByYearRange={this.props.fetchItemCountsByYearRange}/>
-                    </div>
-                </div>
+                    </Card.Content>
+                </Card>
             </div>
         );
     }
