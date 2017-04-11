@@ -30,12 +30,7 @@ gulp.task('nodemon:watch', function() {
     });
 });
 
-gulp.task('webpack', plugins.shell.task('npm run webpack'));
 gulp.task('run-all:watch', plugins.shell.task('npm run run-all:watch'));
-
-gulp.task('production', function(done) {
-    runSequence('env:production', 'webpack', 'nodemon:watch', done);
-});
 
 gulp.task('test', ['env:test'], function(done) {
     let specReporter = require('jasmine-spec-reporter').SpecReporter;
@@ -47,6 +42,10 @@ gulp.task('test', ['env:test'], function(done) {
 });
 
 gulp.task('test:coverage', ['env:test'], plugins.shell.task('npm run istanbul'));
+
+gulp.task('production', function(done) {
+    runSequence('env:production', 'run-all:watch', done);
+});
 
 gulp.task('default', function(done) {
     runSequence('env:development', 'run-all:watch', done);

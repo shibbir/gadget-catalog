@@ -31,7 +31,7 @@ const userSeeder = function(callback) {
 const categorySeeder = function(user, callback) {
     const array = [
         'Laptop', 'Motherboard', 'Processor', 'Mobile', 'Tablet', 'Memory', 'Gaming console & peripheral',
-        'Networking', 'PSU', 'GPU', 'Storage', 'Monitor', 'Chassis', 'Sound system', 'Computer accessories',
+        'Networking', 'PSU', 'GPU', 'Storage', 'Monitor', 'Chassis', 'Audio', 'Computer accessories',
         'Optical drive', 'Keyboard & Mouse'
     ].sort();
 

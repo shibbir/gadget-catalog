@@ -65,6 +65,8 @@ You need to have latest version of [Node.js](https://nodejs.org/en/) installed o
 ```bash
 $ cd /path/to/root
 $ npm install
+or if you want to use yarn
+$ yarn install
 
 ## for development preview
 $ npm start

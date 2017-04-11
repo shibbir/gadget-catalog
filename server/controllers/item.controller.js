@@ -31,7 +31,7 @@ function getItem(req, res) {
 
 function getItems(req, res) {
     const page = req.query.page ? +req.query.page : 1;
-    const size = req.query.size ? +req.query.size : 10;
+    const size = req.query.size ? +req.query.size : 12;
     const skip = page > 0 ? ((page - 1) * size) : 0;
 
     const filterBy = req.query.filter_by;
