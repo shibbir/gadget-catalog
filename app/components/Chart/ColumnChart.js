@@ -78,8 +78,7 @@ export default class ColumnChart extends React.Component {
     render() {
         const options = [
             { key: '2012-2017', value: '2012-2017', text: '2012-2017' },
-            { key: '2006-2011', value: '2006-2011', text: '2006-2011' },
-            { key: '2000-2005', value: '2000-2005', text: '2000-2005' }
+            { key: '2006-2011', value: '2006-2011', text: '2006-2011' }
         ];
         return (
             <div>

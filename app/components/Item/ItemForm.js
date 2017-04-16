@@ -24,6 +24,13 @@ class ItemForm extends React.Component {
     handleSubmit(formValues) {
         let formData = new FormData();
 
+        if(formValues.files) {
+            for(let index = 0; index < formValues.files.length; index++) {
+                formData.append('files', formValues.files[index]);
+            }
+            delete formValues.files;
+        }
+
         for(let key in formValues) {
             if(formValues.hasOwnProperty(key)) {
                 formData.append(key, formValues[key]);
@@ -56,7 +63,7 @@ class ItemForm extends React.Component {
                 <Field name="brandId" placeholder="Select brand" label="Brand" options={brandOptions} component={DropdownField} validate={[ required ]}/>
                 <Field name="purchaseDate" label="Purchase date" attributes={{type: 'date'}} component={TextInput} validate={[ required ]}/>
                 <Field name="price" label="Price" attributes={{type: 'number'}} component={TextInput}/>
-                <Field name="file" label="Upload" component={FileInput}/>
+                <Field name="files" label="Upload images" component={FileInput}/>
                 <Divider hidden/>
                 <Button.Group>
                     <Button type="submit" positive disabled={submitting}>{submitButtonText}</Button>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedDate, FormattedNumber } from 'react-intl';
-import { Message, Icon, Divider, Grid, Image, Item, Button, Header, Card } from 'semantic-ui-react';
+import { Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb } from 'semantic-ui-react';
 
 export default class ItemDetails extends React.Component {
     constructor(props) {
@@ -44,9 +44,16 @@ export default class ItemDetails extends React.Component {
             );
         }
 
+        const sections = [
+            { key: 'Items', content: 'Items', link: true, href: '#/items' },
+            { key: 'Category', content: `${item.category.name}`, link: true, href: `#/items?filter_by=category&filter_id=${item.category._id}` },
+            { key: `${item.name}`, content: `${item.name}`, active: true }
+        ];
+
         return (
             <div>
-                <Header as='h2'>{item.name}</Header>
+                <Breadcrumb size='small' icon='right chevron' sections={sections}/>
+                <Divider hidden/>
 
                 <Grid>
                     <Grid.Column width={10}>
@@ -59,11 +66,16 @@ export default class ItemDetails extends React.Component {
                     <Grid.Column width={6}>
                         <Item>
                             <Item.Content>
+                                <Header as='h3'>{item.name}</Header>
+                                <Divider hidden/>
+
                                 <Divider horizontal>Meta Informations</Divider>
                                 <Item.Meta>
                                     <div>Category: <Link to={`items?filter_by=category&filter_id=${item.category._id}`}>{item.category.name}</Link></div>
                                     <div>Brand: <Link to={`items?filter_by=brand&filter_id=${item.brand._id}`}>{item.brand.name}</Link></div>
-                                    <div>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></div>
+                                    { item.price &&
+                                        <div>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></div>
+                                    }
                                     <div>Purchase Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></div>
                                 </Item.Meta>
                                 <Divider horizontal>Description</Divider>

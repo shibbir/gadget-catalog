@@ -28,11 +28,9 @@ module.exports = function() {
 
     app.use(multer({
         dest: './public/uploads/',
-        limits: {
-            files: 1,
-            fileSize: 1024 * 1024 * 100
-        }
-    }).single('file'));
+        files: 5,
+        fileSize: 1000000
+    }).array('files'));
 
     app.set('port', config.port);
 

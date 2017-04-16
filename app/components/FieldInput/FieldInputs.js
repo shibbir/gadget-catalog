@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Input, Select } from 'semantic-ui-react';
-
 import DraftEditor from './DraftEditor';
 
 export const TextInput = ({ input, attributes, label, meta: { touched, error } }) => {
@@ -47,7 +46,8 @@ export const FileInput = ({ input: { name, onChange }, label, meta: { touched, e
         <Form.Field>
             { label && <label>{label}</label> }
 
-            <Input type="file" name={name} accept="image/*" onChange={e => onChange(e.target.files[0])}/>
+            <Input type="file" name={name} multiple accept="image/*" onChange={e => onChange(e.target.files)}/>
+            <small>Max number of files is 5</small> | <small>Max file size is 1 MB</small>
 
             { touched && error &&
                 <div className="field-validation-error">

@@ -84,27 +84,32 @@ function createItem(req, res) {
 
     async.waterfall([
         function(callback) {
-            if(!req.file) {
-                return callback(null);
+            if(!req.files || !req.files.length) {
+                return callback();
             }
 
-            cloudinary.uploader.upload(req.file.path, function(response) {
-                const { public_id, resource_type, type, format } = response;
+            let asyncFunctions = [];
 
-                item.files = [{
-                    public_id,
-                    resource_type,
-                    type,
-                    format,
-                    active: true
-                }];
+            req.files.forEach(function(file, index) {
+                cloudinary.uploader.upload(file.path, function(response) {
+                    const { public_id, resource_type, type, format } = response;
 
-                fs.unlinkSync(req.file.path);
+                    item.files.push({
+                        public_id,
+                        resource_type,
+                        type,
+                        format
+                    });
 
-                callback(null);
-            }, { folder: 'gadgets', invalidate: true });
+                    fs.unlinkSync(file.path);
+
+                    if(index === req.files.length -1) {
+                        callback();
+                    }
+                }, { folder: 'gadgets', invalidate: true });
+            });
         }
-    ], function (err) {
+    ], function(err) {
         if(err) {
             return res.sendStatus(500);
         }
@@ -139,34 +144,34 @@ function updateItem(req, res) {
             doc.description = validator.escape(req.body.description);
         }
 
-        doc.files = doc.files.map(function(x) {
-            x.active = false;
-            return x;
-        });
-
         async.waterfall([
             function(callback) {
-                if(!req.file) {
+                if(!req.files || !req.files.length) {
                     return callback();
                 }
 
-                cloudinary.uploader.upload(req.file.path, function(result) {
-                    const { public_id, resource_type, type, format } = result;
+                req.files.forEach(function(file, index) {
+                    cloudinary.uploader.upload(file.path, function(response) {
+                        const { public_id, resource_type, type, format } = response;
 
-                    doc.files.push({
-                        public_id,
-                        resource_type,
-                        type,
-                        format,
-                        active: true
-                    });
+                        doc.files.push({
+                            public_id,
+                            resource_type,
+                            type,
+                            format
+                        });
 
-                    callback();
-                }, { folder: 'gadgets' });
+                        fs.unlinkSync(file.path);
+
+                        if(index === req.files.length -1) {
+                            callback();
+                        }
+                    }, { folder: 'gadgets', invalidate: true });
+                });
             }
         ], function() {
             doc.save();
-            res.json({ message: 'Successfully updated!'});
+            res.json(doc);
         });
     });
 }

@@ -34,7 +34,13 @@ const mapDispatchToProps = (dispatch) => {
             });
         },
         updateItem: (formData, itemId) => {
-            dispatch(updateItem(formData, itemId));
+            dispatch(updateItem(formData, itemId)).then(result => {
+                const { type, payload } = result.action;
+
+                if(type === ItemConstants.PUT_ITEM_FULFILLED) {
+                    hashHistory.push({ pathname: `items/${payload.data._id}` });
+                }
+            });
         },
         fetchItem: (itemId) => {
             dispatch(fetchItem(itemId));
