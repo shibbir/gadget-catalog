@@ -27,7 +27,9 @@ module.exports = function() {
     app.set('views', path.join(process.cwd(), 'server/views'));
 
     app.use(multer({
-        dest: './public/uploads/'
+        dest: './public/uploads/',
+        files: 5,
+        fileSize: 1000000
     }).array('files'));
 
     app.set('port', config.port);
