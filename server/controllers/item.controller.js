@@ -98,7 +98,8 @@ function createItem(req, res) {
                         public_id,
                         resource_type,
                         type,
-                        format
+                        format,
+                        active: false
                     });
 
                     fs.unlinkSync(file.path);
@@ -158,7 +159,8 @@ function updateItem(req, res) {
                             public_id,
                             resource_type,
                             type,
-                            format
+                            format,
+                            active: false
                         });
 
                         fs.unlinkSync(file.path);

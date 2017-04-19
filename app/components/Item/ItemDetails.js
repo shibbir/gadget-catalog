@@ -45,8 +45,8 @@ export default class ItemDetails extends React.Component {
         }
 
         const sections = [
-            { key: 'Items', content: 'Items', link: true, href: '#/items' },
-            { key: 'Category', content: `${item.category.name}`, link: true, href: `#/items?filter_by=category&filter_id=${item.category._id}` },
+            { key: 'Items', content: 'Items', href: '#/items' },
+            { key: 'Category', content: `${item.category.name}`, href: `#/items?filter_by=category&filter_id=${item.category._id}` },
             { key: `${item.name}`, content: `${item.name}`, active: true }
         ];
 
