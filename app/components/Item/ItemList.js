@@ -24,11 +24,12 @@ export default class ItemList extends React.Component {
             pathname: 'items'
         };
 
-        if(data.value && !+data.value) {
-            newLocation.query = { ...this.props.location.query, filter_by: data.name, filter_id: data.value };
+        if(data.value === '-1' && this.props.location.query.filter_by) {
+            hashHistory.push(newLocation);
+        } else if(data.value !== '-1' && this.props.location.query.filter_id !== data.value) {
+            newLocation.query = { filter_by: data.name, filter_id: data.value };
+            hashHistory.push(newLocation);
         }
-
-        hashHistory.push(newLocation);
     }
 
     render() {
@@ -86,7 +87,7 @@ export default class ItemList extends React.Component {
                     <Form.Group>
                         <Form.Field>
                             <Label pointing="below" color="orange">Filter By Category</Label>
-                            <Select search size="medium" name="category" onChange={this.filterBy} options={categoryOptions} defaultValue={defaultValue}/>
+                            <Select search name="category" onChange={this.filterBy} options={categoryOptions} defaultValue={defaultValue}/>
                         </Form.Field>
 
                         <Form.Field>

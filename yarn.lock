@@ -1349,13 +1349,13 @@ debug@2.2.0, debug@~2.2.0:
   dependencies:
     ms "0.7.1"
 
-debug@2.6.1, debug@^2.1.1:
+debug@2.6.1, debug@^2.1.1, debug@^2.2.0, debug@^2.4.5:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
   dependencies:
     ms "0.7.2"
 
-debug@^2.2.0, debug@^2.4.5, debug@^2.6.3:
+debug@^2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.3.tgz#0f7eb8c30965ec08c72accfa0130c8b79984141d"
   dependencies:
@@ -3257,9 +3257,9 @@ mongodb@2.2.25:
     mongodb-core "2.1.9"
     readable-stream "2.1.5"
 
-mongoose@^4.9.4:
-  version "4.9.4"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.9.4.tgz#212be4597e2db57b05286cc53ee894f30f3d8fad"
+mongoose@^4.9.5:
+  version "4.9.5"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.9.5.tgz#856b856700032748dd68122cb0371f8980442975"
   dependencies:
     async "2.1.4"
     bson "~1.0.4"
@@ -4024,7 +4024,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.0.0, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@~15.5.7:
+prop-types@15.5.8, prop-types@^15.0.0, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@~15.5.7:
   version "15.5.8"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
   dependencies:
@@ -4501,14 +4501,15 @@ semantic-ui-css@^2.2.10:
   dependencies:
     jquery x.*
 
-semantic-ui-react@^0.67.2:
-  version "0.67.2"
-  resolved "https://registry.yarnpkg.com/semantic-ui-react/-/semantic-ui-react-0.67.2.tgz#30c1271239fae724a96117cea087bf3084f8480e"
+semantic-ui-react@^0.68.0:
+  version "0.68.0"
+  resolved "https://registry.yarnpkg.com/semantic-ui-react/-/semantic-ui-react-0.68.0.tgz#249e3701650fa811e6ec1c0ad69720f69a6f62fd"
   dependencies:
     babel-runtime "^6.22.0"
     classnames "^2.1.5"
     debug "^2.6.3"
     lodash "^4.17.2"
+    prop-types "15.5.8"
 
 semver-diff@^2.0.0:
   version "2.1.0"
