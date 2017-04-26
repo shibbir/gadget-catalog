@@ -6,7 +6,6 @@ let UserSchema = Schema({
     local: {
         email: {
             type: String,
-            unique: true,
             match: [/.+\@.+\..+/]
         },
         password: String,
