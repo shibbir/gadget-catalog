@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, hashHistory } from 'react-router';
-import { Card, Select, Form, Divider, Label, Message, Icon, Menu, Container, Image } from 'semantic-ui-react';
+import { Card, Divider, Message, Icon, Menu, Container, Image, Dropdown } from 'semantic-ui-react';
 
 export default class ItemList extends React.Component {
     constructor(props) {
@@ -83,19 +83,13 @@ export default class ItemList extends React.Component {
 
         return (
             <div>
-                <Form>
-                    <Form.Group>
-                        <Form.Field>
-                            <Label pointing="below" color="orange">Filter By Category</Label>
-                            <Select search name="category" onChange={this.filterBy} options={categoryOptions} defaultValue={defaultValue}/>
-                        </Form.Field>
-
-                        <Form.Field>
-                            <Label pointing="below" color="orange">Filter By Brand</Label>
-                            <Select search name="brand" onChange={this.filterBy} options={brandOptions} defaultValue={defaultValue}/>
-                        </Form.Field>
-                    </Form.Group>
-                </Form>
+                Filter By Category:
+                {' '}
+                <Dropdown selection search name="category" onChange={this.filterBy} options={categoryOptions} defaultValue={defaultValue}/>
+                {' '}
+                Filter By Brand:
+                {' '}
+                <Dropdown selection search name="brand" onChange={this.filterBy} options={brandOptions} defaultValue={defaultValue}/>
 
                 <Divider section/>
 
