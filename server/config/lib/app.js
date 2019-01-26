@@ -16,7 +16,7 @@ module.exports.start = () => {
         require(path.join(process.cwd(), 'server/item/item.routes'))(app, passport);
 
         if(process.env.MONGO_SEED) {
-            require('../seeder').run();
+            //require('../seeder').run();
         }
 
         app.listen(app.get('port'), () => {

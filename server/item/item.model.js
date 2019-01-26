@@ -30,7 +30,7 @@ let ItemSchema = Schema({
         type: Date,
         default: Date.now
     }
-});
+}, { toJSON: { virtuals: true } });
 
 ItemSchema.virtual('category', {
     ref: 'Category',

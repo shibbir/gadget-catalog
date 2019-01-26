@@ -39,7 +39,7 @@ let getGlobbedPaths = function (globPatterns, excludes) {
 
 function initGlobalConfig() {
     let defaultAssets = require(path.join(process.cwd(), 'server/config/assets/default'));
-    let environmentAssets = process.env.NODE_ENV === 'prodcution' ? require('server/config/assets/prodcution') : {};
+    let environmentAssets = process.env.NODE_ENV === 'production' ? require(path.join(process.cwd(), 'server/config/assets/production')) : {};
 
     let assets = _.merge(defaultAssets, environmentAssets);
 

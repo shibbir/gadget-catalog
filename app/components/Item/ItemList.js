@@ -48,7 +48,6 @@ export default class ItemList extends React.Component {
 
         let cards = data.map(function(item) {
             let activeImage = item.files.filter(x => x.active)[0];
-            //activeImage = activeImage ? activeImage.url : item.files[0];
             activeImage = activeImage ? activeImage.url : null;
 
             return (

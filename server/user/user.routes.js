@@ -1,6 +1,5 @@
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const User = mongoose.model('User');
+const User = require('./user.model');
 
 let tokenResponse = function(user, provider) {
     let data = {

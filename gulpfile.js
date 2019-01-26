@@ -1,50 +1,48 @@
-const gulp = require('gulp');
 const path = require('path');
+const { series, src, dest } = require('gulp');
+const webpackStream = require('webpack-stream');
 const plugins = require('gulp-load-plugins')({ lazy: true });
-const runSequence = require('run-sequence');
 const assets = require(path.join(process.cwd(), 'server/config/assets/default'));
 
-gulp.task('env:production', function() {
-    process.env.NODE_ENV = 'production';
-});
-
-gulp.task('env:development', function() {
+function development(done) {
     process.env.NODE_ENV = 'development';
-});
+    done();
+}
 
-gulp.task('env:test', function() {
-    process.env.NODE_ENV = 'test';
-});
+function production(done) {
+    process.env.NODE_ENV = 'production';
+    done();
+}
 
-gulp.task('serve:production', ['env:production'], plugins.shell.task('node server.js'));
-
-gulp.task('nodemon:watch', function() {
-    return plugins.nodemon({
-        script: 'server.js',
+function server(done) {
+    plugins.nodemon({
+        script: 'server',
         nodeArgs: ['--inspect'],
-        ext: 'js,html',
+        ext: 'js html',
         verbose: true,
-        watch: assets.server.files
+        watch: assets.server.files,
+        ignore: ['*.spec.js'],
+        done
     });
-});
+}
 
-gulp.task('run-all:watch', plugins.shell.task('npm run run-all:watch'));
+function webpack() {
+    return src('app/main.js')
+        .pipe(webpackStream(require('./webpack.config.js')))
+        .pipe(dest('public/bundles'));
+}
 
-gulp.task('test', ['env:test'], function() {
+function test(done) {
+    process.env.NODE_ENV = 'test';
     let specReporter = require('jasmine-spec-reporter').SpecReporter;
 
-    gulp.src(assets.server.specs).pipe(plugins.jasmine({
-        config: require('./jasmine.json'),
+    src(assets.server.specs).pipe(plugins.jasmine({
         reporter: new specReporter()
     }));
-});
 
-gulp.task('coverage', ['env:test'], plugins.shell.task('npm run istanbul'));
+    done();
+}
 
-gulp.task('production', function(done) {
-    runSequence('env:production', 'run-all:watch', done);
-});
-
-gulp.task('default', function(done) {
-    runSequence('env:development', 'run-all:watch', done);
-});
+exports.default = series(development, webpack, server);
+exports.production = series(production, webpack, server);
+exports.test = test;
