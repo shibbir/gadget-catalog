@@ -1,27 +1,21 @@
 const path = require('path');
 const mongoose = require('./mongoose');
-const config = require('../config');
 const passport = require('passport');
 
-module.exports.initMongo = callback => {
-    mongoose.connect(function (db) {
-        if(callback) callback(db);
-    });
-};
-
 module.exports.start = () => {
-    const app = require('./express')();
-
+    require('dotenv').config();
     require('./passport')(passport);
 
-    this.initMongo(function(db) {
-        require(path.join(process.cwd(), 'server/routes/index.routes'))(app);
-        require(path.join(process.cwd(), 'server/routes/account.routes'))(app, passport);
-        require(path.join(process.cwd(), 'server/routes/category.routes'))(app, passport);
-        require(path.join(process.cwd(), 'server/routes/brand.routes'))(app, passport);
-        require(path.join(process.cwd(), 'server/routes/item.routes'))(app, passport);
+    const app = require('./express')();
 
-        if(config.db.seedDB) {
+    mongoose.connect(function () {
+        require(path.join(process.cwd(), 'server/core/core.routes'))(app);
+        require(path.join(process.cwd(), 'server/user/user.routes'))(app, passport);
+        require(path.join(process.cwd(), 'server/category/category.routes'))(app, passport);
+        require(path.join(process.cwd(), 'server/brand/brand.routes'))(app, passport);
+        require(path.join(process.cwd(), 'server/item/item.routes'))(app, passport);
+
+        if(process.env.MONGO_SEED) {
             require('../seeder').run();
         }
 

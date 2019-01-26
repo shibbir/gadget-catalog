@@ -1,6 +1,6 @@
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user.model');
-const config = require('../config/config');
+const User = mongoose.model('User');
 
 let tokenResponse = function(user, provider) {
     let data = {
@@ -9,7 +9,7 @@ let tokenResponse = function(user, provider) {
         email: user[provider].email
     };
 
-    data.jwtToken = jwt.sign(data, config.tokenSecret, { expiresIn: '2d', issuer: user._id.toString() });
+    data.jwtToken = jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1d', issuer: user._id.toString() });
     data.isAdmin = user.role === 'admin';
 
     return data;

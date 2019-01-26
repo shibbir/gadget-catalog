@@ -1,29 +1,18 @@
-const User = require('../../models/user.model');
+const User = require('../../user/user.model');
 const jwt = require('jsonwebtoken');
-const config = require('../config');
 const LocalStrategy = require('passport-local').Strategy;
 const BearerStrategy = require('passport-http-bearer').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 module.exports = function(passport) {
-    passport.serializeUser(function(user, done) {
-        done(null, user.id);
-    });
-
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            done(err, user);
-        });
-    });
-
     /**
      =========================================================================
      ============================== HTTP BEARER ==============================
      =========================================================================
      */
     passport.use('http-bearer', new BearerStrategy(function(token, done) {
-        jwt.verify(token, config.tokenSecret, function(err, decodedToken) {
+        jwt.verify(token, process.env.TOKEN_SECRET, function(err, decodedToken) {
             if(err) {
                 return done(null, false);
             }
@@ -102,9 +91,9 @@ module.exports = function(passport) {
      */
 
     passport.use(new FacebookStrategy({
-        clientID: config.oauth.facebook.clientID,
-        clientSecret: config.oauth.facebook.clientSecret,
-        callbackURL: config.oauth.facebook.callbackURL,
+        clientID: process.env.FACEBOOK_CLIENT_ID,
+        clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+        callbackURL: '/auth/facebook/callback',
         profileFields: ['id', 'displayName', 'email']
     }, function(token, refreshToken, profile, done) {
         const { id, displayName, emails } = profile;
@@ -170,11 +159,10 @@ module.exports = function(passport) {
      */
 
     passport.use(new GoogleStrategy({
-        clientID: config.oauth.google.clientID,
-        clientSecret: config.oauth.google.clientSecret,
-        callbackURL: config.oauth.google.callbackURL
-    },
-    function(token, refreshToken, profile, done) {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: '/auth/google/callback'
+    }, function(token, refreshToken, profile, done) {
         const { id, displayName, emails } = profile;
 
         process.nextTick(function() {

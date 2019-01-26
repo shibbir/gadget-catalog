@@ -1,8 +1,8 @@
 const fs = require('fs');
 const async = require('async');
 const validator = require('validator');
-const Item = require('../models/item.model');
-const File = require('../models/sub-documents/file.model');
+const Item = require('./item.model');
+const File = require('../core/file.model');
 const cloudinary = require('../config/lib/cloudinary')();
 
 function getItem(req, res) {
@@ -47,7 +47,7 @@ function getItems(req, res) {
         query.brandId = filterId;
     }
 
-    Item.where(query).count(function(err, count) {
+    Item.where(query).countDocuments(function(err, count) {
         if (err) {
             return res.sendStatus(500);
         }
@@ -88,8 +88,6 @@ function createItem(req, res) {
                 return callback();
             }
 
-            let asyncFunctions = [];
-
             req.files.forEach(function(file, index) {
                 cloudinary.uploader.upload(file.path, function(response) {
                     const { public_id, resource_type, type, format } = response;
@@ -99,7 +97,7 @@ function createItem(req, res) {
                         resource_type,
                         type,
                         format,
-                        active: false
+                        active: true
                     });
 
                     fs.unlinkSync(file.path);
@@ -160,7 +158,7 @@ function updateItem(req, res) {
                             resource_type,
                             type,
                             format,
-                            active: false
+                            active: true
                         });
 
                         fs.unlinkSync(file.path);

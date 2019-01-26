@@ -1,4 +1,4 @@
-const Brand = require('../models/brand.model');
+const Brand = require('./brand.model');
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 

@@ -2,13 +2,15 @@ const faker = require('faker');
 const request = require('supertest');
 const passport = require('passport');
 const app = require('../config/lib/express')();
-const admin = require('./helpers/spec.helper').admin();
+const specHelper = require('../config/spec.helper');
 
 require('../config/lib/passport')(passport);
-require('../routes/account.routes')(app, passport);
+require('./user.routes')(app, passport);
 
-describe('Account Routes', function() {
-    it('Should create a local account', function(done) {
+describe('User Routes', function() {
+    const admin = specHelper.admin();
+
+    it('Should create a local user', function(done) {
         request(app)
             .post('/api/register')
             .send({
@@ -31,7 +33,7 @@ describe('Account Routes', function() {
                 password: admin.password
             })
             .expect(200)
-            .end(function(err, res) {
+            .end(function(err) {
                 if(err) done.fail(err);
                 done();
             });
@@ -46,7 +48,7 @@ describe('Account Routes', function() {
                 newPassword: 'xxx-xxx-xxx-xxx'
             })
             .expect(200)
-            .end(function(err, res) {
+            .end(function(err) {
                 if(err) done.fail(err);
                 done();
             });

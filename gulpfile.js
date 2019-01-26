@@ -1,10 +1,8 @@
 const gulp = require('gulp');
-const _ = require('lodash');
 const path = require('path');
 const plugins = require('gulp-load-plugins')({ lazy: true });
 const runSequence = require('run-sequence');
-const defaultAssets = require(path.join(process.cwd(), 'server/config/assets/default'));
-const testAssets = require(path.join(process.cwd(), 'server/config/assets/test'));
+const assets = require(path.join(process.cwd(), 'server/config/assets/default'));
 
 gulp.task('env:production', function() {
     process.env.NODE_ENV = 'production';
@@ -23,25 +21,25 @@ gulp.task('serve:production', ['env:production'], plugins.shell.task('node serve
 gulp.task('nodemon:watch', function() {
     return plugins.nodemon({
         script: 'server.js',
-        nodeArgs: ['--debug'],
+        nodeArgs: ['--inspect'],
         ext: 'js,html',
         verbose: true,
-        watch: _.union(defaultAssets.server.views, defaultAssets.server.allJS)
+        watch: assets.server.files
     });
 });
 
 gulp.task('run-all:watch', plugins.shell.task('npm run run-all:watch'));
 
-gulp.task('test', ['env:test'], function(done) {
+gulp.task('test', ['env:test'], function() {
     let specReporter = require('jasmine-spec-reporter').SpecReporter;
 
-    gulp.src(testAssets.tests.server).pipe(plugins.jasmine({
+    gulp.src(assets.server.specs).pipe(plugins.jasmine({
         config: require('./jasmine.json'),
         reporter: new specReporter()
     }));
 });
 
-gulp.task('test:coverage', ['env:test'], plugins.shell.task('npm run istanbul'));
+gulp.task('coverage', ['env:test'], plugins.shell.task('npm run istanbul'));
 
 gulp.task('production', function(done) {
     runSequence('env:production', 'run-all:watch', done);

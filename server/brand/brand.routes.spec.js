@@ -2,20 +2,20 @@ const faker = require('faker');
 const request = require('supertest');
 const passport = require('passport');
 const app = require('../config/lib/express')();
-const Brand = require('../models/brand.model');
-const helper = require('./helpers/spec.helper');
-const admin = helper.admin();
+const Brand = require('./brand.model');
+const specHelper = require('../config/spec.helper');
 
 require('../config/lib/passport')(passport);
-require('../routes/brand.routes')(app, passport);
+require('./brand.routes')(app, passport);
 
 describe('Brand Routes', function() {
     let brand = {};
+    const admin = specHelper.admin();
 
     beforeAll(function(done) {
         new Brand({
             name: faker.company.companyName(),
-            slug: helper.convertToSlug(faker.company.companyName()),
+            slug: specHelper.convertToSlug(faker.company.companyName()),
             createdBy: admin._id
         }).save(function(err, doc) {
             brand = doc;

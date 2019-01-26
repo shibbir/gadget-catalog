@@ -1,6 +1,6 @@
 const fs = require('fs');
 const async = require('async');
-const Category = require('../models/category.model');
+const Category = require('./category.model');
 const cloudinary = require('../config/lib/cloudinary')();
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 

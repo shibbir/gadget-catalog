@@ -1,5 +1,7 @@
-module.exports = function(app, passport) {
-    const controller = require('../controllers/item.controller');
+const passport = require('passport');
+
+module.exports = function(app) {
+    const controller = require('./item.controller');
 
     app.route('/api/items')
         .get(passport.authenticate('http-bearer', { session: false }), controller.getItems)

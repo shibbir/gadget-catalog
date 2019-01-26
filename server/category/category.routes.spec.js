@@ -2,21 +2,21 @@ const faker = require('faker');
 const request = require('supertest');
 const passport = require('passport');
 const app = require('../config/lib/express')();
-const Category = require('../models/category.model');
-const Item = require('../models/item.model');
-const helper = require('./helpers/spec.helper');
-const admin = helper.admin();
+const Category = require('./category.model');
+const Item = require('../item/item.model');
+const specHelper = require('../config/spec.helper');
 
 require('../config/lib/passport')(passport);
-require('../routes/category.routes')(app, passport);
+require('./category.routes')(app, passport);
 
 describe('Category Routes', function() {
     let category = {};
+    const admin = specHelper.admin();
 
     beforeAll(function(done) {
         new Category({
             name: faker.commerce.productName(),
-            slug: helper.convertToSlug(faker.commerce.productName()),
+            slug: specHelper.convertToSlug(faker.commerce.productName()),
             createdBy: admin._id
         }).save(function(err, doc) {
             category = doc;

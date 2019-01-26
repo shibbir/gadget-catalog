@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const config = require('../config/config');
-const FileSchema = require('./sub-documents/file.model');
+const FileSchema = require('../core/file.model');
 
 let CategorySchema = Schema({
     name: {
@@ -30,10 +29,6 @@ CategorySchema.virtual('items', {
     ref: 'Item',
     localField: '_id',
     foreignField: 'categoryId'
-});
-
-CategorySchema.virtual('noImageUrl').get(function() {
-    return config.noImageUrl;
 });
 
 module.exports = mongoose.model('Category', CategorySchema);

@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const config = require('../../config/config');
-
 let FileSchema = Schema({
     public_id: {
         type: String,
@@ -27,7 +25,7 @@ let FileSchema = Schema({
 }, { toJSON: { virtuals: true } });
 
 FileSchema.virtual('url').get(function () {
-    return `https://res.cloudinary.com/${config.cloudinary.cloud_name}/${this.resource_type}/${this.type}/${this.public_id}.${this.format}`;
+    return `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/${this.resource_type}/${this.type}/${this.public_id}.${this.format}`;
 });
 
 module.exports = FileSchema;

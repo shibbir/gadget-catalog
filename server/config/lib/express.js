@@ -9,22 +9,19 @@ const compression = require('compression');
 module.exports = function() {
     let app = express();
 
-    app.locals.title = config.app.title;
-    app.locals.description = config.app.description;
+    app.locals.jsFiles = config.client.js;
+    app.locals.cssFiles = config.client.css;
 
-    app.locals.jsFiles = config.files.client.js;
-    app.locals.cssFiles = config.files.client.css;
-
-    app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use(compression());
 
     app.use(express.static(path.join(process.cwd(), 'public')));
 
-    app.engine('server.view.html', hbs.express4({ extname: '.server.view.html' }));
-    app.set('view engine', 'server.view.html');
-    app.set('views', path.join(process.cwd(), 'server/views'));
+    app.engine('html', hbs.express4({ extname: '.html' }));
+    app.set('view engine', 'html');
+    app.set('views', path.join(process.cwd(), 'server/core'));
 
     app.use(multer({
         dest: './public/uploads/',
@@ -32,7 +29,7 @@ module.exports = function() {
         fileSize: 1000000
     }).array('files'));
 
-    app.set('port', config.port);
+    app.set('port', process.env.PORT || 4040);
 
     app.enable('trust proxy');
 

@@ -37,30 +37,23 @@ let getGlobbedPaths = function (globPatterns, excludes) {
     return output;
 };
 
-let initClientFiles = (config, assets) => {
-    config.files = {
-        client: {},
-        server: {}
-    };
-
-    config.files.client.js = getGlobbedPaths(assets.client.js, ['public/']);
-    config.files.client.css = getGlobbedPaths(assets.client.css, ['public/']);
-
-    config.files.server.models = getGlobbedPaths(assets.server.models);
-};
-
-let initGlobalConfig = () => {
+function initGlobalConfig() {
     let defaultAssets = require(path.join(process.cwd(), 'server/config/assets/default'));
-    let environmentAssets = require(path.join(process.cwd(), 'server/config/assets/', process.env.NODE_ENV)) || {};
+    let environmentAssets = process.env.NODE_ENV === 'prodcution' ? require('server/config/assets/prodcution') : {};
+
     let assets = _.merge(defaultAssets, environmentAssets);
 
-    let defaultConfig = require('./env/default');
-    let environmentConfig = require(path.join(process.cwd(), 'server/config/env/', process.env.NODE_ENV)) || {};
-    let config = _.merge(defaultConfig, environmentConfig);
-
-    initClientFiles(config, assets);
+    let config = {
+        client: {
+            js: getGlobbedPaths(assets.client.js, ['public/']),
+            css: getGlobbedPaths(assets.client.css, ['public/'])
+        },
+        server: {
+            models: getGlobbedPaths(assets.server.models)
+        }
+    };
 
     return config;
-};
+}
 
 module.exports = initGlobalConfig();

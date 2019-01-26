@@ -3,24 +3,24 @@ const async = require('async');
 const request = require('supertest');
 const passport = require('passport');
 const app = require('../config/lib/express')();
-const Category = require('../models/category.model');
-const Brand = require('../models/brand.model');
-const Item = require('../models/item.model');
-const helper = require('./helpers/spec.helper');
-const admin = helper.admin();
+const Category = require('../category/category.model');
+const Brand = require('../brand/brand.model');
+const Item = require('./item.model');
+const specHelper = require('../config/spec.helper');
 
 require('../config/lib/passport')(passport);
-require('../routes/item.routes')(app, passport);
+require('./item.routes')(app, passport);
 
 describe('Item Routes', function() {
     let category = {};
     let brand = {};
     let item = {};
+    const admin = specHelper.admin();
 
     beforeAll(function(done) {
         new Category({
             name: faker.commerce.productName(),
-            slug: helper.convertToSlug(faker.commerce.productName()),
+            slug: specHelper.convertToSlug(faker.commerce.productName()),
             createdBy: admin._id
         }).save(function(err, doc) {
             category = doc;
@@ -31,7 +31,7 @@ describe('Item Routes', function() {
             function(callback) {
                 new Category({
                     name: faker.commerce.productName(),
-                    slug: helper.convertToSlug(faker.commerce.productName()),
+                    slug: specHelper.convertToSlug(faker.commerce.productName()),
                     createdBy: admin._id
                 }).save(function(err, doc) {
                     category = doc;
@@ -41,7 +41,7 @@ describe('Item Routes', function() {
             function(category, callback) {
                 new Brand({
                     name: faker.commerce.productName(),
-                    slug: helper.convertToSlug(faker.commerce.productName()),
+                    slug: specHelper.convertToSlug(faker.commerce.productName()),
                     createdBy: admin._id
                 }).save(function(err, doc) {
                     brand = doc;

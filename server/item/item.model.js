@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const config = require('../config/config');
-const FileSchema = require('./sub-documents/file.model');
+const FileSchema = require('../core/file.model');
 
 let ItemSchema = Schema({
     name: {
@@ -31,7 +30,7 @@ let ItemSchema = Schema({
         type: Date,
         default: Date.now
     }
-}, { toJSON: { virtuals: true } });
+});
 
 ItemSchema.virtual('category', {
     ref: 'Category',
@@ -43,10 +42,6 @@ ItemSchema.virtual('brand', {
     ref: 'Brand',
     localField: 'brandId',
     foreignField: '_id'
-});
-
-ItemSchema.virtual('noImageUrl').get(function() {
-    return config.noImageUrl;
 });
 
 module.exports = mongoose.model('Item', ItemSchema);

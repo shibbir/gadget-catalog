@@ -48,14 +48,17 @@ export default class ItemList extends React.Component {
 
         let cards = data.map(function(item) {
             let activeImage = item.files.filter(x => x.active)[0];
-            activeImage = activeImage ? activeImage : item.files[0];
-            activeImage = activeImage ? activeImage.url : item.noImageUrl;
+            //activeImage = activeImage ? activeImage.url : item.files[0];
+            activeImage = activeImage ? activeImage.url : null;
 
             return (
                 <Card key={item._id} raised href={`#/items/${item._id}`}>
                     <Card.Content header={item.name} className="ui center aligned"/>
                     <Card.Content className="ui center aligned">
-                        <Image src={activeImage} alt={item.name}/>
+                    { activeImage ?
+                        <Image src={activeImage} alt={item.name}/> :
+                        'Image Not Available!'
+                    }
                     </Card.Content>
                 </Card>
             );
