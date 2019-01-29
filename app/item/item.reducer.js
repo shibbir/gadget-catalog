@@ -1,5 +1,5 @@
 import moment from 'moment';
-import ItemConstants from '../constants/ItemConstants';
+import ItemConstants from './item.types';
 
 const initialState = {
     items: { data: [], pagination: { pages: [] }},

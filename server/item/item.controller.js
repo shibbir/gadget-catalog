@@ -19,6 +19,8 @@ function getItem(req, res) {
                 return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!'});
             }
 
+            doc = doc.toJSON();
+
             if(doc.description) {
                 doc.description = validator.unescape(doc.description);
             }

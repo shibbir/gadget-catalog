@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Dashboard from '../components/Dashboard';
 import { getCategories } from '../actions/CategoryActions';
-import { fetchItemCountsByYearRange } from '../actions/ItemActions';
+import { fetchItemCountsByYearRange } from '../item/item.actions';
 
 const mapStateToProps = (state) => {
     return {

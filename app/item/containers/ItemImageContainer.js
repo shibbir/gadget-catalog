@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
-import { fetchItem, setAsActiveImage, deleteImage } from '../../actions/ItemActions';
-import ItemConstants from '../../constants/ItemConstants';
-import ItemImages from '../../components/Item/ItemImages';
+import { fetchItem, setAsActiveImage, deleteImage } from '../item.actions';
+import ItemImages from '../components/ItemImages';
 
 const mapStateToProps = (state, ownProps) => {
     return {

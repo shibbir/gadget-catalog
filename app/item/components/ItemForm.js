@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Form, Divider, Button } from 'semantic-ui-react';
-import { TextInput, RichEditorInput, DropdownField, FileInput } from '../FieldInput/FieldInputs';
+import { TextInput, RichEditorInput, DropdownField, FileInput } from '../../components/FieldInput/FieldInputs';
 
 const required = value => value ? undefined : 'This field must not be empty';
 const number = value => value && isNaN(Number(value)) ? 'Please enter a decimal number' : undefined;

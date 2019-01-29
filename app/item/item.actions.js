@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getBearerRequestObject } from '../config/helpers';
-import ItemConstants from '../constants/ItemConstants';
+import ItemConstants from './item.types';
 
 export function createItem(formData) {
     const config = {

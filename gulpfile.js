@@ -14,6 +14,12 @@ function production(done) {
     done();
 }
 
+function webpack() {
+    return src('app/main.js')
+        .pipe(webpackStream(require('./webpack.config.js')))
+        .pipe(dest('public/bundles'));
+}
+
 function server(done) {
     plugins.nodemon({
         script: 'server',
@@ -24,12 +30,6 @@ function server(done) {
         ignore: ['*.spec.js'],
         done
     });
-}
-
-function webpack() {
-    return src('app/main.js')
-        .pipe(webpackStream(require('./webpack.config.js')))
-        .pipe(dest('public/bundles'));
 }
 
 function test(done) {

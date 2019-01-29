@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 import { getBrands } from '../../actions/BrandActions';
 import { getCategories } from '../../actions/CategoryActions';
-import { createItem, updateItem, fetchItem, resetItemState } from '../../actions/ItemActions';
-import ItemConstants from '../../constants/ItemConstants';
-import ItemForm from '../../components/Item/ItemForm';
+import { createItem, updateItem, fetchItem, resetItemState } from '../item.actions';
+import ItemConstants from '../item.types';
+import ItemForm from '../components/ItemForm';
 
 const mapStateToProps = (state, ownProps) => {
     return {

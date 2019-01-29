@@ -1,4 +1,4 @@
-import ItemConstants from '../constants/ItemConstants';
+import ItemConstants from '../item/item.types';
 import CategoryConstants from '../constants/CategoryConstants';
 
 const initialState = {
