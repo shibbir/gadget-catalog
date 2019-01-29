@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
-import { getBrands } from '../../actions/BrandActions';
-import { getCategories } from '../../actions/CategoryActions';
+import { getBrands } from '../../brand/brand.actions';
+import { getCategories } from '../../category/category.actions';
 import { createItem, updateItem, fetchItem, resetItemState } from '../item.actions';
 import ItemConstants from '../item.types';
 import ItemForm from '../components/ItemForm';

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { getBrands } from '../../actions/BrandActions';
-import { getCategories } from '../../actions/CategoryActions';
+import { getBrands } from '../../brand/brand.actions';
+import { getCategories } from '../../category/category.actions';
 import { fetchItems } from '../item.actions';
 import ItemList from '../components/ItemList';
 

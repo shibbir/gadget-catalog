@@ -5,24 +5,24 @@ import { IntlProvider } from 'react-intl';
 import { Router, Route, hashHistory, IndexRedirect } from 'react-router';
 
 import store from './store';
-import App from './pages/App';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ProfilePage from './pages/ProfilePage';
-import DashboardPage from './pages/DashboardPage';
+import App from './shared/pages/App';
+import Login from './user/pages/Login';
+import Register from './user/pages/Register';
+import ProfilePage from './user/pages/ProfilePage';
+import DashboardPage from './user/pages/DashboardPage';
 import ItemListPage from './item/pages/ItemListPage';
 import ItemAddPage from './item/pages/ItemAddPage';
 import ItemEditPage from './item/pages/ItemEditPage';
 import ItemDetailsPage from './item/pages/ItemDetailsPage';
 import ItemImagePage from './item/pages/ItemImagePage';
-import CategoryListPage from './pages/CategoryListPage';
-import CategoryAddPage from './pages/CategoryAddPage';
-import CategoryEditPage from './pages/CategoryEditPage';
-import BrandListPage from './pages/BrandListPage';
-import BrandAddPage from './pages/BrandAddPage';
-import BrandEditPage from './pages/BrandEditPage';
-import EnsureLoggedInContainer from './containers/EnsureLoggedInContainer';
-import EnsureLoggedOutContainer from './containers/EnsureLoggedOutContainer';
+import CategoryListPage from './category/pages/CategoryListPage';
+import CategoryAddPage from './category/pages/CategoryAddPage';
+import CategoryEditPage from './category/pages/CategoryEditPage';
+import BrandListPage from './brand/pages/BrandListPage';
+import BrandAddPage from './brand/pages/BrandAddPage';
+import BrandEditPage from './brand/pages/BrandEditPage';
+import EnsureLoggedInContainer from './user/containers/EnsureLoggedInContainer';
+import EnsureLoggedOutContainer from './user/containers/EnsureLoggedOutContainer';
 
 ReactDOM.render(
     <Provider store={store}>
