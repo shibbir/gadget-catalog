@@ -1,17 +1,16 @@
 const jwt = require('jsonwebtoken');
 const User = require('./user.model');
 
-let tokenResponse = function(user, provider) {
+function generateAccessToken(user, provider) {
     let data = {
         _id: user._id,
         name: user.displayName,
         email: user[provider].email
     };
 
-    data.jwtToken = jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1d', issuer: user._id.toString() });
-    data.isAdmin = user.role === 'admin';
+    let jwtToken = jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1d', issuer: user._id.toString() });
 
-    return data;
+    return jwtToken;
 };
 
 module.exports = function(app, passport) {
@@ -21,7 +20,7 @@ module.exports = function(app, passport) {
                 return res.status(400).json({ message: info.message });
             }
 
-            res.json(tokenResponse(user, 'local'));
+            res.json(generateAccessToken(user, 'local'));
         })(req, res, next);
     });
 
@@ -35,15 +34,30 @@ module.exports = function(app, passport) {
                 return res.status(401).json({ message: 'Invalid credentials.' });
             }
 
-            res.json(tokenResponse(user, 'local'));
+            res.cookie('access_token', generateAccessToken(user, 'local'), {
+                expires: new Date(Date.now() + 8.64e+7),
+                httpOnly: true
+            });
+
+            res.json({
+                name: user.displayName,
+                isAdmin: user.role === 'admin'
+            });
         });
     });
 
-    app.get('/api/profile', passport.authenticate('http-bearer', { session: false }), function(req, res) {
-        res.json(tokenResponse(req.user, 'local'));
+    app.get('/api/logout', passport.authenticate('jwt', { session: false }), function(req, res) {
+        res.clearCookie('access_token').redirect("/");
     });
 
-    app.put('/api/profile/password', passport.authenticate('http-bearer', { session: false }), function(req, res) {
+    app.get('/api/profile', passport.authenticate('jwt', { session: false }), function(req, res) {
+        res.json({
+            name: req.user.displayName,
+            isAdmin: req.user.role === 'admin'
+        });
+    });
+
+    app.put('/api/profile/password', passport.authenticate('jwt', { session: false }), function(req, res) {
         User.findOne({ _id: req.user._id }, 'local', function(err, user) {
             if(err) {
                 return res.sendStatus(500);
@@ -64,39 +78,33 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/api/oauth/profile', function(req, res) {
-        const { provider, token } = req.query;
-        const query = JSON.parse(`{"${provider}.token": "${token}"}`);
-
-        User.findOne(query, 'facebook displayName', function(err, user) {
-            if(err || !user) {
-                return res.status(401).json({ message: 'Invalid access token or oauth provider.' });
-            }
-            res.json(tokenResponse(user, provider));
-        });
-    });
-
-    app.get('/auth/facebook', passport.authenticate('facebook', { authType: 'rerequest' }));
+    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
 
     app.get('/auth/facebook/callback', function(req, res, next) {
-        passport.authenticate('facebook', function(err, user, info) {
-            if(err || !user) {
-                return res.redirect('/#/?provider=facebook&error=' + info.message);
+        passport.authenticate('facebook', function(err, user) {
+            if(err) {
+                return res.redirect(`/#/?provider=facebook&error=${err.message}`);
             }
 
-            res.redirect('/#/?provider=facebook&token=' + user.facebook.token);
-        })(req, res, next);
+            res.cookie('access_token', generateAccessToken(user, 'facebook'), {
+                expires: new Date(Date.now() + 8.64e+7),
+                httpOnly: true
+            }).redirect("/#/");
+        })(req, res, next)
     });
 
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
     app.get('/auth/google/callback', function(req, res, next) {
-        passport.authenticate('google', function(err, user, info) {
-            if(err || !user) {
-                return res.redirect('/#/?provider=google&error=' + info.message);
+        passport.authenticate('google', function(err, user) {
+            if(err) {
+                return res.redirect(`/#/?provider=google&error=${err.message}`);
             }
 
-            res.redirect('/#/?provider=google&token=' + user.google.token);
+            res.cookie('access_token', generateAccessToken(user, 'google'), {
+                expires: new Date(Date.now() + 8.64e+7),
+                httpOnly: true
+            }).redirect("/#/");
         })(req, res, next);
     });
 };

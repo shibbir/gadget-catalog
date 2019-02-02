@@ -5,7 +5,7 @@ import reducers from './reducers';
 
 const middlewares = [promiseMiddleware(), thunk];
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'developments') {
     const { logger } = require('redux-logger');
 
     middlewares.push(logger);

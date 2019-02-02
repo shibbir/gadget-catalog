@@ -3,10 +3,6 @@ import { Link } from 'react-router';
 import { Menu, Dropdown, Container, Icon } from 'semantic-ui-react';
 
 export default class Navbar extends React.Component {
-    logout() {
-        this.props.logout();
-    }
-
     render() {
         const navBarStyle = {
             marginBottom: '10px'
@@ -48,7 +44,7 @@ export default class Navbar extends React.Component {
                                 <Link to="profile" activeClassName="active" className="item">
                                     <Icon name="edit"/> Edit profile
                                 </Link>
-                                <a href="javascript:void(0)" className="item" onClick={this.logout.bind(this)}>
+                                <a href="/api/logout" className="item">
                                     <Icon name="sign out"/> Sign out
                                 </a>
                             </Dropdown.Menu>

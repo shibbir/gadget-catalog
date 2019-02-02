@@ -1,4 +1,4 @@
-const path = require('path');
+const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.common');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -7,7 +7,7 @@ module.exports = webpackMerge(commonConfig, {
     mode: 'development',
 
     output: {
-        path: path.join(__dirname, 'public/bundles'),
+        path: helpers.root('public/bundles'),
         filename: '[name].js'
     },
 

@@ -3,14 +3,17 @@ import { getBearerRequestObject } from '../config/helpers';
 import CategoryConstants from './category.types';
 
 export function getCategories() {
-    const config = {
-        url: '/api/categories',
-        method: 'get'
-    };
+    // const config = {
+    //     url: '/api/categories',
+    //     method: 'get'
+    // };
 
     return {
         type: CategoryConstants.GET_CATEGORIES,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'get',
+            url: '/api/categories'
+        })
     };
 }
 

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import App from '../components/App/App';
-import { meFromApplicationToken, meFromExternalToken } from '../../user/auth.actions';
+import { loadProfile } from '../../user/auth.actions';
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -11,14 +11,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        loadMeFromApplicationToken: () => {
-            dispatch(meFromApplicationToken());
-        },
-        loadMeFromExternalApplicationToken: (provider, token) => {
-            if(provider && token) {
-                dispatch(meFromExternalToken(provider, token));
-            }
-        }
+        loadProfile: () => dispatch(loadProfile())
     };
 };
 

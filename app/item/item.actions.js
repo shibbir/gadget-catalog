@@ -1,53 +1,45 @@
 import axios from 'axios';
-import { getBearerRequestObject } from '../config/helpers';
 import ItemConstants from './item.types';
 
 export function createItem(formData) {
-    const config = {
-        url: '/api/items',
-        data: formData
-    };
-
     return {
         type: ItemConstants.POST_ITEM,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'put',
+            data: formData,
+            url: '/api/items'
+        })
     };
 }
 
 export function updateItem(formData, id) {
-    const config = {
-        url: `api/items/${id}`,
-        method: 'put',
-        data: formData
-    };
-
     return {
         type: ItemConstants.PUT_ITEM,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'put',
+            data: formData,
+            url: `api/items/${id}`
+        })
     };
 }
 
 export function fetchItem(id) {
-    const config = {
-        url: `/api/items/${id}`,
-        method: 'get'
-    };
-
     return {
         type: ItemConstants.GET_ITEM,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'get',
+            url: `/api/items/${id}`
+        })
     };
 }
 
 export function fetchItems(query = '') {
-    const config = {
-        url: `/api/items${query}`,
-        method: 'get'
-    };
-
     return {
         type: ItemConstants.GET_ITEMS,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'get',
+            url: `/api/items${query}`
+        })
     };
 }
 
@@ -58,37 +50,31 @@ export function resetItemState() {
 }
 
 export function setAsActiveImage(itemId, fileId) {
-    const config = {
-        url: `/api/items/${itemId}/images/${fileId}`,
-        method: 'put'
-    };
-
     return {
         type: ItemConstants.UPDATE_ITEM_IMAGE,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'put',
+            url: `/api/items/${itemId}/images/${fileId}`
+        })
     };
 }
 
 export function deleteImage(itemId, fileId) {
-    const config = {
-        url: `/api/items/${itemId}/images/${fileId}`,
-        method: 'delete'
-    };
-
     return {
         type: ItemConstants.DELETE_ITEM_IMAGE,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'delete',
+            url: `/api/items/${itemId}/images/${fileId}`
+        })
     };
 }
 
 export function fetchItemCountsByYearRange(yearRange) {
-    const config = {
-        url: `/api/items/yearRange/${yearRange}`,
-        method: 'get'
-    };
-
     return {
         type: ItemConstants.GET_ITEM_COUNTS_BY_YEAR,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'get',
+            url: `/api/items/yearRange/${yearRange}`
+        })
     };
 }

@@ -4,17 +4,17 @@ module.exports = function(app) {
     const controller = require('./item.controller');
 
     app.route('/api/items')
-        .get(passport.authenticate('http-bearer', { session: false }), controller.getItems)
-        .post(passport.authenticate('http-bearer', { session: false }), controller.createItem);
+        .get(passport.authenticate('jwt', { session: false }), controller.getItems)
+        .post(passport.authenticate('jwt', { session: false }), controller.createItem);
 
     app.route('/api/items/:id')
-        .get(passport.authenticate('http-bearer', { session: false }), controller.getItem)
-        .put(passport.authenticate('http-bearer', { session: false }), controller.updateItem);
+        .get(passport.authenticate('jwt', { session: false }), controller.getItem)
+        .put(passport.authenticate('jwt', { session: false }), controller.updateItem);
 
     app.route('/api/items/:itemId/images/:fileId')
-        .put(passport.authenticate('http-bearer', { session: false }), controller.updateImage)
-        .delete(passport.authenticate('http-bearer', { session: false }), controller.deleteImage);
+        .put(passport.authenticate('jwt', { session: false }), controller.updateImage)
+        .delete(passport.authenticate('jwt', { session: false }), controller.deleteImage);
 
     app.route('/api/items/yearRange/:yearRange')
-        .get(passport.authenticate('http-bearer', { session: false }), controller.getYearRangeReport);
+        .get(passport.authenticate('jwt', { session: false }), controller.getYearRangeReport);
 };

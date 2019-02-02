@@ -1,53 +1,45 @@
 import axios from 'axios';
 import BrandConstants from './brand.types';
-import { getBearerRequestObject } from '../config/helpers';
 
 export function getBrands(query = '') {
-    const config = {
-        url: `/api/brands${query}`,
-        method: 'get'
-    };
-
     return {
         type: BrandConstants.GET_BRANDS,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'get',
+            url: `/api/brands${query}`
+        })
     };
 }
 
 export function createBrand(formData) {
-    const config = {
-        url: 'api/brands',
-        data: formData
-    };
-
     return {
         type: BrandConstants.POST_BRAND,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'get',
+            data: formData,
+            url: 'api/brands'
+        })
     };
 }
 
 export function updateBrand(formData, id) {
-    const config = {
-        url: `api/brands/${id}`,
-        method: 'put',
-        data: formData
-    };
-
     return {
         type: BrandConstants.PUT_BRAND,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'put',
+            data: formData,
+            url: `api/brands/${id}`
+        })
     };
 }
 
 export function fetchBrand(id) {
-    const config = {
-        url: `/api/brands/${id}`,
-        method: 'get'
-    };
-
     return {
         type: BrandConstants.GET_BRAND,
-        payload: axios(getBearerRequestObject(config))
+        payload: axios({
+            method: 'get',
+            url: `/api/brands/${id}`
+        })
     };
 }
 

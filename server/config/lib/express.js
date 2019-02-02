@@ -1,9 +1,10 @@
 const config = require('../config');
 const path = require('path');
-const hbs = require('express-hbs');
-const express = require('express');
-const bodyParser = require('body-parser');
 const multer = require('multer');
+const express = require('express');
+const hbs = require('express-hbs');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const compression = require('compression');
 
 module.exports = function() {
@@ -14,6 +15,8 @@ module.exports = function() {
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
+
+    app.use(cookieParser());
 
     app.use(compression());
 
