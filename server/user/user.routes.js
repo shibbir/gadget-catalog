@@ -2,15 +2,14 @@ const jwt = require('jsonwebtoken');
 const User = require('./user.model');
 
 function generateAccessToken(user, provider) {
-    let data = {
+    return jwt.sign({
         _id: user._id,
         name: user.displayName,
         email: user[provider].email
-    };
-
-    let jwtToken = jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1d', issuer: user._id.toString() });
-
-    return jwtToken;
+    }, process.env.TOKEN_SECRET,{
+        expiresIn: '1d',
+        issuer: user._id.toString()
+    });
 };
 
 module.exports = function(app, passport) {
@@ -20,7 +19,15 @@ module.exports = function(app, passport) {
                 return res.status(400).json({ message: info.message });
             }
 
-            res.json(generateAccessToken(user, 'local'));
+            res.cookie('access_token', generateAccessToken(user, 'local'), {
+                expires: new Date(Date.now() + 8.64e+7),
+                httpOnly: true
+            });
+
+            res.json({
+                name: user.displayName,
+                isAdmin: user.role === 'admin'
+            });
         })(req, res, next);
     });
 
@@ -31,7 +38,7 @@ module.exports = function(app, passport) {
             }
 
             if(!user || !user.validPassword(req.body.password)) {
-                return res.status(401).json({ message: 'Invalid credentials.' });
+                return res.status(401).json({ message: 'Invalid credentials!' });
             }
 
             res.cookie('access_token', generateAccessToken(user, 'local'), {

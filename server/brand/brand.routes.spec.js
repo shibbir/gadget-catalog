@@ -10,13 +10,13 @@ require('./brand.routes')(app, passport);
 
 describe('Brand Routes', function() {
     let brand = {};
-    const admin = specHelper.admin();
+    const user = specHelper.user();
 
     beforeAll(function(done) {
         new Brand({
             name: faker.company.companyName(),
             slug: specHelper.convertToSlug(faker.company.companyName()),
-            createdBy: admin._id
+            createdBy: user._id
         }).save(function(err, doc) {
             brand = doc;
             done();
@@ -26,7 +26,7 @@ describe('Brand Routes', function() {
     it('Should get all brands', function(done) {
         request(app)
             .get('/api/brands')
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {
                 if(err) done.fail(err);
@@ -40,7 +40,7 @@ describe('Brand Routes', function() {
             .send({
                 name: faker.company.companyName()
             })
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {
                 if(err) done.fail(err);
@@ -51,7 +51,7 @@ describe('Brand Routes', function() {
     it('Should get a single brand', function(done) {
         request(app)
             .get(`/api/brands/${brand._id}`)
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {
                 if(err) done.fail(err);

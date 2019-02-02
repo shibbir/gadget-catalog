@@ -8,7 +8,7 @@ require('../config/lib/passport')(passport);
 require('./user.routes')(app, passport);
 
 describe('User Routes', function() {
-    const admin = specHelper.admin();
+    const user = specHelper.user();
 
     it('Should create a local user', function(done) {
         request(app)
@@ -16,7 +16,7 @@ describe('User Routes', function() {
             .send({
                 name: faker.name.findName(),
                 email: faker.internet.email(),
-                password: 'xxx-xxx-xxx'
+                password: user.password
             })
             .expect(200)
             .end(function(err) {
@@ -29,8 +29,8 @@ describe('User Routes', function() {
         request(app)
             .post('/api/login')
             .send({
-                email: admin.email,
-                password: admin.password
+                email: user.email,
+                password: user.password
             })
             .expect(200)
             .end(function(err) {
@@ -42,9 +42,9 @@ describe('User Routes', function() {
     it('Should allow user to update the password', function(done) {
         request(app)
             .put('/api/profile/password')
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .send({
-                currentPassword: admin.password,
+                currentPassword: user.password,
                 newPassword: 'xxx-xxx-xxx-xxx'
             })
             .expect(200)

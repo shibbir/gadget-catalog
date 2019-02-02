@@ -11,13 +11,13 @@ require('./category.routes')(app, passport);
 
 describe('Category Routes', function() {
     let category = {};
-    const admin = specHelper.admin();
+    const user = specHelper.user();
 
     beforeAll(function(done) {
         new Category({
             name: faker.commerce.productName(),
             slug: specHelper.convertToSlug(faker.commerce.productName()),
-            createdBy: admin._id
+            createdBy: user._id
         }).save(function(err, doc) {
             category = doc;
             done();
@@ -27,7 +27,7 @@ describe('Category Routes', function() {
     it('Should get all categories', function(done) {
         request(app)
             .get('/api/categories')
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {
                 if(err) done.fail(err);
@@ -41,9 +41,10 @@ describe('Category Routes', function() {
             .send({
                 name: faker.commerce.productName()
             })
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
-            .end(function(err) {
+            .end(function(err, doc) {
+                console.log(doc);
                 if(err) done.fail(err);
                 done();
             });
@@ -52,7 +53,7 @@ describe('Category Routes', function() {
     it('Should get a single category', function(done) {
         request(app)
             .get(`/api/categories/${category._id}`)
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {
                 if(err) done.fail(err);
@@ -66,7 +67,7 @@ describe('Category Routes', function() {
             .send({
                 name: faker.commerce.productName()
             })
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {
                 if(err) done.fail(err);

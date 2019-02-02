@@ -15,13 +15,13 @@ describe('Item Routes', function() {
     let category = {};
     let brand = {};
     let item = {};
-    const admin = specHelper.admin();
+    const user = specHelper.user();
 
     beforeAll(function(done) {
         new Category({
             name: faker.commerce.productName(),
             slug: specHelper.convertToSlug(faker.commerce.productName()),
-            createdBy: admin._id
+            createdBy: user._id
         }).save(function(err, doc) {
             category = doc;
             done();
@@ -32,7 +32,7 @@ describe('Item Routes', function() {
                 new Category({
                     name: faker.commerce.productName(),
                     slug: specHelper.convertToSlug(faker.commerce.productName()),
-                    createdBy: admin._id
+                    createdBy: user._id
                 }).save(function(err, doc) {
                     category = doc;
                     callback(null, category);
@@ -42,7 +42,7 @@ describe('Item Routes', function() {
                 new Brand({
                     name: faker.commerce.productName(),
                     slug: specHelper.convertToSlug(faker.commerce.productName()),
-                    createdBy: admin._id
+                    createdBy: user._id
                 }).save(function(err, doc) {
                     brand = doc;
                     callback(null, category, brand);
@@ -53,7 +53,7 @@ describe('Item Routes', function() {
                     name: faker.commerce.productName(),
                     categoryId: category._id,
                     brandId: brand._id,
-                    createdBy: admin._id
+                    createdBy: user._id
                 }).save(function(err, doc) {
                     item = doc;
                     callback();
@@ -68,7 +68,7 @@ describe('Item Routes', function() {
     it('Should get all items', function(done) {
         request(app)
             .get('/api/items')
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {
                 if(err) done.fail(err);
@@ -84,7 +84,7 @@ describe('Item Routes', function() {
                 categoryId: category._id,
                 brandId: brand._id
             })
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {
                 if(err) done.fail(err);
@@ -95,7 +95,7 @@ describe('Item Routes', function() {
     it('Should get a single item', function(done) {
         request(app)
             .get(`/api/items/${item._id}`)
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {
                 if(err) done.fail(err);
@@ -111,7 +111,7 @@ describe('Item Routes', function() {
                 categoryId: category._id,
                 brandId: brand._id
             })
-            .set('Authorization', `Bearer ${admin.jwtToken}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {
                 if(err) done.fail(err);

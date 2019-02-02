@@ -22,10 +22,9 @@ beforeAll(function(done) {
     let user = new User();
 
     user._id = '58e8d591a643633a109f29bc';
-    user.role = 'admin';
-    user.displayName = 'Administrator';
-    user.local.name = 'Administrator';
-    user.local.email = 'admin@test.com';
+    user.displayName = 'User';
+    user.local.name = 'User';
+    user.local.email = 'user@test.com';
     user.local.password = user.generateHash('xxx-xxx-xxx');
 
     user.save(function() {
@@ -36,42 +35,32 @@ beforeAll(function(done) {
 afterAll(function(done) {
     async.parallel([
         function(callback) {
-            User.deleteMany({}, function() {
-                callback();
-            });
+            User.deleteMany({}, () => callback());
         },
         function(callback) {
-            Category.deleteMany({}, function() {
-                callback();
-            });
+            Category.deleteMany({}, () => callback());
         },
         function(callback) {
-            Brand.deleteMany({}, function() {
-                callback();
-            });
+            Brand.deleteMany({}, () => callback());
         },
         function(callback) {
-            Item.deleteMany({}, function() {
-                callback();
-            });
+            Item.deleteMany({}, () => callback());
         }
-    ],
-    function() {
+    ], function() {
         mongoose.connection.close();
         done();
     });
 });
 
-
 module.exports = {
-    admin: function() {
+    user: function() {
         let data = {
             _id: '58e8d591a643633a109f29bc',
-            name: 'Administrator',
-            email: 'admin@test.com'
+            name: 'User',
+            email: 'user@test.com'
         };
 
-        data.jwtToken = jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1d', issuer: data._id });
+        data.accessToken = jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1d', issuer: data._id });
         data.password = 'xxx-xxx-xxx';
 
         return data;
