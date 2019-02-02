@@ -32,15 +32,13 @@ function server(done) {
     });
 }
 
-function test(done) {
+function test() {
     process.env.NODE_ENV = 'test';
     let specReporter = require('jasmine-spec-reporter').SpecReporter;
 
-    src(assets.server.specs).pipe(plugins.jasmine({
+    return src(assets.server.specs).pipe(plugins.jasmine({
         reporter: new specReporter()
     }));
-
-    done();
 }
 
 exports.default = series(development, webpack, server);
