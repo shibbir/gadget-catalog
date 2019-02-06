@@ -1,26 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router';
-import { Field, reduxForm } from 'redux-form';
-import { Button, Form, Segment, Header, Divider, Image } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Button, Segment, Header, Divider, Image } from 'semantic-ui-react';
+import { Formik, Form } from 'formik';
 
 import store from '../../store';
 import SocialAuthService from '../../shared/components/SocialAuthService';
 import { login } from '../auth.actions';
-import { TextInput } from '../../shared/components/FieldInput/FieldInputs';
-
-const required = value => value ? undefined : 'This field must not be empty';
+import { TextInput } from '../../shared/components/FieldInput/NewFieldInputs';
 
 class Login extends React.Component {
-    handleSubmit(formValues) {
-        store.dispatch(login({
-            email: formValues.email,
-            password: formValues.password
-        }));
-    }
-
     render() {
-        const { handleSubmit, submitting } = this.props;
-
         const pageStyle = {
             paddingTop: '85px'
         };
@@ -38,21 +27,55 @@ class Login extends React.Component {
                                 Log-in to your account
                             </div>
                         </Header>
-                        <Form className="large" onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-                            <Segment className="stacked">
-                                <Field name="email"
-                                    attributes={{ id: 'email', type: 'email', placeholder: 'E-mail address', icon: 'mail', iconPosition: 'left'}}
-                                    component={TextInput}
-                                    validate={[ required ]}/>
-                                <Field name="password"
-                                    attributes={{ id: 'password', type: 'password', placeholder: 'Password', icon: 'lock', iconPosition: 'left'}}
-                                    component={TextInput}
-                                    validate={[ required ]}/>
-                                <Button fluid type="submit" className="large teal" disabled={submitting}>Login</Button>
-                                <Divider hidden/>
-                                Don't have an account? <Link to="register">Sign up</Link>.
-                            </Segment>
-                        </Form>
+                        <Formik
+                            initialValues={{ email: '', password: '' }}
+                            validate={values => {
+                                let errors = {};
+                                if (!values.email) {
+                                    errors.email = 'This field must not be empty';
+                                } else if (
+                                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                                ) {
+                                    errors.email = 'Invalid email address';
+                                }
+                                if (!values.password) {
+                                    errors.password = 'This field must not be empty';
+                                }
+                                return errors;
+                            }}
+                            onSubmit={(values, { setSubmitting }) => {
+                                store.dispatch(login({
+                                    email: values.email,
+                                    password: values.password
+                                }));
+                                setSubmitting(false);
+                            }
+                        }>
+                            {({ isSubmitting }) => (
+                                <Form className="ui form large">
+                                    <Segment className="stacked">
+                                        <TextInput attributes={{
+                                            name: 'email',
+                                            type: 'email',
+                                            icon: 'mail',
+                                            iconPosition: 'left'
+                                        }}/>
+
+                                        <TextInput attributes={{
+                                            name: 'password',
+                                            type: 'password',
+                                            icon: 'lock',
+                                            iconPosition: 'left'
+                                        }}/>
+
+                                        <Button fluid type="submit" className="large teal" disabled={isSubmitting}>Login</Button>
+
+                                        <Divider hidden/>
+                                        Don't have an account? <Link to="register">Sign up</Link>.
+                                    </Segment>
+                                </Form>
+                            )}
+                        </Formik>
                         <SocialAuthService/>
                     </div>
                 </div>
@@ -60,9 +83,5 @@ class Login extends React.Component {
         );
     }
 }
-
-Login = reduxForm({
-    form: 'Login'
-})(Login);
 
 export default Login;

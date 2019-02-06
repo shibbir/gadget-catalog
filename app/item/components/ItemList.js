@@ -1,21 +1,25 @@
 import React from 'react';
-import { Link, hashHistory } from 'react-router';
+import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 import { Card, Divider, Message, Icon, Menu, Container, Image, Dropdown } from 'semantic-ui-react';
 
 export default class ItemList extends React.Component {
     constructor(props) {
         super();
-
         props.getBrands();
         props.getCategories();
         props.fetchItems(props.location.search);
 
+        this.state = {
+            params: queryString.parse(props.location.search)
+        };
+
         this.filterBy = this.filterBy.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if(this.props.location.search !== nextProps.location.search) {
-            this.props.fetchItems(nextProps.location.search);
+    componentDidUpdate(prevProps) {
+        if(this.props.location.search !== prevProps.location.search) {
+            this.props.fetchItems(this.props.location.search);
         }
     }
 
@@ -24,11 +28,19 @@ export default class ItemList extends React.Component {
             pathname: 'items'
         };
 
-        if(data.value === '-1' && this.props.location.query.filter_by) {
-            hashHistory.push(newLocation);
-        } else if(data.value !== '-1' && this.props.location.query.filter_id !== data.value) {
-            newLocation.query = { filter_by: data.name, filter_id: data.value };
-            hashHistory.push(newLocation);
+        this.state = {
+            params: queryString.parse(this.props.location.search)
+        };
+
+        if(data.value === '-1' && this.state.params.filter_by) {
+            this.props.history.push(newLocation);
+        } else if(data.value !== '-1' && this.state.params.filter_id !== data.value) {
+            newLocation.search = queryString.stringify({
+                filter_by: data.name,
+                filter_id: data.value
+            })
+
+            this.props.history.push(newLocation);
         }
     }
 
@@ -54,10 +66,10 @@ export default class ItemList extends React.Component {
                 <Card key={item._id} raised href={`#/items/${item._id}`}>
                     <Card.Content header={item.name} className="ui center aligned"/>
                     <Card.Content className="ui center aligned">
-                    { activeImage ?
-                        <Image src={activeImage} alt={item.name}/> :
-                        'Image Not Available!'
-                    }
+                        { activeImage
+                            ? <Image src={activeImage} alt={item.name}/>
+                            : 'Image Not Available!'
+                        }
                     </Card.Content>
                 </Card>
             );
@@ -68,8 +80,11 @@ export default class ItemList extends React.Component {
         for(let idx = 1; idx <= pagination.pages; idx++) {
             paginationLinks.push({
                 idx,
-                link: { pathname: location.pathname, query: { ...location.query, page: idx }},
-                isActive: !location.query.page && idx === 1 || +location.query.page === idx
+                link: {
+                    pathname: location.pathname,
+                    search: queryString.stringify({ ...this.state.params, page: idx })
+                },
+                isActive: !this.state.params.page && idx === 1 || +this.state.params.page === idx
             });
         }
 
@@ -81,7 +96,7 @@ export default class ItemList extends React.Component {
             );
         });
 
-        let defaultValue = location.query.filter_id || '-1';
+        let defaultValue = this.state.params.filter_id || '-1';
 
         return (
             <div>

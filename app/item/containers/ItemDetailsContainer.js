@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 import { fetchItem } from '../item.actions';
 import ItemDetails from '../components/ItemDetails';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, props) => {
     return {
-        itemId: ownProps.id,
+        itemId: props.match.params.id,
         activeItem: state.itemReducer.activeItem
     };
 }

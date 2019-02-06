@@ -1,22 +1,21 @@
 import { connect } from 'react-redux';
-import { hashHistory } from 'react-router';
 import { getBrands } from '../../brand/brand.actions';
 import { getCategories } from '../../category/category.actions';
 import { createItem, updateItem, fetchItem, resetItemState } from '../item.actions';
 import ItemConstants from '../item.types';
 import ItemForm from '../components/ItemForm';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, props) => {
     return {
-        itemId: ownProps.id,
-        form: `${ownProps.form}ItemForm`,
-        submitButtonText: ownProps.submitButtonText || 'Submit',
+        itemId: props.id,
+        form: `${props.form}ItemForm`,
         brands: state.brandReducer.brands,
-        categories: state.categoryReducer.categories
+        categories: state.categoryReducer.categories,
+        item: state.itemReducer.activeItem.item
     };
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, props) => {
     return {
         getBrands: () => {
             dispatch(getBrands());
@@ -29,7 +28,7 @@ const mapDispatchToProps = (dispatch) => {
                 const { type, payload } = result.action;
 
                 if(type === ItemConstants.POST_ITEM_FULFILLED) {
-                    hashHistory.push({ pathname: `items/${payload.data._id}` });
+                    props.history.push({ pathname: `items/${payload.data._id}` });
                 }
             });
         },
@@ -38,7 +37,7 @@ const mapDispatchToProps = (dispatch) => {
                 const { type, payload } = result.action;
 
                 if(type === ItemConstants.PUT_ITEM_FULFILLED) {
-                    hashHistory.push({ pathname: `items/${payload.data._id}` });
+                    props.history.push({ pathname: `items/${payload.data._id}` });
                 }
             });
         },

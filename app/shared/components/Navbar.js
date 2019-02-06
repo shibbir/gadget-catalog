@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import { Menu, Dropdown, Container, Icon } from 'semantic-ui-react';
 
 export default class Navbar extends React.Component {
@@ -14,36 +14,36 @@ export default class Navbar extends React.Component {
             <Container style={navBarStyle}>
                 <Menu stackable>
                     <Menu.Item header>Gadget Catalog</Menu.Item>
-                    <Link to="dashboard" activeClassName="active" className="item">
+                    <NavLink to="/" activeClassName="active" className="item">
                         <Icon name="dashboard"/>
                         Dashboard
-                    </Link>
+                    </NavLink>
                     <Dropdown item text='Item'>
                         <Dropdown.Menu>
-                            <Link to="items" activeClassName="active" className="item">Item list</Link>
-                            <Link to="items/add" activeClassName="active" className="item">Add new item</Link>
+                            <NavLink to="items" activeClassName="active" className="item">Item list</NavLink>
+                            <NavLink to="items/add" activeClassName="active" className="item">Add new item</NavLink>
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown item text='Category'>
                         <Dropdown.Menu>
-                            <Link to="categories" activeClassName="active" className="item">Category list</Link>
+                            <NavLink to="categories" activeClassName="active" className="item">Category list</NavLink>
                             { user && user.isAdmin &&
-                                <Link to="categories/add" activeClassName="active" className="item">Add new category</Link>
+                                <NavLink to="categories/add" activeClassName="active" className="item">Add new category</NavLink>
                             }
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown item text='Brand'>
                         <Dropdown.Menu>
-                            <Link to="brands" activeClassName="active" className="item">Brand list</Link>
-                            <Link to="brands/add" activeClassName="active" className="item">Add new brand</Link>
+                            <NavLink to="brands" activeClassName="active" className="item">Brand list</NavLink>
+                            <NavLink to="brands/add" activeClassName="active" className="item">Add new brand</NavLink>
                         </Dropdown.Menu>
                     </Dropdown>
                     <Menu.Menu position='right'>
                         <Dropdown item text={user.name}>
                             <Dropdown.Menu>
-                                <Link to="profile" activeClassName="active" className="item">
+                                <NavLink to="profile" activeClassName="active" className="item">
                                     <Icon name="edit"/> Edit profile
-                                </Link>
+                                </NavLink>
                                 <a href="/api/logout" className="item">
                                     <Icon name="sign out"/> Sign out
                                 </a>

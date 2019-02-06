@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import Navbar from '../components/Navbar';
+import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state) => {
     return {
@@ -7,4 +8,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(Navbar);
+export default withRouter(connect(mapStateToProps)(Navbar));

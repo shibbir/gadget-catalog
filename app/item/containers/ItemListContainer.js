@@ -4,9 +4,9 @@ import { getCategories } from '../../category/category.actions';
 import { fetchItems } from '../item.actions';
 import ItemList from '../components/ItemList';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, props) => {
     return {
-        location: ownProps.location,
+        location: props.location,
         items: state.itemReducer.items,
         brands: state.brandReducer.brands,
         categories: state.categoryReducer.categories
@@ -15,15 +15,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getBrands: () => {
-            dispatch(getBrands());
-        },
-        getCategories: () => {
-            dispatch(getCategories());
-        },
-        fetchItems: (query) => {
-            dispatch(fetchItems(query));
-        }
+        getBrands: () => dispatch(getBrands()),
+        getCategories: () => dispatch(getCategories()),
+        fetchItems: (query) => dispatch(fetchItems(query))
     };
 }
 

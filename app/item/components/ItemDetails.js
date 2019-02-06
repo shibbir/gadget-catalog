@@ -1,36 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { FormattedDate, FormattedNumber } from 'react-intl';
 import { Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb } from 'semantic-ui-react';
 
 export default class ItemDetails extends React.Component {
     constructor(props) {
         super();
-        this.state = { item: null, framedImage: '//res.cloudinary.com/shibbir/image/upload/v1487437653/miscellaneous/no-img.png' };
 
         props.fetchItem(props.itemId);
 
-        this.setAsFramedImage = this.setAsFramedImage.bind(this);
+        this.setActiveImage = this.setActiveImage.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { item } = nextProps.activeItem;
-
-        if(item) {
-            this.setState({ item });
-
-            if(item.files && item.files.length) {
-                this.setAsFramedImage(item.files[0]);
-            }
-        }
-    }
-
-    setAsFramedImage(file) {
+    setActiveImage(file) {
         this.setState({ framedImage: file.url });
     }
 
     render() {
-        let { item } = this.state;
+        let { item } = this.props.activeItem;
 
         if(!item) {
             return (
@@ -44,6 +31,10 @@ export default class ItemDetails extends React.Component {
             );
         }
 
+        if(item.files && item.files.length) {
+            item.activeImage = item.files[0];
+        }
+
         const sections = [
             { key: 'Items', content: 'Items', href: '#/items' },
             { key: 'Category', content: `${item.category.name}`, href: `#/items?filter_by=category&filter_id=${item.category._id}` },
@@ -53,16 +44,21 @@ export default class ItemDetails extends React.Component {
         return (
             <div>
                 <Breadcrumb size='small' icon='right chevron' sections={sections}/>
+
                 <Divider hidden/>
 
                 <Grid>
                     <Grid.Column width={10}>
                         <Card raised fluid>
                             <Card.Content className="center aligned">
-                                <Image src={this.state.framedImage}/>
+                                { item.activeImage
+                                    ? <Image src={item.activeImage.url} alt={item.name}/>
+                                    : <Icon name='image' size='massive'/>
+                                }
                             </Card.Content>
                         </Card>
                     </Grid.Column>
+
                     <Grid.Column width={6}>
                         <Item>
                             <Item.Content>
@@ -70,6 +66,7 @@ export default class ItemDetails extends React.Component {
                                 <Divider hidden/>
 
                                 <Divider horizontal>Meta Informations</Divider>
+
                                 <Item.Meta>
                                     <div>Category: <Link to={`items?filter_by=category&filter_id=${item.category._id}`}>{item.category.name}</Link></div>
                                     <div>Brand: <Link to={`items?filter_by=brand&filter_id=${item.brand._id}`}>{item.brand.name}</Link></div>
@@ -78,7 +75,9 @@ export default class ItemDetails extends React.Component {
                                     }
                                     <div>Purchase Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></div>
                                 </Item.Meta>
+
                                 <Divider horizontal>Description</Divider>
+
                                 <Item.Description>
                                     { item.description &&
                                         <div dangerouslySetInnerHTML={{ __html: item.description }}></div>
@@ -109,7 +108,7 @@ export default class ItemDetails extends React.Component {
                         <Divider hidden/>
                         <Card.Group>
                             { item.files.map((file) =>
-                                <Card key={file._id} raised onClick={this.setAsFramedImage.bind(this, file)}>
+                                <Card key={file._id} raised onClick={this.setActiveImage.bind(this, file)}>
                                     <Card.Content className="center aligned">
                                         <Image src={file.url} size="small"/>
                                     </Card.Content>

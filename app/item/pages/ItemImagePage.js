@@ -10,7 +10,7 @@ export default class ItemImagePage extends React.Component {
                 <h3>Manage images</h3>
                 <Divider section />
 
-                <ItemImageContainer id={this.props.params.id}/>
+                <ItemImageContainer id={this.props.match.params.id}/>
             </div>
         );
     }

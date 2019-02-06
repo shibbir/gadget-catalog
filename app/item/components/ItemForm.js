@@ -1,11 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
-import { Form, Divider, Button } from 'semantic-ui-react';
-import { TextInput, RichEditorInput, DropdownField, FileInput } from '../../shared/components/FieldInput/FieldInputs';
-
-const required = value => value ? undefined : 'This field must not be empty';
-const number = value => value && isNaN(Number(value)) ? 'Please enter a decimal number' : undefined;
+import { Form, withFormik } from 'formik';
+import { Divider, Button } from 'semantic-ui-react';
+import { TextInput, RichEditorInput, DropdownInput, FileInput } from '../../shared/components/FieldInput/NewFieldInputs';
 
 class ItemForm extends React.Component {
     constructor(props) {
@@ -21,31 +17,8 @@ class ItemForm extends React.Component {
         }
     }
 
-    handleSubmit(formValues) {
-        let formData = new FormData();
-
-        if(formValues.files) {
-            for(let index = 0; index < formValues.files.length; index++) {
-                formData.append('files', formValues.files[index]);
-            }
-            delete formValues.files;
-        }
-
-        for(let key in formValues) {
-            if(formValues.hasOwnProperty(key)) {
-                formData.append(key, formValues[key]);
-            }
-        }
-
-        if(this.props.itemId) {
-            this.props.updateItem(formData, this.props.itemId);
-        } else {
-            this.props.createItem(formData);
-        }
-    }
-
     render() {
-        const { handleSubmit, reset, submitting, pristine, submitButtonText } = this.props;
+        const { handleChange, setFieldValue, isSubmitting, handleSubmit, reset, submitButtonText, values } = this.props;
 
         const categoryOptions = this.props.categories.map(function(option) {
             return { key: option._id, value: option._id, text: option.name };
@@ -55,35 +28,124 @@ class ItemForm extends React.Component {
             return { key: option._id, value: option._id, text: option.name };
         });
 
+        const handleDropdownChange = (e, data) => {
+            if (data && data.name) {
+                setFieldValue(data.name, data.value);
+            }
+        }
+
+        const handleFileChange = (e) => {
+            setFieldValue('files', e.currentTarget.files);
+        }
+
         return (
-            <Form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-                <Field name="name" label="Name" attributes={{type: 'text'}} component={TextInput} validate={[ required ]}/>
-                <Field name="description" label="Description" component={RichEditorInput}/>
-                <Field name="categoryId" placeholder="Select category" label="Category" options={categoryOptions} component={DropdownField} validate={[ required ]}/>
-                <Field name="brandId" placeholder="Select brand" label="Brand" options={brandOptions} component={DropdownField} validate={[ required ]}/>
-                <Field name="purchaseDate" label="Purchase date" attributes={{type: 'date'}} component={TextInput} validate={[ required ]}/>
-                <Field name="price" label="Price" attributes={{type: 'number'}} component={TextInput}/>
-                <Field name="files" label="Upload images" component={FileInput}/>
+            <Form onSubmit={handleSubmit} className="ui form">
+                <TextInput attributes={{
+                    type: 'text',
+                    name: 'name',
+                    label: 'Name'
+                }}/>
+                <RichEditorInput attributes={{
+                    value: values.description,
+                    name: 'description',
+                    label: 'Description',
+                    onChange: handleChange
+                }}/>
+                <DropdownInput attributes={{
+                    value: values.categoryId,
+                    name: 'categoryId',
+                    placeholder: 'Select category',
+                    label: 'Category',
+                    options: categoryOptions,
+                    onChange: handleDropdownChange
+                }}/>
+                <DropdownInput attributes={{
+                    value: values.brandId,
+                    name: 'brandId',
+                    placeholder: 'Select brand',
+                    label: 'Brand',
+                    options: brandOptions,
+                    onChange: handleDropdownChange
+                }}/>
+                <TextInput attributes={{
+                    type: 'date',
+                    name: 'purchaseDate',
+                    label: 'Purchase date'
+                }}/>
+                <TextInput attributes={{
+                    type: 'number',
+                    name: 'price',
+                    label: 'Price'
+                }}/>
+                <FileInput attributes={{
+                    type: 'file',
+                    name: 'file',
+                    label: 'Upload images',
+                    onChange: handleFileChange
+                }}/>
                 <Divider hidden/>
                 <Button.Group>
-                    <Button type="submit" positive disabled={submitting}>{submitButtonText}</Button>
+                    <Button type="submit" positive disabled={isSubmitting}>Submit</Button>
                     <Button.Or/>
-                    <Button type="button" disabled={pristine || submitting} onClick={reset}>Reset</Button>
+                    <Button type="button" disabled={isSubmitting} onClick={reset}>Reset</Button>
                 </Button.Group>
             </Form>
         );
     }
 }
 
-ItemForm = reduxForm({
+ItemForm = withFormik({
     enableReinitialize: true,
-    keepDirtyOnReinitialize: true
-})(ItemForm);
 
-ItemForm = connect(
-    state => ({
-        initialValues: state.itemReducer.activeItem.item
-    })
-)(ItemForm);
+    mapPropsToValues: (props) => {
+        if(props.item) {
+            return {
+                name: props.item.name,
+                description: props.item.description,
+                categoryId: props.item.categoryId,
+                brandId: props.item.brandId,
+                purchaseDate: props.item.purchaseDate,
+                price: props.item.price
+            };
+        }
+
+        return {
+            name: '',
+            description: '',
+            categoryId: '',
+            brandId: '',
+            purchaseDate: '',
+            price: '',
+            files: ''
+        };
+    },
+
+    handleSubmit: (values, { setSubmitting, props }) => {
+        let formData = new FormData();
+
+        if(values.files) {
+            for(let index = 0; index < values.files.length; index++) {
+                formData.append('files', values.files[index]);
+            }
+            delete values.files;
+        }
+
+        for(let key in values) {
+            if(values.hasOwnProperty(key)) {
+                formData.append(key, values[key]);
+            }
+        }
+
+        if(props.itemId) {
+            props.updateItem(formData, props.itemId);
+        } else {
+            props.createItem(formData);
+        }
+
+        setSubmitting(false);
+    },
+
+    displayName: 'ItemForm',
+})(ItemForm);
 
 export default ItemForm;

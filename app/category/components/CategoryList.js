@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router';
-import { Card, Icon, Image, Button } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Card, Icon, Image, Button, Divider } from 'semantic-ui-react';
 
 export default class CategoryList extends React.Component {
     constructor(props) {
@@ -42,10 +42,16 @@ export default class CategoryList extends React.Component {
         });
 
         return (
-            <div id="category-cards-container">
-                <Card.Group>
-                    {cards}
-                </Card.Group>
+            <div>
+                <h3>Available categories</h3>
+
+                <Divider section/>
+
+                <div id="category-cards-container">
+                    <Card.Group>
+                        {cards}
+                    </Card.Group>
+                </div>
             </div>
         );
     }

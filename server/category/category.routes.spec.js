@@ -43,8 +43,7 @@ describe('Category Routes', function() {
             })
             .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
-            .end(function(err, doc) {
-                console.log(doc);
+            .end(function(err) {
                 if(err) done.fail(err);
                 done();
             });
