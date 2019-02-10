@@ -9,7 +9,7 @@ export default class BrandEditPage extends React.Component {
                 <h3>Edit brand</h3>
                 <Divider section/>
 
-                <BrandFormContainer id={this.props.params.id} form="Update"/>
+                <BrandFormContainer id={this.props.match.params.id}/>
             </div>
         );
     }

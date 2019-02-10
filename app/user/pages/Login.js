@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Segment, Header, Divider, Image } from 'semantic-ui-react';
-import { Formik, Form } from 'formik';
+import { withFormik, Form } from 'formik';
 
 import store from '../../store';
-import SocialAuthService from '../../shared/components/SocialAuthService';
+import { loginSchema } from '../auth.schema';
+import OAuthProvider from '../../shared/components/OAuthProvider';
 import { login } from '../auth.actions';
-import { TextInput } from '../../shared/components/FieldInput/NewFieldInputs';
+import { TextInput } from '../../shared/components/FieldInput/FieldInputs';
 
 class Login extends React.Component {
     render() {
@@ -16,6 +17,8 @@ class Login extends React.Component {
         const columnStyle = {
             maxWidth: '450px'
         };
+
+        const { handleSubmit, isSubmitting } = this.props;
 
         return (
             <div style={pageStyle}>
@@ -27,61 +30,56 @@ class Login extends React.Component {
                                 Log-in to your account
                             </div>
                         </Header>
-                        <Formik
-                            initialValues={{ email: '', password: '' }}
-                            validate={values => {
-                                let errors = {};
-                                if (!values.email) {
-                                    errors.email = 'This field must not be empty';
-                                } else if (
-                                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                                ) {
-                                    errors.email = 'Invalid email address';
-                                }
-                                if (!values.password) {
-                                    errors.password = 'This field must not be empty';
-                                }
-                                return errors;
-                            }}
-                            onSubmit={(values, { setSubmitting }) => {
-                                store.dispatch(login({
-                                    email: values.email,
-                                    password: values.password
-                                }));
-                                setSubmitting(false);
-                            }
-                        }>
-                            {({ isSubmitting }) => (
-                                <Form className="ui form large">
-                                    <Segment className="stacked">
-                                        <TextInput attributes={{
-                                            name: 'email',
-                                            type: 'email',
-                                            icon: 'mail',
-                                            iconPosition: 'left'
-                                        }}/>
+                            <Form onSubmit={handleSubmit} className="ui form large">
+                                <Segment className="stacked">
+                                    <TextInput attributes={{
+                                        name: 'email',
+                                        type: 'email',
+                                        icon: 'mail',
+                                        iconPosition: 'left'
+                                    }}/>
 
-                                        <TextInput attributes={{
-                                            name: 'password',
-                                            type: 'password',
-                                            icon: 'lock',
-                                            iconPosition: 'left'
-                                        }}/>
+                                    <TextInput attributes={{
+                                        name: 'password',
+                                        type: 'password',
+                                        icon: 'lock',
+                                        iconPosition: 'left'
+                                    }}/>
 
-                                        <Button fluid type="submit" className="large teal" disabled={isSubmitting}>Login</Button>
+                                    <Button fluid type="submit" className="large teal" disabled={isSubmitting}>Login</Button>
 
-                                        <Divider hidden/>
-                                        Don't have an account? <Link to="register">Sign up</Link>.
-                                    </Segment>
-                                </Form>
-                            )}
-                        </Formik>
-                        <SocialAuthService/>
+                                    <Divider hidden/>
+                                    Don't have an account? <Link to="/register">Sign up</Link>.
+                                </Segment>
+                            </Form>
+                        <OAuthProvider/>
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+Login = withFormik({
+    validationSchema: loginSchema,
+
+    mapPropsToValues: () => {
+        return {
+            email: '',
+            password: ''
+        };
+    },
+
+    handleSubmit: (values, { setSubmitting }) => {
+        store.dispatch(login({
+            email: values.email,
+            password: values.password
+        }));
+
+        setSubmitting(false);
+    },
+
+    displayName: 'Login'
+})(Login);
 
 export default Login;

@@ -1,28 +1,24 @@
 import { connect } from 'react-redux';
 import BrandForm from '../components/BrandForm';
-import { createBrand, updateBrand, fetchBrand, resetBrandState } from '../brand.actions';
+import { createBrand, updateBrand, fetchBrand } from '../brand.actions';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, props) => {
     return {
-        brandId: ownProps.id,
-        form: `${ownProps.form}BrandForm`,
-        submitButtonText: ownProps.submitButtonText || 'Submit'
+        brandId: props.id,
+        brand: state.brandReducer.brand
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         createBrand: (formData) => {
-            dispatch(createBrand(formData)).then(() => dispatch(resetBrandState()));
+            dispatch(createBrand(formData));
         },
         updateBrand: (formData, itemId) => {
             dispatch(updateBrand(formData, itemId));
         },
         fetchBrand: (itemId) => {
             dispatch(fetchBrand(itemId));
-        },
-        resetBrandState: () => {
-            dispatch(resetBrandState());
         }
     };
 };

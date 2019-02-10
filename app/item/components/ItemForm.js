@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, withFormik } from 'formik';
 import { Divider, Button } from 'semantic-ui-react';
-import { TextInput, RichEditorInput, DropdownInput, FileInput } from '../../shared/components/FieldInput/NewFieldInputs';
+import { TextInput, RichEditorInput, DropdownInput, FileInput } from '../../shared/components/FieldInput/FieldInputs';
 
 class ItemForm extends React.Component {
     constructor(props) {
@@ -12,13 +12,11 @@ class ItemForm extends React.Component {
 
         if(props.itemId) {
             props.fetchItem(props.itemId);
-        } else {
-            props.resetItemState();
         }
     }
 
     render() {
-        const { handleChange, setFieldValue, isSubmitting, handleSubmit, reset, submitButtonText, values } = this.props;
+        const { handleChange, setFieldValue, isSubmitting, handleSubmit, values } = this.props;
 
         const categoryOptions = this.props.categories.map(function(option) {
             return { key: option._id, value: option._id, text: option.name };
@@ -87,7 +85,7 @@ class ItemForm extends React.Component {
                 <Button.Group>
                     <Button type="submit" positive disabled={isSubmitting}>Submit</Button>
                     <Button.Or/>
-                    <Button type="button" disabled={isSubmitting} onClick={reset}>Reset</Button>
+                    <Button type="reset" disabled={isSubmitting}>Reset</Button>
                 </Button.Group>
             </Form>
         );
@@ -120,7 +118,7 @@ ItemForm = withFormik({
         };
     },
 
-    handleSubmit: (values, { setSubmitting, props }) => {
+    handleSubmit: (values, { setSubmitting, resetForm, props }) => {
         let formData = new FormData();
 
         if(values.files) {
@@ -142,10 +140,11 @@ ItemForm = withFormik({
             props.createItem(formData);
         }
 
+        resetForm();
         setSubmitting(false);
     },
 
-    displayName: 'ItemForm',
+    displayName: 'ItemForm'
 })(ItemForm);
 
 export default ItemForm;

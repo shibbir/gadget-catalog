@@ -9,7 +9,7 @@ export default class CategoryEditPage extends React.Component {
                 <h3>Edit category</h3>
                 <Divider section/>
 
-                <CategoryFormContainer id={this.props.params.id} form="Update"/>
+                <CategoryFormContainer id={this.props.match.params.id}/>
             </div>
         );
     }

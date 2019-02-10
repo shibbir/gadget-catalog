@@ -1,59 +1,58 @@
 import React from 'react';
-import { Form, Input, Select } from 'semantic-ui-react';
+import { Form, Icon } from 'semantic-ui-react';
+import { Field, ErrorMessage } from 'formik';
 import DraftEditor from './DraftEditor';
 
-export const TextInput = ({ input, attributes, label, meta: { touched, error } }) => {
+export const TextInput = ({ attributes }) => {
     return (
         <Form.Field>
-            { label && <label>{label}</label> }
-            <Input {...input} {...attributes} fluid/>
-            { touched && error &&
-                <div className="field-validation-error">
-                    {error}
-                </div>
-            }
+            { attributes.label && <label>{attributes.label}</label> }
+
+            <div className="ui fluid input">
+                <Field type={attributes.type} name={attributes.name} />
+            </div>
+
+            <div className="field-validation-error">
+                <ErrorMessage name={attributes.name} />
+            </div>
         </Form.Field>
     );
 };
 
-export const RichEditorInput = ({ input, attributes, label }) => {
+export const RichEditorInput = ({ attributes }) => {
     return (
         <Form.Field>
-            { label && <label>{label}</label> }
-            <DraftEditor {...input}/>
+            { attributes.label && <label>{attributes.label}</label> }
+
+            <DraftEditor {...attributes}/>
         </Form.Field>
     );
 };
 
-export const DropdownField = ({ input, label, options, placeholder, meta: { touched, error } }) => {
+export const DropdownInput = ({ attributes }) => {
     return (
         <Form.Field>
-            { label && <label>{label}</label> }
+            <Form.Select search {...attributes} options={attributes.options} onChange={attributes.onChange}/>
 
-            <Select search {...input} options={options} placeholder={placeholder} onChange={(e, d) => input.onChange(d.value)}/>
-
-            { touched && error &&
-                <div className="field-validation-error">
-                    {error}
-                </div>
-            }
+            <div className="field-validation-error">
+                <ErrorMessage name={attributes.name} />
+            </div>
         </Form.Field>
     );
 };
 
-export const FileInput = ({ input: { name, onChange }, label, meta: { touched, error } }) => {
+export const FileInput = ({ attributes }) => {
     return (
         <Form.Field>
-            { label && <label>{label}</label> }
+            { attributes.label && <label>{attributes.label}</label> }
 
-            <Input type="file" name={name} multiple accept="image/*" onChange={e => onChange(e.target.files)}/>
+            <Form.Input type="file" name={attributes.name} multiple accept="image/*" onChange={attributes.onChange}/>
             <small>Max number of files is 5</small> | <small>Max file size is 1 MB</small>
 
-            { touched && error &&
-                <div className="field-validation-error">
-                    {error}
-                </div>
-            }
+            <div className="field-validation-error">
+                <ErrorMessage name={attributes.name} />
+            </div>
+
         </Form.Field>
     );
 };

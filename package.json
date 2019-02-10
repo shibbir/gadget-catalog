@@ -65,7 +65,8 @@
     "validator": "^10.11.0",
     "webpack": "^4.29.0",
     "webpack-merge": "^4.2.1",
-    "webpack-stream": "^5.2.1"
+    "webpack-stream": "^5.2.1",
+    "yup": "^0.26.10"
   },
   "devDependencies": {
     "coveralls": "^3.0.2",

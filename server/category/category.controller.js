@@ -5,14 +5,12 @@ const cloudinary = require('../config/lib/cloudinary')();
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 
 function getCategory(req, res) {
-    if(req.user._id.toString() !== req.authInfo.adminId.toString()) {
+    if(req.user.role !== 'admin') {
         return res.sendStatus(401);
     }
 
     Category.findOne({ _id: req.params.id }).exec(function(err, doc) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
 
         res.json(doc);
     });
@@ -23,21 +21,19 @@ function getCategories(req, res) {
         .find({})
         .populate({
             path: 'items',
-            match: { createdBy: req.user._id },
+            match: { createdByss: req.user._id },
             select: '_id',
             options: { lean: true }
         })
         .sort('name')
         .exec(function(err, docs) {
-            if(err) {
-                return res.sendStatus(500);
-            }
+            if(err) return res.sendStatus(500);
             res.json(docs);
         });
 }
 
 function createCategory(req, res) {
-    if(req.user._id.toString() !== req.authInfo.adminId.toString()) {
+    if(req.user.role !== 'admin') {
         return res.sendStatus(401);
     }
 
@@ -70,14 +66,10 @@ function createCategory(req, res) {
             }, { folder: 'categories', invalidate: true });
         }
     ], function(err) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
 
         model.save(function(err, doc) {
-            if(err) {
-                return res.sendStatus(500);
-            }
+            if(err) return res.sendStatus(500);
 
             res.json(doc);
         });
@@ -85,14 +77,12 @@ function createCategory(req, res) {
 }
 
 function updateCategory(req, res) {
-    if(req.user._id.toString() !== req.authInfo.adminId.toString()) {
+    if(req.user.role !== 'admin') {
         return res.sendStatus(401);
     }
 
     Category.findOne({ _id: req.params.id }, function(err, doc) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
 
         if(!doc) {
             return res.status(400).json({ message: 'Category not found.'});
@@ -136,11 +126,10 @@ function updateCategory(req, res) {
                 }, { invalidate: true });
             }
         ], function(err) {
-            if(err) {
-                return res.sendStatus(500);
-            }
+            if(err) return res.sendStatus(500);
+
             doc.save();
-            res.json({ message: 'Category updated successfully.', doc });
+            res.json(doc);
         });
     });
 }

@@ -2,7 +2,7 @@ import CategoryConstants from './category.types';
 
 const initialState = {
     categories: [],
-    activeCategory: { category: null }
+    category: null
 }
 
 export default function reducer(state=initialState, action) {
@@ -14,13 +14,10 @@ export default function reducer(state=initialState, action) {
             };
         }
         case CategoryConstants.GET_CATEGORY_FULFILLED: {
-            return { ...state, activeCategory: { category: action.payload.data }};
+            return { ...state, category: action.payload.data };
         }
         case CategoryConstants.PUT_CATEGORY_REJECTED: {
             return state;
-        }
-        case CategoryConstants.RESET_CATEGORY_STATE: {
-            return { ...state, activeCategory: { category: null }};
         }
     }
     return state;

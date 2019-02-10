@@ -1,13 +1,12 @@
 import { connect } from 'react-redux';
 import CategoryForm from '../components/CategoryForm';
-import { createCategory, updateCategory, fetchCategory, resetCategoryState } from '../category.actions';
+import { createCategory, updateCategory, fetchCategory } from '../category.actions';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, props) => {
     return {
         user: state.authReducer.user,
-        categoryId: ownProps.id,
-        form: `${ownProps.form}CategoryForm`,
-        submitButtonText: ownProps.submitButtonText || 'Submit'
+        categoryId: props.id,
+        category: state.categoryReducer.category
     };
 };
 
@@ -21,9 +20,6 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchCategory: (itemId) => {
             dispatch(fetchCategory(itemId));
-        },
-        resetCategoryState: () => {
-            dispatch(resetCategoryState());
         }
     };
 };

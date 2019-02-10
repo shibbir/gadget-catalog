@@ -9,7 +9,7 @@ export default class ItemEditPage extends React.Component {
                 <h3>Edit item</h3>
                 <Divider section/>
 
-                <ItemFormContainer id={this.props.match.params.id} form="Update"/>
+                <ItemFormContainer id={this.props.match.params.id}/>
             </div>
         );
     }

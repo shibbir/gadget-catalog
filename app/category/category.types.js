@@ -12,6 +12,5 @@ export default keyMirror({
     GET_CATEGORY: null,
     GET_CATEGORY_PENDING: null,
     GET_CATEGORY_FULFILLED: null,
-    GET_CATEGORY_REJECTED: null,
-    RESET_CATEGORY_STATE: null
+    GET_CATEGORY_REJECTED: null
 });

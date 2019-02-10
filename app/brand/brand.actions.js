@@ -1,9 +1,9 @@
 import axios from 'axios';
-import BrandConstants from './brand.types';
+import Types from './brand.types';
 
 export function getBrands(query = '') {
     return {
-        type: BrandConstants.GET_BRANDS,
+        type: Types.GET_BRANDS,
         payload: axios({
             method: 'get',
             url: `/api/brands${query}`
@@ -13,9 +13,9 @@ export function getBrands(query = '') {
 
 export function createBrand(formData) {
     return {
-        type: BrandConstants.POST_BRAND,
+        type: Types.POST_BRAND,
         payload: axios({
-            method: 'get',
+            method: 'post',
             data: formData,
             url: 'api/brands'
         })
@@ -24,7 +24,7 @@ export function createBrand(formData) {
 
 export function updateBrand(formData, id) {
     return {
-        type: BrandConstants.PUT_BRAND,
+        type: Types.PUT_BRAND,
         payload: axios({
             method: 'put',
             data: formData,
@@ -35,7 +35,7 @@ export function updateBrand(formData, id) {
 
 export function fetchBrand(id) {
     return {
-        type: BrandConstants.GET_BRAND,
+        type: Types.GET_BRAND,
         payload: axios({
             method: 'get',
             url: `/api/brands/${id}`
@@ -45,6 +45,6 @@ export function fetchBrand(id) {
 
 export function resetBrandState() {
     return {
-        type: BrandConstants.RESET_BRAND_STATE
+        type: Types.RESET_BRAND_STATE
     };
 }

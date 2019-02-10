@@ -7,8 +7,8 @@ export default keyMirror({
     LOGIN_ERROR: null,
     REGISTER: null,
     REGISTER_FULFILLED: null,
-    LOAD_PROFILE: null,
-    LOAD_PROFILE_FULFILLED: null,
+    GET_PROFILE: null,
+    GET_PROFILE_FULFILLED: null,
     CHANGE_PASSWORD: null,
     CHANGE_PASSWORD_FULFILLED: null
 });

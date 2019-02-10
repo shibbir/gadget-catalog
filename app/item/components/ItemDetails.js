@@ -17,7 +17,7 @@ export default class ItemDetails extends React.Component {
     }
 
     render() {
-        let { item } = this.props.activeItem;
+        let { item } = this.props;
 
         if(!item) {
             return (

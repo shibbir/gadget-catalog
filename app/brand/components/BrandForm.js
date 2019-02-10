@@ -1,10 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
-import { Form, Divider, Button } from 'semantic-ui-react';
+import { Form, withFormik } from 'formik';
+import { Divider, Button } from 'semantic-ui-react';
+import BrandSchema from '../brand.schema';
 import { TextInput } from '../../shared/components/FieldInput/FieldInputs';
-
-const required = value => value ? undefined : 'This field must not be empty';
 
 class BrandForm extends React.Component {
     constructor(props) {
@@ -12,31 +10,25 @@ class BrandForm extends React.Component {
 
         if(props.brandId) {
             props.fetchBrand(props.brandId);
-        } else {
-            props.resetBrandState();
-        }
-    }
-
-    handleSubmit(formValues) {
-        if(this.props.brandId) {
-            this.props.updateBrand(formValues, this.props.brandId);
-        } else {
-            this.props.createBrand(formValues);
         }
     }
 
     render() {
-        const { handleSubmit, reset, submitting, pristine, submitButtonText } = this.props;
+        const { handleSubmit, isSubmitting } = this.props;
 
         return (
             <div>
-                <Form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-                    <Field name="name" label="Name" attributes={{ type: 'text'}} component={TextInput} validate={[ required ]}/>
+                <Form onSubmit={handleSubmit} className="ui form">
+                    <TextInput attributes={{
+                        type: 'text',
+                        name: 'name',
+                        label: 'Name'
+                    }}/>
                     <Divider hidden/>
                     <Button.Group>
-                        <Button type="submit" positive disabled={submitting}>{submitButtonText}</Button>
+                        <Button type="submit" positive disabled={isSubmitting}>Submit</Button>
                         <Button.Or/>
-                        <Button type="button" disabled={pristine || submitting} onClick={reset}>Reset form</Button>
+                        <Button type="reset" disabled={isSubmitting}>Reset</Button>
                     </Button.Group>
                 </Form>
             </div>
@@ -44,15 +36,34 @@ class BrandForm extends React.Component {
     }
 }
 
-BrandForm = reduxForm({
+BrandForm = withFormik({
     enableReinitialize: true,
-    keepDirtyOnReinitialize: true
-})(BrandForm);
 
-BrandForm = connect(
-    state => ({
-        initialValues: state.brandReducer.activeBrand.brand
-    })
-)(BrandForm);
+    mapPropsToValues: (props) => {
+        if(props.brand) {
+            return {
+                name: props.brand.name
+            };
+        }
+
+        return {
+            name: ''
+        };
+    },
+
+    validationSchema: BrandSchema,
+
+    handleSubmit: (formValues, { setSubmitting, props }) => {
+        if(props.brandId) {
+            props.updateBrand(formValues, props.brandId);
+        } else {
+            props.createBrand(formValues);
+        }
+
+        setSubmitting(false);
+    },
+
+    displayName: 'BrandForm'
+})(BrandForm);
 
 export default BrandForm;

@@ -10,8 +10,8 @@ import './app.css';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 import Login from '../user/pages/Login';
-// import Register from '../user/pages/Register';
-// import ProfileContainer from '../user/containers/ProfileContainer';
+import Register from '../user/pages/Register';
+import ProfileContainer from '../user/containers/ProfileContainer';
 import ItemList from '../item/containers/ItemListContainer';
 import ItemDetail from '../item/containers/ItemDetailsContainer';
 import ItemAddPage from '../item/pages/ItemAddPage';
@@ -19,30 +19,34 @@ import ItemEditPage from '../item/pages/ItemEditPage';
 import ItemImagePage from '../item/pages/ItemImagePage';
 import Dashboard from '../user/containers/DashboardContainer';
 import CategoryListContainer from '../category/containers/CategoryListContainer';
-import { loadProfile } from '../user/auth.actions';
-
+import CategoryAddPage from '../category/pages/CategoryAddPage';
+import CategoryEditPage from '../category/pages/CategoryEditPage';
+import BrandListPage from '../brand/pages/BrandListPage';
+import BrandAddPage from '../brand/pages/BrandAddPage';
+import BrandEditPage from '../brand/pages/BrandEditPage';
+import { getProfile } from '../user/auth.actions';
 import NoMatch from '../components/NoMatch';
-
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        loadProfile: () => dispatch(loadProfile())
+        getProfile: () => dispatch(getProfile())
     };
 };
 
 class App extends React.Component {
-    componentDidMount() {
-        this.props.loadProfile();
+    constructor(props) {
+        super();
+        props.getProfile();
     }
 
     render() {
         return (
             <Switch>
                 <PublicRoute path="/login" component={Login}/>
-                {/* <PublicRoute path="/register" component={Register}/> */}
+                <PublicRoute path="/register" component={Register}/>
 
                 <PrivateRoute exact path="/" component={Dashboard} />
-                {/* <PrivateRoute exact path="/profile" component={ProfileContainer}/> */}
+                <PrivateRoute exact path="/profile" component={ProfileContainer}/>
                 <PrivateRoute exact path="/items" component={ItemList}/>
                 <PrivateRoute exact path="/items/add" component={ItemAddPage}/>
                 <PrivateRoute exact path="/items/:id" component={ItemDetail}/>
@@ -50,12 +54,12 @@ class App extends React.Component {
                 <PrivateRoute exact path="/items/:id/images" component={ItemImagePage}/>
 
                 <PrivateRoute exact path="/categories" component={CategoryListContainer}/>
-                {/* <PrivateRoute exact path="/categories/add" component={CategoryAddPage}/>
+                <PrivateRoute exact path="/categories/add" component={CategoryAddPage}/>
                 <PrivateRoute exact path="/categories/:id/edit" component={CategoryEditPage}/>
 
                 <PrivateRoute exact path="/brands" component={BrandListPage}/>
                 <PrivateRoute exact path="/brands/add" component={BrandAddPage}/>
-                <PrivateRoute exact path="/brands/:id/edit" component={BrandEditPage}/> */}
+                <PrivateRoute exact path="/brands/:id/edit" component={BrandEditPage}/>
 
                 <Route component={NoMatch} />
             </Switch>

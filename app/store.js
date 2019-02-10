@@ -5,10 +5,10 @@ import reducers from './reducers';
 
 const middlewares = [promiseMiddleware(), thunk];
 
-if (process.env.NODE_ENV === 'developments') {
+if (process.env.NODE_ENV === 'development') {
     const { logger } = require('redux-logger');
 
-    middlewares.push(logger);
+    //middlewares.push(logger);
 }
 
 export default compose(applyMiddleware(...middlewares))(createStore)(reducers);

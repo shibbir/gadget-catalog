@@ -2,7 +2,7 @@ import React from 'react';
 import { Editor, EditorState, RichUtils, convertFromHTML, ContentState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 
-require('./DraftEditor.css');
+import './DraftEditor.css';
 
 export default class DraftEditor extends React.Component {
     constructor(props) {

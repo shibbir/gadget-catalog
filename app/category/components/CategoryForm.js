@@ -1,10 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
-import { Form, Divider, Button, Message, Icon } from 'semantic-ui-react';
-import { FileInput, TextInput } from '../../shared/components/FieldInput/FieldInputs';
-
-const required = value => value ? undefined : 'This field must not be empty';
+import { Form, withFormik } from 'formik';
+import { Divider, Button, Message, Icon } from 'semantic-ui-react';
+import CategorySchema from '../category.schema';
+import { TextInput, FileInput } from '../../shared/components/FieldInput/FieldInputs';
 
 class CategoryForm extends React.Component {
     constructor(props) {
@@ -12,41 +10,36 @@ class CategoryForm extends React.Component {
 
         if(props.categoryId) {
             props.fetchCategory(props.categoryId);
-        } else {
-            props.resetCategoryState();
-        }
-    }
-
-    handleSubmit(formValues) {
-        let formData = new FormData();
-
-        for(let key in formValues) {
-            if(formValues.hasOwnProperty(key)) {
-                formData.append(key, formValues[key]);
-            }
-        }
-
-        if(this.props.categoryId) {
-            this.props.updateCategory(formData, this.props.categoryId);
-        } else {
-            this.props.createCategory(formData);
         }
     }
 
     render() {
-        const { user, handleSubmit, reset, submitting, pristine, submitButtonText } = this.props;
+        const { user, handleSubmit, isSubmitting, setFieldValue } = this.props;
+
+        const handleFileChange = (e) => {
+            setFieldValue('file', e.currentTarget.files[0]);
+        }
 
         return (
             <div>
                 { user && user.isAdmin &&
-                    <Form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-                        <Field name="name" label="Name" attributes={{ type: 'text'}} component={TextInput} validate={[ required ]}/>
-                        <Field name="file" label="Upload" component={FileInput}/>
+                    <Form onSubmit={handleSubmit} className="ui form">
+                        <TextInput attributes={{
+                            type: 'text',
+                            name: 'name',
+                            label: 'Name'
+                        }}/>
+                        <FileInput attributes={{
+                            type: 'file',
+                            name: 'file',
+                            label: 'Upload',
+                            onChange: handleFileChange
+                        }}/>
                         <Divider hidden/>
                         <Button.Group>
-                            <Button type="submit" positive disabled={submitting}>{submitButtonText}</Button>
+                            <Button type="submit" positive disabled={isSubmitting}>Submit</Button>
                             <Button.Or/>
-                            <Button type="button" disabled={pristine || submitting} onClick={reset}>Reset form</Button>
+                            <Button type="reset" disabled={isSubmitting}>Reset</Button>
                         </Button.Group>
                     </Form>
                 }
@@ -64,15 +57,44 @@ class CategoryForm extends React.Component {
     }
 }
 
-CategoryForm = reduxForm({
+CategoryForm = withFormik({
     enableReinitialize: true,
-    keepDirtyOnReinitialize: true
-})(CategoryForm);
 
-CategoryForm = connect(
-    state => ({
-        initialValues: state.categoryReducer.activeCategory.category
-    })
-)(CategoryForm);
+    mapPropsToValues: (props) => {
+        if(props.category) {
+            return {
+                name: props.category.name
+            };
+        }
+
+        return {
+            name: '',
+            file: ''
+        };
+    },
+
+    validationSchema: CategorySchema,
+
+    handleSubmit: (formValues, { setSubmitting, resetForm, props }) => {
+        let formData = new FormData();
+
+        for(let key in formValues) {
+            if(formValues.hasOwnProperty(key)) {
+                formData.append(key, formValues[key]);
+            }
+        }
+
+        if(props.categoryId) {
+            props.updateCategory(formData, props.categoryId);
+        } else {
+            props.createCategory(formData);
+        }
+
+        resetForm();
+        setSubmitting(false);
+    },
+
+    displayName: 'CategoryForm'
+})(CategoryForm);
 
 export default CategoryForm;

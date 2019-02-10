@@ -4,7 +4,8 @@ import { Route, Redirect } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 
 import Footer from '../Shared/components/Footer';
-import NavbarContainer from '../Shared/containers/NavbarContainer';
+import Navbar from '../Shared/components/Navbar';
+import Message from '../shared/containers/MessageContainer';
 
 const mapStateToProps = (state) => {
     return {
@@ -21,11 +22,12 @@ class PrivateRoute extends React.Component {
                 return (
                     isAuthenticated ? (
                         <>
-                            <NavbarContainer />
+                            <Navbar/>
                             <Container>
-                                <Component {...props} />
+                                <Component {...props}/>
                             </Container>
-                            <Footer />
+                            <Footer/>
+                            <Message/>
                         </>
                     ) : (
                         <Redirect push to={{

@@ -38,7 +38,7 @@ module.exports = function(app, passport) {
             }
 
             if(!user || !user.validPassword(req.body.password)) {
-                return res.status(401).json({ message: 'Invalid credentials!' });
+                return res.sendStatus(401);
             }
 
             res.cookie('access_token', generateAccessToken(user, 'local'), {
@@ -81,7 +81,7 @@ module.exports = function(app, passport) {
             user.local.password = user.generateHash(req.body.newPassword);
             user.save();
 
-            res.json({ message: 'Passward changed successfully.' });
+            res.json();
         });
     });
 

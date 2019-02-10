@@ -12,7 +12,7 @@ ReactDOM.render(
     <Provider store={store}>
         <IntlProvider locale='en'>
             <HashRouter>
-                <App />
+                <App/>
             </HashRouter>
         </IntlProvider>
     </Provider>,

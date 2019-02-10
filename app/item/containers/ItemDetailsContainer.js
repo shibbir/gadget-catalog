@@ -5,7 +5,7 @@ import ItemDetails from '../components/ItemDetails';
 const mapStateToProps = (state, props) => {
     return {
         itemId: props.match.params.id,
-        activeItem: state.itemReducer.activeItem
+        item: state.itemReducer.item
     };
 }
 

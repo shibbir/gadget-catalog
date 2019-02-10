@@ -28,9 +28,7 @@ function getBrands(req, res) {
     }
 
     Brand.find(query).sort('name').exec(function(err, docs) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
 
         res.json(docs);
     });
@@ -43,35 +41,19 @@ function createBrand(req, res) {
         createdBy: req.user._id
     });
 
-    const query = {
-        name: { $regex: req.body.name, $options: 'i' },
-        $or: [{ createdBy: req.user._id }, { createdBy: req.authInfo.adminId }]
-    };
+    model.save();
 
-    Brand.findOne(query, function(err, doc) {
-        if(err) {
-            return res.sendStatus(500);
-        }
-
-        if(doc) {
-            return res.status(400).json({ message: 'Brand name already exists.' });
-        }
-
-        model.save();
-        res.json({ message: 'Brand created successfully.' });
-    });
+    res.json(model);
 }
 
 function updateBrand(req, res) {
     Brand.findOne({
         name: { $regex: req.body.name, $options: 'i' }
     }, function(err, doc) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
 
         if(doc && doc._id.toString() !== req.params.id) {
-            return res.status(400).json({ message: 'Brand name already exists.' });
+            return res.status(400);
         }
 
         Brand.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
@@ -80,14 +62,14 @@ function updateBrand(req, res) {
             }
 
             if(!doc) {
-                return res.status(400).json({ message: 'Brand not found.'});
+                return res.status(400);
             }
 
             doc.name = req.body.name;
             doc.slug = convertToSlug(req.body.name);
 
             doc.save();
-            res.json({ message: 'Brand updated successfully.', doc });
+            res.json(doc);
         });
     });
 }

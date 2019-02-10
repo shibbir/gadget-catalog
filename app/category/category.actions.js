@@ -1,15 +1,9 @@
 import axios from 'axios';
-import { getBearerRequestObject } from '../config/helpers';
-import CategoryConstants from './category.types';
+import Types from './category.types';
 
 export function getCategories() {
-    // const config = {
-    //     url: '/api/categories',
-    //     method: 'get'
-    // };
-
     return {
-        type: CategoryConstants.GET_CATEGORIES,
+        type: Types.GET_CATEGORIES,
         payload: axios({
             method: 'get',
             url: '/api/categories'
@@ -18,44 +12,33 @@ export function getCategories() {
 }
 
 export function createCategory(formData) {
-    const config = {
-        url: 'api/categories',
-        data: formData
-    };
-
     return {
-        type: CategoryConstants.POST_CATEGORY,
-        payload: axios(getBearerRequestObject(config))
+        type: Types.POST_CATEGORY,
+        payload: axios({
+            method: 'post',
+            data: formData,
+            url: 'api/categories'
+        })
     };
 }
 
 export function updateCategory(formData, id) {
-    const config = {
-        url: `api/categories/${id}`,
-        method: 'put',
-        data: formData
-    };
-
     return {
-        type: CategoryConstants.PUT_CATEGORY,
-        payload: axios(getBearerRequestObject(config))
+        type: Types.PUT_CATEGORY,
+        payload: axios({
+            method: 'put',
+            data: formData,
+            url: `api/categories/${id}`
+        })
     };
 }
 
 export function fetchCategory(id) {
-    const config = {
-        url: `/api/categories/${id}`,
-        method: 'get'
-    };
-
     return {
-        type: CategoryConstants.GET_CATEGORY,
-        payload: axios(getBearerRequestObject(config))
-    };
-}
-
-export function resetCategoryState() {
-    return {
-        type: CategoryConstants.RESET_CATEGORY_STATE
+        type: Types.GET_CATEGORY,
+        payload: axios({
+            method: 'get',
+            url: `/api/categories/${id}`
+        })
     };
 }

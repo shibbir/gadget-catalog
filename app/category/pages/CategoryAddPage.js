@@ -9,7 +9,7 @@ export default class CategoryAddPage extends React.Component {
                 <h3>Add new category</h3>
                 <Divider section />
 
-                <CategoryFormContainer form="Create"/>
+                <CategoryFormContainer/>
             </div>
         );
     }

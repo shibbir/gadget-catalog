@@ -1,8 +1,8 @@
 import React from 'react';
-import PasswordChangeForm from './PasswordChangeForm';
+import Password from './Password';
 
 export default class Profile extends React.Component {
     render() {
-        return <PasswordChangeForm changePassword={this.props.changePassword}/>;
+        return <Password changePassword={this.props.changePassword}/>;
     }
 }

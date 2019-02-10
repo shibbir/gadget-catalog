@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Table, Message, Icon } from 'semantic-ui-react';
 
 export default class BrandList extends React.Component {
