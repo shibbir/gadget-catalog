@@ -5,7 +5,7 @@ import { Container } from 'semantic-ui-react';
 
 import Footer from '../Shared/components/Footer';
 import Navbar from '../Shared/components/Navbar';
-import Message from '../shared/containers/MessageContainer';
+import Notification from '../shared/components/Notification/Notification';
 
 const mapStateToProps = (state) => {
     return {
@@ -27,7 +27,7 @@ class PrivateRoute extends React.Component {
                                 <Component {...props}/>
                             </Container>
                             <Footer/>
-                            <Message/>
+                            <Notification/>
                         </>
                     ) : (
                         <Redirect push to={{

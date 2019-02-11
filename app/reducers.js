@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import messageReducer from './shared/reducers/message.reducer';
+import notificationReducer from './shared/components/Notification/notification.reducer';
 import authReducer from './user/reducers/auth.reducer';
 import dashboardReducer from './user/reducers/dashboard.reducer';
 import itemReducer from './item/item.reducer';
@@ -13,5 +13,5 @@ export default combineReducers({
     brandReducer,
     categoryReducer,
     dashboardReducer,
-    messageReducer
+    notificationReducer
 })

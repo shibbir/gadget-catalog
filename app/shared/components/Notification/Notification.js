@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 import * as toastr from 'toastr/toastr';
 
-function Message({ type, message }) {
+function Notification({ type, message }) {
     if(type && message) {
         toastr[type](message);
     }
@@ -11,10 +11,10 @@ function Message({ type, message }) {
 
 const mapStateToProps = (state) => {
     return {
-        id: state.messageReducer.id,
-        type: state.messageReducer.type,
-        message: state.messageReducer.message
+        id: state.notificationReducer.id,
+        type: state.notificationReducer.type,
+        message: state.notificationReducer.message
     };
 };
 
-export default connect(mapStateToProps)(Message);
+export default connect(mapStateToProps)(Notification);
