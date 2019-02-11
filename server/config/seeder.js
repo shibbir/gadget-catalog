@@ -20,9 +20,7 @@ const userSeeder = function(callback) {
         user.local.password = user.generateHash('password_that_will_change');
 
         user.save(function(err, doc) {
-            if(err) {
-                return callback(err);
-            }
+            if(err) return callback(err);
             callback(null, doc);
         });
     });
@@ -69,10 +67,7 @@ const brandSeeder = function(user, callback) {
 
 exports.run = function () {
     async.waterfall([ userSeeder, categorySeeder, brandSeeder ], function(err) {
-        if(err) {
-            console.error(err);
-        } else {
-            console.info('DB seed completed!');
-        }
+        if(err) console.error(err);
+        else console.info('DB seed completed!');
     });
 };

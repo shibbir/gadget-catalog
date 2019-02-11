@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, withFormik } from 'formik';
 import { Divider, Button } from 'semantic-ui-react';
+import { itemSchema } from '../item.schema';
 import { TextInput, RichEditorInput, DropdownInput, FileInput } from '../../shared/components/FieldInput/FieldInputs';
 
 class ItemForm extends React.Component {
@@ -94,6 +95,8 @@ class ItemForm extends React.Component {
 
 ItemForm = withFormik({
     enableReinitialize: true,
+
+    validationSchema: itemSchema,
 
     mapPropsToValues: (props) => {
         if(props.item) {

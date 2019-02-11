@@ -5,10 +5,6 @@ const cloudinary = require('../config/lib/cloudinary')();
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 
 function getCategory(req, res) {
-    if(req.user.role !== 'admin') {
-        return res.sendStatus(401);
-    }
-
     Category.findOne({ _id: req.params.id }).exec(function(err, doc) {
         if(err) return res.sendStatus(500);
 
@@ -18,10 +14,10 @@ function getCategory(req, res) {
 
 function getCategories(req, res) {
     Category
-        .find({})
+        .find()
         .populate({
             path: 'items',
-            match: { createdByss: req.user._id },
+            match: { createdBy: req.user._id },
             select: '_id',
             options: { lean: true }
         })

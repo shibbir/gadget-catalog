@@ -8,9 +8,18 @@ export const TextInput = ({ attributes }) => {
         <Form.Field>
             { attributes.label && <label>{attributes.label}</label> }
 
-            <div className="ui fluid input">
-                <Field type={attributes.type} name={attributes.name} />
-            </div>
+            { attributes.icon &&
+                <div className="ui fluid input left icon">
+                    <Icon name={attributes.icon}/>
+                    <Field type={attributes.type} name={attributes.name} />
+                </div>
+            }
+
+            { !attributes.icon &&
+                <div className="ui fluid input">
+                    <Field type={attributes.type} name={attributes.name} />
+                </div>
+            }
 
             <div className="field-validation-error">
                 <ErrorMessage name={attributes.name} />

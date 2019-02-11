@@ -24,8 +24,9 @@ import CategoryEditPage from '../category/pages/CategoryEditPage';
 import BrandListPage from '../brand/pages/BrandListPage';
 import BrandAddPage from '../brand/pages/BrandAddPage';
 import BrandEditPage from '../brand/pages/BrandEditPage';
+import NoMatch from './NoMatch';
+
 import { getProfile } from '../user/auth.actions';
-import NoMatch from '../components/NoMatch';
 
 const mapDispatchToProps = (dispatch) => {
     return {

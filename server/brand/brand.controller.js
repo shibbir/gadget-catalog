@@ -4,9 +4,7 @@ const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').rep
 
 function getBrand(req, res) {
     Brand.findOne({ _id: req.params.id, createdBy: req.user._id }).exec(function(err, doc) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
 
         if(!doc) {
             return res.status(400).json({ message: 'Brand not found or you don\'t have the permission.' });
@@ -57,9 +55,7 @@ function updateBrand(req, res) {
         }
 
         Brand.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
-            if(err) {
-                return res.sendStatus(500);
-            }
+            if(err) return res.sendStatus(500);
 
             if(!doc) {
                 return res.status(400);
