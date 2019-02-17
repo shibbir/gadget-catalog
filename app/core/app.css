@@ -11,11 +11,6 @@ a[disabled] {
     pointer-events: none;
 }
 
-.ui.cards > .card {
-    margin-bottom: 20px;
-    margin-right: 11px;
-}
-
 #item-cards-container .ui.cards > .card > .content > .header:not(.ui),
 #category-cards-container .ui.cards > .card > .content > .header:not(.ui) {
     font-size: 1em;
@@ -32,10 +27,4 @@ a[disabled] {
 
 #loader {
     display: none;
-}
-
-@media only screen and (min-width: 1200px) {
-    .ui.container {
-        width: 1220px;
-    }
 }

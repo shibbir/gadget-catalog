@@ -13,21 +13,47 @@ process.env.GOOGLE_CLIENT_SECRET = 'xxx';
 process.env.FACEBOOK_CLIENT_ID = 'xxx';
 process.env.FACEBOOK_CLIENT_SECRET = 'xxx';
 
+const admin = {
+    _id: '58e8d591a643633a109f29bc',
+    displayName: 'Admin User',
+    role: 'admin',
+    local: {
+        name: 'admin',
+        email: 'admin@user.com',
+        password: new User().generateHash('xxx-xxx-xxx')
+    },
+    password: 'xxx-xxx-xxx',
+    accessToken: jwt.sign({
+        _id: '58e8d591a643633a109f29bc',
+        name: 'Admin User',
+        email: 'admin@user.com'
+    }, process.env.TOKEN_SECRET, { expiresIn: '1d', issuer: '58e8d591a643633a109f29bc' })
+};
+
+const basic = {
+    _id: '58e8d591a643633a109f29bd',
+    displayName: 'Basic User',
+    role: 'basic',
+    local: {
+        name: 'basic',
+        email: 'basic@user.com',
+        password: new User().generateHash('xxx-xxx-xxx')
+    },
+    password: 'xxx-xxx-xxx',
+    accessToken: jwt.sign({
+        _id: '58e8d591a643633a109f29bd',
+        name: 'Basic User',
+        email: 'basic@user.com'
+    }, process.env.TOKEN_SECRET, { expiresIn: '1d', issuer: '58e8d591a643633a109f29bd' })
+};
+
 beforeAll(function(done) {
     mongoose.connect(process.env.MONGODB_URI, {
         useNewUrlParser: true,
         useCreateIndex: true
     });
 
-    let user = new User();
-
-    user._id = '58e8d591a643633a109f29bc';
-    user.displayName = 'User';
-    user.local.name = 'User';
-    user.local.email = 'user@test.com';
-    user.local.password = user.generateHash('xxx-xxx-xxx');
-
-    user.save(function() {
+    User.insertMany([admin, basic], function() {
         done();
     });
 });
@@ -53,17 +79,6 @@ afterAll(function(done) {
 });
 
 module.exports = {
-    user: function() {
-        let data = {
-            _id: '58e8d591a643633a109f29bc',
-            name: 'User',
-            email: 'user@test.com'
-        };
-
-        data.accessToken = jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1d', issuer: data._id });
-        data.password = 'xxx-xxx-xxx';
-
-        return data;
-    },
+    users: { admin, basic },
     convertToSlug: string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-')
 };

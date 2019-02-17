@@ -112,7 +112,7 @@ export default class ItemList extends React.Component {
 
                 { cards.length > 0 &&
                     <div id="item-cards-container">
-                        <Card.Group>
+                        <Card.Group itemsPerRow={4}>
                             {cards}
                         </Card.Group>
 

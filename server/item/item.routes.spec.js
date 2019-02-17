@@ -15,7 +15,7 @@ describe('Item Routes', function() {
     let category = {};
     let brand = {};
     let item = {};
-    const user = specHelper.user();
+    const user = specHelper.users.admin;
 
     beforeAll(function(done) {
         new Category({

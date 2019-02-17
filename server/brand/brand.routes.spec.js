@@ -10,7 +10,7 @@ require('./brand.routes')(app, passport);
 
 describe('Brand Routes', function() {
     let brand = {};
-    const user = specHelper.user();
+    const user = specHelper.users.admin;
 
     beforeAll(function(done) {
         new Brand({

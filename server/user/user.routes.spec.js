@@ -8,15 +8,15 @@ require('../config/lib/passport')(passport);
 require('./user.routes')(app, passport);
 
 describe('User Routes', function() {
-    const user = specHelper.user();
+    const user = specHelper.users.admin;
 
-    it('Should create a local user', function(done) {
+    it('Should create a local basic user', function(done) {
         request(app)
             .post('/api/register')
             .send({
                 name: faker.name.findName(),
                 email: faker.internet.email(),
-                password: user.password
+                password: 'password'
             })
             .expect(200)
             .end(function(err) {
@@ -25,7 +25,7 @@ describe('User Routes', function() {
             });
     });
 
-    it('Should login with valid credentials', function(done) {
+    it('Should login with valid username and password', function(done) {
         request(app)
             .post('/api/login')
             .send({

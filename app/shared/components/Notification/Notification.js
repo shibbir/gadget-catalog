@@ -2,6 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux';
 import * as toastr from 'toastr/toastr';
 
+toastr.options = {
+    timeOut: 1000,
+    preventDuplicates: true,
+    positionClass: 'toast-top-right'
+};
+
 function Notification({ type, message }) {
     if(type && message) {
         toastr[type](message);
