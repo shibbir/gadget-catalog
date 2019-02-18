@@ -2,6 +2,8 @@ import React from 'react';
 import { Form, withFormik } from 'formik';
 import { Divider, Button } from 'semantic-ui-react';
 import { itemSchema } from '../item.schema';
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
 import { TextInput, RichEditorInput, DropdownInput, FileInput } from '../../shared/components/FieldInput/FieldInputs';
 
 class ItemForm extends React.Component {
@@ -17,7 +19,13 @@ class ItemForm extends React.Component {
     }
 
     render() {
-        const { handleChange, setFieldValue, isSubmitting, handleSubmit, values } = this.props;
+        const {
+            values,
+            handleBlur,
+            handleSubmit,
+            setFieldValue,
+            isSubmitting
+        } = this.props;
 
         const categoryOptions = this.props.categories.map(function(option) {
             return { key: option._id, value: option._id, text: option.name };
@@ -48,7 +56,9 @@ class ItemForm extends React.Component {
                     value: values.description,
                     name: 'description',
                     label: 'Description',
-                    onChange: handleChange
+                    onChange: setFieldValue,
+                    onBlur: handleBlur,
+                    editorState: values.editorState
                 }}/>
                 <DropdownInput attributes={{
                     value: values.categoryId,
@@ -100,28 +110,34 @@ ItemForm = withFormik({
 
     mapPropsToValues: (props) => {
         if(props.item) {
+            const blocksFromHTML = convertFromHTML(props.item.description);
             return {
                 name: props.item.name,
-                description: props.item.description,
                 categoryId: props.item.categoryId,
                 brandId: props.item.brandId,
                 purchaseDate: props.item.purchaseDate,
-                price: props.item.price
+                price: props.item.price,
+                editorState: blocksFromHTML.contentBlocks
+                    ? new EditorState.createWithContent(ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap))
+                    : new EditorState.createEmpty()
             };
         }
 
         return {
             name: '',
-            description: '',
             categoryId: '',
             brandId: '',
             purchaseDate: '',
             price: '',
-            files: ''
+            files: '',
+            editorState: new EditorState.createEmpty()
         };
     },
 
     handleSubmit: (values, { setSubmitting, resetForm, props }) => {
+        let contentState = values.editorState.getCurrentContent();
+        values.description = stateToHTML(contentState);
+
         let formData = new FormData();
 
         if(values.files) {

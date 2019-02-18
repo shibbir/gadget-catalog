@@ -132,7 +132,7 @@ function updateItem(req, res) {
         }
 
         if(!doc) {
-            return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!' });
+            return res.status(400).json({ message: 'No item was found!' });
         }
 
         doc.name = req.body.name;

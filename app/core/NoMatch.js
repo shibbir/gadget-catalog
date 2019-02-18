@@ -1,11 +1,21 @@
 import React from 'react';
+import { Container, Icon, Header } from 'semantic-ui-react';
+
+import Footer from '../Shared/components/Footer';
 
 export default class NoMatch extends React.Component {
     render() {
         return (
-            <div>
-                NoMatch!
-            </div>
+            <>
+                <Container>
+                    <br/>
+                    <Header as='h1'>
+                        <Icon name="frown outline" size="large" color="red"/>
+                        404... Page not found.
+                    </Header>
+                </Container>
+                <Footer/>
+            </>
         );
     }
 }

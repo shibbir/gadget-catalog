@@ -1,6 +1,5 @@
 import React from 'react';
-import { Editor, EditorState, RichUtils, convertFromHTML, ContentState } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
+import { Editor, RichUtils } from 'draft-js';
 
 import './DraftEditor.css';
 
@@ -8,17 +7,10 @@ export default class DraftEditor extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { editorState: EditorState.createEmpty() };
         this.focus = () => this.refs.editor.focus();
 
         this.onChange = (editorState) => {
-            let contentState = editorState.getCurrentContent();
-
-            if(contentState.hasText()) {
-                props.onChange(stateToHTML(contentState));
-            }
-
-            this.setState({ editorState });
+            props.onChange('editorState', editorState);
         };
 
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
@@ -28,7 +20,7 @@ export default class DraftEditor extends React.Component {
     }
 
     _handleKeyCommand(command) {
-        const {editorState} = this.state;
+        const {editorState} = this.props;
         const newState = RichUtils.handleKeyCommand(editorState, command);
         if (newState) {
             this.onChange(newState);
@@ -39,44 +31,19 @@ export default class DraftEditor extends React.Component {
 
     _onTab(e) {
         const maxDepth = 4;
-        this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
+        this.onChange(RichUtils.onTab(e, this.props.editorState, maxDepth));
     }
 
     _toggleBlockType(blockType) {
-        this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
+        this.onChange(RichUtils.toggleBlockType(this.props.editorState, blockType));
     }
 
     _toggleInlineStyle(inlineStyle) {
-        this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle));
-    }
-
-    _updateEditorState(value) {
-        let editorState = EditorState.createEmpty();
-
-        if (value && value.trim() !== '') {
-            const blocksFromHTML = convertFromHTML(value);
-            const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-
-            editorState = EditorState.createWithContent(contentState);
-        }
-        this.setState({ editorState });
-    }
-
-    componentDidMount() {
-        this._updateEditorState(this.props.value);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        !nextProps.value && this._updateEditorState(nextProps.value);
-
-        if(!this.receivedData && nextProps.value) {
-            this.receivedData = true;
-            this._updateEditorState(nextProps.value);
-        }
+        this.onChange(RichUtils.toggleInlineStyle(this.props.editorState, inlineStyle));
     }
 
     render() {
-        const { editorState } = this.state;
+        const { editorState } = this.props;
 
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.

@@ -16,7 +16,7 @@ import ItemList from '../item/containers/ItemListContainer';
 import ItemDetail from '../item/containers/ItemDetailsContainer';
 import ItemAddPage from '../item/pages/ItemAddPage';
 import ItemEditPage from '../item/pages/ItemEditPage';
-import ItemImagePage from '../item/pages/ItemImagePage';
+import ItemImageContainer from '../item/containers/ItemImageContainer';
 import Dashboard from '../user/containers/DashboardContainer';
 import CategoryListContainer from '../category/containers/CategoryListContainer';
 import CategoryAddPage from '../category/pages/CategoryAddPage';
@@ -52,7 +52,7 @@ class App extends React.Component {
                 <PrivateRoute exact path="/items/add" component={ItemAddPage}/>
                 <PrivateRoute exact path="/items/:id" component={ItemDetail}/>
                 <PrivateRoute exact path="/items/:id/edit" component={ItemEditPage}/>
-                <PrivateRoute exact path="/items/:id/images" component={ItemImagePage}/>
+                <PrivateRoute exact path="/items/:id/images" component={ItemImageContainer}/>
 
                 <PrivateRoute exact path="/categories" component={CategoryListContainer}/>
                 <PrivateRoute exact path="/categories/add" component={CategoryAddPage}/>

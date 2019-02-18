@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Image, Button, Label, Message, Icon } from 'semantic-ui-react';
+import { Divider, Card, Image, Button, Label, Message, Icon } from 'semantic-ui-react';
 
 export default class ItemImages extends React.Component {
     constructor(props) {
@@ -9,7 +9,7 @@ export default class ItemImages extends React.Component {
     }
 
     render() {
-        const { item } = this.props.activeItem;
+        const { item } = this.props;
 
         if(!item) {
             return <h2>Loading...</h2>;
@@ -17,6 +17,9 @@ export default class ItemImages extends React.Component {
 
         return (
             <div>
+                <h3>Manage images</h3>
+                <Divider section />
+
                 { item.files.length > 0 &&
                     <Card.Group>
                         { item.files.map((file) => {

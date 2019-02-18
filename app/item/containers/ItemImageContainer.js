@@ -2,10 +2,10 @@ import { connect } from 'react-redux';
 import { fetchItem, setAsActiveImage, deleteImage } from '../item.actions';
 import ItemImages from '../components/ItemImages';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, props) => {
     return {
-        itemId: ownProps.id,
-        activeItem: state.itemReducer.activeItem
+        itemId: props.match.params.id,
+        item: state.itemReducer.item
     };
 }
 
