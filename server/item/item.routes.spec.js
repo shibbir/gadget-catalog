@@ -18,15 +18,6 @@ describe('Item Routes', function() {
     const user = specHelper.users.admin;
 
     beforeAll(function(done) {
-        new Category({
-            name: faker.commerce.productName(),
-            slug: specHelper.convertToSlug(faker.commerce.productName()),
-            createdBy: user._id
-        }).save(function(err, doc) {
-            category = doc;
-            done();
-        });
-
         async.waterfall([
             function(callback) {
                 new Category({
