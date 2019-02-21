@@ -17,6 +17,6 @@ export default keyMirror({
     UPDATE_ITEM_IMAGE: null,
     UPDATE_ITEM_IMAGE_FULFILLED: null,
     DELETE_ITEM_IMAGE_FULFILLED: null,
-    GET_ITEM_COUNTS_BY_YEAR: null,
-    GET_ITEM_COUNTS_BY_YEAR_FULFILLED: null
+    GET_ITEMS_BY_YEAR: null,
+    GET_ITEMS_BY_YEAR_FULFILLED: null
 });

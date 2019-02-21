@@ -94,7 +94,7 @@ class ItemForm extends React.Component {
                 }}/>
                 <Divider hidden/>
                 <Button.Group>
-                    <Button type="submit" positive disabled={isSubmitting}>Submit</Button>
+                    <Button type="submit" positive disabled={isSubmitting}>Save</Button>
                     <Button.Or/>
                     <Button type="reset" disabled={isSubmitting}>Reset</Button>
                 </Button.Group>
@@ -109,7 +109,7 @@ ItemForm = withFormik({
     validationSchema: itemSchema,
 
     mapPropsToValues: (props) => {
-        if(props.item) {
+        if(props.itemId && props.item) {
             const blocksFromHTML = convertFromHTML(props.item.description);
             return {
                 name: props.item.name,

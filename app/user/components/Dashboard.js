@@ -15,9 +15,10 @@ export default class Dashboard extends React.Component {
                         </Card.Header>
                     </Card.Content>
                     <Card.Content>
-                        <PieChart data={this.props.categories} getCategories={this.props.getCategories}/>
+                        <PieChart data={this.props.categories} getData={this.props.getCategories}/>
                     </Card.Content>
                 </Card>
+
                 <Card raised fluid>
                     <Card.Content>
                         <Card.Header>
@@ -26,7 +27,7 @@ export default class Dashboard extends React.Component {
                         </Card.Header>
                     </Card.Content>
                     <Card.Content>
-                        <ColumnChart data={this.props.itemCountsPerYear} fetchItemCountsByYearRange={this.props.fetchItemCountsByYearRange}/>
+                        <ColumnChart data={this.props.itemsPerYear} getData={this.props.fetchItemsByYearRange}/>
                     </Card.Content>
                 </Card>
             </div>

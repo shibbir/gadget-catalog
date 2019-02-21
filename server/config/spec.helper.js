@@ -22,6 +22,7 @@ const admin = {
         email: 'admin@user.com',
         password: new User().generateHash('xxx-xxx-xxx')
     },
+    email: 'admin@user.com',
     password: 'xxx-xxx-xxx',
     accessToken: jwt.sign({
         _id: '58e8d591a643633a109f29bc',
@@ -39,6 +40,7 @@ const basic = {
         email: 'basic@user.com',
         password: new User().generateHash('xxx-xxx-xxx')
     },
+    email: 'basic@user.com',
     password: 'xxx-xxx-xxx',
     accessToken: jwt.sign({
         _id: '58e8d591a643633a109f29bd',

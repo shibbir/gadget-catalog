@@ -40,7 +40,7 @@ BrandForm = withFormik({
     enableReinitialize: true,
 
     mapPropsToValues: (props) => {
-        if(props.brand) {
+        if(props.brandId && props.brand) {
             return {
                 name: props.brand.name
             };

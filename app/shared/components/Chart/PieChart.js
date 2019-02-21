@@ -4,16 +4,16 @@ import Highcharts from 'highcharts';
 export default class PieChart extends React.Component {
     constructor(props) {
         super();
-        props.getCategories();
+        props.getData();
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(props) {
         let data = [];
 
-        for(let idx = 0; idx < nextProps.data.length; idx++) {
+        for(let idx = 0; idx < props.data.length; idx++) {
             data.push({
-                name: nextProps.data[idx].name,
-                y: nextProps.data[idx].items.length
+                name: props.data[idx].name,
+                y: props.data[idx].items.length
             });
         }
 

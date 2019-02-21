@@ -61,7 +61,7 @@ CategoryForm = withFormik({
     enableReinitialize: true,
 
     mapPropsToValues: (props) => {
-        if(props.category) {
+        if(props.categoryId && props.category) {
             return {
                 name: props.category.name
             };

@@ -103,7 +103,7 @@ describe('Item Routes', function() {
             });
     });
 
-    it('Should update item', function(done) {
+    it('Should update an item', function(done) {
         request(app)
             .put(`/api/items/${item._id}`)
             .send({

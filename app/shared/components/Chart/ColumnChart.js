@@ -5,20 +5,21 @@ import { Select } from 'semantic-ui-react';
 export default class ColumnChart extends React.Component {
     constructor(props) {
         super();
-        const yearRange = `${new Date().getFullYear() - 5}-${new Date().getFullYear()}`;
-        this.state = { yearRange };
+        this.state = {
+            yearRange: `${new Date().getFullYear() - 4}-${new Date().getFullYear()}`
+        };
 
-        props.fetchItemCountsByYearRange(yearRange);
+        props.getData(this.state.yearRange);
     }
 
-    fetchItemCountsByYearRange(event, data) {
+    fetchItemsByYearRange(event, data) {
         if(this.state.yearRange !== data.value) {
             this.setState({ yearRange: data.value });
-            this.props.fetchItemCountsByYearRange(data.value);
+            this.props.getData(data.value);
         }
     }
 
-    componentWillReceiveProps({ data } = nextProps) {
+    componentWillReceiveProps({ data } = props) {
         let years = [];
         let itemsPerYear = [];
 
@@ -77,12 +78,13 @@ export default class ColumnChart extends React.Component {
 
     render() {
         const options = [
-            { key: '2012-2017', value: '2012-2017', text: '2012-2017' },
-            { key: '2006-2011', value: '2006-2011', text: '2006-2011' }
+            { key: '2015-2019', value: '2015-2019', text: '2015-2019' },
+            { key: '2010-2014', value: '2010-2014', text: '2010-2014' },
+            { key: '2005-2009', value: '2005-2009', text: '2005-2009' }
         ];
         return (
             <div>
-                <Select onChange={this.fetchItemCountsByYearRange.bind(this)} options={options} defaultValue={options[0].value}/>
+                <Select onChange={this.fetchItemsByYearRange.bind(this)} options={options} defaultValue={options[0].value}/>
                 <div id="columnChart"></div>
             </div>
         );
