@@ -35,7 +35,7 @@ describe('Category Routes', function() {
             });
     });
 
-    it('Should create category', function(done) {
+    it('Should create a new category', function(done) {
         request(app)
             .post('/api/categories')
             .send({
@@ -60,7 +60,7 @@ describe('Category Routes', function() {
             });
     });
 
-    it('Should update category', function(done) {
+    it('Should update a category', function(done) {
         request(app)
             .put(`/api/categories/${category._id}`)
             .send({

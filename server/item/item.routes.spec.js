@@ -67,7 +67,7 @@ describe('Item Routes', function() {
             });
     });
 
-    it('Should create item', function(done) {
+    it('Should create a new item', function(done) {
         request(app)
             .post('/api/items')
             .send({

@@ -34,7 +34,7 @@ describe('Brand Routes', function() {
             });
     });
 
-    it('Should create category', function(done) {
+    it('Should create a new brand', function(done) {
         request(app)
             .post('/api/brands')
             .send({
@@ -51,6 +51,20 @@ describe('Brand Routes', function() {
     it('Should get a single brand', function(done) {
         request(app)
             .get(`/api/brands/${brand._id}`)
+            .set('Cookie', [`access_token=${user.accessToken}`])
+            .expect(200)
+            .end(function(err) {
+                if(err) done.fail(err);
+                done();
+            });
+    });
+
+    it('Should update a brand', function(done) {
+        request(app)
+            .put(`/api/brands/${brand._id}`)
+            .send({
+                name: faker.company.companyName()
+            })
             .set('Cookie', [`access_token=${user.accessToken}`])
             .expect(200)
             .end(function(err) {

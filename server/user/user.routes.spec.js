@@ -39,6 +39,17 @@ describe('User Routes', function() {
             });
     });
 
+    it('Should fetch profile for signed in user', function(done) {
+        request(app)
+            .get('/api/profile')
+            .set('Cookie', [`access_token=${user.accessToken}`])
+            .expect(200)
+            .end(function(err) {
+                if(err) done.fail(err);
+                done();
+            });
+    });
+
     it('Should allow user to update the password', function(done) {
         request(app)
             .put('/api/profile/password')
