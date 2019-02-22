@@ -60,7 +60,7 @@ describe('Category Routes', function() {
             });
     });
 
-    it('Should update a category', function(done) {
+    it('Should update an existing category', function(done) {
         request(app)
             .put(`/api/categories/${category._id}`)
             .send({

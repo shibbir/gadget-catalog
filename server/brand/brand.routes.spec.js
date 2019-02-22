@@ -59,7 +59,7 @@ describe('Brand Routes', function() {
             });
     });
 
-    it('Should update a brand', function(done) {
+    it('Should update an existing brand', function(done) {
         request(app)
             .put(`/api/brands/${brand._id}`)
             .send({

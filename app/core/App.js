@@ -13,10 +13,9 @@ import Login from '../user/pages/Login';
 import Register from '../user/pages/Register';
 import ProfileContainer from '../user/containers/ProfileContainer';
 import ItemList from '../item/containers/ItemListContainer';
-import ItemDetail from '../item/containers/ItemDetailsContainer';
+import ItemDetailContainer from '../item/containers/ItemDetailContainer';
 import ItemAddPage from '../item/pages/ItemAddPage';
 import ItemEditPage from '../item/pages/ItemEditPage';
-import ItemImageContainer from '../item/containers/ItemImageContainer';
 import Dashboard from '../user/containers/DashboardContainer';
 import CategoryListContainer from '../category/containers/CategoryListContainer';
 import CategoryAddPage from '../category/pages/CategoryAddPage';
@@ -50,9 +49,8 @@ class App extends React.Component {
                 <PrivateRoute exact path="/profile" component={ProfileContainer}/>
                 <PrivateRoute exact path="/items" component={ItemList}/>
                 <PrivateRoute exact path="/items/add" component={ItemAddPage}/>
-                <PrivateRoute exact path="/items/:id" component={ItemDetail}/>
+                <PrivateRoute exact path="/items/:id" component={ItemDetailContainer}/>
                 <PrivateRoute exact path="/items/:id/edit" component={ItemEditPage}/>
-                <PrivateRoute exact path="/items/:id/images" component={ItemImageContainer}/>
 
                 <PrivateRoute exact path="/categories" component={CategoryListContainer}/>
                 <PrivateRoute exact path="/categories/add" component={CategoryAddPage}/>

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { fetchItem, setAsActiveImage, deleteImage } from '../item.actions';
-import ItemImages from '../components/ItemImages';
+import ItemDetail from '../components/ItemDetail';
 
 const mapStateToProps = (state, props) => {
     return {
@@ -25,4 +25,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ItemImages);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemDetail);

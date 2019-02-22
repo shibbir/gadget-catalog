@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Icon, Header } from 'semantic-ui-react';
+import { Container, Icon, Header, Divider } from 'semantic-ui-react';
 
 import Footer from '../Shared/components/Footer';
 
@@ -8,7 +8,7 @@ export default class NoMatch extends React.Component {
         return (
             <>
                 <Container>
-                    <br/>
+                    <Divider hidden/>
                     <Header as='h1'>
                         <Icon name="frown outline" size="large" color="red"/>
                         404... Page not found.
