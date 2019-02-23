@@ -1,0 +1,30 @@
+.footer.segment {
+    padding: 3em 0;
+}
+
+.field-validation-error {
+    color: #d0021b;
+    font-weight: bold;
+}
+
+a[disabled] {
+    pointer-events: none;
+}
+
+#item-cards-container .ui.cards > .card > .content > .header:not(.ui),
+#category-cards-container .ui.cards > .card > .content > .header:not(.ui) {
+    font-size: 1em;
+}
+
+#item-cards-container .ui.cards > .card > .content,
+#category-cards-container .ui.cards > .card > .content {
+    border: none;
+}
+
+#item-images .ui.cards > .card {
+    width: 175px;
+}
+
+#loader {
+    display: none;
+}

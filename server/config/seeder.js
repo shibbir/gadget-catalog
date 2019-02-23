@@ -1,7 +1,7 @@
 const async = require('async');
-const Category = require('../models/category.model');
-const Brand = require('../models/brand.model');
-const User = require('../models/user.model');
+const Category = require('../category/category.model');
+const Brand = require('../brand/brand.model');
+const User = require('../user/user.model');
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 
@@ -20,9 +20,7 @@ const userSeeder = function(callback) {
         user.local.password = user.generateHash('password_that_will_change');
 
         user.save(function(err, doc) {
-            if(err) {
-                return callback(err);
-            }
+            if(err) return callback(err);
             callback(null, doc);
         });
     });
@@ -69,10 +67,7 @@ const brandSeeder = function(user, callback) {
 
 exports.run = function () {
     async.waterfall([ userSeeder, categorySeeder, brandSeeder ], function(err) {
-        if(err) {
-            console.error(err);
-        } else {
-            console.info('DB seed completed!');
-        }
+        if(err) console.error(err);
+        else console.info('DB seed completed!');
     });
 };

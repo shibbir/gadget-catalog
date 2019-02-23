@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Gadget Catalog</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="A react application for cataloging gadgets.">
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    {{#each cssFiles}}<link rel="stylesheet" href="/{{this}}">{{/each}}
+</head>
+<body>
+    <div id="app"></div>
+    <div id="loader" class="ui active page dimmer">
+        <div class="content">
+            <div class="center">
+                <div class="ui large text loader">
+                    <div class="ui inverted teal header">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{#each jsFiles}}<script type="text/javascript" src="/{{this}}"></script>{{/each}}
+</body>
+</html>

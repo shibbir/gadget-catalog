@@ -1,52 +1,46 @@
-const gulp = require('gulp');
-const _ = require('lodash');
 const path = require('path');
+const { series, src, dest } = require('gulp');
+const webpackStream = require('webpack-stream');
 const plugins = require('gulp-load-plugins')({ lazy: true });
-const runSequence = require('run-sequence');
-const defaultAssets = require(path.join(process.cwd(), 'server/config/assets/default'));
-const testAssets = require(path.join(process.cwd(), 'server/config/assets/test'));
+const assets = require(path.join(process.cwd(), 'server/config/assets/default'));
 
-gulp.task('env:production', function() {
-    process.env.NODE_ENV = 'production';
-});
-
-gulp.task('env:development', function() {
+function development(done) {
     process.env.NODE_ENV = 'development';
-});
+    done();
+}
 
-gulp.task('env:test', function() {
-    process.env.NODE_ENV = 'test';
-});
+function production(done) {
+    process.env.NODE_ENV = 'production';
+    done();
+}
 
-gulp.task('serve:production', ['env:production'], plugins.shell.task('node server.js'));
+function webpack() {
+    return src('app/main.js')
+        .pipe(webpackStream(require('./webpack.config.js')))
+        .pipe(dest('public/bundles'));
+}
 
-gulp.task('nodemon:watch', function() {
-    return plugins.nodemon({
-        script: 'server.js',
-        nodeArgs: ['--debug'],
-        ext: 'js,html',
+function server(done) {
+    plugins.nodemon({
+        script: 'server',
+        nodeArgs: ['--inspect'],
+        ext: 'js html',
         verbose: true,
-        watch: _.union(defaultAssets.server.views, defaultAssets.server.allJS)
+        watch: assets.server.files,
+        ignore: ['*.spec.js'],
+        done
     });
-});
+}
 
-gulp.task('run-all:watch', plugins.shell.task('npm run run-all:watch'));
-
-gulp.task('test', ['env:test'], function(done) {
+function test() {
+    process.env.NODE_ENV = 'test';
     let specReporter = require('jasmine-spec-reporter').SpecReporter;
 
-    gulp.src(testAssets.tests.server).pipe(plugins.jasmine({
-        config: require('./jasmine.json'),
+    return src(assets.server.specs).pipe(plugins.jasmine({
         reporter: new specReporter()
     }));
-});
+}
 
-gulp.task('test:coverage', ['env:test'], plugins.shell.task('npm run istanbul'));
-
-gulp.task('production', function(done) {
-    runSequence('env:production', 'run-all:watch', done);
-});
-
-gulp.task('default', function(done) {
-    runSequence('env:development', 'run-all:watch', done);
-});
+exports.default = series(development, webpack, server);
+exports.production = series(production, webpack, server);
+exports.test = test;

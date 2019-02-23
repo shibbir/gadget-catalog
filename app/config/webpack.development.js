@@ -1,18 +1,19 @@
-const webpackMerge = require('webpack-merge');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const commonConfig = require('./webpack.common');
 const helpers = require('./helpers');
+const webpackMerge = require('webpack-merge');
+const commonConfig = require('./webpack.common');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = webpackMerge(commonConfig, {
-    devtool: 'cheap-module-eval-source-map',
+    mode: 'development',
 
     output: {
         path: helpers.root('public/bundles'),
-        filename: '[name].js',
-        chunkFilename: '[id].chunk.js'
+        filename: '[name].js'
     },
 
     plugins: [
-        new ExtractTextPlugin('[name].css')
+        new MiniCssExtractPlugin({
+            filename: '[name].css'
+        })
     ]
 });
