@@ -5,7 +5,7 @@
   "author": "Shibbir Ahmed",
   "license": "MIT",
   "engines": {
-    "node": "11.10.0"
+    "node": "10.15.1"
   },
   "scripts": {
     "start": "gulp",
