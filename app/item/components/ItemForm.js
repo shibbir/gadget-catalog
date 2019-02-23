@@ -1,9 +1,10 @@
 import React from 'react';
 import { Form, withFormik } from 'formik';
 import { Divider, Button } from 'semantic-ui-react';
-import { itemSchema } from '../item.schema';
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+import Types from '../item.types';
+import { itemSchema } from '../item.schema';
 import { TextInput, RichEditorInput, DropdownInput, FileInput } from '../../shared/components/FieldInput/FieldInputs';
 
 class ItemForm extends React.Component {
@@ -110,6 +111,7 @@ ItemForm = withFormik({
 
     mapPropsToValues: (props) => {
         if(props.itemId && props.item) {
+            props.item.description = props.item.description || '';
             const blocksFromHTML = convertFromHTML(props.item.description);
             return {
                 name: props.item.name,
@@ -134,7 +136,9 @@ ItemForm = withFormik({
         };
     },
 
-    handleSubmit: (values, { setSubmitting, resetForm, props }) => {
+    handleSubmit: (values, { setSubmitting, props }) => {
+        setSubmitting(false);
+
         let contentState = values.editorState.getCurrentContent();
         values.description = stateToHTML(contentState);
 
@@ -154,13 +158,22 @@ ItemForm = withFormik({
         }
 
         if(props.itemId) {
-            props.updateItem(formData, props.itemId);
-        } else {
-            props.createItem(formData);
-        }
+            props.updateItem(formData, props.itemId).then(result => {
+                const { type, payload } = result.action;
 
-        resetForm();
-        setSubmitting(false);
+                if(type === Types.PUT_ITEM_FULFILLED) {
+                    props.history.push(`/items/${payload.data._id}`);
+                }
+            });
+        } else {
+            props.createItem(formData).then(result => {
+                const { type, payload } = result.action;
+
+                if(type === Types.POST_ITEM_FULFILLED) {
+                    props.history.push(`/items/${payload.data._id}`);
+                }
+            });
+        }
     },
 
     displayName: 'ItemForm'

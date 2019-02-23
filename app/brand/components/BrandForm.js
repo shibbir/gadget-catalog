@@ -53,11 +53,12 @@ BrandForm = withFormik({
 
     validationSchema: BrandSchema,
 
-    handleSubmit: (formValues, { setSubmitting, props }) => {
+    handleSubmit: (formValues, { setSubmitting, resetForm, props }) => {
         if(props.brandId) {
             props.updateBrand(formValues, props.brandId);
         } else {
             props.createBrand(formValues);
+            resetForm();
         }
 
         setSubmitting(false);

@@ -88,9 +88,9 @@ CategoryForm = withFormik({
             props.updateCategory(formData, props.categoryId);
         } else {
             props.createCategory(formData);
+            resetForm();
         }
 
-        resetForm();
         setSubmitting(false);
     },
 
