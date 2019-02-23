@@ -17,7 +17,6 @@ coverage
 # General
 # =======
 *.log
-bundles
 uploads
 
 # Editors
