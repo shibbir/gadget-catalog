@@ -4,6 +4,9 @@
   "description": "A react application for cataloging gadgets",
   "author": "Shibbir Ahmed",
   "license": "MIT",
+  "engines": {
+    "node": "11.10.0"
+  },
   "scripts": {
     "start": "gulp",
     "production": "gulp production",
