@@ -33,6 +33,16 @@ export function fetchItem(id) {
     };
 }
 
+export function deleteItem(id) {
+    return {
+        type: Types.DELETE_ITEM,
+        payload: axios({
+            method: 'delete',
+            url: `/api/items/${id}`
+        })
+    };
+}
+
 export function fetchItems(query = '') {
     return {
         type: Types.GET_ITEMS,

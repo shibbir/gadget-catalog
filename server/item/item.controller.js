@@ -11,9 +11,7 @@ function getItem(req, res) {
         .populate('brand', 'name')
         .populate('category', 'name')
         .exec(function(err, doc) {
-            if(err) {
-                return res.sendStatus(500);
-            }
+            if(err) return res.sendStatus(500);
 
             if(!doc) {
                 return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!'});
@@ -50,14 +48,10 @@ function getItems(req, res) {
     }
 
     Item.where(query).countDocuments(function(err, count) {
-        if (err) {
-            return res.sendStatus(500);
-        }
+        if (err) return res.sendStatus(500);
 
         Item.find(query).sort({ purchaseDate: 'descending' }).skip(skip).limit(size).exec(function(err, docs) {
-            if(err) {
-                return res.sendStatus(500);
-            }
+            if(err) return res.sendStatus(500);
 
             res.json({
                 pagination: {
@@ -91,14 +85,11 @@ function createItem(req, res) {
             }
 
             req.files.forEach(function(file, index) {
-                cloudinary.uploader.upload(file.path, function(response) {
-                    const { public_id, resource_type, type, format } = response;
-
+                cloudinary.v2.uploader.upload(file.path, {
+                    folder: 'gadgets'
+                }, function(error, result) {
                     item.files.push({
-                        public_id,
-                        resource_type,
-                        type,
-                        format,
+                        ...result,
                         active: true
                     });
 
@@ -107,18 +98,14 @@ function createItem(req, res) {
                     if(index === req.files.length -1) {
                         callback();
                     }
-                }, { folder: 'gadgets', invalidate: true });
+                });
             });
         }
     ], function(err) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
 
         item.save(function(err, doc) {
-            if(err) {
-                return res.sendStatus(500);
-            }
+            if(err) return res.sendStatus(500);
 
             res.json(doc);
         });
@@ -127,9 +114,7 @@ function createItem(req, res) {
 
 function updateItem(req, res) {
     Item.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
 
         if(!doc) {
             return res.status(400).json({ message: 'No item was found!' });
@@ -152,14 +137,11 @@ function updateItem(req, res) {
                 }
 
                 req.files.forEach(function(file, index) {
-                    cloudinary.uploader.upload(file.path, function(response) {
-                        const { public_id, resource_type, type, format } = response;
-
+                    cloudinary.v2.uploader.upload(file.path, {
+                        folder: 'gadgets'
+                    }, function(error, result) {
                         doc.files.push({
-                            public_id,
-                            resource_type,
-                            type,
-                            format,
+                            ...result,
                             active: true
                         });
 
@@ -168,7 +150,7 @@ function updateItem(req, res) {
                         if(index === req.files.length -1) {
                             callback();
                         }
-                    }, { folder: 'gadgets', invalidate: true });
+                    });
                 });
             }
         ], function() {
@@ -178,17 +160,39 @@ function updateItem(req, res) {
     });
 }
 
+function deleteItem(req, res) {
+    Item.findOneAndRemove({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
+        if(err) return res.sendStatus(500);
+
+        if(!doc) {
+            return res.status(400).json({ message: 'No item was found!' });
+        }
+
+        if(!doc.files || !doc.files.length) {
+            return res.sendStatus(200);
+        }
+
+        let files = [];
+
+        doc.files.forEach(function(file) {
+            files.push(file.public_id);
+        });
+
+        cloudinary.v2.api.delete_resources(files, function(err) {
+            if(err) return res.sendStatus(500);
+
+            res.sendStatus(200);
+        });
+    });
+}
+
 function updateImage(req, res) {
     async.waterfall([
         function(callback) {
             Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, 'files', function(err, doc) {
-                if(err) {
-                    return callback(err);
-                }
+                if(err) return callback(err);
 
-                if(!doc) {
-                    return callback();
-                }
+                if(!doc) return callback();
 
                 doc.files = doc.files.map(function(x) {
                     x.active = false;
@@ -201,48 +205,34 @@ function updateImage(req, res) {
             });
         }, function(callback) {
             Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, 'files._id': req.params.fileId }, {
-                $set: {
-                    'files.$.active': true
-                }
+                $set: { 'files.$.active': true }
             }, { new: true }, function(err, doc) {
-                if(err) {
-                    return callback(err);
-                }
+                if(err) return callback(err);
                 callback(null, doc);
             });
         }
     ], function(err, result) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
         res.json(result);
     });
 }
 
 function deleteImage(req, res) {
     Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, function(err, doc) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
 
         if(!doc) {
-            return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!'});
+            return res.status(400).json({ message: 'Invalid request!'});
         }
 
         let file = doc.files.id(req.params.fileId);
-        doc.files.id(req.params.fileId).remove();
 
-        async.waterfall([
-            function(callback) {
-                cloudinary.uploader.destroy(file.public_id, function() {
-                    callback();
-                }, { invalidate: true });
-            }
-        ], function(err) {
-            if(err) {
-                return res.sendStatus(500);
-            }
+        cloudinary.v2.uploader.destroy(file.public_id, {
+            invalidate: true
+        }, function(err) {
+            if(err) return res.sendStatus(500);
 
+            doc.files.id(req.params.fileId).remove();
             doc.save();
             res.json(doc);
         });
@@ -260,9 +250,7 @@ function getYearRangeReport(req, res) {
     };
 
     Item.find(query, 'purchaseDate').exec(function(err, docs) {
-        if(err) {
-            return res.sendStatus(500);
-        }
+        if(err) return res.sendStatus(500);
 
         let data = {};
 
@@ -283,6 +271,7 @@ exports.getItem = getItem;
 exports.getItems = getItems;
 exports.createItem = createItem;
 exports.updateItem = updateItem;
+exports.deleteItem = deleteItem;
 exports.updateImage = updateImage;
 exports.deleteImage = deleteImage;
 exports.getYearRangeReport = getYearRangeReport;
