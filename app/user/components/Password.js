@@ -11,7 +11,8 @@ class Password extends React.Component {
 
         return (
             <div>
-                <h3>Change password</h3>
+                <Divider hidden/>
+                <h3>Change local password</h3>
                 <Divider section/>
 
                 <Form onSubmit={handleSubmit} className="ui form">

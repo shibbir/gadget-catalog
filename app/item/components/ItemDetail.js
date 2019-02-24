@@ -97,6 +97,10 @@ export default class ItemDetail extends React.Component {
                         <Button color="blue" href={`#/items/${item._id}/edit`}>
                             <Icon name="pencil"/> Edit
                         </Button>
+                        <Button color="red"
+                            onClick={this.props.deleteItem.bind(null, this.props.itemId)}>
+                            <Icon name="trash"/> Delete
+                        </Button>
                     </Grid.Column>
                 </Grid>
 

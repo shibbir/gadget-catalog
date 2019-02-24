@@ -13,6 +13,8 @@ export default keyMirror({
     GET_ITEM_REJECTED: null,
     GET_ITEMS: null,
     GET_ITEMS_FULFILLED: null,
+    DELETE_ITEM: null,
+    DELETE_ITEM_FULFILLED: null,
     DELETE_ITEM_IMAGE: null,
     UPDATE_ITEM_IMAGE: null,
     UPDATE_ITEM_IMAGE_FULFILLED: null,

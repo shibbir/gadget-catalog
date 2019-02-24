@@ -5,7 +5,6 @@ const FileSchema = require('../core/file.model');
 let ItemSchema = Schema({
     name: {
         type: String,
-        unique: true,
         required: true
     },
     description: String,

@@ -9,7 +9,8 @@ module.exports = function(app) {
 
     app.route('/api/items/:id')
         .get(passport.authenticate('jwt', { session: false }), controller.getItem)
-        .put(passport.authenticate('jwt', { session: false }), controller.updateItem);
+        .put(passport.authenticate('jwt', { session: false }), controller.updateItem)
+        .delete(passport.authenticate('jwt', { session: false }), controller.deleteItem);
 
     app.route('/api/items/:itemId/images/:fileId')
         .put(passport.authenticate('jwt', { session: false }), controller.updateImage)
