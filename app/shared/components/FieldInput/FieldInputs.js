@@ -11,7 +11,7 @@ export const TextInput = ({ attributes }) => {
             { attributes.icon &&
                 <div className="ui fluid input left icon">
                     <Icon name={attributes.icon}/>
-                    <Field type={attributes.type} name={attributes.name} />
+                    <Field type={attributes.type} name={attributes.name} placeholder={attributes.placeholder} />
                 </div>
             }
 

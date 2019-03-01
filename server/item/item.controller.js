@@ -34,17 +34,16 @@ function getItems(req, res) {
     const size = req.query.size ? +req.query.size : 15;
     const skip = page > 0 ? ((page - 1) * size) : 0;
 
-    const filterBy = req.query.filter_by;
-    const filterId = req.query.filter_id;
-
     let query = {
         createdBy: req.user._id
     };
 
-    if(filterId && filterBy && filterBy.toLowerCase() === 'category') {
-        query.categoryId = filterId;
-    } else if(filterId && filterBy && filterBy.toLowerCase() === 'brand') {
-        query.brandId = filterId;
+    if(req.query.categoryId) {
+        query.categoryId = req.query.categoryId;
+    }
+
+    if(req.query.brandId) {
+        query.brandId = req.query.brandId;
     }
 
     Item.where(query).countDocuments(function(err, count) {
