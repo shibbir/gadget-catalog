@@ -35,13 +35,15 @@ class Login extends React.Component {
                                     <TextInput attributes={{
                                         name: 'email',
                                         type: 'email',
-                                        icon: 'mail'
+                                        icon: 'mail',
+                                        placeholder: 'E-mail address'
                                     }}/>
 
                                     <TextInput attributes={{
                                         name: 'password',
                                         type: 'password',
-                                        icon: 'lock'
+                                        icon: 'lock',
+                                        placeholder: 'Password'
                                     }}/>
 
                                     <Button fluid type="submit" className="large teal" disabled={isSubmitting}>Login</Button>
