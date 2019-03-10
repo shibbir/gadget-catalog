@@ -1,4 +1,5 @@
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
@@ -13,6 +14,12 @@ module.exports = {
         extensions: ['.js', '.css'],
         symlinks: false
     },
+
+    plugins: [
+        new CleanWebpackPlugin({
+            verbose: true
+        })
+    ],
 
     module: {
         rules: [
@@ -29,24 +36,8 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: 'fonts/'
-                    }
-                }]
-            },
-            {
-                test: /\.(jpe?g|gif|png)$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: 'fonts/'
-                    }
-                }]
+                test: /\.(png|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+                loader: 'url-loader'
             }
         ]
     }

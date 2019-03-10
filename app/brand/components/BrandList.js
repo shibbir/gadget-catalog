@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Message, Icon } from 'semantic-ui-react';
+import { Table, Message, Icon, Divider } from 'semantic-ui-react';
 
 export default class BrandList extends React.Component {
     constructor(props) {
@@ -23,9 +23,12 @@ export default class BrandList extends React.Component {
         });
 
         return (
-            <div id="category-cards-container">
+            <>
+                <h3>Available brands</h3>
+                <Divider section/>
+
                 { cards.length > 0 &&
-                    <Table basic='very' celled collapsing>
+                    <Table celled compact striped>
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>Name</Table.HeaderCell>
@@ -47,7 +50,7 @@ export default class BrandList extends React.Component {
                         To add a brand please <Link to="brands/add">click here</Link>.
                     </Message>
                 }
-            </div>
+            </>
         );
     }
 }

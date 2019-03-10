@@ -45,8 +45,6 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 TOKEN_SECRET=application_secret_token
 
-MONGO_SEED=false
-
 ```
 
 ## Installation

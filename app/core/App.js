@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, Route, Switch } from 'react-router-dom';
 
 import 'semantic-ui-css/semantic.css';
-import 'toastr/build/toastr.css';
+import 'izitoast/dist/css/izitoast.css';
 import 'draft-js/dist/Draft.css';
 import './app.css';
 
@@ -20,7 +20,7 @@ import Dashboard from '../user/containers/DashboardContainer';
 import CategoryListContainer from '../category/containers/CategoryListContainer';
 import CategoryAddPage from '../category/pages/CategoryAddPage';
 import CategoryEditPage from '../category/pages/CategoryEditPage';
-import BrandListPage from '../brand/pages/BrandListPage';
+import BrandListContainer from '../brand/containers/BrandListContainer';
 import BrandAddPage from '../brand/pages/BrandAddPage';
 import BrandEditPage from '../brand/pages/BrandEditPage';
 import NoMatch from './NoMatch';
@@ -56,7 +56,7 @@ class App extends React.Component {
                 <PrivateRoute exact path="/categories/add" component={CategoryAddPage}/>
                 <PrivateRoute exact path="/categories/:id/edit" component={CategoryEditPage}/>
 
-                <PrivateRoute exact path="/brands" component={BrandListPage}/>
+                <PrivateRoute exact path="/brands" component={BrandListContainer}/>
                 <PrivateRoute exact path="/brands/add" component={BrandAddPage}/>
                 <PrivateRoute exact path="/brands/:id/edit" component={BrandEditPage}/>
 
