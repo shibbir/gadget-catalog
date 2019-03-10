@@ -32,7 +32,7 @@ export default class ItemDetail extends React.Component {
 
         const sections = [
             { key: 'Items', content: 'Items', href: '#/items' },
-            { key: 'Category', content: `${item.category.name}`, href: `#/items?filter_by=category&filter_id=${item.category._id}` },
+            { key: 'Category', content: `${item.category.name}`, href: `#/items?categoryId=${item.category._id}` },
             { key: `${item.name}`, content: `${item.name}`, active: true }
         ];
 
@@ -121,7 +121,7 @@ export default class ItemDetail extends React.Component {
                                         }
 
                                         <Card.Content className="ui center aligned">
-                                            <Image src={file.url}/>
+                                            <Image src={file.url} size='medium'/>
                                         </Card.Content>
 
                                         <Card.Content extra>

@@ -1,16 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import * as toastr from 'toastr/toastr';
-
-toastr.options = {
-    timeOut: 1000,
-    preventDuplicates: true,
-    positionClass: 'toast-top-right'
-};
+import * as iziToast from 'izitoast/dist/js/izitoast';
 
 function Notification({ type, message }) {
     if(type && message) {
-        toastr[type](message);
+        iziToast[type]({
+            message: message,
+            position: 'bottomRight',
+            timeout: 1000
+        });
     }
     return <div/>;
 }

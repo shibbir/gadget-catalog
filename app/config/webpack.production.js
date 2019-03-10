@@ -2,7 +2,6 @@ const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.common');
 const TerserPlugin = require('terser-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
@@ -24,11 +23,6 @@ module.exports = webpackMerge(commonConfig, {
                 preset: ['default', { discardComments: { removeAll: true } }]
             }
         }),
-
-        new CleanWebpackPlugin('public/bundles', {
-            root: process.cwd(),
-            verbose: true
-        })
     ],
 
     optimization: {
