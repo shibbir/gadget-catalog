@@ -48,7 +48,7 @@ export default class CategoryList extends React.Component {
                 <Divider section/>
 
                 <div id="category-cards-container">
-                    <Card.Group itemsPerRow={4}>
+                    <Card.Group itemsPerRow={4} stackable>
                         {cards}
                     </Card.Group>
                 </div>

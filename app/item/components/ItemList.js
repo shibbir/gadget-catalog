@@ -207,7 +207,7 @@ export default class ItemList extends React.Component {
 
                 { cards.length > 0 &&
                     <div id="item-cards-container">
-                        <Card.Group itemsPerRow={5}>
+                        <Card.Group itemsPerRow={5} stackable>
                             {cards}
                         </Card.Group>
 
