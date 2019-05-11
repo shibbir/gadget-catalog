@@ -45,11 +45,7 @@ export default class ItemDetail extends React.Component {
                 <Grid>
                     <Grid.Column width={10}>
                         { item.activeImage &&
-                            <Card raised fluid>
-                                <Card.Content className="center aligned">
-                                    <Image src={item.activeImage.url} alt={item.name}/>
-                                </Card.Content>
-                            </Card>
+                            <Image src={item.activeImage.secure_url} alt={item.name}/>
                         }
                         { item.files.length === 0 &&
                             <Message warning icon>
@@ -121,7 +117,7 @@ export default class ItemDetail extends React.Component {
                                         }
 
                                         <Card.Content className="ui center aligned">
-                                            <Image src={file.url} size='medium'/>
+                                            <Image src={file.secure_url} size='medium'/>
                                         </Card.Content>
 
                                         <Card.Content extra>

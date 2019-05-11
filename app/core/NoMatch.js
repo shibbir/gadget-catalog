@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Icon, Header, Divider } from 'semantic-ui-react';
 
-import Footer from '../Shared/components/Footer';
+import Footer from '../shared/components/Footer';
 
 export default class NoMatch extends React.Component {
     render() {
