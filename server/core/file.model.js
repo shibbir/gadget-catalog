@@ -18,14 +18,14 @@ let FileSchema = Schema({
         type: String,
         required: true
     },
+    secure_url: {
+        type: String,
+        required: true
+    },
     active: {
         type: Boolean,
-        default: true
+        default: false
     }
-}, { toJSON: { virtuals: true } });
-
-FileSchema.virtual('url').get(function () {
-    return `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/${this.resource_type}/${this.type}/${this.public_id}.${this.format}`;
 });
 
 module.exports = FileSchema;

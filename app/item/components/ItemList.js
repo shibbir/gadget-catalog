@@ -114,7 +114,7 @@ export default class ItemList extends React.Component {
 
         let cards = data.map(function(item) {
             let activeImage = item.files.filter(x => x.active)[0];
-            activeImage = activeImage ? activeImage.url : null;
+            activeImage = activeImage ? activeImage.secure_url : null;
 
             return (
                 <Card key={item._id} raised href={`#/items/${item._id}`}>

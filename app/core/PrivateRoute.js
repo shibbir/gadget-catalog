@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 
-import Footer from '../Shared/components/Footer';
-import Navbar from '../Shared/components/Navbar';
+import Footer from '../shared/components/Footer';
+import Navbar from '../shared/components/Navbar';
 import Notification from '../shared/components/Notification/Notification';
 
 const mapStateToProps = (state) => {

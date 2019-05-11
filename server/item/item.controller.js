@@ -88,13 +88,13 @@ function createItem(req, res) {
                     folder: 'gadgets'
                 }, function(error, result) {
                     item.files.push({
-                        ...result,
-                        active: true
+                        ...result
                     });
 
                     fs.unlinkSync(file.path);
 
                     if(index === req.files.length -1) {
+                        item.files[0].active = true;
                         callback();
                     }
                 });
@@ -140,13 +140,13 @@ function updateItem(req, res) {
                         folder: 'gadgets'
                     }, function(error, result) {
                         doc.files.push({
-                            ...result,
-                            active: true
+                            ...result
                         });
 
                         fs.unlinkSync(file.path);
 
                         if(index === req.files.length -1) {
+                            item.files[0].active = true;
                             callback();
                         }
                     });

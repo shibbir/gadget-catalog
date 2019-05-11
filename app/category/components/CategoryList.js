@@ -13,7 +13,7 @@ export default class CategoryList extends React.Component {
 
         let cards = categories.map(function(category) {
             let activeImage = category.file;
-            activeImage = activeImage ? activeImage.url : category.noImageUrl;
+            activeImage = activeImage ? activeImage.secure_url : category.noImageUrl;
 
             return (
                 <Card key={category._id} raised>
@@ -26,7 +26,7 @@ export default class CategoryList extends React.Component {
                     </Card.Content>
 
                     <Card.Content extra>
-                        <Link to={`items?filter_by=category&filter_id=${category._id}`}>
+                        <Link to={`items?categoryId=${category._id}`}>
                             {`See all ${category.items.length} items`}
                         </Link>
                         { user && user.isAdmin &&
