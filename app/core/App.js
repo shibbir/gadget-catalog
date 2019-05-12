@@ -16,7 +16,7 @@ import ItemList from '../item/containers/ItemListContainer';
 import ItemDetailContainer from '../item/containers/ItemDetailContainer';
 import ItemAddPage from '../item/pages/ItemAddPage';
 import ItemEditPage from '../item/pages/ItemEditPage';
-import Dashboard from '../user/containers/DashboardContainer';
+import DashboardContainer from '../user/containers/DashboardContainer';
 import CategoryListContainer from '../category/containers/CategoryListContainer';
 import CategoryAddPage from '../category/pages/CategoryAddPage';
 import CategoryEditPage from '../category/pages/CategoryEditPage';
@@ -45,7 +45,7 @@ class App extends React.Component {
                 <PublicRoute path="/login" component={Login}/>
                 <PublicRoute path="/register" component={Register}/>
 
-                <PrivateRoute exact path="/" component={Dashboard} />
+                <PrivateRoute exact path="/" component={DashboardContainer} />
                 <PrivateRoute exact path="/profile" component={ProfileContainer}/>
                 <PrivateRoute exact path="/items" component={ItemList}/>
                 <PrivateRoute exact path="/items/add" component={ItemAddPage}/>
