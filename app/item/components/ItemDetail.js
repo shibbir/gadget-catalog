@@ -67,8 +67,8 @@ export default class ItemDetail extends React.Component {
                                 <Divider horizontal>Meta Informations</Divider>
 
                                 <Item.Meta>
-                                    <div>Category: <Link to={`items?filter_by=category&filter_id=${item.category._id}`}>{item.category.name}</Link></div>
-                                    <div>Brand: <Link to={`items?filter_by=brand&filter_id=${item.brand._id}`}>{item.brand.name}</Link></div>
+                                    <div>Category: <Link to={`/items?categoryId=${item.category._id}`}>{item.category.name}</Link></div>
+                                    <div>Brand: <Link to={`/items?brandId=${item.brand._id}`}>{item.brand.name}</Link></div>
                                     { item.price &&
                                         <div>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></div>
                                     }
