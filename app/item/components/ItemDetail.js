@@ -12,7 +12,7 @@ export default class ItemDetail extends React.Component {
     }
 
     render() {
-        let { item } = this.props;
+        let { item, user } = this.props;
 
         if(!item) {
             return (
@@ -88,15 +88,19 @@ export default class ItemDetail extends React.Component {
                             </Item.Content>
                         </Item>
 
-                        <Divider section/>
+                        { user && !user.isAdmin &&
+                            <>
+                                <Divider section/>
 
-                        <Button color="blue" href={`#/items/${item._id}/edit`}>
-                            <Icon name="pencil"/> Edit
-                        </Button>
-                        <Button color="red"
-                            onClick={this.props.deleteItem.bind(null, this.props.itemId)}>
-                            <Icon name="trash"/> Delete
-                        </Button>
+                                <Button color="blue" href={`#/items/${item._id}/edit`}>
+                                    <Icon name="pencil"/> Edit
+                                </Button>
+                                <Button color="red"
+                                    onClick={this.props.deleteItem.bind(null, this.props.itemId)}>
+                                    <Icon name="trash"/> Delete
+                                </Button>
+                            </>
+                        }
                     </Grid.Column>
                 </Grid>
 
@@ -120,21 +124,23 @@ export default class ItemDetail extends React.Component {
                                             <Image src={file.secure_url} size='medium'/>
                                         </Card.Content>
 
-                                        <Card.Content extra>
-                                            <div className="ui two buttons">
-                                                <Button
-                                                    color="green"
-                                                    disabled={file.active}
-                                                    onClick={this.props.setAsActiveImage.bind(null, this.props.itemId, file._id)}>
-                                                    Set as active
-                                                </Button>
-                                                <Button
-                                                    color="red"
-                                                    onClick={this.props.deleteImage.bind(null, this.props.itemId, file._id)}>
-                                                    Discard
-                                                </Button>
-                                            </div>
-                                        </Card.Content>
+                                        { user && !user.isAdmin &&
+                                            <Card.Content extra>
+                                                <div className="ui two buttons">
+                                                    <Button
+                                                        color="green"
+                                                        disabled={file.active}
+                                                        onClick={this.props.setAsActiveImage.bind(null, this.props.itemId, file._id)}>
+                                                        Set as active
+                                                    </Button>
+                                                    <Button
+                                                        color="red"
+                                                        onClick={this.props.deleteImage.bind(null, this.props.itemId, file._id)}>
+                                                        Discard
+                                                    </Button>
+                                                </div>
+                                            </Card.Content>
+                                        }
                                     </Card>
                                 );
                             })}

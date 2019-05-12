@@ -1,20 +1,27 @@
 const fs = require('fs');
 const async = require('async');
+const cache = require('memory-cache');
 const validator = require('validator');
 const Item = require('./item.model');
 const File = require('../core/file.model');
 const cloudinary = require('../config/lib/cloudinary')();
 
 function getItem(req, res) {
+    let query = { _id: req.params.id, createdBy: req.user._id };
+
+    if(req.user._id.equals(cache.get('adminId'))) {
+        query = { _id: req.params.id };
+    }
+
     Item
-        .findOne({ _id: req.params.id, createdBy: req.user._id })
+        .findOne(query)
         .populate('brand', 'name')
         .populate('category', 'name')
         .exec(function(err, doc) {
             if(err) return res.sendStatus(500);
 
             if(!doc) {
-                return res.status(400).json({ message: 'Operation failed or you don\'t have the permission!'});
+                return res.status(400);
             }
 
             doc = doc.toJSON();
@@ -37,6 +44,10 @@ function getItems(req, res) {
     let query = {
         createdBy: req.user._id
     };
+
+    if(req.user._id.equals(cache.get('adminId'))) {
+        query = {};
+    }
 
     if(req.query.categoryId) {
         query.categoryId = req.query.categoryId;
@@ -116,7 +127,7 @@ function updateItem(req, res) {
         if(err) return res.sendStatus(500);
 
         if(!doc) {
-            return res.status(400).json({ message: 'No item was found!' });
+            return res.status(400);
         }
 
         doc.name = req.body.name;
@@ -164,7 +175,7 @@ function deleteItem(req, res) {
         if(err) return res.sendStatus(500);
 
         if(!doc) {
-            return res.status(400).json({ message: 'No item was found!' });
+            return res.status(400);
         }
 
         if(!doc.files || !doc.files.length) {
@@ -221,7 +232,7 @@ function deleteImage(req, res) {
         if(err) return res.sendStatus(500);
 
         if(!doc) {
-            return res.status(400).json({ message: 'Invalid request!'});
+            return res.status(400);
         }
 
         let file = doc.files.id(req.params.fileId);

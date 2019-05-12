@@ -16,14 +16,12 @@ function getBrand(req, res) {
 }
 
 function getBrands(req, res) {
-    const filterBy = req.query.filter_by;
-
     let query = {
-        $or: [{ createdBy: req.user._id }, { createdBy: cache.get('adminId') }]
+        createdBy: req.user._id
     };
 
-    if(filterBy && filterBy.toLowerCase() === 'user') {
-        query.createdBy = req.user._id;
+    if(req.user._id.equals(cache.get('adminId'))) {
+        query = {};
     }
 
     Brand.find(query).sort('name').exec(function(err, docs) {

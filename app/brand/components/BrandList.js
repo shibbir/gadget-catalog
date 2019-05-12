@@ -5,18 +5,21 @@ import { Table, Message, Icon, Divider } from 'semantic-ui-react';
 export default class BrandList extends React.Component {
     constructor(props) {
         super();
-        props.getBrands('?filter_by=user');
+        props.getBrands();
     }
 
     render() {
-        const { brands } = this.props;
+        const { brands, user } = this.props;
 
         let cards = brands.map(function(brand) {
             return (
                 <Table.Row key={brand._id}>
                     <Table.Cell>{brand.name}</Table.Cell>
+                    { user && user.isAdmin &&
+                        <Table.Cell>{brand.createdBy}</Table.Cell>
+                    }
                     <Table.Cell>
-                        <Link to={`items?brandId=${brand._id}`}>View</Link> | <Link to={`/brands/${brand._id}/edit`}>Edit</Link>
+                        <Link to={`/items?brandId=${brand._id}`}>View</Link> | <Link to={`/brands/${brand._id}/edit`}>Edit</Link>
                     </Table.Cell>
                 </Table.Row>
             );
@@ -32,6 +35,9 @@ export default class BrandList extends React.Component {
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>Name</Table.HeaderCell>
+                                { user && user.isAdmin &&
+                                    <Table.HeaderCell>Created By</Table.HeaderCell>
+                                }
                                 <Table.HeaderCell>Action</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>

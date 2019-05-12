@@ -4,14 +4,15 @@ import BrandList from '../components/BrandList';
 
 const mapStateToProps = (state) => {
     return {
+        user: state.authReducer.user,
         brands: state.brandReducer.brands
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getBrands: (query) => {
-            dispatch(getBrands(query));
+        getBrands: () => {
+            dispatch(getBrands());
         }
     };
 };
