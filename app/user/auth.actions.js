@@ -6,7 +6,7 @@ export function getProfile() {
         type: Types.GET_PROFILE,
         payload: axios({
             method: 'get',
-            url: 'api/profile'
+            url: '/api/profile'
         })
     };
 }
@@ -16,7 +16,7 @@ export function login(formData) {
         type: Types.LOGIN,
         payload: axios({
             method: 'post',
-            url: 'api/login',
+            url: '/api/login',
             data: formData
         })
     };
@@ -27,7 +27,7 @@ export function register(formData) {
         type: Types.REGISTER,
         payload: axios({
             method: 'post',
-            url: 'api/register',
+            url: '/api/register',
             data: formData
         })
     };

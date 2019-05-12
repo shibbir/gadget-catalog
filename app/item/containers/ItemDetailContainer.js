@@ -6,8 +6,9 @@ import ItemDetail from '../components/ItemDetail';
 
 const mapStateToProps = (state, props) => {
     return {
-        itemId: props.match.params.id,
-        item: state.itemReducer.item
+        user: state.authReducer.user,
+        item: state.itemReducer.item,
+        itemId: props.match.params.id
     };
 }
 

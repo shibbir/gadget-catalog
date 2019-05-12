@@ -19,14 +19,14 @@ class Navbar extends React.Component {
                         <Icon name="dashboard"/>
                         Dashboard
                     </NavLink>
-                    { user && !user.isAdmin &&
-                        <Dropdown item text='Item'>
-                            <Dropdown.Menu>
-                                <NavLink to="/items" activeClassName="active" className="item">Item list</NavLink>
+                    <Dropdown item text='Item'>
+                        <Dropdown.Menu>
+                            <NavLink to="/items" activeClassName="active" className="item">Item list</NavLink>
+                            { user && !user.isAdmin &&
                                 <NavLink to="/items/add" activeClassName="active" className="item">Add new item</NavLink>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    }
+                            }
+                        </Dropdown.Menu>
+                    </Dropdown>
                     <Dropdown item text='Category'>
                         <Dropdown.Menu>
                             <NavLink to="/categories" activeClassName="active" className="item">Category list</NavLink>

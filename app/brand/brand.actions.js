@@ -1,12 +1,12 @@
 import axios from 'axios';
 import Types from './brand.types';
 
-export function getBrands(query = '') {
+export function getBrands() {
     return {
         type: Types.GET_BRANDS,
         payload: axios({
             method: 'get',
-            url: `/api/brands${query}`
+            url: '/api/brands'
         })
     };
 }
@@ -17,7 +17,7 @@ export function createBrand(formData) {
         payload: axios({
             method: 'post',
             data: formData,
-            url: 'api/brands'
+            url: '/api/brands'
         })
     };
 }
@@ -28,7 +28,7 @@ export function updateBrand(formData, id) {
         payload: axios({
             method: 'put',
             data: formData,
-            url: `api/brands/${id}`
+            url: `/api/brands/${id}`
         })
     };
 }

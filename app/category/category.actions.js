@@ -17,7 +17,7 @@ export function createCategory(formData) {
         payload: axios({
             method: 'post',
             data: formData,
-            url: 'api/categories'
+            url: '/api/categories'
         })
     };
 }
@@ -28,7 +28,7 @@ export function updateCategory(formData, id) {
         payload: axios({
             method: 'put',
             data: formData,
-            url: `api/categories/${id}`
+            url: `/api/categories/${id}`
         })
     };
 }

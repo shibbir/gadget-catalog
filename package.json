@@ -1,6 +1,6 @@
 {
   "name": "gadget-catalog",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A react application for cataloging gadgets",
   "author": "Shibbir Ahmed",
   "license": "MIT",
@@ -62,7 +62,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.5",
+    "babel-loader": "^8.0.6",
     "babel-plugin-react-html-attrs": "^2.1.0",
     "clean-webpack-plugin": "^2.0.2",
     "coveralls": "^3.0.3",

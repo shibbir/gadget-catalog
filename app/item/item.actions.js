@@ -18,7 +18,7 @@ export function updateItem(formData, id) {
         payload: axios({
             method: 'put',
             data: formData,
-            url: `api/items/${id}`
+            url: `/api/items/${id}`
         })
     };
 }
