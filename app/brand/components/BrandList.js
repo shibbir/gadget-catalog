@@ -16,7 +16,7 @@ export default class BrandList extends React.Component {
                 <Table.Row key={brand._id}>
                     <Table.Cell>{brand.name}</Table.Cell>
                     <Table.Cell>
-                        <Link to={`items?filter_by=brand&filter_id=${brand._id}`}>View</Link> | <Link to={`/brands/${brand._id}/edit`}>Edit</Link>
+                        <Link to={`items?brandId=${brand._id}`}>View</Link> | <Link to={`/brands/${brand._id}/edit`}>Edit</Link>
                     </Table.Cell>
                 </Table.Row>
             );

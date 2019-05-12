@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Segment, Header, Divider, Image } from 'semantic-ui-react';
 import { withFormik, Form } from 'formik';
+import * as iziToast from 'izitoast/dist/js/izitoast';
+import { Button, Segment, Header, Divider, Image } from 'semantic-ui-react';
 
 import store from '../../store';
+import { login } from '../auth.actions';
 import { loginSchema } from '../auth.schema';
 import OAuthProvider from '../../shared/components/OAuthProvider';
-import { login } from '../auth.actions';
 import { TextInput } from '../../shared/components/FieldInput/FieldInputs';
 
 class Login extends React.Component {
@@ -74,7 +75,13 @@ Login = withFormik({
         store.dispatch(login({
             email: values.email,
             password: values.password
-        }));
+        })).catch(function(result) {
+            iziToast.error({
+                message: 'Invalid credential!',
+                position: 'bottomRight',
+                timeout: 2000
+            });
+        });
 
         setSubmitting(false);
     },

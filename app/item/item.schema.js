@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 export const itemSchema = Yup.object().shape({
     name: Yup.string()
         .min(2, 'This field must be at least 2 characters long.')
-        .max(50, 'This field must be at most 30 characters long.')
+        .max(60, 'This field must be at most 60 characters long.')
         .required('This field must not be empty.'),
     categoryId: Yup.string()
         .required('This field must not be empty.'),

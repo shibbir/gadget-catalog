@@ -146,7 +146,7 @@ function updateItem(req, res) {
                         fs.unlinkSync(file.path);
 
                         if(index === req.files.length -1) {
-                            item.files[0].active = true;
+                            doc.files[0].active = true;
                             callback();
                         }
                     });

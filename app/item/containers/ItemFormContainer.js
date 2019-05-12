@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import ItemForm from '../components/ItemForm';
 import { getBrands } from '../../brand/brand.actions';
 import { getCategories } from '../../category/category.actions';
 import { createItem, updateItem, fetchItem } from '../item.actions';
-import ItemForm from '../components/ItemForm';
 
 const mapStateToProps = (state, props) => {
     return {
