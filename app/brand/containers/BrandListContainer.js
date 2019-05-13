@@ -11,8 +11,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getBrands: () => {
-            dispatch(getBrands());
+        getBrands: query => {
+            dispatch(getBrands(query));
         }
     };
 };
