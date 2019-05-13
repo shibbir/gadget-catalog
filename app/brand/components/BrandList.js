@@ -5,7 +5,7 @@ import { Table, Message, Icon, Divider } from 'semantic-ui-react';
 export default class BrandList extends React.Component {
     constructor(props) {
         super();
-        props.getBrands();
+        props.getBrands('?filter_by=user');
     }
 
     render() {
