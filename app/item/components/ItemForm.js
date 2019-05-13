@@ -40,18 +40,19 @@ class ItemForm extends React.Component {
             if (data && data.name) {
                 setFieldValue(data.name, data.value);
             }
-        }
+        };
 
         const handleFileChange = (e) => {
             setFieldValue('files', e.currentTarget.files);
-        }
+        };
 
         return (
             <Form onSubmit={handleSubmit} className="ui form">
                 <TextInput attributes={{
                     type: 'text',
                     name: 'name',
-                    label: 'Name'
+                    label: 'Name',
+                    required: true
                 }}/>
                 <RichEditorInput attributes={{
                     value: values.description,
@@ -67,7 +68,8 @@ class ItemForm extends React.Component {
                     placeholder: 'Select category',
                     label: 'Category',
                     options: categoryOptions,
-                    onChange: handleDropdownChange
+                    onChange: handleDropdownChange,
+                    required: true
                 }}/>
                 <DropdownInput attributes={{
                     value: values.brandId,
@@ -75,17 +77,20 @@ class ItemForm extends React.Component {
                     placeholder: 'Select brand',
                     label: 'Brand',
                     options: brandOptions,
-                    onChange: handleDropdownChange
+                    onChange: handleDropdownChange,
+                    required: true
                 }}/>
                 <TextInput attributes={{
                     type: 'date',
                     name: 'purchaseDate',
-                    label: 'Purchase date'
+                    label: 'Purchase date',
+                    required: true
                 }}/>
                 <TextInput attributes={{
                     type: 'number',
                     name: 'price',
-                    label: 'Price'
+                    label: 'Price',
+                    required: true
                 }}/>
                 <FileInput attributes={{
                     type: 'file',
