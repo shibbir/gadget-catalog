@@ -5,7 +5,7 @@ import DraftEditor from './DraftEditor';
 
 export const TextInput = ({ attributes }) => {
     return (
-        <Form.Field>
+        <Form.Field required={attributes.required}>
             { attributes.label && <label>{attributes.label}</label> }
 
             { attributes.icon &&
@@ -30,7 +30,7 @@ export const TextInput = ({ attributes }) => {
 
 export const RichEditorInput = ({ attributes }) => {
     return (
-        <Form.Field>
+        <Form.Field required={attributes.required}>
             { attributes.label && <label>{attributes.label}</label> }
 
             <DraftEditor {...attributes}/>
@@ -40,7 +40,7 @@ export const RichEditorInput = ({ attributes }) => {
 
 export const DropdownInput = ({ attributes }) => {
     return (
-        <Form.Field>
+        <Form.Field required={attributes.required}>
             <Form.Select search {...attributes} options={attributes.options} onChange={attributes.onChange}/>
 
             <div className="field-validation-error">
@@ -52,7 +52,7 @@ export const DropdownInput = ({ attributes }) => {
 
 export const FileInput = ({ attributes }) => {
     return (
-        <Form.Field>
+        <Form.Field required={attributes.required}>
             { attributes.label && <label>{attributes.label}</label> }
 
             <Form.Input type="file" name={attributes.name} multiple accept="image/*" onChange={attributes.onChange}/>

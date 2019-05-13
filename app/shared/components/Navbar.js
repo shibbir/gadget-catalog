@@ -5,15 +5,11 @@ import { Menu, Dropdown, Container, Icon } from 'semantic-ui-react';
 
 class Navbar extends React.Component {
     render() {
-        const navBarStyle = {
-            marginBottom: '10px'
-        };
-
         const { user } = this.props;
 
         return (
-            <Container style={navBarStyle}>
-                <Menu stackable>
+            <Menu stackable borderless>
+                <Container>
                     <Menu.Item header>Gadget Catalog</Menu.Item>
                     <NavLink to="/" activeClassName="active" className="item">
                         <Icon name="dashboard"/>
@@ -53,8 +49,8 @@ class Navbar extends React.Component {
                             </Dropdown.Menu>
                         </Dropdown>
                     </Menu.Menu>
-                </Menu>
-            </Container>
+                </Container>
+            </Menu>
         );
     }
 }

@@ -27,7 +27,8 @@ class CategoryForm extends React.Component {
                         <TextInput attributes={{
                             type: 'text',
                             name: 'name',
-                            label: 'Name'
+                            label: 'Name',
+                            required: true
                         }}/>
                         <FileInput attributes={{
                             type: 'file',

@@ -27,7 +27,7 @@ export default class BrandList extends React.Component {
 
         return (
             <>
-                <h3>Available brands</h3>
+                <h2>Available brands</h2>
                 <Divider section/>
 
                 { cards.length > 0 &&
