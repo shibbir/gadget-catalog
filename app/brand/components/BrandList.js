@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Message, Icon, Divider } from 'semantic-ui-react';
+import { Table, Segment, Icon, Divider, Header, Button } from 'semantic-ui-react';
 
 export default class BrandList extends React.Component {
     constructor(props) {
@@ -48,13 +48,15 @@ export default class BrandList extends React.Component {
                 }
 
                 { cards.length === 0 &&
-                    <Message warning>
-                        <Message.Header>
-                            <Icon name="warning sign" size="large"/>
-                            Nothing found!
-                        </Message.Header>
-                        To add a brand please <Link to="brands/add">click here</Link>.
-                    </Message>
+                    <Segment placeholder raised>
+                        <Header icon>
+                            <Icon name='warning sign'/>
+                            You don't have any brands added yet!
+                        </Header>
+                        <Button primary>
+                            <Link to="/brands/add" style={{color: 'white'}}>Add New Brand</Link>
+                        </Button>
+                    </Segment>
                 }
             </>
         );
