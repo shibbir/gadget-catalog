@@ -4,6 +4,12 @@ import PieChart from '../../shared/components/Chart/PieChart';
 import ColumnChart from '../../shared/components/Chart/ColumnChart';
 
 export default class Dashboard extends React.Component {
+    constructor(props) {
+        super();
+
+        props.getCategories();
+    }
+
     render() {
         return (
             <div id="dashboard">
@@ -15,7 +21,7 @@ export default class Dashboard extends React.Component {
                         </Card.Header>
                     </Card.Content>
                     <Card.Content>
-                        <PieChart data={this.props.categories} getData={this.props.getCategories}/>
+                        <PieChart data={this.props.categories} />
                     </Card.Content>
                 </Card>
 

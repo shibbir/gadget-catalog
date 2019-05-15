@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
-import { Label, Form, Button, Accordion, Card, Divider, Message, Icon, Menu, Container, Image } from 'semantic-ui-react';
+import { Label, Form, Button, Accordion, Card, Divider, Icon, Menu, Container, Image, Segment, Header } from 'semantic-ui-react';
 
 export default class ItemList extends React.Component {
     constructor(props) {
@@ -224,13 +224,15 @@ export default class ItemList extends React.Component {
                     </div>
                 }
                 { cards.length === 0 &&
-                    <Message warning>
-                        <Message.Header>
-                            <Icon name="warning sign" size="large"/>
-                            Nothing found!
-                        </Message.Header>
-                        To add an item please <Link to="items/add">click here</Link>.
-                    </Message>
+                    <Segment placeholder raised>
+                        <Header icon>
+                            <Icon name='warning sign' />
+                            You don't have any items!
+                        </Header>
+                        <Button primary>
+                            <Link to="/items/add" style={{color: 'white'}}>Add New Item</Link>
+                        </Button>
+                    </Segment>
                 }
             </div>
         );

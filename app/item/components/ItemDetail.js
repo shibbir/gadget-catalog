@@ -38,7 +38,7 @@ export default class ItemDetail extends React.Component {
 
         return (
             <div>
-                <Breadcrumb size='small' icon='right chevron' sections={sections}/>
+                <Breadcrumb size='small' sections={sections}/>
 
                 <Divider hidden/>
 
@@ -121,23 +121,21 @@ export default class ItemDetail extends React.Component {
                                         }
 
                                         <Card.Content className="ui center aligned">
-                                            <Image src={file.secure_url} size='medium'/>
+                                            <Image src={file.secure_url} size='small'/>
                                         </Card.Content>
 
                                         { user && !user.isAdmin &&
                                             <Card.Content extra>
-                                                <div className="ui two buttons">
-                                                    <Button
-                                                        color="green"
-                                                        disabled={file.active}
-                                                        onClick={this.props.setAsActiveImage.bind(null, this.props.itemId, file._id)}>
-                                                        Set as active
-                                                    </Button>
-                                                    <Button
-                                                        color="red"
-                                                        onClick={this.props.deleteImage.bind(null, this.props.itemId, file._id)}>
+                                                <a onClick={this.props.setAsActiveImage.bind(null, this.props.itemId, file._id)} disabled={file.active}>
+                                                    <Icon color='teal' name="checkmark"/>
+                                                    Set as active
+                                                </a>
+
+                                                <div className="right floated">
+                                                    <a onClick={this.props.deleteImage.bind(null, this.props.itemId, file._id)}>
+                                                        <Icon color='red' name="delete"/>
                                                         Discard
-                                                    </Button>
+                                                    </a>
                                                 </div>
                                             </Card.Content>
                                         }

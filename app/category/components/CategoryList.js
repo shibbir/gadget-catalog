@@ -26,14 +26,21 @@ export default class CategoryList extends React.Component {
                     </Card.Content>
 
                     <Card.Content extra>
-                        <Link to={`items?categoryId=${category._id}`}>
-                            {`See all ${category.items.length} items`}
-                        </Link>
+                        { category.items.length > 0 &&
+                            <Link to={`/items?categoryId=${category._id}`}>
+                                <Icon color='teal' name="external alternate"/>
+                                {`${category.items.length} item(s)`}
+                            </Link>
+                        }
+                        { category.items.length === 0 &&
+                            <>You don't have any items</>
+                        }
                         { user && user.isAdmin &&
                             <div className="right floated">
-                                <Button positive compact href={`#/categories/${category._id}/edit`}>
-                                    <Icon name="edit"/> Edit
-                                </Button>
+                                <Link to={`categories/${category._id}/edit`}>
+                                    <Icon color='teal' name="edit"/>
+                                    Edit
+                                </Link>
                             </div>
                         }
                     </Card.Content>
