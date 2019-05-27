@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
-import { Label, Form, Button, Accordion, Card, Divider, Icon, Menu, Container, Image, Segment, Header } from 'semantic-ui-react';
+import { Label, Form, Button, Rail, Card, Divider, Icon, Menu, Container, Image, Segment, Header } from 'semantic-ui-react';
 
 export default class ItemList extends React.Component {
     constructor(props) {
@@ -16,17 +16,15 @@ export default class ItemList extends React.Component {
 
         this.state = {
             ...this.state,
-            categoryId: this.state.params.categoryId || '-1',
+            brandName: '',
             categoryName: '',
             brandId: this.state.params.brandId || '-1',
-            brandName: '',
-            activeFilter: false
+            categoryId: this.state.params.categoryId || '-1'
         };
 
         this.filter = this.filter.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.toggleFilterPanel = this.toggleFilterPanel.bind(this);
         this.discardFilter = this.discardFilter.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -86,14 +84,8 @@ export default class ItemList extends React.Component {
         });
     }
 
-    toggleFilterPanel() {
-        this.setState(state => ({
-            activeFilter: !state.activeFilter
-        }));
-    }
-
     render() {
-        const { activeFilter, categoryId, categoryName, brandId, brandName } = this.state;
+        const { categoryId, categoryName, brandId, brandName } = this.state;
         const params = queryString.parse(this.props.location.search);
 
         const {
@@ -119,7 +111,7 @@ export default class ItemList extends React.Component {
             return (
                 <Card key={item._id} raised href={`#/items/${item._id}`}>
                     <Card.Content header={item.name} className="ui center aligned"/>
-                    <Card.Content className="ui center aligned">
+                    <Card.Content className="ui center aligned image-wrapper">
                         { activeImage
                             ? <Image src={activeImage} alt={item.name}/>
                             : 'Image Not Available!'
@@ -151,15 +143,11 @@ export default class ItemList extends React.Component {
         });
 
         return (
-            <div>
-                <Accordion fluid styled>
-                    <Accordion.Title active={activeFilter === true} onClick={this.toggleFilterPanel}>
-                        <Icon name='dropdown' />
-                        REFINE BY
-                    </Accordion.Title>
-                    <Accordion.Content active={activeFilter === true}>
-                        <Form onSubmit={this.filter}>
-                            <Form.Group widths='equal'>
+            <Segment>
+                { cards.length > 0 &&
+                    <Rail position='left' close dividing>
+                        <Segment>
+                            <Form onSubmit={this.filter}>
                                 <Form.Dropdown
                                     selection search
                                     label='Category'
@@ -176,34 +164,38 @@ export default class ItemList extends React.Component {
                                     value={brandId}
                                     onChange={this.handleInputChange}
                                 />
-                            </Form.Group>
-                            <Button type='submit' positive>
-                                <Icon name='filter'/>Filter
-                            </Button>
-                        </Form>
-                    </Accordion.Content>
-                </Accordion>
+
+                                <Button.Group>
+                                    <Button type="submit" positive>
+                                        <Icon name='filter'/> Filter
+                                    </Button>
+                                    <Button.Or />
+                                    <Button type="reset">
+                                        <Icon name='undo'/> Reset
+                                    </Button>
+                                </Button.Group>
+                            </Form>
+                        </Segment>
+                    </Rail>
+                }
 
                 {(params.categoryId || params.brandId) &&
                     <div>
-                        <Divider hidden/>
-
-                        Refined by:
                         {(params.categoryId && params.categoryId !== '-1') &&
-                            <Label basic>
+                            <Label color="blue">
                                 Category: {categoryName} <Icon name='delete' data-id="categoryId" onClick={this.discardFilter}/>
                             </Label>
                         }
 
                         {(params.brandId && params.brandId !== '-1') &&
-                            <Label basic>
+                            <Label color="blue">
                                 Brand: {brandName} <Icon name='delete' data-id="brandId" onClick={this.discardFilter}/>
                             </Label>
                         }
+
+                        <Divider hidden/>
                     </div>
                 }
-
-                <Divider hidden/>
 
                 { cards.length > 0 &&
                     <div id="item-cards-container">
@@ -234,7 +226,7 @@ export default class ItemList extends React.Component {
                         </Button>
                     </Segment>
                 }
-            </div>
+            </Segment>
         );
     }
 }
