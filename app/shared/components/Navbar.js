@@ -10,31 +10,46 @@ class Navbar extends React.Component {
         return (
             <Menu stackable borderless>
                 <Container>
-                    <Menu.Item header>Gadget Catalog</Menu.Item>
+                    <Menu.Item header>
+                        <img src="images/logo.png"/>
+                        Gadget Catalog
+                    </Menu.Item>
                     <NavLink to="/" activeClassName="active" className="item">
                         <Icon name="dashboard"/>
                         Dashboard
                     </NavLink>
                     <Dropdown item text='Item'>
                         <Dropdown.Menu>
-                            <NavLink to="/items" activeClassName="active" className="item">Item list</NavLink>
+                            <NavLink to="/items" activeClassName="active" className="item">
+                                <Icon name="unordered list"/> Item list
+                            </NavLink>
                             { user && !user.isAdmin &&
-                                <NavLink to="/items/add" activeClassName="active" className="item">Add new item</NavLink>
+                                <NavLink to="/items/add" activeClassName="active" className="item">
+                                    <Icon name="add"/> Add new item
+                                </NavLink>
                             }
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown item text='Category'>
                         <Dropdown.Menu>
-                            <NavLink to="/categories" activeClassName="active" className="item">Category list</NavLink>
+                            <NavLink to="/categories" activeClassName="active" className="item">
+                                <Icon name="unordered list"/> Category list
+                            </NavLink>
                             { user && user.isAdmin &&
-                                <NavLink to="/categories/add" activeClassName="active" className="item">Add new category</NavLink>
+                                <NavLink to="/categories/add" activeClassName="active" className="item">
+                                    <Icon name="add"/> Add new category
+                                </NavLink>
                             }
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown item text='Brand'>
                         <Dropdown.Menu>
-                            <NavLink to="/brands" activeClassName="active" className="item">Brand list</NavLink>
-                            <NavLink to="/brands/add" activeClassName="active" className="item">Add new brand</NavLink>
+                            <NavLink to="/brands" activeClassName="active" className="item">
+                                <Icon name="unordered list"/> Brand list
+                            </NavLink>
+                            <NavLink to="/brands/add" activeClassName="active" className="item">
+                                <Icon name="add"/> Add new brand
+                            </NavLink>
                         </Dropdown.Menu>
                     </Dropdown>
                     <Menu.Menu position='right'>
