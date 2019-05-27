@@ -23,6 +23,7 @@ export default class ItemList extends React.Component {
         };
 
         this.filter = this.filter.bind(this);
+        this.resetFilter = this.resetFilter.bind(this);
         this.discardFilter = this.discardFilter.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
     }
@@ -53,6 +54,12 @@ export default class ItemList extends React.Component {
         this.setState({
             [data.name]: data.value
         });
+    }
+
+    resetFilter() {
+        this.state.brandId = '-1';
+        this.state.categoryId = '-1';
+        this.filter();
     }
 
     discardFilter(event) {
@@ -170,7 +177,7 @@ export default class ItemList extends React.Component {
                                         <Icon name='filter'/> Filter
                                     </Button>
                                     <Button.Or />
-                                    <Button type="reset">
+                                    <Button type="button" onClick={this.resetFilter}>
                                         <Icon name='undo'/> Reset
                                     </Button>
                                 </Button.Group>

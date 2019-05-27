@@ -27,13 +27,13 @@ export default class Footer extends React.Component {
                                 </div>
                             </div>
                             <div className="eight wide right floated column">
-                                <h4 className="ui inverted teal header">Help Preserve This Project</h4>
+                                <h4 className="ui inverted teal header">Help Preserve This Project!</h4>
                                 <p>
                                     Developed by <a href="https://shibbir.io">Shibbir Ahmed</a>.
-                                    Code licensed <a rel="license" href="https://github.com/shibbir/gadget-catalog/blob/master/LICENSE">MIT</a>
+                                    Code licensed <a rel="license" href="https://github.com/shibbir/gadget-catalog/blob/master/LICENSE">MIT</a>.
                                 </p>
                                 <p>
-                                    Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+                                    Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.
                                 </p>
                                 <Button className="large teal" href="https://github.com/shibbir/gadget-catalog">
                                     <Icon name="github"/> Star
