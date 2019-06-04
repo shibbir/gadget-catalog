@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
-import { Label, Form, Button, Rail, Card, Divider, Icon, Menu, Container, Image, Segment, Header } from 'semantic-ui-react';
+import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segment, Header, Grid } from 'semantic-ui-react';
 
 export default class ItemList extends React.Component {
     constructor(props) {
@@ -150,90 +150,90 @@ export default class ItemList extends React.Component {
         });
 
         return (
-            <Segment>
+            <Grid>
                 { cards.length > 0 &&
-                    <Rail position='left' close dividing>
-                        <Segment>
-                            <Form onSubmit={this.filter}>
-                                <Form.Dropdown
-                                    selection search
-                                    label='Category'
-                                    name='categoryId'
-                                    options={categoryOptions}
-                                    value={categoryId}
-                                    onChange={this.handleInputChange}
-                                />
-                                <Form.Dropdown
-                                    selection search
-                                    label='Brand'
-                                    name='brandId'
-                                    options={brandOptions}
-                                    value={brandId}
-                                    onChange={this.handleInputChange}
-                                />
+                    <Grid.Column width={3}>
+                        <Form onSubmit={this.filter}>
+                            <Form.Dropdown
+                                selection search
+                                label='Category'
+                                name='categoryId'
+                                options={categoryOptions}
+                                value={categoryId}
+                                onChange={this.handleInputChange}
+                            />
+                            <Form.Dropdown
+                                selection search
+                                label='Brand'
+                                name='brandId'
+                                options={brandOptions}
+                                value={brandId}
+                                onChange={this.handleInputChange}
+                            />
 
-                                <Button.Group>
-                                    <Button type="submit" positive>
-                                        <Icon name='filter'/> Filter
-                                    </Button>
-                                    <Button.Or />
-                                    <Button type="button" onClick={this.resetFilter}>
-                                        <Icon name='undo'/> Reset
-                                    </Button>
-                                </Button.Group>
-                            </Form>
+                            <Button.Group>
+                                <Button type="submit" positive>
+                                    <Icon name='filter'/> Filter
+                                </Button>
+                                <Button.Or />
+                                <Button type="button" onClick={this.resetFilter}>
+                                    <Icon name='undo'/> Reset
+                                </Button>
+                            </Button.Group>
+                        </Form>
+                    </Grid.Column>
+                }
+
+                <Grid.Column width={13}>
+                    {(params.categoryId || params.brandId) &&
+                        <div>
+                            {(params.categoryId && params.categoryId !== '-1') &&
+                                <Label color="blue">
+                                    Category: {categoryName} <Icon name='delete' data-id="categoryId" onClick={this.discardFilter}/>
+                                </Label>
+                            }
+
+                            {(params.brandId && params.brandId !== '-1') &&
+                                <Label color="blue">
+                                    Brand: {brandName} <Icon name='delete' data-id="brandId" onClick={this.discardFilter}/>
+                                </Label>
+                            }
+
+                            <Divider hidden/>
+                        </div>
+                    }
+
+                    { cards.length > 0 &&
+                        <div id="item-cards-container">
+                            <Card.Group itemsPerRow={4} stackable>
+                                {cards}
+                            </Card.Group>
+
+                            { pagination.pages !== 1 &&
+                                <div>
+                                    <Divider hidden/>
+                                    <Container textAlign="center">
+                                        <Menu pagination>
+                                            {paginationLinks}
+                                        </Menu>
+                                    </Container>
+                                </div>
+                            }
+                        </div>
+                    }
+                    { cards.length === 0 &&
+                        <Segment placeholder raised>
+                            <Header icon>
+                                <Icon name='warning sign' />
+                                You don't have any items!
+                            </Header>
+                            <Button primary>
+                                <Link to="/items/add" style={{color: 'white'}}>Add New Item</Link>
+                            </Button>
                         </Segment>
-                    </Rail>
-                }
-
-                {(params.categoryId || params.brandId) &&
-                    <div>
-                        {(params.categoryId && params.categoryId !== '-1') &&
-                            <Label color="blue">
-                                Category: {categoryName} <Icon name='delete' data-id="categoryId" onClick={this.discardFilter}/>
-                            </Label>
-                        }
-
-                        {(params.brandId && params.brandId !== '-1') &&
-                            <Label color="blue">
-                                Brand: {brandName} <Icon name='delete' data-id="brandId" onClick={this.discardFilter}/>
-                            </Label>
-                        }
-
-                        <Divider hidden/>
-                    </div>
-                }
-
-                { cards.length > 0 &&
-                    <div id="item-cards-container">
-                        <Card.Group itemsPerRow={5} stackable>
-                            {cards}
-                        </Card.Group>
-
-                        { pagination.pages !== 1 &&
-                            <div>
-                                <Divider hidden/>
-                                <Container textAlign="center">
-                                    <Menu pagination>
-                                        {paginationLinks}
-                                    </Menu>
-                                </Container>
-                            </div>
-                        }
-                    </div>
-                }
-                { cards.length === 0 &&
-                    <Segment placeholder raised>
-                        <Header icon>
-                            <Icon name='warning sign' />
-                            You don't have any items!
-                        </Header>
-                        <Button primary>
-                            <Link to="/items/add" style={{color: 'white'}}>Add New Item</Link>
-                        </Button>
-                    </Segment>
-                }
-            </Segment>
+                    }
+                </Grid.Column>
+            </Grid>
         );
     }
 }

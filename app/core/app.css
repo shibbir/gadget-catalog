@@ -32,36 +32,18 @@ a[disabled] {
 }
 
 @media only screen and (max-width: 1024px) {
-    .ui.left.rail {
-        left: 0;
-        width: 100%;
-        padding-right: 0;
-        position: relative;
-        margin-bottom: 10px;
-    }
-
     .image-wrapper {
         width: 70%;
-        margin: auto !important;
     }
 }
 
 @media only screen and (max-width: 786px) {
-    .ui.left.rail {
-        left: 0;
-        width: 100%;
-        padding-right: 0;
-        position: relative;
-        margin-bottom: 10px !important;
-    }
-
     .image-wrapper {
         width: 70%;
-        margin: auto !important;
     }
 }
 
-.segment {
-    border: none !important;
-    box-shadow: none !important;
+.image-wrapper {
+    width: 80%;
+    margin: auto !important;
 }
