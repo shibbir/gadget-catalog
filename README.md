@@ -53,7 +53,7 @@ TOKEN_SECRET=application_secret_token
 $ cd /path/to/root
 $ npm install
 
-or, if you want to use yarn
+## if you want to use yarn
 $ yarn install
 
 ## development build

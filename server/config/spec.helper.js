@@ -51,8 +51,9 @@ const basic = {
 
 beforeAll(function(done) {
     mongoose.connect(process.env.MONGODB_URI, {
+        useCreateIndex: true,
         useNewUrlParser: true,
-        useCreateIndex: true
+        useUnifiedTopology: true
     });
 
     User.insertMany([admin, basic], function() {

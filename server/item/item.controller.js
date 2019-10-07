@@ -29,8 +29,6 @@ function getItem(req, res) {
             if(doc.description) {
                 doc.description = validator.unescape(doc.description);
             }
-            doc.category = doc.category[0];
-            doc.brand = doc.brand[0];
 
             res.json(doc);
     });
