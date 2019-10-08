@@ -10,7 +10,7 @@
   "scripts": {
     "start": "gulp",
     "production": "gulp production",
-    "test": "nyc mocha --timeout 10000 --recursive './server/**/*spec.js'",
+    "test": "nyc mocha --color --timeout 10000 --recursive './server/**/*spec.js'",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "webpack": "webpack --progress --watch --display-error-details --config=app/config/webpack.development"
   },

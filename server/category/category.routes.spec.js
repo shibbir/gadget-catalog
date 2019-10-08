@@ -24,7 +24,7 @@ describe("Category Routes", function() {
         category = await category.save();
     });
 
-    it("Should get all categories", async function() {
+    it("Should fetch all categories", async function() {
         const result = await request(app)
             .get("/api/categories")
             .set("Cookie", [`access_token=${user.accessToken}`]);
@@ -43,7 +43,7 @@ describe("Category Routes", function() {
         expect(result.status).to.equal(200);
     });
 
-    it("Should get a category", async function() {
+    it("Should fetch a category", async function() {
         const result = await request(app)
             .get(`/api/categories/${category._id}`)
             .set("Cookie", [`access_token=${user.accessToken}`]);

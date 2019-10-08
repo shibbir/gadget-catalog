@@ -24,7 +24,7 @@ describe("Brand Routes", function() {
         brand = await brand.save();
     });
 
-    it("Should get all brands", async function() {
+    it("Should fetch all brands", async function() {
         const result = await request(app).get("/api/brands").set("Cookie", [`access_token=${user.accessToken}`]);
 
         expect(result.status).to.equal(200);
@@ -41,7 +41,7 @@ describe("Brand Routes", function() {
         expect(result.status).to.equal(200);
     });
 
-    it("Should get a brand", async function() {
+    it("Should fetch a brand", async function() {
         const result = await request(app).get(`/api/brands/${brand._id}`).set("Cookie", [`access_token=${user.accessToken}`]);
 
         expect(result.status).to.equal(200);

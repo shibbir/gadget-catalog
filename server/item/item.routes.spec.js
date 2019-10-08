@@ -44,7 +44,7 @@ describe("Item Routes", function() {
         item = await item.save();
     });
 
-    it("Should get all items", async function() {
+    it("Should fetch all items", async function() {
         const result = await request(app)
             .get("/api/items")
             .set("Cookie", [`access_token=${user.accessToken}`]);
@@ -52,7 +52,7 @@ describe("Item Routes", function() {
         expect(result.status).to.equal(200);
     });
 
-    it("Should create a new item", async function() {
+    it("Should create new item", async function() {
         const result = await request(app)
             .post("/api/items")
             .send({
@@ -65,7 +65,7 @@ describe("Item Routes", function() {
         expect(result.status).to.equal(200);
     });
 
-    it("Should get an item", async function() {
+    it("Should fetch an item", async function() {
         const result = await request(app)
             .get(`/api/items/${item._id}`)
             .set("Cookie", [`access_token=${user.accessToken}`]);
@@ -73,7 +73,7 @@ describe("Item Routes", function() {
         expect(result.status).to.equal(200);
     });
 
-    it("Should update an existing item", async function() {
+    it("Should update an item", async function() {
         const result = await request(app)
             .put(`/api/items/${item._id}`)
             .send({
@@ -81,6 +81,22 @@ describe("Item Routes", function() {
                 categoryId: category._id,
                 brandId: brand._id
             })
+            .set("Cookie", [`access_token=${user.accessToken}`]);
+
+        expect(result.status).to.equal(200);
+    });
+
+    it("Should fetch yearly report", async function() {
+        const result = await request(app)
+            .get("/api/items/yearRange/2015-2019")
+            .set("Cookie", [`access_token=${user.accessToken}`]);
+
+        expect(result.status).to.equal(200);
+    });
+
+    it("Should delete an item", async function() {
+        const result = await request(app)
+            .delete(`/api/items/${item._id}`)
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
         expect(result.status).to.equal(200);
