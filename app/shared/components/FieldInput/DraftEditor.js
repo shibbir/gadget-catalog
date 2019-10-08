@@ -14,7 +14,6 @@ export default class DraftEditor extends React.Component {
         };
 
         this.handleKeyCommand = (command) => this._handleKeyCommand(command);
-        this.onTab = (e) => this._onTab(e);
         this.toggleBlockType = (type) => this._toggleBlockType(type);
         this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
     }
@@ -27,11 +26,6 @@ export default class DraftEditor extends React.Component {
             return true;
         }
         return false;
-    }
-
-    _onTab(e) {
-        const maxDepth = 4;
-        this.onChange(RichUtils.onTab(e, this.props.editorState, maxDepth));
     }
 
     _toggleBlockType(blockType) {
@@ -72,7 +66,6 @@ export default class DraftEditor extends React.Component {
                         editorState={editorState}
                         handleKeyCommand={this.handleKeyCommand}
                         onChange={this.onChange}
-                        onTab={this.onTab}
                         placeholder="Item description..."
                         ref="editor"
                         spellCheck={true}

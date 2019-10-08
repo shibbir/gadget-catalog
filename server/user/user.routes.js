@@ -70,10 +70,6 @@ module.exports = function(app, passport) {
                 return res.sendStatus(500);
             }
 
-            if(!user.local.password) {
-                return res.sendStatus(400);
-            }
-
             if(!user || !user.validPassword(req.body.currentPassword)) {
                 return res.sendStatus(401);
             }

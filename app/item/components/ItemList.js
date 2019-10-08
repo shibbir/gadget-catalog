@@ -35,14 +35,14 @@ export default class ItemList extends React.Component {
             && this.props.categories.length
             && params.categoryId
             && params.categoryId !== '-1') {
-            this.state.categoryName = _.find(this.props.categories, {_id: params.categoryId}).name;
+            this.setState({ categoryName: _.find(this.props.categories, {_id: params.categoryId}).name });
         }
 
         if(this.props.brands
             && this.props.brands.length
             && params.brandId
             && params.brandId !== '-1') {
-            this.state.brandName = _.find(this.props.brands, {_id: params.brandId}).name;
+            this.setState({ brandName: _.find(this.props.brands, {_id: params.brandId}).name });
         }
 
         if(this.props.location.search !== prevProps.location.search) {

@@ -11,18 +11,18 @@ export const TextInput = ({ attributes }) => {
             { attributes.icon &&
                 <div className="ui fluid input left icon">
                     <Icon name={attributes.icon}/>
-                    <Field type={attributes.type} name={attributes.name} placeholder={attributes.placeholder} />
+                    <Field type={attributes.type} name={attributes.name} placeholder={attributes.placeholder}/>
                 </div>
             }
 
             { !attributes.icon &&
                 <div className="ui fluid input">
-                    <Field type={attributes.type} name={attributes.name} />
+                    <Field type={attributes.type} name={attributes.name}/>
                 </div>
             }
 
             <div className="field-validation-error">
-                <ErrorMessage name={attributes.name} />
+                <ErrorMessage name={attributes.name}/>
             </div>
         </Form.Field>
     );
@@ -59,7 +59,7 @@ export const FileInput = ({ attributes }) => {
             <small>Max number of files is 5</small> | <small>Max file size is 1 MB</small>
 
             <div className="field-validation-error">
-                <ErrorMessage name={attributes.name} />
+                <ErrorMessage name={attributes.name}/>
             </div>
 
         </Form.Field>
