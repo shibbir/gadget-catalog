@@ -18,7 +18,7 @@
 - [Cloudinary](https://cloudinary.com/)
 - [Passport](http://passportjs.org/)
 - [Webpack](https://webpack.js.org/)
-- [Jasmine](https://jasmine.github.io/)
+- [Mocha](https://mochajs.org/)
 
 ## :cloud: Cloudinary
 
