@@ -1,112 +1,104 @@
-const faker = require('faker');
-const async = require('async');
-const request = require('supertest');
-const passport = require('passport');
-const app = require('../config/lib/express')();
-const Category = require('../category/category.model');
-const Brand = require('../brand/brand.model');
-const Item = require('./item.model');
-const specHelper = require('../config/spec.helper');
+const faker = require("faker");
+const request = require("supertest");
+const passport = require("passport");
+const expect = require("chai").expect;
+const Item = require("./item.model");
+const Brand = require("../brand/brand.model");
+const Category = require("../category/category.model");
+const app = require("../config/lib/express")();
+const specHelper = require("../config/spec.helper");
 
-require('../config/lib/passport')(passport);
-require('./item.routes')(app, passport);
+require("../config/lib/passport")(passport);
+require("./item.routes")(app, passport);
 
-describe('Item Routes', function() {
+describe("Item Routes", function() {
     let category = {};
     let brand = {};
     let item = {};
     const user = specHelper.users.admin;
 
-    beforeAll(function(done) {
-        async.waterfall([
-            function(callback) {
-                new Category({
-                    name: faker.commerce.productName(),
-                    slug: specHelper.convertToSlug(faker.commerce.productName()),
-                    createdBy: user._id
-                }).save(function(err, doc) {
-                    category = doc;
-                    callback(null, category);
-                });
-            },
-            function(category, callback) {
-                new Brand({
-                    name: faker.commerce.productName(),
-                    slug: specHelper.convertToSlug(faker.commerce.productName()),
-                    createdBy: user._id
-                }).save(function(err, doc) {
-                    brand = doc;
-                    callback(null, category, brand);
-                });
-            },
-            function(category, brand, callback) {
-                new Item({
-                    name: faker.commerce.productName(),
-                    categoryId: category._id,
-                    brandId: brand._id,
-                    createdBy: user._id
-                }).save(function(err, doc) {
-                    item = doc;
-                    callback();
-                });
-            }
-        ],
-        function() {
-            done();
+    before(async function() {
+        category = new Category({
+            name: faker.commerce.productName(),
+            slug: specHelper.convertToSlug(faker.commerce.productName()),
+            createdBy: user._id
         });
+
+        category = await category.save();
+
+        brand = new Brand({
+            name: faker.commerce.productName(),
+            slug: specHelper.convertToSlug(faker.commerce.productName()),
+            createdBy: user._id
+        });
+
+        brand = await brand.save();
+
+        item = new Item({
+            name: faker.commerce.productName(),
+            categoryId: category._id,
+            brandId: brand._id,
+            createdBy: user._id
+        });
+
+        item = await item.save();
     });
 
-    it('Should get all items', function(done) {
-        request(app)
-            .get('/api/items')
-            .set('Cookie', [`access_token=${user.accessToken}`])
-            .expect(200)
-            .end(function(err) {
-                if(err) done.fail(err);
-                done();
-            });
+    it("Should fetch all items", async function() {
+        const result = await request(app)
+            .get("/api/items")
+            .set("Cookie", [`access_token=${user.accessToken}`]);
+
+        expect(result.status).to.equal(200);
     });
 
-    it('Should create a new item', function(done) {
-        request(app)
-            .post('/api/items')
+    it("Should create new item", async function() {
+        const result = await request(app)
+            .post("/api/items")
             .send({
                 name: faker.commerce.productName(),
                 categoryId: category._id,
                 brandId: brand._id
             })
-            .set('Cookie', [`access_token=${user.accessToken}`])
-            .expect(200)
-            .end(function(err) {
-                if(err) done.fail(err);
-                done();
-            });
+            .set("Cookie", [`access_token=${user.accessToken}`]);
+
+        expect(result.status).to.equal(200);
     });
 
-    it('Should get a single item', function(done) {
-        request(app)
+    it("Should fetch an item", async function() {
+        const result = await request(app)
             .get(`/api/items/${item._id}`)
-            .set('Cookie', [`access_token=${user.accessToken}`])
-            .expect(200)
-            .end(function(err) {
-                if(err) done.fail(err);
-                done();
-            });
+            .set("Cookie", [`access_token=${user.accessToken}`]);
+
+        expect(result.status).to.equal(200);
     });
 
-    it('Should update an existing item', function(done) {
-        request(app)
+    it("Should update an item", async function() {
+        const result = await request(app)
             .put(`/api/items/${item._id}`)
             .send({
                 name: faker.commerce.productName(),
                 categoryId: category._id,
                 brandId: brand._id
             })
-            .set('Cookie', [`access_token=${user.accessToken}`])
-            .expect(200)
-            .end(function(err) {
-                if(err) done.fail(err);
-                done();
-            });
+            .set("Cookie", [`access_token=${user.accessToken}`]);
+
+        expect(result.status).to.equal(200);
+    });
+
+    it("Should fetch yearly report", async function() {
+        const result = await request(app)
+            .get("/api/items/yearRange/2015-2019")
+            .set("Cookie", [`access_token=${user.accessToken}`]);
+
+        expect(result.status).to.equal(200);
+    });
+
+    it("Should delete an item", async function() {
+        const result = await request(app)
+            .delete(`/api/items/${item._id}`)
+            .set("Cookie", [`access_token=${user.accessToken}`]);
+
+        expect(result.status).to.equal(200);
     });
 });

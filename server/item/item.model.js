@@ -32,15 +32,17 @@ let ItemSchema = Schema({
 }, { toJSON: { virtuals: true } });
 
 ItemSchema.virtual('category', {
+    justOne: true,
     ref: 'Category',
-    localField: 'categoryId',
-    foreignField: '_id'
+    foreignField: '_id',
+    localField: 'categoryId'
 });
 
 ItemSchema.virtual('brand', {
     ref: 'Brand',
-    localField: 'brandId',
-    foreignField: '_id'
+    justOne: true,
+    foreignField: '_id',
+    localField: 'brandId'
 });
 
 module.exports = mongoose.model('Item', ItemSchema);
