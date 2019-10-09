@@ -3,7 +3,6 @@ const async = require('async');
 const cache = require('memory-cache');
 const validator = require('validator');
 const Item = require('./item.model');
-const File = require('../core/file.model');
 const cloudinary = require('../config/lib/cloudinary')();
 
 function getItem(req, res) {

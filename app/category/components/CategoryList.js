@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Card, Icon, Image, Button } from 'semantic-ui-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Card, Icon, Image } from "semantic-ui-react";
 
 export default class CategoryList extends React.Component {
     constructor(props) {
@@ -38,7 +38,7 @@ export default class CategoryList extends React.Component {
                         { user && user.isAdmin &&
                             <div className="right floated">
                                 <Link to={`categories/${category._id}/edit`}>
-                                    <Icon color='teal' name="edit"/>
+                                    <Icon color="teal" name="edit"/>
                                     Edit
                                 </Link>
                             </div>

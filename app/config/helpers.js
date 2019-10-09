@@ -1,6 +1,5 @@
-const _ = require('lodash');
-const path = require('path');
-const _root = path.resolve(__dirname, '../..');
+const path = require("path");
+const _root = path.resolve(__dirname, "../..");
 
 function root(args) {
     args = Array.prototype.slice.call(arguments, 0);

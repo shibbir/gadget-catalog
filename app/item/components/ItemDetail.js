@@ -47,7 +47,7 @@ export default class ItemDetail extends React.Component {
                         { item.activeImage &&
                             <Image src={item.activeImage.secure_url} alt={item.name}/>
                         }
-                        { item.files.length === 0 &&
+                        { item.files && item.files.length === 0 &&
                             <Message warning icon>
                             <Icon name="warning sign" size="large"/>
                                 <Message.Content>
