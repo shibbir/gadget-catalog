@@ -1,11 +1,11 @@
-const config = require('../config');
-const path = require('path');
-const multer = require('multer');
-const express = require('express');
-const hbs = require('express-hbs');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const compression = require('compression');
+const config = require("../config");
+const path = require("path");
+const multer = require("multer");
+const express = require("express");
+const hbs = require("express-hbs");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const compression = require("compression");
 
 module.exports = function() {
     let app = express();
@@ -20,21 +20,21 @@ module.exports = function() {
 
     app.use(compression());
 
-    app.use(express.static(path.join(process.cwd(), 'public')));
+    app.use(express.static(path.join(process.cwd(), "public")));
 
-    app.engine('html', hbs.express4({ extname: '.html' }));
-    app.set('view engine', 'html');
-    app.set('views', path.join(process.cwd(), 'server/core'));
+    app.engine("html", hbs.express4({ extname: ".html" }));
+    app.set("view engine", "html");
+    app.set("views", path.join(process.cwd(), "server/core"));
 
     app.use(multer({
-        dest: './public/uploads/',
+        dest: "./public/uploads/",
         files: 5,
         fileSize: 1000000
-    }).array('files'));
+    }).array("files"));
 
-    app.set('port', process.env.PORT || 4040);
+    app.set("port", process.env.PORT || 4040);
 
-    app.enable('trust proxy');
+    app.enable("trust proxy");
 
     return app;
 };

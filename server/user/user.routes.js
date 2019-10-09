@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const User = require('./user.model');
+const jwt = require("jsonwebtoken");
+const User = require("./user.model");
 
 function generateAccessToken(user, provider) {
     return jwt.sign({
@@ -7,32 +7,32 @@ function generateAccessToken(user, provider) {
         name: user.displayName,
         email: user[provider].email
     }, process.env.TOKEN_SECRET,{
-        expiresIn: '1d',
+        expiresIn: "1d",
         issuer: user._id.toString()
     });
 };
 
 module.exports = function(app, passport) {
-    app.post('/api/register', function(req, res, next) {
-        passport.authenticate('local-signup', function(err, user, info) {
+    app.post("/api/register", function(req, res, next) {
+        passport.authenticate("local-signup", function(err, user, info) {
             if(err || !user) {
                 return res.status(400).json({ message: info.message });
             }
 
-            res.cookie('access_token', generateAccessToken(user, 'local'), {
+            res.cookie("access_token", generateAccessToken(user, "local"), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
             });
 
             res.json({
                 name: user.displayName,
-                isAdmin: user.role === 'admin'
+                isAdmin: user.role === "admin"
             });
         })(req, res, next);
     });
 
-    app.post('/api/login', function(req, res) {
-        User.findOne({ 'local.email': req.body.email }).exec(function(err, user) {
+    app.post("/api/login", function(req, res) {
+        User.findOne({ "local.email": req.body.email }).exec(function(err, user) {
             if(err) {
                 return res.sendStatus(500);
             }
@@ -41,31 +41,51 @@ module.exports = function(app, passport) {
                 return res.sendStatus(401);
             }
 
-            res.cookie('access_token', generateAccessToken(user, 'local'), {
+            res.cookie("access_token", generateAccessToken(user, "local"), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
             });
 
             res.json({
                 name: user.displayName,
-                isAdmin: user.role === 'admin'
+                isAdmin: user.role === "admin"
             });
         });
     });
 
-    app.get('/api/logout', passport.authenticate('jwt', { session: false }), function(req, res) {
-        res.clearCookie('access_token').redirect("/");
+    app.get("/api/logout", passport.authenticate("jwt", { session: false }), function(req, res) {
+        res.clearCookie("access_token").redirect("/");
     });
 
-    app.get('/api/profile', passport.authenticate('jwt', { session: false }), function(req, res) {
-        res.json({
+    app.get("/api/profile", passport.authenticate("jwt", { session: false }), function(req, res) {
+        let profile = {
             name: req.user.displayName,
-            isAdmin: req.user.role === 'admin'
-        });
+            isAdmin: req.user.role === "admin"
+        };
+
+        if(req.user.local) {
+            profile.local = {
+                email: req.user.local.email
+            };
+        }
+
+        if(req.user.facebook) {
+            profile.facebook = {
+                email: req.user.facebook.email
+            };
+        }
+
+        if(req.user.google) {
+            profile.google = {
+                email: req.user.google.email
+            };
+        }
+
+        res.json(profile);
     });
 
-    app.put('/api/profile/password', passport.authenticate('jwt', { session: false }), function(req, res) {
-        User.findOne({ _id: req.user._id }, 'local', function(err, user) {
+    app.put("/api/profile/password", passport.authenticate("jwt", { session: false }), function(req, res) {
+        User.findOne({ _id: req.user._id }, "local", function(err, user) {
             if(err) {
                 return res.sendStatus(500);
             }
@@ -81,33 +101,39 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
+    app.get("/auth/facebook", passport.authenticate("facebook", {scope: "email"}));
 
-    app.get('/auth/facebook/callback', function(req, res, next) {
-        passport.authenticate('facebook', function(err, user) {
+    app.get("/auth/facebook/callback", function(req, res, next) {
+        passport.authenticate("facebook", function(err, user) {
             if(err) {
                 return res.redirect(`/#/?provider=facebook&error=${err.message}`);
             }
 
-            res.cookie('access_token', generateAccessToken(user, 'facebook'), {
+            res.cookie("access_token", generateAccessToken(user, "facebook"), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
             }).redirect("/#/");
         })(req, res, next)
     });
 
-    app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+    app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-    app.get('/auth/google/callback', function(req, res, next) {
-        passport.authenticate('google', function(err, user) {
+    app.get("/auth/google/callback", function(req, res, next) {
+        passport.authenticate("google", function(err, user) {
             if(err) {
                 return res.redirect(`/#/?provider=google&error=${err.message}`);
             }
 
-            res.cookie('access_token', generateAccessToken(user, 'google'), {
+            res.cookie("access_token", generateAccessToken(user, "google"), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
             }).redirect("/#/");
         })(req, res, next);
+    });
+
+    app.put("/api/oauth/disconnect", passport.authenticate("jwt", { session: false }), async function(req, res) {
+        const doc = await User.findByIdAndUpdate(req.user._id, {[req.query.provider]: undefined }, { new: true, omitUndefined: true });
+
+        res.json(doc);
     });
 };

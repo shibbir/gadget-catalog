@@ -1,9 +1,9 @@
-const fs = require('fs');
-const async = require('async');
-const cache = require('memory-cache');
-const Category = require('./category.model');
-const cloudinary = require('../config/lib/cloudinary')();
-const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
+const fs = require("fs");
+const async = require("async");
+const cache = require("memory-cache");
+const Category = require("./category.model");
+const cloudinary = require("../config/lib/cloudinary")();
+const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
 function getCategory(req, res) {
     Category.findOne({ _id: req.params.id }).exec(function(err, doc) {
@@ -16,19 +16,19 @@ function getCategory(req, res) {
 function getCategories(req, res) {
     let match = { createdBy: req.user._id };
 
-    if(req.user._id.equals(cache.get('adminId'))) {
+    if(req.user._id.equals(cache.get("adminId"))) {
         match = {};
     }
 
     Category
         .find()
         .populate({
-            path: 'items',
+            path: "items",
             match: match,
-            select: '_id',
+            select: "_id",
             options: { lean: true }
         })
-        .sort('name')
+        .sort("name")
         .exec(function(err, docs) {
             if(err) return res.sendStatus(500);
             res.json(docs);
@@ -36,7 +36,7 @@ function getCategories(req, res) {
 }
 
 function createCategory(req, res) {
-    if(req.user.role !== 'admin') {
+    if(req.user.role !== "admin") {
         return res.sendStatus(401);
     }
 
@@ -66,7 +66,7 @@ function createCategory(req, res) {
                 fs.unlinkSync(req.file.path);
 
                 callback(null);
-            }, { folder: 'categories', invalidate: true });
+            }, { folder: "categories", invalidate: true });
         }
     ], function(err) {
         if(err) return res.sendStatus(500);
@@ -80,7 +80,7 @@ function createCategory(req, res) {
 }
 
 function updateCategory(req, res) {
-    if(req.user.role !== 'admin') {
+    if(req.user.role !== "admin") {
         return res.sendStatus(401);
     }
 
@@ -88,7 +88,7 @@ function updateCategory(req, res) {
         if(err) return res.sendStatus(500);
 
         if(!doc) {
-            return res.status(400).json({ message: 'Category not found.'});
+            return res.status(400).json({ message: "Category not found."});
         }
 
         doc.name = req.body.name;
@@ -117,7 +117,7 @@ function updateCategory(req, res) {
 
                     fs.unlinkSync(req.file.path);
                     callback(null);
-                }, { folder: 'categories' });
+                }, { folder: "categories" });
             },
             function(callback) {
                 if(!oldFile) {

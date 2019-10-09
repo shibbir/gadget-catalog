@@ -1,4 +1,4 @@
-import Types from '../auth.types';
+import Types from "../auth.types";
 
 const initialState = {
     user: null,
@@ -14,6 +14,12 @@ export default function reducer(state=initialState, action) {
                 ...state,
                 user: action.payload.data,
                 isLoggedIn: true
+            };
+        }
+        case Types.DISCONNECT_PROVIDER_FULFILLED: {
+            return {
+                ...state,
+                user: action.payload.data
             };
         }
     }

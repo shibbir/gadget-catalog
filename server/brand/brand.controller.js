@@ -1,14 +1,14 @@
-const cache = require('memory-cache');
-const Brand = require('./brand.model');
+const cache = require("memory-cache");
+const Brand = require("./brand.model");
 
-const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
+const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
 function getBrand(req, res) {
     Brand.findOne({ _id: req.params.id, createdBy: req.user._id }).exec(function(err, doc) {
         if(err) return res.sendStatus(500);
 
         if(!doc) {
-            return res.status(400).json({ message: 'Brand not found or you don\'t have the permission.' });
+            return res.status(400).json({ message: "Brand not found or you don't have the permission." });
         }
 
         res.json(doc);
@@ -17,16 +17,16 @@ function getBrand(req, res) {
 
 function getBrands(req, res) {
     let query = {
-        $or: [{ createdBy: req.user._id }, { createdBy: cache.get('adminId') }]
+        $or: [{ createdBy: req.user._id }, { createdBy: cache.get("adminId") }]
     };
 
-    if(req.user._id.equals(cache.get('adminId'))) {
+    if(req.user._id.equals(cache.get("adminId"))) {
         query = {};
-    } else if(req.query.filter_by && req.query.filter_by.toLowerCase() === 'user') {
+    } else if(req.query.filter_by && req.query.filter_by.toLowerCase() === "user") {
         query = { createdBy: req.user._id };
     }
 
-    Brand.find(query).sort('name').exec(function(err, docs) {
+    Brand.find(query).sort("name").exec(function(err, docs) {
         if(err) return res.sendStatus(500);
 
         res.json(docs);
@@ -47,7 +47,7 @@ function createBrand(req, res) {
 
 function updateBrand(req, res) {
     Brand.findOne({
-        name: { $regex: req.body.name, $options: 'i' }
+        name: { $regex: req.body.name, $options: "i" }
     }, function(err, doc) {
         if(err) return res.sendStatus(500);
 

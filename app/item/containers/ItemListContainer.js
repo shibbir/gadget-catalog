@@ -1,8 +1,8 @@
-import { connect } from 'react-redux';
-import { getBrands } from '../../brand/brand.actions';
-import { getCategories } from '../../category/category.actions';
-import { fetchItems } from '../item.actions';
-import ItemList from '../components/ItemList';
+import { connect } from "react-redux";
+import { fetchItems } from "../item.actions";
+import ItemList from "../components/ItemList";
+import { getBrands } from "../../brand/brand.actions";
+import { getCategories } from "../../category/category.actions";
 
 const mapStateToProps = (state, props) => {
     return {

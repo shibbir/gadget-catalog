@@ -1,4 +1,4 @@
-import keyMirror from 'fbjs/lib/keyMirror';
+import keyMirror from "fbjs/lib/keyMirror";
 
 export default keyMirror({
     LOGIN: null,
@@ -9,5 +9,7 @@ export default keyMirror({
     GET_PROFILE: null,
     GET_PROFILE_FULFILLED: null,
     CHANGE_PASSWORD: null,
-    CHANGE_PASSWORD_FULFILLED: null
+    CHANGE_PASSWORD_FULFILLED: null,
+    DISCONNECT_PROVIDER: null,
+    DISCONNECT_PROVIDER_FULFILLED: null
 });

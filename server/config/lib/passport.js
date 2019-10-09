@@ -5,7 +5,7 @@ module.exports = function(passport) {
      =========================================================================
      */
 
-    require('./strategies/jwt')(passport);
+    require("./strategies/jwt")(passport);
 
     /**
      =========================================================================
@@ -13,7 +13,7 @@ module.exports = function(passport) {
      =========================================================================
      */
 
-    require('./strategies/local')(passport);
+    require("./strategies/local")(passport);
 
     /*
      =========================================================================
@@ -21,7 +21,7 @@ module.exports = function(passport) {
      =========================================================================
      */
 
-    require('./strategies/facebook')(passport);
+    require("./strategies/facebook")(passport);
 
     /**
      =========================================================================
@@ -29,5 +29,5 @@ module.exports = function(passport) {
      =========================================================================
      */
 
-    require('./strategies/google')(passport);
+    require("./strategies/google")(passport);
 };

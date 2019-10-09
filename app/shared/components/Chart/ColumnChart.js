@@ -48,7 +48,7 @@ export default class ColumnChart extends React.Component {
                 type: 'column'
             },
             title: {
-                text: `Yearly Report (${this.state.yearRange})`
+                text: `Items purchased from (${this.state.yearRange})`
             },
             xAxis: {
                 categories: years,

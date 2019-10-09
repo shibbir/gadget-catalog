@@ -1,4 +1,4 @@
-const cloudinary = require('cloudinary');
+const cloudinary = require("cloudinary");
 
 module.exports = function() {
     cloudinary.config({

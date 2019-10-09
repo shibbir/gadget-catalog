@@ -1,11 +1,11 @@
-const User = require('../../../user/user.model');
-const JwtStrategy = require('passport-jwt').Strategy;
+const User = require("../../../user/user.model");
+const JwtStrategy = require("passport-jwt").Strategy;
 
 module.exports = function(passport) {
     function cookieExtractor(req) {
         let token = null;
         if (req && req.cookies) {
-            token = req.cookies['access_token'];
+            token = req.cookies["access_token"];
         }
         return token;
     }

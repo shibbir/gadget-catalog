@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const BrandSchema = Schema({
@@ -13,7 +13,7 @@ const BrandSchema = Schema({
     },
     createdBy: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: "User",
         required: true
     },
     date: {
@@ -22,4 +22,4 @@ const BrandSchema = Schema({
     }
 });
 
-module.exports = mongoose.model('Brand', BrandSchema);
+module.exports = mongoose.model("Brand", BrandSchema);
