@@ -4,14 +4,8 @@ import { List, Divider } from "semantic-ui-react";
 import { removeOauthProvider } from "../auth.actions";
 
 class ManageOauth extends React.Component {
-    removeOauthProvider(provider) {
-        if(confirm("Are you sure?")) {
-            this.props.removeOauthProvider(provider);
-        }
-    }
-
     render() {
-        const user = this.props.user;
+        const { user, removeOauthProvider } = this.props;
 
         return (
             <div>
@@ -24,12 +18,12 @@ class ManageOauth extends React.Component {
                         <List.Content>
                             <List.Header>Facebook</List.Header>
                             <List.Description>
-                                { !user.facebook || !user.facebook.email &&
-                                    <a href="/auth/facebook">[Connect]</a>
+                                { !user.facebook &&
+                                    <a href="/oauth/facebook">[Connect]</a>
                                 }
-                                { user.facebook && user.facebook.email &&
+                                { user.facebook &&
                                     <div>
-                                        {user.facebook.email} <a onClick={this.removeOauthProvider.bind(this, "facebook")}>[Disconnect]</a>
+                                        {user.facebook.email} <a onClick={() => removeOauthProvider("facebook")}>[Disconnect]</a>
                                     </div>
                                 }
                             </List.Description>
@@ -40,12 +34,12 @@ class ManageOauth extends React.Component {
                         <List.Content>
                             <List.Header>Google</List.Header>
                         <List.Description>
-                            { !user.google || !user.google.email &&
-                                <a href="/auth/google">[Connect]</a>
+                            { !user.google &&
+                                <a href="/oauth/google">[Connect]</a>
                             }
-                            { user.google && user.google.email &&
+                            { user.google &&
                                 <div>
-                                    {user.google.email} <a onClick={this.removeOauthProvider.bind(this, "google")}>[Disconnect]</a>
+                                    {user.google.email} <a onClick={() => removeOauthProvider("google")}>[Disconnect]</a>
                                 </div>
                             }
                         </List.Description>
@@ -65,8 +59,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        removeOauthProvider: (formData) => {
-            dispatch(removeOauthProvider(formData));
+        removeOauthProvider: (provider) => {
+            if(confirm("Are you sure?")) {
+                dispatch(removeOauthProvider(provider));
+            }
         }
     };
 };

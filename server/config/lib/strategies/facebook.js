@@ -5,7 +5,7 @@ module.exports = function(passport) {
     passport.use(new FacebookStrategy({
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-        callbackURL: "/auth/facebook/callback",
+        callbackURL: "/oauth/facebook/callback",
         profileFields: ["id", "displayName", "email"]
     }, function(token, refreshToken, profile, done) {
         const { id, name, email } = profile._json;
@@ -19,7 +19,7 @@ module.exports = function(passport) {
                 if(err) return done(err);
 
                 if(user) {
-                    if (!user.facebook) {
+                    if (!user.toJSON().facebook) {
                         user.facebook = { id, name, email, token};
 
                         user.save(function(err) {

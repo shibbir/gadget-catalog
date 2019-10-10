@@ -1,7 +1,7 @@
-import React from 'react';
-import { Form, Icon } from 'semantic-ui-react';
-import { Field, ErrorMessage } from 'formik';
-import DraftEditor from './DraftEditor';
+import React from "react";
+import { Form, Icon } from "semantic-ui-react";
+import { Field, ErrorMessage } from "formik";
+import DraftEditor from "./DraftEditor";
 
 export const TextInput = ({ attributes }) => {
     return (

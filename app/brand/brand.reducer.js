@@ -1,4 +1,4 @@
-import Typse from './brand.types';
+import Typse from "./brand.types";
 
 const initialState = {
     brands: [],

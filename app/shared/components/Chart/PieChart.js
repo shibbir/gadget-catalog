@@ -1,5 +1,5 @@
-import React from 'react';
-import Highcharts from 'highcharts';
+import React from "react"
+import Highcharts from "highcharts";
 
 export default class PieChart extends React.Component {
     componentDidMount() {
@@ -18,7 +18,7 @@ export default class PieChart extends React.Component {
             }
         });
 
-        Highcharts.chart('pieChart', {
+        Highcharts.chart("pieChart", {
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -33,7 +33,7 @@ export default class PieChart extends React.Component {
             plotOptions: {
                 pie: {
                     allowPointSelect: true,
-                    cursor: 'pointer',
+                    cursor: "pointer",
                     dataLabels: {
                         enabled: true
                     },
@@ -41,8 +41,8 @@ export default class PieChart extends React.Component {
                 }
             },
             series: [{
-                type: 'pie',
-                name: 'Categories',
+                type: "pie",
+                name: "Categories",
                 colorByPoint: true,
                 data: data
             }],
@@ -52,8 +52,8 @@ export default class PieChart extends React.Component {
         }, function(chart) {
             if(data.length === 0) {
                 chart.renderer.text("Report is not generated because you don't have any items!", 140, 120).css({
-                    color: '#17A2B8',
-                    fontSize: '16px'
+                    color: "#17A2B8",
+                    fontSize: "16px"
                 }).add();
             }
         });

@@ -1,6 +1,6 @@
-import React from 'react';
-import Highcharts from 'highcharts';
-import { Select } from 'semantic-ui-react';
+import React from "react";
+import Highcharts from "highcharts";
+import { Select } from "semantic-ui-react";
 
 export default class ColumnChart extends React.Component {
     constructor() {
@@ -8,9 +8,9 @@ export default class ColumnChart extends React.Component {
         this.state = {
             yearRange: `${new Date().getFullYear() - 4}-${new Date().getFullYear()}`,
             options: [
-                { key: '2015-2019', value: '2015-2019', text: '2015-2019' },
-                { key: '2010-2014', value: '2010-2014', text: '2010-2014' },
-                { key: '2005-2009', value: '2005-2009', text: '2005-2009' }
+                { key: "2015-2019", value: "2015-2019", text: "2015-2019" },
+                { key: "2010-2014", value: "2010-2014", text: "2010-2014" },
+                { key: "2005-2009", value: "2005-2009", text: "2005-2009" }
             ]
         };
     }
@@ -43,9 +43,9 @@ export default class ColumnChart extends React.Component {
             }
         }
 
-        Highcharts.chart('columnChart', {
+        Highcharts.chart("columnChart", {
             chart: {
-                type: 'column'
+                type: "column"
             },
             title: {
                 text: `Items purchased from (${this.state.yearRange})`
@@ -57,7 +57,7 @@ export default class ColumnChart extends React.Component {
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Number Of Items'
+                    text: "Number Of Items"
                 },
                 allowDecimals: false
             },
@@ -76,7 +76,7 @@ export default class ColumnChart extends React.Component {
                 }
             },
             series: [{
-                name: 'Total Items',
+                name: "Total Items",
                 data: report ? itemsPerYear : []
             }],
             credits: {
@@ -88,8 +88,8 @@ export default class ColumnChart extends React.Component {
         }, function(chart) {
             if(!report) {
                 chart.renderer.text("Report is not generated because you don't have any items!", 140, 120).css({
-                    color: '#17A2B8',
-                    fontSize: '16px'
+                    color: "#17A2B8",
+                    fontSize: "16px"
                 }).add();
             }
         });

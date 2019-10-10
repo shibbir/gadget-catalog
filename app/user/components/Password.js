@@ -1,8 +1,10 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Form, withFormik } from "formik";
 import { Divider, Button } from "semantic-ui-react";
 
 import { passwordSchema } from "../auth.schema";
+import { changePassword } from "../auth.actions";
 import { TextInput } from "../../shared/components/FieldInput/FieldInputs";
 
 class Password extends React.Component {
@@ -43,6 +45,8 @@ class Password extends React.Component {
 }
 
 Password = withFormik({
+    displayName: "Password",
+
     validationSchema: passwordSchema,
 
     mapPropsToValues: () => {
@@ -58,9 +62,15 @@ Password = withFormik({
 
         resetForm();
         setSubmitting(false);
-    },
-
-    displayName: "Password"
+    }
 })(Password);
 
-export default Password;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changePassword: (formData) => {
+            dispatch(changePassword(formData));
+        }
+    };
+};
+
+export default connect(null, mapDispatchToProps)(Password);

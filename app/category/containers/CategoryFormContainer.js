@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
-import CategoryForm from '../components/CategoryForm';
-import { createCategory, updateCategory, fetchCategory } from '../category.actions';
+import { connect } from "react-redux";
+import CategoryForm from "../components/CategoryForm";
+import { createCategory, updateCategory, fetchCategory } from "../category.actions";
 
 const mapStateToProps = (state, props) => {
     return {

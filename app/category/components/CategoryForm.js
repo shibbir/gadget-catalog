@@ -1,8 +1,8 @@
-import React from 'react';
-import { Form, withFormik } from 'formik';
-import { Divider, Button, Message, Icon } from 'semantic-ui-react';
-import CategorySchema from '../category.schema';
-import { TextInput, FileInput } from '../../shared/components/FieldInput/FieldInputs';
+import React from "react";
+import { Form, withFormik } from "formik";
+import { Divider, Button, Message, Icon } from "semantic-ui-react";
+import CategorySchema from "../category.schema";
+import { TextInput, FileInput } from "../../shared/components/FieldInput/FieldInputs";
 
 class CategoryForm extends React.Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class CategoryForm extends React.Component {
         const { user, handleSubmit, isSubmitting, setFieldValue } = this.props;
 
         const handleFileChange = (e) => {
-            setFieldValue('file', e.currentTarget.files[0]);
+            setFieldValue("file", e.currentTarget.files[0]);
         }
 
         return (
@@ -25,15 +25,15 @@ class CategoryForm extends React.Component {
                 { user && user.isAdmin &&
                     <Form onSubmit={handleSubmit} className="ui form">
                         <TextInput attributes={{
-                            type: 'text',
-                            name: 'name',
-                            label: 'Name',
+                            type: "text",
+                            name: "name",
+                            label: "Name",
                             required: true
                         }}/>
                         <FileInput attributes={{
-                            type: 'file',
-                            name: 'file',
-                            label: 'Upload',
+                            type: "file",
+                            name: "file",
+                            label: "Upload",
                             onChange: handleFileChange
                         }}/>
                         <Divider hidden/>
@@ -69,8 +69,8 @@ CategoryForm = withFormik({
         }
 
         return {
-            name: '',
-            file: ''
+            name: "",
+            file: ""
         };
     },
 
@@ -95,7 +95,7 @@ CategoryForm = withFormik({
         setSubmitting(false);
     },
 
-    displayName: 'CategoryForm'
+    displayName: "CategoryForm"
 })(CategoryForm);
 
 export default CategoryForm;

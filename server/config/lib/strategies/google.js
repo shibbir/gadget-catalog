@@ -5,7 +5,7 @@ module.exports = function(passport) {
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "/auth/google/callback"
+        callbackURL: "/oauth/google/callback"
     }, function(token, refreshToken, profile, done) {
         const { id, displayName, emails } = profile;
         const email = emails[0].value;
@@ -19,8 +19,9 @@ module.exports = function(passport) {
                 if(err) return done(err);
 
                 if(user) {
-                    if (!user.google) {
-                        user.google = { id, name, email, token };
+                    if (!user.toJSON().google) {
+                        user.google = { id, email, token };
+                        user.google.name = displayName;
 
                         user.save(function(err) {
                             if(err) {
@@ -35,7 +36,8 @@ module.exports = function(passport) {
                     let newUser = new User();
 
                     newUser.displayName = displayName;
-                    newUser.google = { id, name, email, token };
+                    newUser.google = { id, email, token };
+                    newUser.google.name = displayName;
 
                     newUser.save(function(err) {
                         if(err) return done(err);

@@ -12,6 +12,33 @@ function generateAccessToken(user, provider) {
     });
 };
 
+function formatProfile(user) {
+    let profile = {
+        name: user.displayName,
+        isAdmin: user.role === "admin"
+    };
+
+    if(user.local) {
+        profile.local = {
+            email: user.local.email
+        };
+    }
+
+    if(user.facebook) {
+        profile.facebook = {
+            email: user.facebook.email
+        };
+    }
+
+    if(user.google) {
+        profile.google = {
+            email: user.google.email
+        };
+    }
+
+    return profile;
+};
+
 module.exports = function(app, passport) {
     app.post("/api/register", function(req, res, next) {
         passport.authenticate("local-signup", function(err, user, info) {
@@ -46,10 +73,7 @@ module.exports = function(app, passport) {
                 httpOnly: true
             });
 
-            res.json({
-                name: user.displayName,
-                isAdmin: user.role === "admin"
-            });
+            res.json(formatProfile(user));
         });
     });
 
@@ -58,30 +82,7 @@ module.exports = function(app, passport) {
     });
 
     app.get("/api/profile", passport.authenticate("jwt", { session: false }), function(req, res) {
-        let profile = {
-            name: req.user.displayName,
-            isAdmin: req.user.role === "admin"
-        };
-
-        if(req.user.local) {
-            profile.local = {
-                email: req.user.local.email
-            };
-        }
-
-        if(req.user.facebook) {
-            profile.facebook = {
-                email: req.user.facebook.email
-            };
-        }
-
-        if(req.user.google) {
-            profile.google = {
-                email: req.user.google.email
-            };
-        }
-
-        res.json(profile);
+        res.json(formatProfile(req.user.toJSON()));
     });
 
     app.put("/api/profile/password", passport.authenticate("jwt", { session: false }), function(req, res) {
@@ -101,9 +102,9 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get("/auth/facebook", passport.authenticate("facebook", {scope: "email"}));
+    app.get("/oauth/facebook", passport.authenticate("facebook", {scope: "email"}));
 
-    app.get("/auth/facebook/callback", function(req, res, next) {
+    app.get("/oauth/facebook/callback", function(req, res, next) {
         passport.authenticate("facebook", function(err, user) {
             if(err) {
                 return res.redirect(`/#/?provider=facebook&error=${err.message}`);
@@ -116,9 +117,9 @@ module.exports = function(app, passport) {
         })(req, res, next)
     });
 
-    app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+    app.get("/oauth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-    app.get("/auth/google/callback", function(req, res, next) {
+    app.get("/oauth/google/callback", function(req, res, next) {
         passport.authenticate("google", function(err, user) {
             if(err) {
                 return res.redirect(`/#/?provider=google&error=${err.message}`);
@@ -132,7 +133,7 @@ module.exports = function(app, passport) {
     });
 
     app.put("/api/oauth/disconnect", passport.authenticate("jwt", { session: false }), async function(req, res) {
-        const doc = await User.findByIdAndUpdate(req.user._id, {[req.query.provider]: undefined }, { new: true, omitUndefined: true });
+        const doc = await User.findOneAndUpdate({_id: req.user._id}, {$unset: {[req.query.provider]: 1 }}, {new: true});
 
         res.json(doc);
     });
