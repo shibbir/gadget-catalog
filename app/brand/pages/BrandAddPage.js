@@ -1,6 +1,6 @@
-import React from 'react';
-import { Divider } from 'semantic-ui-react';
-import BrandFormContainer from '../containers/BrandFormContainer';
+import React from "react";
+import { Divider } from "semantic-ui-react";
+import BrandFormContainer from "../containers/BrandFormContainer";
 
 export default class BrandAddPage extends React.Component {
     render() {

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Segment, Icon, Divider } from 'semantic-ui-react';
+import React from "react";
+import { Button, Segment, Icon, Divider } from "semantic-ui-react";
 
 export default class SocialAuthService extends React.Component {
     render() {
@@ -9,10 +9,10 @@ export default class SocialAuthService extends React.Component {
                 <Segment className="stacked center aligned">
                     <Divider horizontal>or, use social service</Divider>
                     <div>
-                        <Button color="facebook" href="/auth/facebook">
+                        <Button color="facebook" href="/oauth/facebook">
                             <Icon name="facebook"/> Facebook
                         </Button>
-                        <Button color="google plus" href="/auth/google">
+                        <Button color="google plus" href="/oauth/google">
                             <Icon name="google plus"/> Google
                         </Button>
                     </div>

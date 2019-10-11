@@ -1,13 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Form, withFormik } from 'formik';
-import { Button, Segment, Header, Divider, Image } from 'semantic-ui-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Form, withFormik } from "formik";
+import { Button, Segment, Header, Divider, Image } from "semantic-ui-react";
 
-import { registerSchema } from '../auth.schema';
-import store from '../../store';
-import OAuthProvider from '../../shared/components/OAuthProvider';
-import { register } from '../auth.actions';
-import { TextInput } from '../../shared/components/FieldInput/FieldInputs';
+import { registerSchema } from "../auth.schema";
+import store from "../../store";
+import OAuthProvider from "../../shared/components/OAuthProvider";
+import { register } from "../auth.actions";
+import { TextInput } from "../../shared/components/FieldInput/FieldInputs";
 
 class Register extends React.Component {
     handleSubmit(formValues) {
@@ -22,10 +22,10 @@ class Register extends React.Component {
         const { handleSubmit, isSubmitting } = this.props;
 
         const pageStyle = {
-            paddingTop: '85px'
+            paddingTop: "85px"
         };
         const columnStyle = {
-            maxWidth: '450px'
+            maxWidth: "450px"
         };
 
         return (
@@ -41,25 +41,25 @@ class Register extends React.Component {
                         <Form onSubmit={handleSubmit} className="ui form large">
                             <Segment className="stacked">
                                 <TextInput attributes={{
-                                    type: 'text',
-                                    name: 'name',
-                                    placeholder: 'Name',
-                                    icon: 'users',
-                                    iconPosition: 'left'
+                                    type: "text",
+                                    name: "name",
+                                    placeholder: "Name",
+                                    icon: "users",
+                                    iconPosition: "left"
                                 }}/>
                                 <TextInput attributes={{
-                                    type: 'email',
-                                    name: 'email',
-                                    placeholder: 'E-mail address',
-                                    icon: 'mail',
-                                    iconPosition: 'left'
+                                    type: "email",
+                                    name: "email",
+                                    placeholder: "E-mail address",
+                                    icon: "mail",
+                                    iconPosition: "left"
                                 }}/>
                                 <TextInput attributes={{
-                                    type: 'password',
-                                    name: 'password',
-                                    placeholder: 'Password',
-                                    icon: 'lock',
-                                    iconPosition: 'left'
+                                    type: "password",
+                                    name: "password",
+                                    placeholder: "Password",
+                                    icon: "lock",
+                                    iconPosition: "left"
                                 }}/>
 
                                 <Button fluid type="submit" className="large teal" disabled={isSubmitting}>Register</Button>
@@ -80,9 +80,9 @@ Register = withFormik({
 
     mapPropsToValues: () => {
         return {
-            name: '',
-            email: '',
-            password: ''
+            name: "",
+            email: "",
+            password: ""
         };
     },
 
@@ -97,7 +97,7 @@ Register = withFormik({
         setSubmitting(false);
     },
 
-    displayName: 'Register'
+    displayName: "Register"
 })(Register);
 
 export default Register;

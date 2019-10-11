@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
-import BrandForm from '../components/BrandForm';
-import { createBrand, updateBrand, fetchBrand } from '../brand.actions';
+import { connect } from "react-redux";
+import BrandForm from "../components/BrandForm";
+import { createBrand, updateBrand, fetchBrand } from "../brand.actions";
 
 const mapStateToProps = (state, props) => {
     return {

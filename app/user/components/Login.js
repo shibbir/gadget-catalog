@@ -1,22 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { withFormik, Form } from 'formik';
-import * as iziToast from 'izitoast/dist/js/izitoast';
-import { Button, Segment, Header, Divider, Image } from 'semantic-ui-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { withFormik, Form } from "formik";
+import * as iziToast from "izitoast/dist/js/izitoast";
+import { Button, Segment, Header, Divider, Image } from "semantic-ui-react";
 
-import store from '../../store';
-import { login } from '../auth.actions';
-import { loginSchema } from '../auth.schema';
-import OAuthProvider from '../../shared/components/OAuthProvider';
-import { TextInput } from '../../shared/components/FieldInput/FieldInputs';
+import store from "../../store";
+import { login } from "../auth.actions";
+import { loginSchema } from "../auth.schema";
+import OAuthProvider from "../../shared/components/OAuthProvider";
+import { TextInput } from "../../shared/components/FieldInput/FieldInputs";
 
 class Login extends React.Component {
     render() {
         const pageStyle = {
-            paddingTop: '85px'
+            paddingTop: "85px"
         };
         const columnStyle = {
-            maxWidth: '450px'
+            maxWidth: "450px"
         };
 
         const { handleSubmit, isSubmitting } = this.props;
@@ -34,23 +34,23 @@ class Login extends React.Component {
                             <Form onSubmit={handleSubmit} className="ui form large">
                                 <Segment className="stacked">
                                     <TextInput attributes={{
-                                        name: 'email',
-                                        type: 'email',
-                                        icon: 'mail',
-                                        placeholder: 'E-mail address'
+                                        name: "email",
+                                        type: "email",
+                                        icon: "mail",
+                                        placeholder: "E-mail address"
                                     }}/>
 
                                     <TextInput attributes={{
-                                        name: 'password',
-                                        type: 'password',
-                                        icon: 'lock',
-                                        placeholder: 'Password'
+                                        name: "password",
+                                        type: "password",
+                                        icon: "lock",
+                                        placeholder: "Password"
                                     }}/>
 
                                     <Button fluid type="submit" className="large teal" disabled={isSubmitting}>Login</Button>
 
                                     <Divider hidden/>
-                                    Don't have an account? <Link to="/register">Sign up</Link>.
+                                    Don"t have an account? <Link to="/register">Sign up</Link>.
                                 </Segment>
                             </Form>
                         <OAuthProvider/>
@@ -66,8 +66,8 @@ Login = withFormik({
 
     mapPropsToValues: () => {
         return {
-            email: '',
-            password: ''
+            email: "",
+            password: ""
         };
     },
 
@@ -77,8 +77,8 @@ Login = withFormik({
             password: values.password
         })).catch(function(result) {
             iziToast.error({
-                message: 'Invalid credential!',
-                position: 'bottomRight',
+                message: "Invalid credential!",
+                position: "bottomRight",
                 timeout: 2000
             });
         });
@@ -86,7 +86,7 @@ Login = withFormik({
         setSubmitting(false);
     },
 
-    displayName: 'Login'
+    displayName: "Login"
 })(Login);
 
 export default Login;

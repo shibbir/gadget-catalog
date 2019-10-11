@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 module.exports.connect = function(callback) {
     mongoose.Promise = global.Promise;

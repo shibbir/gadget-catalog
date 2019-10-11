@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
-import { getBrands } from '../brand.actions';
-import BrandList from '../components/BrandList';
+import { connect } from "react-redux";
+import { getBrands } from "../brand.actions";
+import BrandList from "../components/BrandList";
 
 const mapStateToProps = (state) => {
     return {

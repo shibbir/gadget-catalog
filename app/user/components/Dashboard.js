@@ -1,9 +1,12 @@
-import React from 'react';
-import { Card, Icon } from 'semantic-ui-react';
-import PieChart from '../../shared/components/Chart/PieChart';
-import ColumnChart from '../../shared/components/Chart/ColumnChart';
+import React from "react";
+import { connect } from "react-redux";
+import { Card, Icon } from "semantic-ui-react";
+import { getCategories } from "../../category/category.actions";
+import { fetchItemsByYearRange } from "../../item/item.actions";
+import PieChart from "../../shared/components/Chart/PieChart";
+import ColumnChart from "../../shared/components/Chart/ColumnChart";
 
-export default class Dashboard extends React.Component {
+class Dashboard extends React.Component {
     render() {
         return (
             <div id="dashboard">
@@ -34,3 +37,23 @@ export default class Dashboard extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        categories: state.dashboardReducer.categories,
+        itemsPerYear: state.dashboardReducer.itemsPerYear
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getCategories: () => {
+            dispatch(getCategories());
+        },
+        fetchItemsByYearRange: (yearRange) => {
+            dispatch(fetchItemsByYearRange(yearRange));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

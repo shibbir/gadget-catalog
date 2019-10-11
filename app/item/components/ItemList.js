@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import queryString from 'query-string';
-import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segment, Header, Grid } from 'semantic-ui-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import queryString from "query-string";
+import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segment, Header, Grid } from "semantic-ui-react";
 
 export default class ItemList extends React.Component {
     constructor(props) {
@@ -16,10 +16,10 @@ export default class ItemList extends React.Component {
 
         this.state = {
             ...this.state,
-            brandName: '',
-            categoryName: '',
-            brandId: this.state.params.brandId || '-1',
-            categoryId: this.state.params.categoryId || '-1'
+            brandName: "",
+            categoryName: "",
+            brandId: this.state.params.brandId || "-1",
+            categoryId: this.state.params.categoryId || "-1"
         };
 
         this.filter = this.filter.bind(this);
@@ -34,15 +34,15 @@ export default class ItemList extends React.Component {
         if(this.props.categories
             && this.props.categories.length
             && params.categoryId
-            && params.categoryId !== '-1') {
-            this.setState({ categoryName: _.find(this.props.categories, {_id: params.categoryId}).name });
+            && params.categoryId !== "-1") {
+            this.state.categoryName = this.props.categories.find(x => x._id === params.categoryId).name;
         }
 
         if(this.props.brands
             && this.props.brands.length
             && params.brandId
-            && params.brandId !== '-1') {
-            this.setState({ brandName: _.find(this.props.brands, {_id: params.brandId}).name });
+            && params.brandId !== "-1") {
+            this.state.brandName = this.props.brands.find(x => x._id === params.brandId).name;
         }
 
         if(this.props.location.search !== prevProps.location.search) {
@@ -57,36 +57,36 @@ export default class ItemList extends React.Component {
     }
 
     resetFilter() {
-        this.state.brandId = '-1';
-        this.state.categoryId = '-1';
+        this.state.brandId = "-1";
+        this.state.categoryId = "-1";
         this.filter();
     }
 
     discardFilter(event) {
-        this.state[event.target.dataset.id] = '-1';
+        this.state[event.target.dataset.id] = "-1";
         this.filter();
     }
 
     filter() {
-        if(this.state.categoryId === '-1' && this.state.brandId === '-1') {
-            this.props.history.push({ pathname: 'items' });
+        if(this.state.categoryId === "-1" && this.state.brandId === "-1") {
+            this.props.history.push({ pathname: "items" });
             return;
         };
 
         let q = {};
 
-        if(this.state.categoryId !== '-1') {
+        if(this.state.categoryId !== "-1") {
             q.categoryId = this.state.categoryId;
         }
 
-        if(this.state.brandId !== '-1') {
+        if(this.state.brandId !== "-1") {
             q.brandId = this.state.brandId;
         }
 
         if(this.props.location.search === `?${queryString.stringify(q)}`) return;
 
         this.props.history.push({
-            pathname: 'items',
+            pathname: "items",
             search: queryString.stringify(q)
         });
     }
@@ -108,8 +108,8 @@ export default class ItemList extends React.Component {
             return { key: option._id, value: option._id, text: option.name };
         });
 
-        brandOptions.unshift({ key: '-1', value: '-1', text: 'None' });
-        categoryOptions.unshift({ key: '-1', value: '-1', text: 'None' });
+        brandOptions.unshift({ key: "-1", value: "-1", text: "None" });
+        categoryOptions.unshift({ key: "-1", value: "-1", text: "None" });
 
         let cards = data.map(function(item) {
             let activeImage = item.files.filter(x => x.active)[0];
@@ -121,7 +121,7 @@ export default class ItemList extends React.Component {
                     <Card.Content className="ui center aligned image-wrapper">
                         { activeImage
                             ? <Image src={activeImage} alt={item.name}/>
-                            : 'Image Not Available!'
+                            : "Image Not Available!"
                         }
                     </Card.Content>
                 </Card>
@@ -156,16 +156,16 @@ export default class ItemList extends React.Component {
                         <Form onSubmit={this.filter}>
                             <Form.Dropdown
                                 selection search
-                                label='Category'
-                                name='categoryId'
+                                label="Category"
+                                name="categoryId"
                                 options={categoryOptions}
                                 value={categoryId}
                                 onChange={this.handleInputChange}
                             />
                             <Form.Dropdown
                                 selection search
-                                label='Brand'
-                                name='brandId'
+                                label="Brand"
+                                name="brandId"
                                 options={brandOptions}
                                 value={brandId}
                                 onChange={this.handleInputChange}
@@ -173,11 +173,11 @@ export default class ItemList extends React.Component {
 
                             <Button.Group>
                                 <Button type="submit" positive>
-                                    <Icon name='filter'/> Filter
+                                    <Icon name="filter"/> Filter
                                 </Button>
                                 <Button.Or />
                                 <Button type="button" onClick={this.resetFilter}>
-                                    <Icon name='undo'/> Reset
+                                    <Icon name="undo"/> Reset
                                 </Button>
                             </Button.Group>
                         </Form>
@@ -187,15 +187,15 @@ export default class ItemList extends React.Component {
                 <Grid.Column width={13}>
                     {(params.categoryId || params.brandId) &&
                         <div>
-                            {(params.categoryId && params.categoryId !== '-1') &&
+                            {(params.categoryId && params.categoryId !== "-1") &&
                                 <Label color="blue">
-                                    Category: {categoryName} <Icon name='delete' data-id="categoryId" onClick={this.discardFilter}/>
+                                    Category: {categoryName} <Icon name="delete" data-id="categoryId" onClick={this.discardFilter}/>
                                 </Label>
                             }
 
-                            {(params.brandId && params.brandId !== '-1') &&
+                            {(params.brandId && params.brandId !== "-1") &&
                                 <Label color="blue">
-                                    Brand: {brandName} <Icon name='delete' data-id="brandId" onClick={this.discardFilter}/>
+                                    Brand: {brandName} <Icon name="delete" data-id="brandId" onClick={this.discardFilter}/>
                                 </Label>
                             }
 
@@ -224,11 +224,11 @@ export default class ItemList extends React.Component {
                     { cards.length === 0 &&
                         <Segment placeholder raised>
                             <Header icon>
-                                <Icon name='warning sign' />
+                                <Icon name="warning sign" />
                                 You don't have any items!
                             </Header>
                             <Button primary>
-                                <Link to="/items/add" style={{color: 'white'}}>Add New Item</Link>
+                                <Link to="/items/add" style={{color: "white"}}>Add New Item</Link>
                             </Button>
                         </Segment>
                     }

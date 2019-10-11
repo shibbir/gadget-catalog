@@ -1,21 +1,21 @@
-const fs = require('fs');
-const async = require('async');
-const cache = require('memory-cache');
-const validator = require('validator');
-const Item = require('./item.model');
-const cloudinary = require('../config/lib/cloudinary')();
+const fs = require("fs");
+const async = require("async");
+const cache = require("memory-cache");
+const validator = require("validator");
+const Item = require("./item.model");
+const cloudinary = require("../config/lib/cloudinary")();
 
 function getItem(req, res) {
     let query = { _id: req.params.id, createdBy: req.user._id };
 
-    if(req.user._id.equals(cache.get('adminId'))) {
+    if(req.user._id.equals(cache.get("adminId"))) {
         query = { _id: req.params.id };
     }
 
     Item
         .findOne(query)
-        .populate('brand', 'name')
-        .populate('category', 'name')
+        .populate("brand", "name")
+        .populate("category", "name")
         .exec(function(err, doc) {
             if(err) return res.sendStatus(500);
 
@@ -42,7 +42,7 @@ function getItems(req, res) {
         createdBy: req.user._id
     };
 
-    if(req.user._id.equals(cache.get('adminId'))) {
+    if(req.user._id.equals(cache.get("adminId"))) {
         query = {};
     }
 
@@ -57,7 +57,7 @@ function getItems(req, res) {
     Item.where(query).countDocuments(function(err, count) {
         if (err) return res.sendStatus(500);
 
-        Item.find(query).sort({ purchaseDate: 'descending' }).skip(skip).limit(size).exec(function(err, docs) {
+        Item.find(query).sort({ purchaseDate: "descending" }).skip(skip).limit(size).exec(function(err, docs) {
             if(err) return res.sendStatus(500);
 
             res.json({
@@ -93,7 +93,7 @@ function createItem(req, res) {
 
             req.files.forEach(function(file, index) {
                 cloudinary.v2.uploader.upload(file.path, {
-                    folder: 'gadgets'
+                    folder: "gadgets"
                 }, function(error, result) {
                     item.files.push({
                         ...result
@@ -145,7 +145,7 @@ function updateItem(req, res) {
 
                 req.files.forEach(function(file, index) {
                     cloudinary.v2.uploader.upload(file.path, {
-                        folder: 'gadgets'
+                        folder: "gadgets"
                     }, function(error, result) {
                         doc.files.push({
                             ...result
@@ -196,7 +196,7 @@ function deleteItem(req, res) {
 function updateImage(req, res) {
     async.waterfall([
         function(callback) {
-            Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, 'files', function(err, doc) {
+            Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, "files", function(err, doc) {
                 if(err) return callback(err);
 
                 if(!doc) return callback();
@@ -211,8 +211,8 @@ function updateImage(req, res) {
                 });
             });
         }, function(callback) {
-            Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, 'files._id': req.params.fileId }, {
-                $set: { 'files.$.active': true }
+            Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, "files._id": req.params.fileId }, {
+                $set: { "files.$.active": true }
             }, { new: true }, function(err, doc) {
                 if(err) return callback(err);
                 callback(null, doc);
@@ -247,7 +247,7 @@ function deleteImage(req, res) {
 }
 
 function getYearRangeReport(req, res) {
-    const yearRange = req.params.yearRange.split('-');
+    const yearRange = req.params.yearRange.split("-");
     const startYear = yearRange[0];
     const endYear = yearRange[1];
 
@@ -256,7 +256,7 @@ function getYearRangeReport(req, res) {
         purchaseDate: { $lte: new Date(endYear, 11, 31), $gte: new Date(startYear, 0, 1)}
     };
 
-    Item.find(query, 'purchaseDate').exec(function(err, docs) {
+    Item.find(query, "purchaseDate").exec(function(err, docs) {
         if(err) return res.sendStatus(500);
 
         let data = {};

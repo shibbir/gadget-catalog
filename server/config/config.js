@@ -1,9 +1,9 @@
-const _ = require('lodash');
-const path = require('path');
-const glob = require('glob');
+const _ = require("lodash");
+const path = require("path");
+const glob = require("glob");
 
 let getGlobbedPaths = function (globPatterns, excludes) {
-    let urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
+    let urlRegex = new RegExp("^(?:[a-z]+:)?\/\/", "i");
 
     let output = [];
 
@@ -21,11 +21,11 @@ let getGlobbedPaths = function (globPatterns, excludes) {
                     if (_.isArray(excludes)) {
                         for (let i in excludes) {
                             if (excludes.hasOwnProperty(i)) {
-                                file = file.replace(excludes[i], '');
+                                file = file.replace(excludes[i], "");
                             }
                         }
                     } else {
-                        file = file.replace(excludes, '');
+                        file = file.replace(excludes, "");
                     }
                     return file;
                 });
@@ -38,15 +38,15 @@ let getGlobbedPaths = function (globPatterns, excludes) {
 };
 
 function initGlobalConfig() {
-    let defaultAssets = require(path.join(process.cwd(), 'server/config/assets/default'));
-    let environmentAssets = process.env.NODE_ENV === 'production' ? require(path.join(process.cwd(), 'server/config/assets/production')) : {};
+    let defaultAssets = require(path.join(process.cwd(), "server/config/assets/default"));
+    let environmentAssets = process.env.NODE_ENV === "production" ? require(path.join(process.cwd(), "server/config/assets/production")) : {};
 
     let assets = _.merge(defaultAssets, environmentAssets);
 
     let config = {
         client: {
-            js: getGlobbedPaths(assets.client.js, ['public/']),
-            css: getGlobbedPaths(assets.client.css, ['public/'])
+            js: getGlobbedPaths(assets.client.js, ["public/"]),
+            css: getGlobbedPaths(assets.client.css, ["public/"])
         },
         server: {
             models: getGlobbedPaths(assets.server.models)

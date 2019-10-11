@@ -1,12 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { IntlProvider } from 'react-intl';
-import { HashRouter } from 'react-router-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { IntlProvider } from "react-intl";
+import { HashRouter } from "react-router-dom";
 
-import store from './store';
+import store from "./store";
 
-import App from './core/App';
+import App from "./core/App";
 
 ReactDOM.render(
     <Provider store={store}>
@@ -16,5 +16,5 @@ ReactDOM.render(
             </HashRouter>
         </IntlProvider>
     </Provider>,
-    document.getElementById('app')
+    document.getElementById("app")
 );

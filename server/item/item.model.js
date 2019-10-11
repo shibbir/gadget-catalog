@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const FileSchema = require('../core/file.model');
+const FileSchema = require("../core/file.model");
 
 let ItemSchema = Schema({
     name: {
@@ -22,7 +22,7 @@ let ItemSchema = Schema({
     files: [ FileSchema ],
     createdBy: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: "User",
         required: true
     },
     date: {
@@ -31,18 +31,18 @@ let ItemSchema = Schema({
     }
 }, { toJSON: { virtuals: true } });
 
-ItemSchema.virtual('category', {
+ItemSchema.virtual("category", {
     justOne: true,
-    ref: 'Category',
-    foreignField: '_id',
-    localField: 'categoryId'
+    ref: "Category",
+    foreignField: "_id",
+    localField: "categoryId"
 });
 
-ItemSchema.virtual('brand', {
-    ref: 'Brand',
+ItemSchema.virtual("brand", {
+    ref: "Brand",
     justOne: true,
-    foreignField: '_id',
-    localField: 'brandId'
+    foreignField: "_id",
+    localField: "brandId"
 });
 
-module.exports = mongoose.model('Item', ItemSchema);
+module.exports = mongoose.model("Item", ItemSchema);

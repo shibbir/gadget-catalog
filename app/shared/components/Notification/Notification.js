@@ -1,12 +1,12 @@
-import React from 'react'
-import { connect } from 'react-redux';
-import * as iziToast from 'izitoast/dist/js/izitoast';
+import React from "react"
+import { connect } from "react-redux";
+import * as iziToast from "izitoast/dist/js/izitoast";
 
 function Notification({ type, message }) {
     if(type && message) {
         iziToast[type]({
             message: message,
-            position: 'bottomRight',
+            position: "bottomRight",
             timeout: 1000
         });
     }

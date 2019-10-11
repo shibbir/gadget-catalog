@@ -1,7 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { NavLink, withRouter } from 'react-router-dom';
-import { Menu, Dropdown, Container, Icon } from 'semantic-ui-react';
+import React from "react";
+import { connect } from "react-redux";
+import { NavLink, withRouter } from "react-router-dom";
+import { Menu, Dropdown, Container, Icon } from "semantic-ui-react";
 
 class Navbar extends React.Component {
     render() {
@@ -18,7 +18,7 @@ class Navbar extends React.Component {
                         <Icon name="dashboard"/>
                         Dashboard
                     </NavLink>
-                    <Dropdown item text='Item'>
+                    <Dropdown item text="Item">
                         <Dropdown.Menu>
                             <NavLink to="/items" activeClassName="active" className="item">
                                 <Icon name="unordered list"/> Item list
@@ -30,7 +30,7 @@ class Navbar extends React.Component {
                             }
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Dropdown item text='Category'>
+                    <Dropdown item text="Category">
                         <Dropdown.Menu>
                             <NavLink to="/categories" activeClassName="active" className="item">
                                 <Icon name="unordered list"/> Category list
@@ -42,7 +42,7 @@ class Navbar extends React.Component {
                             }
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Dropdown item text='Brand'>
+                    <Dropdown item text="Brand">
                         <Dropdown.Menu>
                             <NavLink to="/brands" activeClassName="active" className="item">
                                 <Icon name="unordered list"/> Brand list
@@ -52,7 +52,7 @@ class Navbar extends React.Component {
                             </NavLink>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Menu.Menu position='right'>
+                    <Menu.Menu position="right">
                         <Dropdown item text={user.name}>
                             <Dropdown.Menu>
                                 <NavLink to="/profile" activeClassName="active" className="item">

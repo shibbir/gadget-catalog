@@ -2,21 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Route, Switch } from 'react-router-dom';
 
-import 'semantic-ui-css/semantic.css';
+import 'fomantic-ui-css/semantic.css';
 import 'izitoast/dist/css/izitoast.css';
 import 'draft-js/dist/Draft.css';
 import './app.css';
 
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
-import Login from '../user/pages/Login';
-import Register from '../user/pages/Register';
-import ProfileContainer from '../user/containers/ProfileContainer';
+import Login from '../user/components/Login';
+import Register from '../user/components/Register';
+import Profile from '../user/components/Profile';
 import ItemList from '../item/containers/ItemListContainer';
 import ItemDetailContainer from '../item/containers/ItemDetailContainer';
 import ItemAddPage from '../item/pages/ItemAddPage';
 import ItemEditPage from '../item/pages/ItemEditPage';
-import DashboardContainer from '../user/containers/DashboardContainer';
+import Dashboard from '../user/components/Dashboard';
 import CategoryListContainer from '../category/containers/CategoryListContainer';
 import CategoryAddPage from '../category/pages/CategoryAddPage';
 import CategoryEditPage from '../category/pages/CategoryEditPage';
@@ -45,8 +45,8 @@ class App extends React.Component {
                 <PublicRoute path="/login" component={Login}/>
                 <PublicRoute path="/register" component={Register}/>
 
-                <PrivateRoute exact path="/" component={DashboardContainer} />
-                <PrivateRoute exact path="/profile" component={ProfileContainer}/>
+                <PrivateRoute exact path="/" component={Dashboard} />
+                <PrivateRoute exact path="/profile" component={Profile}/>
                 <PrivateRoute exact path="/items" component={ItemList}/>
                 <PrivateRoute exact path="/items/add" component={ItemAddPage}/>
                 <PrivateRoute exact path="/items/:id" component={ItemDetailContainer}/>

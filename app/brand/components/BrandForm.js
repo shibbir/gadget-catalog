@@ -1,8 +1,8 @@
-import React from 'react';
-import { Form, withFormik } from 'formik';
-import { Divider, Button } from 'semantic-ui-react';
-import BrandSchema from '../brand.schema';
-import { TextInput } from '../../shared/components/FieldInput/FieldInputs';
+import React from "react";
+import { Form, withFormik } from "formik";
+import { Divider, Button } from "semantic-ui-react";
+import BrandSchema from "../brand.schema";
+import { TextInput } from "../../shared/components/FieldInput/FieldInputs";
 
 class BrandForm extends React.Component {
     constructor(props) {
@@ -20,9 +20,9 @@ class BrandForm extends React.Component {
             <div>
                 <Form onSubmit={handleSubmit} className="ui form">
                     <TextInput attributes={{
-                        type: 'text',
-                        name: 'name',
-                        label: 'Name',
+                        type: "text",
+                        name: "name",
+                        label: "Name",
                         required: true
                     }}/>
                     <Divider hidden/>
@@ -48,7 +48,7 @@ BrandForm = withFormik({
         }
 
         return {
-            name: ''
+            name: ""
         };
     },
 
@@ -65,7 +65,7 @@ BrandForm = withFormik({
         setSubmitting(false);
     },
 
-    displayName: 'BrandForm'
+    displayName: "BrandForm"
 })(BrandForm);
 
 export default BrandForm;

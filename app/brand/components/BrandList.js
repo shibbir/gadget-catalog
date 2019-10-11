@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Table, Segment, Icon, Divider, Header, Button } from 'semantic-ui-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Table, Segment, Icon, Divider, Header, Button } from "semantic-ui-react";
 
 export default class BrandList extends React.Component {
     constructor(props) {
         super();
-        props.getBrands('?filter_by=user');
+        props.getBrands("?filter_by=user");
     }
 
     render() {
@@ -50,11 +50,11 @@ export default class BrandList extends React.Component {
                 { cards.length === 0 &&
                     <Segment placeholder raised>
                         <Header icon>
-                            <Icon name='warning sign'/>
+                            <Icon name="warning sign"/>
                             You don't have any brands added yet!
                         </Header>
                         <Button primary>
-                            <Link to="/brands/add" style={{color: 'white'}}>Add New Brand</Link>
+                            <Link to="/brands/add" style={{color: "white"}}>Add New Brand</Link>
                         </Button>
                     </Segment>
                 }

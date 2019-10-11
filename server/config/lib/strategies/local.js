@@ -1,10 +1,10 @@
-const User = require('../../../user/user.model');
-const LocalStrategy = require('passport-local').Strategy;
+const User = require("../../../user/user.model");
+const LocalStrategy = require("passport-local").Strategy;
 
 module.exports = function(passport) {
-    passport.use('local-signup', new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
+    passport.use("local-signup", new LocalStrategy({
+        usernameField: "email",
+        passwordField: "password",
         passReqToCallback: true,
         session: false
     }, function(req, email, password, done) {
@@ -12,18 +12,18 @@ module.exports = function(passport) {
 
         process.nextTick(function() {
             User.findOne({ $or: [
-                { 'local.email': email },
-                { 'facebook.email': email },
-                { 'google.email': email }
+                { "local.email": email },
+                { "facebook.email": email },
+                { "google.email": email }
             ]}, function(err, user) {
                 if(err) return done(err);
 
                 if(user) {
-                    return done(null, false, { message: 'This email address is already registered.' });
+                    return done(null, false, { message: "This email address is already registered." });
                 }
 
                 if(!req.body.name) {
-                    return done(null, false, { message: 'The name field is required.' });
+                    return done(null, false, { message: "The name field is required." });
                 }
 
                 let newUser = new User();
