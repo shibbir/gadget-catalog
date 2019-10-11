@@ -6,7 +6,7 @@ module.exports = function(passport) {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: "/oauth/google/callback"
-    }, function(token, refreshToken, profile, done) {
+    }, function(accessToken, refreshToken, profile, done) {
         const { id, displayName, emails } = profile;
         const email = emails[0].value;
 
@@ -20,7 +20,7 @@ module.exports = function(passport) {
 
                 if(user) {
                     if (!user.toJSON().google) {
-                        user.google = { id, email, token };
+                        user.google = { id, email, accessToken };
                         user.google.name = displayName;
 
                         user.save(function(err) {
@@ -36,7 +36,7 @@ module.exports = function(passport) {
                     let newUser = new User();
 
                     newUser.displayName = displayName;
-                    newUser.google = { id, email, token };
+                    newUser.google = { id, email, accessToken };
                     newUser.google.name = displayName;
 
                     newUser.save(function(err) {

@@ -3,11 +3,12 @@ const FacebookStrategy = require("passport-facebook").Strategy;
 
 module.exports = function(passport) {
     passport.use(new FacebookStrategy({
+        graphAPIVersion: "v4.0",
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
         callbackURL: "/oauth/facebook/callback",
         profileFields: ["id", "displayName", "email"]
-    }, function(token, refreshToken, profile, done) {
+    }, function(accessToken, refreshToken, profile, done) {
         const { id, name, email } = profile._json;
 
         process.nextTick(function() {
@@ -20,7 +21,7 @@ module.exports = function(passport) {
 
                 if(user) {
                     if (!user.toJSON().facebook) {
-                        user.facebook = { id, name, email, token};
+                        user.facebook = { id, name, email, accessToken};
 
                         user.save(function(err) {
                             if(err) return done(err);
@@ -32,7 +33,7 @@ module.exports = function(passport) {
                 } else {
                     let newUser = new User({
                         displayName: name,
-                        facebook: { id, name, email, token }
+                        facebook: { id, name, email, accessToken }
                     });
 
                     newUser.save(function(err) {

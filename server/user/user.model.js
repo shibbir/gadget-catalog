@@ -15,13 +15,13 @@ let UserSchema = Schema({
         id: String,
         name: String,
         email: String,
-        token: String
+        accessToken: String
     },
     google: {
         id: String,
         name: String,
         email: String,
-        token: String
+        accessToken: String
     },
     displayName: {
         type: String,

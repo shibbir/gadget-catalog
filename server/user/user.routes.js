@@ -1,3 +1,4 @@
+const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const User = require("./user.model");
 
@@ -117,6 +118,10 @@ module.exports = function(app, passport) {
         })(req, res, next)
     });
 
+    app.post("/oauth/facebook/deauthorize_callback", function(req, res) {
+        res.sendStatus(200);
+    });
+
     app.get("/oauth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
     app.get("/oauth/google/callback", function(req, res, next) {
@@ -132,9 +137,15 @@ module.exports = function(app, passport) {
         })(req, res, next);
     });
 
-    app.put("/api/oauth/disconnect", passport.authenticate("jwt", { session: false }), async function(req, res) {
-        const doc = await User.findOneAndUpdate({_id: req.user._id}, {$unset: {[req.query.provider]: 1 }}, {new: true});
+    app.put("/api/oauth/disconnect", passport.authenticate("jwt", { session: false }), function(req, res) {
+        if(!req.query.provider) return res.sendStatus(400);
 
-        res.json(doc);
+        if(req.query.provider === "facebook") {
+            axios.delete(`https://graph.facebook.com/${req.user.facebook.id}/permissions?access_token=${req.user.facebook.accessToken}`).then(() => {
+                User.findOneAndUpdate({_id: req.user._id}, {$unset: {facebook: 1 }}, {new: true}, (err, doc) => res.json(formatProfile(doc.toJSON())));
+            }).catch(() => res.sendStatus(500));
+        } else {
+            User.findOneAndUpdate({_id: req.user._id}, {$unset: {google: 1 }}, {new: true}, (err, doc) => res.json(formatProfile(doc.toJSON())));
+        }
     });
 };
