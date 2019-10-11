@@ -19,19 +19,15 @@ module.exports = function(passport) {
                 if(err) return done(err);
 
                 if(user) {
-                    if (!user.toJSON().google) {
-                        user.google = { id, email, accessToken };
-                        user.google.name = displayName;
+                    user.google = { id, email, accessToken };
+                    user.google.name = displayName;
 
-                        user.save(function(err) {
-                            if(err) {
-                                return done(err);
-                            }
-                            done(null, user);
-                        });
-                    } else {
+                    user.save(function(err) {
+                        if(err) {
+                            return done(err);
+                        }
                         done(null, user);
-                    }
+                    });
                 } else {
                     let newUser = new User();
 
