@@ -4,8 +4,8 @@ import CategoryList from "../components/CategoryList";
 
 const mapStateToProps = (state) => {
     return {
-        categories: state.categoryReducer.categories,
-        user: state.authReducer.user
+        user: state.userReducer.user,
+        categories: state.categoryReducer.categories
     }
 }
 

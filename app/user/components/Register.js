@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { Form, withFormik } from "formik";
 import { Button, Segment, Header, Divider, Image } from "semantic-ui-react";
 
-import { registerSchema } from "../auth.schema";
 import store from "../../store";
+import { register } from "../user.actions";
+import { registerSchema } from "../user.schema";
 import OAuthProvider from "../../shared/components/OAuthProvider";
-import { register } from "../auth.actions";
 import { TextInput } from "../../shared/components/FieldInput/FieldInputs";
 
 class Register extends React.Component {

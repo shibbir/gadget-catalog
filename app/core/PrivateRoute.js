@@ -1,15 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
+import React from "react";
+import { connect } from "react-redux";
+import { Route, Redirect } from "react-router-dom";
+import { Container } from "semantic-ui-react";
 
-import Footer from '../shared/components/Footer';
-import Navbar from '../shared/components/Navbar';
-import Notification from '../shared/components/Notification/Notification';
+import Footer from "../shared/components/Footer";
+import Navbar from "../shared/components/Navbar";
+import Notification from "../shared/components/Notification/Notification";
 
 const mapStateToProps = (state) => {
     return {
-        isAuthenticated: state.authReducer.isLoggedIn
+        isAuthenticated: state.userReducer.isLoggedIn
     };
 };
 
@@ -31,7 +31,7 @@ class PrivateRoute extends React.Component {
                         </>
                     ) : (
                         <Redirect push to={{
-                            pathname: '/login',
+                            pathname: "/login",
                             state: { from: props.location }
                         }} />
                     )

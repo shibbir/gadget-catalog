@@ -1,15 +1,18 @@
 import React from "react"
 import Highcharts from "highcharts";
+import { connect } from "react-redux";
+import { getCategories } from "../category.actions";
 
-export default class PieChart extends React.Component {
-    componentDidMount() {
-        this.props.getData();
+class PieChart extends React.Component {
+    constructor(props) {
+        super();
+        props.getCategories();
     }
 
     componentDidUpdate() {
         let data = [];
 
-        this.props.data.forEach(o => {
+        this.props.categories.forEach(o => {
             if(o.items.length) {
                 data.push({
                     name: o.name,
@@ -65,3 +68,19 @@ export default class PieChart extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        categories: state.categoryReducer.categories
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getCategories: () => {
+            dispatch(getCategories());
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PieChart);
