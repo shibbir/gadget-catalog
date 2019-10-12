@@ -5,8 +5,8 @@ import * as iziToast from "izitoast/dist/js/izitoast";
 import { Button, Segment, Header, Divider, Image } from "semantic-ui-react";
 
 import store from "../../store";
-import { login } from "../auth.actions";
-import { loginSchema } from "../auth.schema";
+import { login } from "../user.actions";
+import { loginSchema } from "../user.schema";
 import OAuthProvider from "../../shared/components/OAuthProvider";
 import { TextInput } from "../../shared/components/FieldInput/FieldInputs";
 

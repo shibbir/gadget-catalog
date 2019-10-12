@@ -72,7 +72,7 @@ class Navbar extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.authReducer.user
+        user: state.userReducer.user
     };
 };
 

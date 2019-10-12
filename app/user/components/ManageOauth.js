@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { List, Divider } from "semantic-ui-react";
-import { removeOauthProvider } from "../auth.actions";
+import { removeOauthProvider } from "../user.actions";
 
 class ManageOauth extends React.Component {
     render() {
@@ -53,7 +53,7 @@ class ManageOauth extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.authReducer.user,
+        user: state.userReducer.user,
     };
 };
 

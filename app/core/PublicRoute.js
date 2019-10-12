@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
+import React from "react";
+import { connect } from "react-redux";
+import { Route, Redirect } from "react-router-dom";
 
 const mapStateToProps = (state) => {
     return {
-        isAuthenticated: state.authReducer.isLoggedIn
+        isAuthenticated: state.userReducer.isLoggedIn
     };
 };
 
@@ -19,10 +19,10 @@ class PublicRoute extends React.Component {
                         <Redirect push to={{
                             pathname: props.location.state
                                 ? props.location.state.from.pathname
-                                : '/',
+                                : "/",
                             search: props.location.state
                                 ? props.location.state.from.search
-                                : '',
+                                : "",
                             state: { from: props.location }
                         }} />
                     ) : (

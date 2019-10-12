@@ -1,5 +1,5 @@
 import axios from "axios";
-import Types from "./auth.types";
+import Types from "./user.types";
 
 export function getProfile() {
     return {

@@ -1,9 +1,11 @@
 import React from "react";
 import Highcharts from "highcharts";
+import { connect } from "react-redux";
 import { Select } from "semantic-ui-react";
+import { fetchItemsByYearRange } from "../item.actions";
 
-export default class ColumnChart extends React.Component {
-    constructor() {
+class ColumnChart extends React.Component {
+    constructor(props) {
         super();
         this.state = {
             yearRange: `${new Date().getFullYear() - 4}-${new Date().getFullYear()}`,
@@ -13,21 +15,18 @@ export default class ColumnChart extends React.Component {
                 { key: "2005-2009", value: "2005-2009", text: "2005-2009" }
             ]
         };
+        props.fetchItemsByYearRange(this.state.yearRange);
     }
 
     fetchItemsByYearRange(event, data) {
         if(this.state.yearRange !== data.value) {
             this.setState({ yearRange: data.value });
-            this.props.getData(data.value);
+            this.props.fetchItemsByYearRange(data.value);
         }
     }
 
-    componentDidMount() {
-        this.props.getData(this.state.yearRange);
-    }
-
     componentDidUpdate() {
-        let data = this.props.data;
+        let data = this.props.itemsPerYear;
         let years = [];
         let itemsPerYear = [];
         let report = false;
@@ -104,3 +103,19 @@ export default class ColumnChart extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        itemsPerYear: state.itemReducer.itemsPerYear
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchItemsByYearRange: (yearRange) => {
+            dispatch(fetchItemsByYearRange(yearRange));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ColumnChart);

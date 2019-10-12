@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { Form, withFormik } from "formik";
 import { Divider, Button } from "semantic-ui-react";
 
-import { passwordSchema } from "../auth.schema";
-import { changePassword } from "../auth.actions";
+import { passwordSchema } from "../user.schema";
+import { changePassword } from "../user.actions";
 import { TextInput } from "../../shared/components/FieldInput/FieldInputs";
 
 class Password extends React.Component {
@@ -13,7 +13,7 @@ class Password extends React.Component {
 
         return (
             <div>
-                <h3>Change local password</h3>
+                <h3>Change local account password</h3>
                 <Divider section/>
 
                 <Form onSubmit={handleSubmit} className="ui form">

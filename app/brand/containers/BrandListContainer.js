@@ -4,7 +4,7 @@ import BrandList from "../components/BrandList";
 
 const mapStateToProps = (state) => {
     return {
-        user: state.authReducer.user,
+        user: state.userReducer.user,
         brands: state.brandReducer.brands
     }
 };
