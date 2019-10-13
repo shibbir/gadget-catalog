@@ -27,7 +27,7 @@ module.exports = function(passport) {
                         done(null, user);
                     });
                 } else {
-                    let newUser = new User({
+                    const newUser = new User({
                         displayName: name,
                         facebook: { id, name, email, accessToken }
                     });

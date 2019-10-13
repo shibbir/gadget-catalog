@@ -77,7 +77,7 @@ Login = withFormik({
             password: values.password
         })).catch(function(result) {
             iziToast.error({
-                message: "Invalid credential!",
+                message: "Invalid email or password!",
                 position: "bottomRight",
                 timeout: 2000
             });
