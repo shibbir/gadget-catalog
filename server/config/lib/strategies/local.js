@@ -22,10 +22,6 @@ module.exports = function(passport) {
                     return done(null, false, { message: "This email address is already registered." });
                 }
 
-                if(!req.body.name) {
-                    return done(null, false, { message: "The name field is required." });
-                }
-
                 let newUser = new User();
 
                 newUser.displayName = req.body.name;

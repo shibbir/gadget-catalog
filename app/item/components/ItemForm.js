@@ -1,11 +1,11 @@
-import React from 'react';
-import { Form, withFormik } from 'formik';
-import { Divider, Button } from 'semantic-ui-react';
-import { EditorState, ContentState, convertFromHTML } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
-import Types from '../item.types';
-import { itemSchema } from '../item.schema';
-import { TextInput, RichEditorInput, DropdownInput, FileInput } from '../../shared/components/FieldInput/FieldInputs';
+import React from "react";
+import { Form, withFormik } from "formik";
+import { Divider, Button } from "semantic-ui-react";
+import { EditorState, ContentState, convertFromHTML } from "draft-js";
+import { stateToHTML } from "draft-js-export-html";
+import Types from "../item.types";
+import { itemSchema } from "../item.schema";
+import { TextInput, RichEditorInput, DropdownInput, FileInput } from "../../shared/components/FieldInput/FieldInputs";
 
 class ItemForm extends React.Component {
     constructor(props) {
@@ -43,59 +43,59 @@ class ItemForm extends React.Component {
         };
 
         const handleFileChange = (e) => {
-            setFieldValue('files', e.currentTarget.files);
+            setFieldValue("files", e.currentTarget.files);
         };
 
         return (
             <Form onSubmit={handleSubmit} className="ui form">
                 <TextInput attributes={{
-                    type: 'text',
-                    name: 'name',
-                    label: 'Name',
+                    type: "text",
+                    name: "name",
+                    label: "Name",
                     required: true
                 }}/>
                 <RichEditorInput attributes={{
                     value: values.description,
-                    name: 'description',
-                    label: 'Description',
+                    name: "description",
+                    label: "Description",
                     onChange: setFieldValue,
                     onBlur: handleBlur,
                     editorState: values.editorState
                 }}/>
                 <DropdownInput attributes={{
                     value: values.categoryId,
-                    name: 'categoryId',
-                    placeholder: 'Select category',
-                    label: 'Category',
+                    name: "categoryId",
+                    placeholder: "Select category",
+                    label: "Category",
                     options: categoryOptions,
                     onChange: handleDropdownChange,
                     required: true
                 }}/>
                 <DropdownInput attributes={{
                     value: values.brandId,
-                    name: 'brandId',
-                    placeholder: 'Select brand',
-                    label: 'Brand',
+                    name: "brandId",
+                    placeholder: "Select brand",
+                    label: "Brand",
                     options: brandOptions,
                     onChange: handleDropdownChange,
                     required: true
                 }}/>
                 <TextInput attributes={{
-                    type: 'date',
-                    name: 'purchaseDate',
-                    label: 'Purchase date',
+                    type: "date",
+                    name: "purchaseDate",
+                    label: "Purchase date",
                     required: true
                 }}/>
                 <TextInput attributes={{
-                    type: 'number',
-                    name: 'price',
-                    label: 'Price',
+                    type: "number",
+                    name: "price",
+                    label: "Price",
                     required: true
                 }}/>
                 <FileInput attributes={{
-                    type: 'file',
-                    name: 'file',
-                    label: 'Upload images',
+                    type: "file",
+                    name: "file",
+                    label: "Upload images",
                     onChange: handleFileChange
                 }}/>
                 <Divider hidden/>
@@ -116,7 +116,7 @@ ItemForm = withFormik({
 
     mapPropsToValues: (props) => {
         if(props.itemId && props.item) {
-            props.item.description = props.item.description || '';
+            props.item.description = props.item.description || "";
             const blocksFromHTML = convertFromHTML(props.item.description);
             return {
                 name: props.item.name,
@@ -131,12 +131,12 @@ ItemForm = withFormik({
         }
 
         return {
-            name: '',
-            categoryId: '',
-            brandId: '',
-            purchaseDate: '',
-            price: '',
-            files: '',
+            name: "",
+            categoryId: "",
+            brandId: "",
+            purchaseDate: "",
+            price: "",
+            files: "",
             editorState: new EditorState.createEmpty()
         };
     },
@@ -151,7 +151,7 @@ ItemForm = withFormik({
 
         if(values.files) {
             for(let index = 0; index < values.files.length; index++) {
-                formData.append('files', values.files[index]);
+                formData.append("files", values.files[index]);
             }
             delete values.files;
         }
@@ -181,7 +181,7 @@ ItemForm = withFormik({
         }
     },
 
-    displayName: 'ItemForm'
+    displayName: "ItemForm"
 })(ItemForm);
 
 export default ItemForm;

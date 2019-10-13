@@ -9,7 +9,10 @@ let UserSchema = Schema({
             match: [/.+\@.+\..+/]
         },
         password: String,
-        name: String
+        name: {
+            type: String,
+            required() { return !this.facebook && !this.google; }
+        }
     },
     facebook: {
         id: String,

@@ -74,7 +74,7 @@ module.exports = function(app, passport) {
                 httpOnly: true
             });
 
-            res.json(formatProfile(user));
+            res.json(formatProfile(user.toJSON()));
         });
     });
 
