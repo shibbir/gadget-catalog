@@ -27,7 +27,7 @@ export default class Login extends React.Component {
         this.state = {
             emailSent: false,
             closeOnDimmerClick: false,
-            forgotpassowrdResponse: "",
+            forgotpasswordResponse: "",
             openPasswordResetModal: false
         };
     }
@@ -121,12 +121,12 @@ export default class Login extends React.Component {
                             </Message.Content>
                         </Message>
                     }
-                    { this.state.forgotpassowrdResponse &&
+                    { this.state.forgotpasswordResponse &&
                         <Message error icon>
                             <Icon name="frown"/>
                             <Message.Content>
                                 <Message.Header>Attention!</Message.Header>
-                                {this.state.forgotpassowrdResponse}
+                                {this.state.forgotpasswordResponse}
                             </Message.Content>
                         </Message>
                     }
@@ -140,9 +140,9 @@ export default class Login extends React.Component {
                                 axios.post("/api/forgotpassowrd", {...values}).then(() => {
                                     this.setState({emailSent: true});
                                     this.setState({closeOnDimmerClick: true});
-                                    this.setState({forgotpassowrdResponse: ""});
+                                    this.setState({forgotpasswordResponse: ""});
                                 }).catch(error => {
-                                    this.setState({forgotpassowrdResponse: error.response.data});
+                                    this.setState({forgotpasswordResponse: error.response.data});
                                 });
                                 actions.setSubmitting(false);
                             }}
@@ -168,6 +168,7 @@ export default class Login extends React.Component {
                                         Cancel
                                     </Button>
                                     <Button
+                                        loading={false}
                                         form="passwordResetForm"
                                         type="submit"
                                         positive

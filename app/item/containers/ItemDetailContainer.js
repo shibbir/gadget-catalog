@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import Types from '../item.types';
-import { fetchItem, deleteItem, setAsActiveImage, deleteImage } from '../item.actions';
-import ItemDetail from '../components/ItemDetail';
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import Types from "../item.types";
+import { fetchItem, deleteItem, setAsActiveImage, deleteImage } from "../item.actions";
+import ItemDetail from "../components/ItemDetail";
 
 const mapStateToProps = (state, props) => {
     return {
-        user: state.authReducer.user,
+        user: state.userReducer.user,
         item: state.itemReducer.item,
         itemId: props.match.params.id
     };
@@ -18,12 +18,12 @@ const mapDispatchToProps = (dispatch, props) => {
             dispatch(fetchItem(itemId));
         },
         deleteItem: (itemId) => {
-            if(confirm('Are you sure? All images associated with this item will be removed too.')) {
+            if(confirm("Are you sure? All images associated with this item will be removed too.")) {
                 dispatch(deleteItem(itemId)).then(function(result) {
                     const { type } = result.action;
 
                     if(type === Types.DELETE_ITEM_FULFILLED) {
-                        props.history.push('/items/');
+                        props.history.push("/items/");
                     }
                 });
             }
@@ -32,7 +32,7 @@ const mapDispatchToProps = (dispatch, props) => {
             dispatch(setAsActiveImage(itemId, fileId));
         },
         deleteImage: (itemId, fileId) => {
-            if(confirm('Are you sure you want to delete this image?')) {
+            if(confirm("Are you sure you want to delete this image?")) {
                 dispatch(deleteImage(itemId, fileId));
             }
         }

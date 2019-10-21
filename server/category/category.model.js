@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const FileSchema = require("../core/file.model");
 
-let CategorySchema = Schema({
+const CategorySchema = Schema({
     name: {
         type: String,
         unique: true,

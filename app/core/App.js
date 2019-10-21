@@ -76,7 +76,7 @@ class App extends React.Component {
                 <PublicRoute path="/login" component={Login}/>
                 <PublicRoute path="/register" component={Register}/>
 
-                <PrivateRoute exact path="/" component={Dashboard} />
+                <PrivateRoute exact path="/" component={Dashboard}/>
                 <PrivateRoute exact path="/profile" component={Profile}/>
                 <PrivateRoute exact path="/items" component={ItemList}/>
                 <PrivateRoute exact path="/items/add" component={ItemAddPage}/>
@@ -91,7 +91,7 @@ class App extends React.Component {
                 <PrivateRoute exact path="/brands/add" component={BrandAddPage}/>
                 <PrivateRoute exact path="/brands/:id/edit" component={BrandEditPage}/>
 
-                <Route component={NoMatch} />
+                <Route component={NoMatch}/>
             </Switch>
         );
     }

@@ -4,7 +4,7 @@ import { createCategory, updateCategory, fetchCategory } from "../category.actio
 
 const mapStateToProps = (state, props) => {
     return {
-        user: state.authReducer.user,
+        user: state.userReducer.user,
         categoryId: props.id,
         category: state.categoryReducer.category
     };
@@ -12,13 +12,12 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createCategory: (formData) => {
-            dispatch(createCategory(formData));
-        },
+        createCategory: formData => dispatch(createCategory(formData)),
+
         updateCategory: (formData, itemId) => {
             dispatch(updateCategory(formData, itemId));
         },
-        fetchCategory: (itemId) => {
+        fetchCategory: itemId => {
             dispatch(fetchCategory(itemId));
         }
     };
