@@ -1,5 +1,6 @@
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const User = require("./user.model");
 
 function generateAccessToken(user, provider) {
@@ -147,5 +148,37 @@ module.exports = function(app, passport) {
         } else {
             User.findOneAndUpdate({_id: req.user._id}, {$unset: {google: 1 }}, {new: true}, (err, doc) => res.json(formatProfile(doc.toJSON())));
         }
+    });
+
+    app.post("/api/forgotpassowrd", function(req, res) {
+        User.findOne({ $or: [
+            { "facebook.email" : req.body.email },
+            { "google.email": req.body.email },
+            { "local.email": req.body.email }
+        ]}, function(err, doc) {
+            if(err) return res.sendStatus(500);
+
+            if(!doc) return res.status(404).send("No account is associated with this email address.");
+
+            const transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: process.env.EMAIL_ADDRESS,
+                    pass: process.env.EMAIL_PASSWORD
+                }
+            });
+    
+            transporter.sendMail({
+                from: `"Gadget Catalog" <${process.env.EMAIL_ADDRESS}>`,
+                to: req.body.email,
+                subject: "[Gadget Catalog] Password Reset Request",
+                text: "Hello world",
+                html: "<b>Hello world</b>"
+            }, function (err) {
+                if(err) return res.sendStatus(500);
+    
+                res.sendStatus(200);
+             });
+        });
     });
 };

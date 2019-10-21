@@ -3,9 +3,8 @@ const path = require("path");
 const multer = require("multer");
 const express = require("express");
 const hbs = require("express-hbs");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
 const compression = require("compression");
+const cookieParser = require("cookie-parser");
 
 module.exports = function() {
     let app = express();
@@ -13,12 +12,11 @@ module.exports = function() {
     app.locals.jsFiles = config.client.js;
     app.locals.cssFiles = config.client.css;
 
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
-
-    app.use(cookieParser());
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
     app.use(compression());
+    app.use(cookieParser());
 
     app.use(express.static(path.join(process.cwd(), "public")));
 
@@ -28,8 +26,10 @@ module.exports = function() {
 
     app.use(multer({
         dest: "./public/uploads/",
-        files: 5,
-        fileSize: 1000000
+        limits: {
+            files: 3,
+            fileSize: 1500000
+        }
     }).array("files"));
 
     app.set("port", process.env.PORT || 4040);

@@ -5,34 +5,26 @@ const Category = require("./category.model");
 const cloudinary = require("../config/lib/cloudinary")();
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
-function getCategory(req, res) {
-    Category.findOne({ _id: req.params.id }).exec(function(err, doc) {
-        if(err) return res.sendStatus(500);
-
-        res.json(doc);
-    });
+async function getCategory(req, res) {
+    const doc = await Category.findOne({ _id: req.params.id });
+    res.json(doc);
 }
 
-function getCategories(req, res) {
+async function getCategories(req, res) {
     let match = { createdBy: req.user._id };
 
     if(req.user._id.equals(cache.get("adminId"))) {
         match = {};
     }
 
-    Category
-        .find()
-        .populate({
-            path: "items",
-            match: match,
-            select: "_id",
-            options: { lean: true }
-        })
-        .sort("name")
-        .exec(function(err, docs) {
-            if(err) return res.sendStatus(500);
-            res.json(docs);
-        });
+    const docs = await Category.find().populate({
+        path: "items",
+        match: match,
+        select: "_id",
+        options: { lean: true }
+    }).sort("name");
+
+    res.json(docs);
 }
 
 function createCategory(req, res) {
@@ -48,23 +40,15 @@ function createCategory(req, res) {
 
     async.waterfall([
         function(callback) {
-            if(!req.file) {
+            if(!req.files) {
                 return callback(null);
             }
 
-            cloudinary.uploader.upload(req.file.path, function(response) {
-                const { public_id, resource_type, type, format } = response;
+            const file = req.files[0];
 
-                model.file = {
-                    public_id,
-                    resource_type,
-                    type,
-                    format,
-                    active: true
-                };
-
-                fs.unlinkSync(req.file.path);
-
+            cloudinary.uploader.upload(file.path, function(response) {
+                model.file = {...response, active: true};
+                fs.unlinkSync(file.path);
                 callback(null);
             }, { folder: "categories", invalidate: true });
         }
@@ -96,39 +80,30 @@ function updateCategory(req, res) {
 
         let oldFile = null;
 
-        async.waterfall([
-            function(callback) {
-                if(!req.file) {
-                    return callback(null);
-                }
-
-                oldFile = doc.file;
-
-                cloudinary.uploader.upload(req.file.path, function(result) {
-                    const { public_id, resource_type, type, format } = result;
-
-                    doc.file = {
-                        public_id,
-                        resource_type,
-                        type,
-                        format,
-                        active: true
-                    };
-
-                    fs.unlinkSync(req.file.path);
-                    callback(null);
-                }, { folder: "categories" });
-            },
-            function(callback) {
-                if(!oldFile) {
-                    return callback(null);
-                }
-
-                cloudinary.uploader.destroy(oldFile.public_id, function() {
-                    callback(null);
-                }, { invalidate: true });
+        async.waterfall([function(callback) {
+            if(!req.files) {
+                return callback(null);
             }
-        ], function(err) {
+
+            const file = req.files[0];
+
+            oldFile = doc.file;
+
+            cloudinary.uploader.upload(file.path, function(response) {
+                doc.file = {...response, active: true};
+                fs.unlinkSync(file.path);
+                callback(null);
+            }, { folder: "categories" });
+        }, function(callback) {
+            if(!oldFile) {
+                return callback(null);
+            }
+
+            cloudinary.uploader.destroy(oldFile.public_id, function() {
+                callback(null);
+            }, { invalidate: true });
+
+        }], function(err) {
             if(err) return res.sendStatus(500);
 
             doc.save();

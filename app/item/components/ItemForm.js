@@ -42,7 +42,7 @@ class ItemForm extends React.Component {
             }
         };
 
-        const handleFileChange = (e) => {
+        const handleFileChange = e => {
             setFieldValue("files", e.currentTarget.files);
         };
 
@@ -94,8 +94,9 @@ class ItemForm extends React.Component {
                 }}/>
                 <FileInput attributes={{
                     type: "file",
-                    name: "file",
+                    name: "files",
                     label: "Upload images",
+                    multiple: "multiple",
                     onChange: handleFileChange
                 }}/>
                 <Divider hidden/>

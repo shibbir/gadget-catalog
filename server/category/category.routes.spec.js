@@ -2,7 +2,6 @@ const faker = require("faker");
 const request = require("supertest");
 const passport = require("passport");
 const expect = require("chai").expect;
-const Item = require("../item/item.model");
 const Category = require("./category.model");
 const app = require("../config/lib/express")();
 const specHelper = require("../config/spec.helper");

@@ -10,7 +10,7 @@ import App from "./core/App";
 
 ReactDOM.render(
     <Provider store={store}>
-        <IntlProvider locale='en'>
+        <IntlProvider locale="en">
             <HashRouter>
                 <App/>
             </HashRouter>

@@ -1,4 +1,4 @@
-import CategoryConstants from './category.types';
+import CategoryConstants from "./category.types";
 
 const initialState = {
     categories: [],

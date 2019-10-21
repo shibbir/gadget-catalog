@@ -16,8 +16,8 @@ class CategoryForm extends React.Component {
     render() {
         const { user, handleSubmit, isSubmitting, setFieldValue } = this.props;
 
-        const handleFileChange = (e) => {
-            setFieldValue("file", e.currentTarget.files[0]);
+        const handleFileChange = e => {
+            setFieldValue("files", e.currentTarget.files);
         }
 
         return (
@@ -32,7 +32,7 @@ class CategoryForm extends React.Component {
                         }}/>
                         <FileInput attributes={{
                             type: "file",
-                            name: "file",
+                            name: "files",
                             label: "Upload",
                             onChange: handleFileChange
                         }}/>
@@ -70,17 +70,24 @@ CategoryForm = withFormik({
 
         return {
             name: "",
-            file: ""
+            files: ""
         };
     },
 
     validationSchema: CategorySchema,
 
     handleSubmit: (formValues, { setSubmitting, resetForm, props }) => {
-        let formData = new FormData();
+        const formData = new FormData();
+
+        if(formValues.files) {
+            for(let index = 0; index < formValues.files.length; index++) {
+                formData.append("files", formValues.files[index]);
+            }
+            delete formValues.files;
+        }
 
         for(let key in formValues) {
-            if(formValues.hasOwnProperty(key)) {
+            if(formValues.hasOwnProperty(key) && formValues[key]) {
                 formData.append(key, formValues[key]);
             }
         }
@@ -88,8 +95,9 @@ CategoryForm = withFormik({
         if(props.categoryId) {
             props.updateCategory(formData, props.categoryId);
         } else {
-            props.createCategory(formData);
-            resetForm();
+            props.createCategory(formData).then(function() {
+                resetForm();
+            });
         }
 
         setSubmitting(false);

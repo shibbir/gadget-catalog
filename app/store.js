@@ -1,14 +1,14 @@
-import thunk from 'redux-thunk';
-import promise from 'redux-promise-middleware';
-import { applyMiddleware, createStore, compose } from 'redux';
-import reducers from './reducers';
+import thunk from "redux-thunk";
+import promise from "redux-promise-middleware";
+import { applyMiddleware, createStore, compose } from "redux";
+import reducers from "./reducers";
 
 const middlewares = [promise, thunk];
 
 let composeEnhancers = compose;
 
-if (process.env.NODE_ENV === 'development') {
-    const { logger } = require('redux-logger');
+if (process.env.NODE_ENV === "development") {
+    const { logger } = require("redux-logger");
 
     middlewares.push(logger);
 
