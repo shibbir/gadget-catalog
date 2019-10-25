@@ -68,7 +68,7 @@ module.exports = function(app, passport) {
             }
 
             if(!user || !user.validPassword(req.body.password)) {
-                return res.sendStatus(401);
+                return res.status(401).send("Invalid email or password.");
             }
 
             res.cookie("access_token", generateAccessToken(user, "local"), {
@@ -95,13 +95,13 @@ module.exports = function(app, passport) {
             }
 
             if(!user || !user.validPassword(req.body.currentPassword)) {
-                return res.sendStatus(401);
+                return res.sendStatus(400);
             }
 
             user.local.password = user.generateHash(req.body.newPassword);
             user.save();
 
-            res.json();
+            res.status(200).send("Password changed successfully.");
         });
     });
 
@@ -164,20 +164,20 @@ module.exports = function(app, passport) {
             const transporter = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
-                    user: process.env.EMAIL_ADDRESS,
-                    pass: process.env.EMAIL_PASSWORD
+                    user: process.env.MAILER_ADDRESS,
+                    pass: process.env.MAILER_PASSWORD
                 }
             });
 
             doc.local.resetPasswordToken = crypto.randomBytes(20).toString("hex");
-            doc.local.resetPasswordExpires = Date.now() + 360000;
+            doc.local.resetPasswordExpires = Date.now() + 3600000;
 
             doc.save().then(function() {
                 res.render("password-reset.html", {
-                    url: `${process.env.BASE_API_ENDPOINT}/#/reset-password?token=${doc.local.resetPasswordToken}`
+                    url: `${process.env.BASE_URL}/#/reset-password?token=${doc.local.resetPasswordToken}`
                 }, function(err, html) {
                     transporter.sendMail({
-                        from: `"Gadget Catalog" <${process.env.EMAIL_ADDRESS}>`,
+                        from: `"Gadget Catalog" <${process.env.MAILER_ADDRESS}>`,
                         to: req.body.email,
                         subject: "[Gadget Catalog] Password Reset Request",
                         html: html
@@ -191,14 +191,14 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.post("/api/resetpassword", function(req, res) {
+    app.put("/api/resetpassword", function(req, res) {
         User.findOne({
             "local.resetPasswordToken": req.query.token,
             "local.resetPasswordExpires": {
                 $gt: Date.now()
             }
         }, function(err, doc) {
-            if(!doc) return res.sendStatus(401);
+            if(!doc) return res.status(401).send("Account doesn't exist or the token has expired.");
 
             if(req.body.newPassword !== req.body.confirmNewPassword) return res.sendStatus(400);
 

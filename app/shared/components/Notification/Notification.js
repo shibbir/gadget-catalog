@@ -5,9 +5,9 @@ import * as iziToast from "izitoast/dist/js/izitoast";
 function Notification({ type, message }) {
     if(type && message) {
         iziToast[type]({
+            timeout: 3000,
             message: message,
-            position: "bottomRight",
-            timeout: 1000
+            position: "bottomRight"
         });
     }
     return <div/>;

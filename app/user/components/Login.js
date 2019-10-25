@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
-import * as iziToast from "izitoast/dist/js/izitoast";
 import { Button, Segment, Header, Divider, Image, Modal, Message, Icon } from "semantic-ui-react";
 
 import store from "../../store";
@@ -25,6 +24,7 @@ export default class Login extends React.Component {
     openPasswordResetModal(e) {
         e.preventDefault();
 
+        this.setState({emailSent: false});
         this.setState({openPasswordResetModal: true});
     }
 
@@ -54,20 +54,14 @@ export default class Login extends React.Component {
                         <Formik
                             initialValues={{
                                 email: "",
-                                password: "",
+                                password: ""
                             }}
                             validationSchema={loginSchema}
                             onSubmit={(values, actions) => {
                                 store.dispatch(login({
                                     email: values.email,
                                     password: values.password
-                                })).catch(function(result) {
-                                    iziToast.error({
-                                        message: "Invalid email or password!",
-                                        position: "bottomRight",
-                                        timeout: 2000
-                                    });
-                                });
+                                }));
                                 actions.setSubmitting(false);
                             }}
                         >

@@ -20,17 +20,20 @@ class ChangePassword extends React.Component {
                     <TextInput attributes={{
                         type: "password",
                         name: "currentPassword",
-                        label: "Current password"
+                        label: "Current password",
+                        autoComplete: "current-password"
                     }}/>
                     <TextInput attributes={{
                         type: "password",
                         name: "newPassword",
-                        label: "New password"
+                        label: "New password",
+                        autoComplete: "new-password"
                     }}/>
                     <TextInput attributes={{
                         type: "password",
                         name: "confirmNewPassword",
-                        label: "Confirm new password"
+                        label: "Confirm new password",
+                        autoComplete: "new-password"
                     }}/>
                     <Divider hidden/>
                     <Button.Group>

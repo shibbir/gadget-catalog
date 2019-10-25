@@ -5,7 +5,6 @@ import { IntlProvider } from "react-intl";
 import { HashRouter } from "react-router-dom";
 
 import store from "./store";
-
 import App from "./core/App";
 
 ReactDOM.render(

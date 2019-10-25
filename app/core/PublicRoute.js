@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 
+import Notification from "../shared/components/Notification/Notification";
+
 const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.userReducer.isLoggedIn
@@ -26,7 +28,10 @@ class PublicRoute extends React.Component {
                             state: { from: props.location }
                         }} />
                     ) : (
-                        <Component {...props} />
+                        <>
+                            <Component {...props}/>
+                            <Notification/>
+                        </>
                     )
                 )
             }}/>

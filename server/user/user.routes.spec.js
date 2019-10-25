@@ -44,7 +44,7 @@ describe("User Routes", function() {
 
     it("Should allow user to update the password", async function() {
         const result = await request(app)
-            .put("/api/profile/password")
+            .put("/api/profile/changepassword")
             .set("Cookie", [`access_token=${user.accessToken}`])
             .send({
                 currentPassword: user.password,
