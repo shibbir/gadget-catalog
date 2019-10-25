@@ -24,7 +24,6 @@
     "dotenv": "^8.1.0",
     "draft-js": "^0.11.1",
     "draft-js-export-html": "^1.4.1",
-    "email-templates": "^6.0.3",
     "express": "^4.17.1",
     "express-hbs": "^2.1.2",
     "fomantic-ui-css": "^2.7.8",

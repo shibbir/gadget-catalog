@@ -10,6 +10,8 @@ export default keyMirror({
     GET_PROFILE_FULFILLED: null,
     CHANGE_PASSWORD: null,
     CHANGE_PASSWORD_FULFILLED: null,
+    RESET_PASSWORD: null,
+    RESET_PASSWORD_FULFILLED: null,
     DISCONNECT_PROVIDER: null,
     DISCONNECT_PROVIDER_FULFILLED: null
 });

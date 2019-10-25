@@ -12,7 +12,9 @@ const UserSchema = Schema({
         name: {
             type: String,
             required() { return !this.facebook && !this.google; }
-        }
+        },
+        resetPasswordToken: String,
+        resetPasswordExpires: Date
     },
     facebook: {
         id: String,

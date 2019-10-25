@@ -1,4 +1,5 @@
 const axios = require("axios");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const User = require("./user.model");
@@ -87,7 +88,7 @@ module.exports = function(app, passport) {
         res.json(formatProfile(req.user.toJSON()));
     });
 
-    app.put("/api/profile/password", passport.authenticate("jwt", { session: false }), function(req, res) {
+    app.put("/api/profile/changepassword", passport.authenticate("jwt", { session: false }), function(req, res) {
         User.findOne({ _id: req.user._id }, "local", function(err, user) {
             if(err) {
                 return res.sendStatus(500);
@@ -150,7 +151,7 @@ module.exports = function(app, passport) {
         }
     });
 
-    app.post("/api/forgotpassowrd", function(req, res) {
+    app.post("/api/forgotpassword", function(req, res) {
         User.findOne({ $or: [
             { "facebook.email" : req.body.email },
             { "google.email": req.body.email },
@@ -167,18 +168,44 @@ module.exports = function(app, passport) {
                     pass: process.env.EMAIL_PASSWORD
                 }
             });
-    
-            transporter.sendMail({
-                from: `"Gadget Catalog" <${process.env.EMAIL_ADDRESS}>`,
-                to: req.body.email,
-                subject: "[Gadget Catalog] Password Reset Request",
-                text: "Hello world",
-                html: "<b>Hello world</b>"
-            }, function (err) {
-                if(err) return res.sendStatus(500);
-    
-                res.sendStatus(200);
-             });
+
+            doc.local.resetPasswordToken = crypto.randomBytes(20).toString("hex");
+            doc.local.resetPasswordExpires = Date.now() + 360000;
+
+            doc.save().then(function() {
+                res.render("password-reset.html", {
+                    url: `${process.env.BASE_API_ENDPOINT}/#/reset-password?token=${doc.local.resetPasswordToken}`
+                }, function(err, html) {
+                    transporter.sendMail({
+                        from: `"Gadget Catalog" <${process.env.EMAIL_ADDRESS}>`,
+                        to: req.body.email,
+                        subject: "[Gadget Catalog] Password Reset Request",
+                        html: html
+                    }, function (err) {
+                        if(err) return res.sendStatus(500);
+
+                        res.sendStatus(200);
+                    });
+                });
+            });
+        });
+    });
+
+    app.post("/api/resetpassword", function(req, res) {
+        User.findOne({
+            "local.resetPasswordToken": req.query.token,
+            "local.resetPasswordExpires": {
+                $gt: Date.now()
+            }
+        }, function(err, doc) {
+            if(!doc) return res.sendStatus(401);
+
+            if(req.body.newPassword !== req.body.confirmNewPassword) return res.sendStatus(400);
+
+            doc.local.password = doc.generateHash(req.body.newPassword);
+            doc.save();
+
+            res.sendStatus(200);
         });
     });
 };

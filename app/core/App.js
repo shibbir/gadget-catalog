@@ -13,6 +13,7 @@ import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 import Login from "../user/components/Login";
 import Register from "../user/components/Register";
+import ResetPassword from "../user/components/ResetPassword";
 import Profile from "../user/components/Profile";
 import Dashboard from "../user/components/Dashboard";
 import ItemAddPage from "../item/pages/ItemAddPage";
@@ -75,6 +76,7 @@ class App extends React.Component {
             <Switch>
                 <PublicRoute path="/login" component={Login}/>
                 <PublicRoute path="/register" component={Register}/>
+                <PublicRoute path="/reset-password" component={ResetPassword}/>
 
                 <PrivateRoute exact path="/" component={Dashboard}/>
                 <PrivateRoute exact path="/profile" component={Profile}/>
