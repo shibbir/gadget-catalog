@@ -39,7 +39,18 @@ export function changePassword(formData) {
         payload: axios({
             method: "put",
             data: formData,
-            url: "/api/profile/password"
+            url: "/api/profile/changepassword"
+        })
+    };
+}
+
+export function resetPassword(formData, query) {
+    return {
+        type: Types.RESET_PASSWORD,
+        payload: axios({
+            method: "put",
+            data: formData,
+            url: `/api/resetpassword${query}`
         })
     };
 }

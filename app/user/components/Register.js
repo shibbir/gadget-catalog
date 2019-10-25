@@ -10,14 +10,6 @@ import OAuthProvider from "../../shared/components/OAuthProvider";
 import { TextInput } from "../../shared/components/FieldInput/FieldInputs";
 
 class Register extends React.Component {
-    handleSubmit(formValues) {
-        store.dispatch(register({
-            name: formValues.name,
-            email: formValues.email,
-            password: formValues.password
-        }));
-    }
-
     render() {
         const { handleSubmit, isSubmitting } = this.props;
 
@@ -52,14 +44,16 @@ class Register extends React.Component {
                                     name: "email",
                                     placeholder: "E-mail address",
                                     icon: "mail",
-                                    iconPosition: "left"
+                                    iconPosition: "left",
+                                    autoComplete: "username"
                                 }}/>
                                 <TextInput attributes={{
                                     type: "password",
                                     name: "password",
                                     placeholder: "Password",
                                     icon: "lock",
-                                    iconPosition: "left"
+                                    iconPosition: "left",
+                                    autoComplete: "new-password"
                                 }}/>
 
                                 <Button fluid type="submit" className="large teal" disabled={isSubmitting}>Register</Button>

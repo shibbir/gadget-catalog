@@ -2,24 +2,13 @@ import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
-import * as iziToast from "izitoast/dist/js/izitoast";
 import { Button, Segment, Header, Divider, Image, Modal, Message, Icon } from "semantic-ui-react";
 
 import store from "../../store";
 import { login } from "../user.actions";
-import { loginSchema, passwordResetSchema } from "../user.schema";
+import { loginSchema, forgotPasswordSchema } from "../user.schema";
 import OAuthProvider from "../../shared/components/OAuthProvider";
 import { TextInput } from "../../shared/components/FieldInput/FieldInputs";
-
-function validateEmail(value) {
-    let error;
-    if (!value) {
-        error = 'Required';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-        error = 'Invalid email address';
-    }
-    return error;
-}
 
 export default class Login extends React.Component {
     constructor() {
@@ -35,6 +24,7 @@ export default class Login extends React.Component {
     openPasswordResetModal(e) {
         e.preventDefault();
 
+        this.setState({emailSent: false});
         this.setState({openPasswordResetModal: true});
     }
 
@@ -64,20 +54,14 @@ export default class Login extends React.Component {
                         <Formik
                             initialValues={{
                                 email: "",
-                                password: "",
+                                password: ""
                             }}
                             validationSchema={loginSchema}
                             onSubmit={(values, actions) => {
                                 store.dispatch(login({
                                     email: values.email,
                                     password: values.password
-                                })).catch(function(result) {
-                                    iziToast.error({
-                                        message: "Invalid email or password!",
-                                        position: "bottomRight",
-                                        timeout: 2000
-                                    });
-                                });
+                                }));
                                 actions.setSubmitting(false);
                             }}
                         >
@@ -135,9 +119,9 @@ export default class Login extends React.Component {
                             initialValues={{
                                 email: ""
                             }}
-                            validationSchema={passwordResetSchema}
+                            validationSchema={forgotPasswordSchema}
                             onSubmit={(values, actions) => {
-                                axios.post("/api/forgotpassowrd", {...values}).then(() => {
+                                axios.post("/api/forgotpassword", {...values}).then(() => {
                                     this.setState({emailSent: true});
                                     this.setState({closeOnDimmerClick: true});
                                     this.setState({forgotpasswordResponse: ""});

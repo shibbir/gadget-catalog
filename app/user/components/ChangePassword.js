@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { Form, withFormik } from "formik";
 import { Divider, Button } from "semantic-ui-react";
 
-import { passwordSchema } from "../user.schema";
+import { changePasswordSchema } from "../user.schema";
 import { changePassword } from "../user.actions";
 import { TextInput } from "../../shared/components/FieldInput/FieldInputs";
 
-class Password extends React.Component {
+class ChangePassword extends React.Component {
     render() {
         const { handleSubmit, isSubmitting } = this.props;
 
@@ -20,17 +20,20 @@ class Password extends React.Component {
                     <TextInput attributes={{
                         type: "password",
                         name: "currentPassword",
-                        label: "Current password"
+                        label: "Current password",
+                        autoComplete: "current-password"
                     }}/>
                     <TextInput attributes={{
                         type: "password",
                         name: "newPassword",
-                        label: "New password"
+                        label: "New password",
+                        autoComplete: "new-password"
                     }}/>
                     <TextInput attributes={{
                         type: "password",
                         name: "confirmNewPassword",
-                        label: "Confirm new password"
+                        label: "Confirm new password",
+                        autoComplete: "new-password"
                     }}/>
                     <Divider hidden/>
                     <Button.Group>
@@ -44,10 +47,10 @@ class Password extends React.Component {
     }
 }
 
-Password = withFormik({
-    displayName: "Password",
+ChangePassword = withFormik({
+    displayName: "ChangePassword",
 
-    validationSchema: passwordSchema,
+    validationSchema: changePasswordSchema,
 
     mapPropsToValues: () => {
         return {
@@ -63,14 +66,14 @@ Password = withFormik({
         resetForm();
         setSubmitting(false);
     }
-})(Password);
+})(ChangePassword);
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
-        changePassword: (formData) => {
+        changePassword: formData => {
             dispatch(changePassword(formData));
         }
     };
 };
 
-export default connect(null, mapDispatchToProps)(Password);
+export default connect(null, mapDispatchToProps)(ChangePassword);

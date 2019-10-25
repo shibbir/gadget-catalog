@@ -1,7 +1,7 @@
 import React from "react";
 import { Divider, Grid, Segment } from "semantic-ui-react";
-import Password from "./Password";
 import ManageOauth from "./ManageOauth";
+import ChangePassword from "./ChangePassword";
 
 export default class Profile extends React.Component {
     render() {
@@ -9,7 +9,7 @@ export default class Profile extends React.Component {
             <Segment>
                 <Grid columns={2} relaxed="very" stackable>
                     <Grid.Column>
-                        <Password/>
+                        <ChangePassword/>
                     </Grid.Column>
 
                     <Grid.Column>

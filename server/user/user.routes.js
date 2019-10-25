@@ -1,4 +1,5 @@
 const axios = require("axios");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const User = require("./user.model");
@@ -67,7 +68,7 @@ module.exports = function(app, passport) {
             }
 
             if(!user || !user.validPassword(req.body.password)) {
-                return res.sendStatus(401);
+                return res.status(401).send("Invalid email or password.");
             }
 
             res.cookie("access_token", generateAccessToken(user, "local"), {
@@ -87,20 +88,20 @@ module.exports = function(app, passport) {
         res.json(formatProfile(req.user.toJSON()));
     });
 
-    app.put("/api/profile/password", passport.authenticate("jwt", { session: false }), function(req, res) {
+    app.put("/api/profile/changepassword", passport.authenticate("jwt", { session: false }), function(req, res) {
         User.findOne({ _id: req.user._id }, "local", function(err, user) {
             if(err) {
                 return res.sendStatus(500);
             }
 
             if(!user || !user.validPassword(req.body.currentPassword)) {
-                return res.sendStatus(401);
+                return res.sendStatus(400);
             }
 
             user.local.password = user.generateHash(req.body.newPassword);
             user.save();
 
-            res.json();
+            res.status(200).send("Password changed successfully.");
         });
     });
 
@@ -150,7 +151,7 @@ module.exports = function(app, passport) {
         }
     });
 
-    app.post("/api/forgotpassowrd", function(req, res) {
+    app.post("/api/forgotpassword", function(req, res) {
         User.findOne({ $or: [
             { "facebook.email" : req.body.email },
             { "google.email": req.body.email },
@@ -163,22 +164,48 @@ module.exports = function(app, passport) {
             const transporter = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
-                    user: process.env.EMAIL_ADDRESS,
-                    pass: process.env.EMAIL_PASSWORD
+                    user: process.env.MAILER_ADDRESS,
+                    pass: process.env.MAILER_PASSWORD
                 }
             });
-    
-            transporter.sendMail({
-                from: `"Gadget Catalog" <${process.env.EMAIL_ADDRESS}>`,
-                to: req.body.email,
-                subject: "[Gadget Catalog] Password Reset Request",
-                text: "Hello world",
-                html: "<b>Hello world</b>"
-            }, function (err) {
-                if(err) return res.sendStatus(500);
-    
-                res.sendStatus(200);
-             });
+
+            doc.local.resetPasswordToken = crypto.randomBytes(20).toString("hex");
+            doc.local.resetPasswordExpires = Date.now() + 3600000;
+
+            doc.save().then(function() {
+                res.render("password-reset.html", {
+                    url: `${process.env.BASE_URL}/#/reset-password?token=${doc.local.resetPasswordToken}`
+                }, function(err, html) {
+                    transporter.sendMail({
+                        from: `"Gadget Catalog" <${process.env.MAILER_ADDRESS}>`,
+                        to: req.body.email,
+                        subject: "[Gadget Catalog] Password Reset Request",
+                        html: html
+                    }, function (err) {
+                        if(err) return res.sendStatus(500);
+
+                        res.sendStatus(200);
+                    });
+                });
+            });
+        });
+    });
+
+    app.put("/api/resetpassword", function(req, res) {
+        User.findOne({
+            "local.resetPasswordToken": req.query.token,
+            "local.resetPasswordExpires": {
+                $gt: Date.now()
+            }
+        }, function(err, doc) {
+            if(!doc) return res.status(401).send("Account doesn't exist or the token has expired.");
+
+            if(req.body.newPassword !== req.body.confirmNewPassword) return res.sendStatus(400);
+
+            doc.local.password = doc.generateHash(req.body.newPassword);
+            doc.save();
+
+            res.sendStatus(200);
         });
     });
 };

@@ -1,4 +1,4 @@
-import { string, object } from "yup";
+import { string, object, ref } from "yup";
 
 export const loginSchema = object().shape({
     email: string()
@@ -22,7 +22,7 @@ export const registerSchema = object().shape({
         .required("This field must not be empty.")
 });
 
-export const passwordSchema = object().shape({
+export const changePasswordSchema = object().shape({
     currentPassword: string()
         .min(6, "This field must be at least 6 characters long.")
         .required("This field must not be empty."),
@@ -32,9 +32,20 @@ export const passwordSchema = object().shape({
     confirmNewPassword: string()
         .min(6, "This field must be at least 6 characters long.")
         .required("This field must not be empty.")
+        .oneOf([ref("newPassword"), null], "Passwords doesn't match.")
 });
 
-export const passwordResetSchema = object().shape({
+export const resetPasswordSchema = object().shape({
+    newPassword: string()
+        .min(6, "This field must be at least 6 characters long.")
+        .required("This field must not be empty."),
+    confirmNewPassword: string()
+        .min(6, "This field must be at least 6 characters long.")
+        .required("This field must not be empty.")
+        .oneOf([ref("newPassword"), null], "Passwords doesn't match.")
+});
+
+export const forgotPasswordSchema = object().shape({
     email: string()
         .email("This field should be an valid email address.")
         .required("This field must not be empty.")

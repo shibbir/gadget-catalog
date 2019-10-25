@@ -33,7 +33,7 @@ class PrivateRoute extends React.Component {
                         <Redirect push to={{
                             pathname: "/login",
                             state: { from: props.location }
-                        }} />
+                        }}/>
                     )
                 )
             }}/>
