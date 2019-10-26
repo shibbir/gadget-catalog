@@ -53,4 +53,15 @@ describe("User Routes", function() {
 
         expect(result.status).to.equal(200);
     });
+
+    it("Should send an email if user forgets password", async function() {
+        const result = await request(app)
+            .post("/api/forgotpassword")
+            .set("Cookie", [`access_token=${user.accessToken}`])
+            .send({
+                email: user.local.email
+            });
+
+        expect(result.status).to.equal(200);
+    });
 });

@@ -162,7 +162,7 @@ module.exports = function(app, passport) {
             if(!doc) return res.status(404).send("No account is associated with this email address.");
 
             const transporter = nodemailer.createTransport({
-                service: "gmail",
+                host: process.env.SMTP_HOST,
                 auth: {
                     user: process.env.MAILER_ADDRESS,
                     pass: process.env.MAILER_PASSWORD
