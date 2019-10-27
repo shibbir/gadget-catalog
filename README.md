@@ -19,6 +19,7 @@
 - [Passport](http://passportjs.org/)
 - [Webpack](https://webpack.js.org/)
 - [Mocha](https://mochajs.org/)
+- [Nodemailer](https://nodemailer.com/)
 
 ## :cloud: Cloudinary
 
@@ -46,6 +47,7 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 TOKEN_SECRET=application_secret_token
 
+SMTP_HOST=smtp_server_name
 MAILER_ADDRESS=mailer_email_address
 MAILER_PASSWORD=mailer_email_password
 
