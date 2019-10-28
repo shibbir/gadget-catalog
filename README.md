@@ -8,26 +8,27 @@
 
 ## :hammer: Built with
 
+- [Cloudinary](https://cloudinary.com/)
+- [Draft.js](https://draftjs.org/)
+- [Express](https://expressjs.com/)
+- [Formik](https://jaredpalmer.com/formik/)
+- [Highcharts](https://www.highcharts.com/)
+- [Mocha](https://mochajs.org/)
+- [MongoDB](https://www.mongodb.com/)
+- [Nodemailer](https://nodemailer.com/)
+- [Passport](http://passportjs.org/)
 - [React](https://reactjs.org/)
 - [Redux](https://redux.js.org/)
-- [Formik](https://jaredpalmer.com/formik/)
-- [Draft.js](https://draftjs.org/)
 - [Semantic-UI-React](https://react.semantic-ui.com/)
-- [Express](https://expressjs.com/)
-- [MongoDB](https://www.mongodb.com/)
-- [Cloudinary](https://cloudinary.com/)
-- [Passport](http://passportjs.org/)
 - [Webpack](https://webpack.js.org/)
-- [Mocha](https://mochajs.org/)
-- [Nodemailer](https://nodemailer.com/)
 
 ## :cloud: Cloudinary
 
-This application requires [Cloudinary](https://cloudinary.com/), which is a Software-as-a-Service (SaaS) solution for managing media assets in the cloud. Just signup for a free account. After signing up you will find your configuration parameters in the cloudinary management console.
+This application requires [Cloudinary](https://cloudinary.com/), which is a Software-as-a-Service (SaaS) solution for managing media assets in the cloud. Just signup for a free account. After signing up you will find your configuration parameters in cloudinary management console.
 
 ## :rocket: Installation
 
-> Step 1: Rename .env.sample file to .env and configure the environment variables.
+> Step 1: Rename .env.example file to .env and configure the environment variables.
 
 ```bash
 NODE_ENV=development or production
@@ -55,12 +56,13 @@ MAILER_PASSWORD=mailer_email_password
 
 > Step 2: Install dependencies and bootstrap the application.
 
+You need to have [Node.js](https://nodejs.org/en/) and optionally [Yarn](https://yarnpkg.com/lang/en/) installed on your machine before running the followings:
+
 ```bash
 $ cd /path/to/root
-$ npm install
-
-## if you want to use yarn
 $ yarn install
+## or,
+$ npm install
 
 ## development build
 $ npm start
@@ -69,7 +71,7 @@ $ npm start
 $ npm run production
 ```
 
-## Unit Test
+## :white_check_mark: Unit Test
 
 ```bash
 $ cd /path/to/root

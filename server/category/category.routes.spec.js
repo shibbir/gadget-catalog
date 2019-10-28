@@ -9,7 +9,7 @@ const specHelper = require("../config/spec.helper");
 require("../config/lib/passport")(passport);
 require("./category.routes")(app, passport);
 
-describe("Category Routes", function() {
+describe("Category Api", function() {
     let category = {};
     const user = specHelper.users.admin;
 
