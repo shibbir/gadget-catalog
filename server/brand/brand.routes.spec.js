@@ -10,7 +10,7 @@ const specHelper = require("../config/spec.helper");
 require("../config/lib/passport")(passport);
 require("./brand.routes")(app, passport);
 
-describe("Brand Routes", function() {
+describe("Brand Api", function() {
     let brand = {};
     const user = specHelper.users.admin;
 

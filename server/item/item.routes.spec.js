@@ -11,7 +11,7 @@ const specHelper = require("../config/spec.helper");
 require("../config/lib/passport")(passport);
 require("./item.routes")(app, passport);
 
-describe("Item Routes", function() {
+describe("Item Api", function() {
     let category = {};
     let brand = {};
     let item = {};

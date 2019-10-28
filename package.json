@@ -54,7 +54,7 @@
     "redux-promise-middleware": "^6.1.1",
     "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.88.1",
-    "validator": "^11.1.0",
+    "validator": "^12.0.0",
     "yup": "^0.27.0"
   },
   "devDependencies": {
