@@ -26,37 +26,31 @@
 
 This application requires [Cloudinary](https://cloudinary.com/), which is a Software-as-a-Service (SaaS) solution for managing media assets in the cloud. Just signup for a free account. After signing up you will find your configuration parameters in cloudinary management console.
 
-## :rocket: Installation
+## :key: Configuring environment variables
 
-> Step 1: Rename .env.example file to .env and configure the environment variables.
+> Rename .env.example file to .env and adjust your environment variables. Details for each environment variables are below:
 
-```bash
-NODE_ENV=development or production
+`NODE_ENV` In what mode you want to run this application. For example *development*, *production*, or *test*
 
-BASE_URL=server_base_url
-MONGODB_URI=mongodb_connection_url
+`PORT` On which port express server will be running to. If you don't specify a port then **4040** will be used.
 
-GOOGLE_CLIENT_ID=google_client_id
-GOOGLE_CLIENT_SECRET=google_client_secret
+`BASE_URL` Applications base or root url. For example, if you didn't specify a port via `PORT` environment variable then your base url would be *http://localhost:4040*
 
-FACEBOOK_CLIENT_ID=facebook_client_id
-FACEBOOK_CLIENT_SECRET=facebook_client_secret
+`MONGODB_URI` MongoDB connection string URI. For more details visit [here](https://docs.mongodb.com/manual/reference/connection-string/).
 
-CLOUDINARY_CLOUD_NAME=your_cloudinary_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+`TOKEN_SECRET` JWT secret key. Learn more from [here](https://jwt.io/introduction/).
 
-TOKEN_SECRET=application_secret_token
+`GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` These are you OAuth 2.0 client credentials from google which you will need to configure OAuth 2.0. Learn more from [here](https://developers.google.com/identity/protocols/OAuth2).
 
-SMTP_HOST=smtp_server_name
-MAILER_ADDRESS=mailer_email_address
-MAILER_PASSWORD=mailer_email_password
+`FACEBOOK_CLIENT_ID` and `FACEBOOK_CLIENT_SECRET` These are you OAuth 2.0 client credentials from facebook which you will need to configure OAuth 2.0. Learn more from [here](https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow).
 
-```
+`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` After signing up for a free account in [Cloudinary](https://cloudinary.com/), go to your [dashboard](https://cloudinary.com/console) to obtain the required credentials to access their api. Learn more from [here](https://cloudinary.com/documentation).
 
-> Step 2: Install dependencies and bootstrap the application.
+`SMTP_HOST`, `MAILER_ADDRESS`, and `MAILER_PASSWORD` Your mail server's smtp address and your email credentials. Learn more from [here](https://nodemailer.com/smtp/). If you want to use gmail to send emails you have to allow non secure apps to access gmail. you can do this by going to your gmail settings [here](https://myaccount.google.com/lesssecureapps).
 
-You need to have [Node.js](https://nodejs.org/en/) and optionally [Yarn](https://yarnpkg.com/lang/en/) installed on your machine before running the followings:
+## :rocket: Installation and bootstrapping
+
+> You need to have [Node.js](https://nodejs.org/en/) and optionally [Yarn](https://yarnpkg.com/lang/en/) installed on your machine before running the followings:
 
 ```bash
 $ cd /path/to/root
@@ -71,7 +65,7 @@ $ npm start
 $ npm run production
 ```
 
-## :white_check_mark: Unit Test
+## :heavy_check_mark: Unit Test
 
 ```bash
 $ cd /path/to/root
@@ -83,5 +77,5 @@ $ npm test
 $ npm run coverage
 ```
 
-## :key: License
+## :memo: License
 <a href="https://opensource.org/licenses/MIT">The MIT License</a> Copyright &copy; 2020 Shibbir Ahmed
