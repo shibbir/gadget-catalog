@@ -1,8 +1,8 @@
 const path = require("path");
-const User = require("../../user/user.model");
-const mongoose = require("./mongoose");
 const passport = require("passport");
 const cache = require("memory-cache");
+const mongoose = require("./mongoose");
+const User = require("../../user/user.model");
 
 module.exports.start = () => {
     require("dotenv").config();
