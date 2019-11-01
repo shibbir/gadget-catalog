@@ -28,14 +28,14 @@
 </div>
 
 ## Table of Contents
-- [Built with](#built-with)
-- [Configuring Cloudinary](#configuring-cloudinary)
-- [Configuring environment variables](#configuring-environment-variables)
-- [Installation and bootstrapping](#installation-and-bootstrapping)
-- [Running tests](#running-tests)
-- [Demo](#demo)
-- [Bug or Feature Request](#bug-or-feature-request)
-- [License](#license)
+- [Built with](#:hammer:-built-with)
+- [Configuring Cloudinary](#:cloud:-configuring-cloudinary)
+- [Configuring environment variables](#:key:-configuring-environment-variables)
+- [Installation and bootstrapping](#:rocket:-installation-and-bootstrapping)
+- [Running tests](#:heavy_check_mark:-running-tests)
+- [Demo](#:flashlight:-demo)
+- [Bug or Feature Request](#:beetle:-bug-or-feature-request)
+- [License](#:memo:-License)
 
 ## :hammer: Built with
 
