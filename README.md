@@ -27,12 +27,12 @@
     </a>
 </div>
 
-## Table of Contents
+## :bookmark: Table of Contents
 - [Built with](#hammer-built-with)
 - [Configuring Cloudinary](#cloud-configuring-cloudinary)
 - [Configuring environment variables](#key-configuring-environment-variables)
 - [Installation and bootstrapping](#rocket-installation-and-bootstrapping)
-- [Running tests](#heavy_check_mark:-running-tests)
+- [Running tests](#heavy_check_mark-running-tests)
 - [Demo](#flashlight-demo)
 - [Bug or Feature Request](#beetle-bug-or-feature-request)
 - [License](#memo-License)

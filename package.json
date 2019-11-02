@@ -5,7 +5,7 @@
   "author": "Shibbir Ahmed",
   "license": "MIT",
   "engines": {
-    "node": ">=10.15.1"
+    "node": ">=12.13.0"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack --progress && nodemon --watch server --inspect server.js",
@@ -22,12 +22,12 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.2.0",
-    "draft-js": "^0.11.1",
+    "draft-js": "^0.11.2",
     "draft-js-export-html": "^1.4.1",
     "express": "^4.17.1",
     "express-hbs": "^2.2.0",
     "fomantic-ui-css": "^2.7.8",
-    "formik": "^2.0.1",
+    "formik": "^2.0.3",
     "glob": "^7.1.5",
     "highcharts": "^7.2.0",
     "izitoast": "^1.4.0",
@@ -79,7 +79,7 @@
     "terser-webpack-plugin": "^2.2.1",
     "url-loader": "^2.2.0",
     "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9",
+    "webpack-cli": "^3.3.10",
     "webpack-merge": "^4.2.2"
   }
 }
