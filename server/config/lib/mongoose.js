@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 module.exports.connect = function(callback) {
     mongoose.Promise = global.Promise;
 
-    let db = mongoose.connect(process.env.MONGODB_URI, {
+    let db = mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/gadget-catalog", {
         useCreateIndex: true,
         useNewUrlParser: true,
         useFindAndModify: false,

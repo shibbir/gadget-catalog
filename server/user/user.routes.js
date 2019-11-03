@@ -174,7 +174,7 @@ module.exports = function(app, passport) {
 
             doc.save().then(function() {
                 res.render("password-reset.html", {
-                    url: `${process.env.BASE_URL}/#/reset-password?token=${doc.local.resetPasswordToken}`
+                    url: `${req.headers.origin}/#/reset-password?token=${doc.local.resetPasswordToken}`
                 }, function(err, html) {
                     transporter.sendMail({
                         from: `"Gadget Catalog" <${process.env.MAILER_ADDRESS}>`,

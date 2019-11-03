@@ -96,7 +96,7 @@ class ItemForm extends React.Component {
                     type: "file",
                     name: "files",
                     label: "Upload images",
-                    multiple: "multiple",
+                    multiple: true,
                     onChange: handleFileChange
                 }}/>
                 <Divider hidden/>

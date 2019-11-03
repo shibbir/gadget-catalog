@@ -1,8 +1,8 @@
 const path = require("path");
-const User = require("../../user/user.model");
-const mongoose = require("./mongoose");
 const passport = require("passport");
 const cache = require("memory-cache");
+const mongoose = require("./mongoose");
+const User = require("../../user/user.model");
 
 module.exports.start = () => {
     require("dotenv").config();
@@ -11,13 +11,15 @@ module.exports.start = () => {
     const app = require("./express")();
 
     mongoose.connect(function () {
+        if(process.env.SEED_DB) {
+            require("../seeder").run();
+        }
+
         User.findOne({ role: "admin" }, function(err, doc) {
             if(doc) {
                 cache.put("adminId", doc._id);
             }
         });
-
-        //require("../seeder").run();
 
         require(path.join(process.cwd(), "server/core/core.routes"))(app);
         require(path.join(process.cwd(), "server/user/user.routes"))(app, passport);
