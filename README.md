@@ -61,13 +61,13 @@ This application requires [Cloudinary](https://cloudinary.com/), which is a Soft
 Name | Default value | Description
 ------------ | ------------- | -------------
 **PORT** | `4040` | On which port express server will be running to
-**BASE_URL** | - | Applications base or root url. For example, if you didn't specify a port via `PORT` environment variable then your base url would be *http://localhost:4040*
+**SEED_DB** | `undefined` | Seed the database with default data
 **MONGODB_URI** | `mongodb://localhost/gadget-catalog` | MongoDB connection string URI. For more details visit [here](https://docs.mongodb.com/manual/reference/connection-string/).
 **TOKEN_SECRET** | - | JWT secret key. Learn more from [here](https://jwt.io/introduction/).
 **GOOGLE_CLIENT_ID** and **GOOGLE_CLIENT_SECRET** | - | These are you OAuth 2.0 client credentials from google which you will need to configure OAuth 2.0. Learn more from [here](https://developers.google.com/identity/protocols/OAuth2).
 **FACEBOOK_CLIENT_ID** and **FACEBOOK_CLIENT_SECRET** | - | These are you OAuth 2.0 client credentials from facebook which you will need to configure OAuth 2.0. Learn more from [here](https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow).
 **CLOUDINARY_CLOUD_NAME**, **CLOUDINARY_API_KEY**, and **CLOUDINARY_API_SECRET** | - | After signing up for a free account in [Cloudinary](https://cloudinary.com/), go to your [dashboard](https://cloudinary.com/console) to obtain the required credentials to access their api. Learn more from [here](https://cloudinary.com/documentation).
-**SMTP_HOST**, **MAILER_ADDRESS**, and **MAILER_PASSWORD** | - | Your mail server's smtp address and your email credentials. Learn more from [here](https://nodemailer.com/smtp/). If you want to use gmail to send emails you have to allow non secure apps to access gmail. you can do this by going to your gmail settings [here](https://myaccount.google.com/lesssecureapps).
+**SMTP_HOST**, **MAILER_ADDRESS**, and **MAILER_PASSWORD** | - | Your mail server's smtp address and your email credentials. Learn more from [here](https://nodemailer.com/smtp/). If you want to use gmail to send emails you have to allow non secure apps to access gmail. You can do this by going to your gmail settings [here](https://myaccount.google.com/lesssecureapps).
 
 ## :rocket: Installation and bootstrapping
 > You need to have [Node.js](https://nodejs.org/en/) and optionally [Yarn](https://yarnpkg.com/lang/en/) installed on your machine before running the followings:
