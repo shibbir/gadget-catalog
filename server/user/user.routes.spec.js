@@ -8,7 +8,7 @@ const specHelper = require("../config/spec.helper");
 require("../config/lib/passport")(passport);
 require("./user.routes")(app, passport);
 
-describe("User Routes", function() {
+describe("User Api", function() {
     const user = specHelper.users.admin;
 
     it("Should create a basic user", async function() {
