@@ -60,7 +60,7 @@ This application requires [Cloudinary](https://cloudinary.com/), which is a Soft
  
 Name | Default value | Description
 ------------ | ------------- | -------------
-**PORT** | `4040` | On which port express server will be running to
+**PORT** | `undefined` | On which port express server will be running to
 **SEED_DB** | `undefined` | Seed the database with default data
 **MONGODB_URI** | `mongodb://localhost/gadget-catalog` | MongoDB connection string URI. For more details visit [here](https://docs.mongodb.com/manual/reference/connection-string/).
 **TOKEN_SECRET** | - | JWT secret key. Learn more from [here](https://jwt.io/introduction/).

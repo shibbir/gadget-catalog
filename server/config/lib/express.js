@@ -32,7 +32,7 @@ module.exports = function() {
         }
     }).array("files"));
 
-    app.set("port", process.env.PORT || 4040);
+    app.set("port", process.env.PORT);
 
     app.enable("trust proxy");
 

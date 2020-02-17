@@ -1,8 +1,7 @@
-import _ from 'lodash';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FormattedDate, FormattedNumber } from 'react-intl';
-import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb } from 'semantic-ui-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { FormattedDate, FormattedNumber } from "react-intl";
+import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb } from "semantic-ui-react";
 
 export default class ItemDetail extends React.Component {
     constructor(props) {
@@ -27,18 +26,18 @@ export default class ItemDetail extends React.Component {
         }
 
         if(item.files && item.files.length) {
-            item.activeImage = _.find(item.files, { active: true });
+            item.activeImage = item.files.find(x => x.active === true);
         }
 
         const sections = [
-            { key: 'Items', content: 'Items', href: '#/items' },
-            { key: 'Category', content: `${item.category.name}`, href: `#/items?categoryId=${item.category._id}` },
+            { key: "Items", content: "Items", href: "#/items" },
+            { key: "Category", content: `${item.category.name}`, href: `#/items?categoryId=${item.category._id}` },
             { key: `${item.name}`, content: `${item.name}`, active: true }
         ];
 
         return (
             <div>
-                <Breadcrumb size='small' sections={sections}/>
+                <Breadcrumb size="small" sections={sections}/>
 
                 <Divider hidden/>
 
@@ -61,7 +60,7 @@ export default class ItemDetail extends React.Component {
                     <Grid.Column width={6}>
                         <Item>
                             <Item.Content>
-                                <Header as='h3'>{item.name}</Header>
+                                <Header as="h3">{item.name}</Header>
                                 <Divider hidden/>
 
                                 <Divider horizontal>Meta Informations</Divider>
@@ -72,7 +71,7 @@ export default class ItemDetail extends React.Component {
                                     { item.price &&
                                         <div>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></div>
                                     }
-                                    <div>Purchase Date: <FormattedDate value={item.purchaseDate} day="numeric" month="long" year="numeric"/></div>
+                                    <div>Purchase Date: <FormattedDate value={item.purchaseDate} day="2-digit" month="long" year="numeric"/></div>
                                 </Item.Meta>
 
                                 <Divider horizontal>Description</Divider>
@@ -121,19 +120,19 @@ export default class ItemDetail extends React.Component {
                                         }
 
                                         <Card.Content className="ui center aligned">
-                                            <Image src={file.secure_url} size='small'/>
+                                            <Image src={file.secure_url} size="small"/>
                                         </Card.Content>
 
                                         { user && !user.isAdmin &&
                                             <Card.Content extra>
                                                 <a onClick={this.props.setAsActiveImage.bind(null, this.props.itemId, file._id)} disabled={file.active}>
-                                                    <Icon color='teal' name="checkmark"/>
+                                                    <Icon color="teal" name="checkmark"/>
                                                     Set as active
                                                 </a>
 
                                                 <div className="right floated">
                                                     <a onClick={this.props.deleteImage.bind(null, this.props.itemId, file._id)}>
-                                                        <Icon color='red' name="delete"/>
+                                                        <Icon color="red" name="delete"/>
                                                         Discard
                                                     </a>
                                                 </div>
