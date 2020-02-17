@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, withFormik } from "formik";
+import { format, parseISO } from "date-fns";
 import { Divider, Button } from "semantic-ui-react";
 import { EditorState, ContentState, convertFromHTML } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
@@ -119,11 +120,12 @@ ItemForm = withFormik({
         if(props.itemId && props.item) {
             props.item.description = props.item.description || "";
             const blocksFromHTML = convertFromHTML(props.item.description);
+
             return {
                 name: props.item.name,
                 categoryId: props.item.categoryId,
                 brandId: props.item.brandId,
-                purchaseDate: props.item.purchaseDate,
+                purchaseDate: format(parseISO(props.item.purchaseDate), "y-MM-d"),
                 price: props.item.price,
                 editorState: blocksFromHTML.contentBlocks
                     ? new EditorState.createWithContent(ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap))

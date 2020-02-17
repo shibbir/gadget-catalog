@@ -8,11 +8,10 @@ class ColumnChart extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            yearRange: `${new Date().getFullYear() - 4}-${new Date().getFullYear()}`,
+            yearRange: `${new Date().getFullYear() - 9}-${new Date().getFullYear()}`,
             options: [
-                { key: "2015-2019", value: "2015-2019", text: "2015-2019" },
-                { key: "2010-2014", value: "2010-2014", text: "2010-2014" },
-                { key: "2005-2009", value: "2005-2009", text: "2005-2009" }
+                { key: "2011-2020", value: "2011-2020", text: "2011-2020" },
+                { key: "2001-2010", value: "2001-2010", text: "2001-2010" }
             ]
         };
         props.fetchItemsByYearRange(this.state.yearRange);

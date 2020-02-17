@@ -1,6 +1,7 @@
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 
 module.exports = {
     devtool: "eval-source-map",
@@ -18,6 +19,12 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin({
             verbose: true
+        }),
+
+        new LodashModuleReplacementPlugin({
+            shorthands: true,
+            currying: true,
+            collections: true
         })
     ],
 

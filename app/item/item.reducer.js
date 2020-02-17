@@ -1,4 +1,3 @@
-import moment from "moment";
 import Types from "./item.types";
 
 const initialState = {
@@ -13,7 +12,6 @@ export default function reducer(state=initialState, action) {
             return { ...state };
         }
         case Types.GET_ITEM_FULFILLED: {
-            action.payload.data.purchaseDate = moment(action.payload.data.purchaseDate).format("Y-MM-DD");
             return { ...state, item: action.payload.data };
         }
         case Types.GET_ITEMS_FULFILLED: {
