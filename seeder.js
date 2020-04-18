@@ -1,7 +1,7 @@
 const async = require("async");
-const Category = require("../category/category.model");
-const Brand = require("../brand/brand.model");
-const User = require("../user/user.model");
+const User = require("./server/user/user.model");
+const Brand = require("./server/brand/brand.model");
+const Category = require("./server/category/category.model");
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
@@ -65,9 +65,12 @@ const brandSeeder = function(user, callback) {
     });
 };
 
-exports.run = function () {
+require("dotenv").config();
+
+mongoose.connect(function() {
     async.waterfall([ userSeeder, categorySeeder, brandSeeder ], function(err) {
         if(err) console.error(err);
         else console.info("DB seed completed!");
+        process.exit();
     });
-};
+});

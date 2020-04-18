@@ -1,16 +1,11 @@
 const fs = require("fs");
 const async = require("async");
-const cache = require("memory-cache");
 const validator = require("validator");
 const Item = require("./item.model");
 const cloudinary = require("../config/lib/cloudinary")();
 
 function getItem(req, res) {
-    let query = { _id: req.params.id, createdBy: req.user._id };
-
-    if(req.user._id.equals(cache.get("adminId"))) {
-        query = { _id: req.params.id };
-    }
+    let query = req.user.role === "admin" ? { _id: req.params.id } : { _id: req.params.id, createdBy: req.user._id };
 
     Item
         .findOne(query)
@@ -38,13 +33,7 @@ function getItems(req, res) {
     const size = req.query.size ? +req.query.size : 16;
     const skip = page > 0 ? ((page - 1) * size) : 0;
 
-    let query = {
-        createdBy: req.user._id
-    };
-
-    if(req.user._id.equals(cache.get("adminId"))) {
-        query = {};
-    }
+    let query = req.user.role === "admin" ? {} : {createdBy: req.user._id};
 
     if(req.query.categoryId) {
         query.categoryId = req.query.categoryId;

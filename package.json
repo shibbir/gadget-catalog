@@ -12,7 +12,8 @@
     "webpack:production": "cross-env NODE_ENV=production webpack --progress",
     "production": "run-s webpack:production pm2:production",
     "test": "nyc mocha --color --timeout 10000 --recursive './server/**/*spec.js'",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "seed": "node seeder.js"
   },
   "dependencies": {
     "async": "^3.2.0",
@@ -34,7 +35,6 @@
     "izitoast": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
-    "memory-cache": "^0.2.0",
     "mongoose": "^5.9.9",
     "multer": "^1.4.2",
     "nodemailer": "^6.4.6",

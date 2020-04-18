@@ -1,4 +1,3 @@
-const cache = require("memory-cache");
 const Brand = require("./brand.model");
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
@@ -16,15 +15,7 @@ function getBrand(req, res) {
 }
 
 function getBrands(req, res) {
-    let query = {
-        $or: [{ createdBy: req.user._id }, { createdBy: cache.get("adminId") }]
-    };
-
-    if(req.user._id.equals(cache.get("adminId"))) {
-        query = {};
-    } else if(req.query.filter_by && req.query.filter_by.toLowerCase() === "user") {
-        query = { createdBy: req.user._id };
-    }
+    let query = req.user.role === "admin" ? {} : {createdBy: req.user._id};
 
     Brand.find(query).sort("name").exec(function(err, docs) {
         if(err) return res.sendStatus(500);

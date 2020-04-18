@@ -1,6 +1,5 @@
 const fs = require("fs");
 const async = require("async");
-const cache = require("memory-cache");
 const Category = require("./category.model");
 const cloudinary = require("../config/lib/cloudinary")();
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
@@ -11,11 +10,7 @@ async function getCategory(req, res) {
 }
 
 async function getCategories(req, res) {
-    let match = { createdBy: req.user._id };
-
-    if(req.user._id.equals(cache.get("adminId"))) {
-        match = {};
-    }
+    let match = req.user.role === "admin" ? {} : { createdBy: req.user._id };
 
     const docs = await Category.find().populate({
         path: "items",

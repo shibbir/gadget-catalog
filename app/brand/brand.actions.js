@@ -1,12 +1,12 @@
 import axios from "axios";
 import Types from "./brand.types";
 
-export function getBrands(query = "") {
+export function getBrands() {
     return {
         type: Types.GET_BRANDS,
         payload: axios({
             method: "get",
-            url: `/api/brands${query}`
+            url: "/api/brands"
         })
     };
 }

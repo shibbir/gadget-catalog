@@ -25,7 +25,7 @@ import CategoryEditPage from "../category/pages/CategoryEditPage";
 import CategoryListContainer from "../category/containers/CategoryListContainer";
 import BrandAddPage from "../brand/pages/BrandAddPage";
 import BrandEditPage from "../brand/pages/BrandEditPage";
-import BrandListContainer from "../brand/containers/BrandListContainer";
+import Brands from "../brand/brands.component";
 import { getProfile } from "../user/user.actions";
 
 let refCount = 0;
@@ -89,7 +89,7 @@ class App extends React.Component {
                 <PrivateRoute exact path="/categories/add" component={CategoryAddPage}/>
                 <PrivateRoute exact path="/categories/:id/edit" component={CategoryEditPage}/>
 
-                <PrivateRoute exact path="/brands" component={BrandListContainer}/>
+                <PrivateRoute exact path="/brands" component={Brands}/>
                 <PrivateRoute exact path="/brands/add" component={BrandAddPage}/>
                 <PrivateRoute exact path="/brands/:id/edit" component={BrandEditPage}/>
 
