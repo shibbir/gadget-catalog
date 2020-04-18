@@ -1,21 +1,21 @@
 import React from "react";
-import { Container, Icon, Header, Divider } from "semantic-ui-react";
-
-import Footer from "../shared/components/Footer";
+import { Container, Icon, Header, Divider, Segment, Button } from "semantic-ui-react";
 
 export default class NoMatch extends React.Component {
     render() {
         return (
-            <>
-                <Container>
-                    <Divider hidden/>
-                    <Header as="h1">
-                        <Icon name="frown outline" size="large" color="red"/>
-                        404... Page not found.
+            <Container>
+                <Divider hidden/>
+                <Segment placeholder>
+                    <Header icon>
+                        <Icon name="search" color="red"/>
+                        The page you are looking for might have been removed had its name changed or is temporarily unavailable.
                     </Header>
-                </Container>
-                <Footer/>
-            </>
+                    <Segment.Inline>
+                        <Button primary href="/">GO HOME</Button>
+                    </Segment.Inline>
+                </Segment>
+            </Container>
         );
     }
 }

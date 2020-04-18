@@ -116,7 +116,7 @@ export default class ItemList extends React.Component {
             activeImage = activeImage ? activeImage.secure_url : null;
 
             return (
-                <Card key={item._id} raised href={`#/items/${item._id}`}>
+                <Card key={item._id} raised href={`/items/${item._id}`}>
                     <Card.Content header={item.name} className="ui center aligned"/>
                     <Card.Content className="ui center aligned image-wrapper">
                         { activeImage
