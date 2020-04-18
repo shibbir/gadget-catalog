@@ -10,7 +10,7 @@ function generateAccessToken(user, provider) {
         name: user.displayName,
         email: user[provider].email
     }, process.env.TOKEN_SECRET,{
-        expiresIn: "1d",
+        expiresIn: "2d",
         issuer: user._id.toString()
     });
 };
@@ -43,22 +43,41 @@ function formatProfile(user) {
 };
 
 module.exports = function(app, passport) {
-    app.post("/api/register", function(req, res, next) {
-        passport.authenticate("local-signup", function(err, user, info) {
-            if(err || !user) {
-                return res.status(400).json({ message: info.message });
+    app.post("/api/register", function(req, res) {
+        const {name, email, password} = req.body;
+
+        User.findOne({ $or: [
+            { "local.email": email },
+            { "facebook.email": email },
+            { "google.email": email }
+        ]}, function(err, doc) {
+            if(err) return res.sendStatus(500);
+
+            if(doc) {
+                return res.status(400).send("This email address is already registered.");
             }
 
-            res.cookie("access_token", generateAccessToken(user, "local"), {
-                expires: new Date(Date.now() + 8.64e+7),
-                httpOnly: true
-            });
+            let user = new User();
 
-            res.json({
-                name: user.displayName,
-                isAdmin: user.role === "admin"
+            user.displayName = name;
+            user.local.name = name;
+            user.local.email = email;
+            user.local.password = user.generateHash(password);
+
+            user.save(function(err, doc) {
+                if(err) return res.sendStatus(500);
+
+                res.cookie("access_token", generateAccessToken(doc, "local"), {
+                    expires: new Date(Date.now() + 8.64e+7),
+                    httpOnly: true
+                });
+
+                res.json({
+                    name: name,
+                    isAdmin: false
+                });
             });
-        })(req, res, next);
+        });
     });
 
     app.post("/api/login", function(req, res) {
@@ -110,13 +129,13 @@ module.exports = function(app, passport) {
     app.get("/oauth/facebook/callback", function(req, res, next) {
         passport.authenticate("facebook", function(err, user) {
             if(err) {
-                return res.redirect(`/#/?provider=facebook&error=${err.message}`);
+                return res.redirect(`/?provider=facebook&error=${err.message}`);
             }
 
             res.cookie("access_token", generateAccessToken(user, "facebook"), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
-            }).redirect("/#/");
+            }).redirect("/");
         })(req, res, next)
     });
 
@@ -129,13 +148,13 @@ module.exports = function(app, passport) {
     app.get("/oauth/google/callback", function(req, res, next) {
         passport.authenticate("google", function(err, user) {
             if(err) {
-                return res.redirect(`/#/?provider=google&error=${err.message}`);
+                return res.redirect(`/?provider=google&error=${err.message}`);
             }
 
             res.cookie("access_token", generateAccessToken(user, "google"), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
-            }).redirect("/#/");
+            }).redirect("/");
         })(req, res, next);
     });
 
@@ -174,7 +193,7 @@ module.exports = function(app, passport) {
 
             doc.save().then(function() {
                 res.render("password-reset.html", {
-                    url: `${req.headers.origin}/#/reset-password?token=${doc.local.resetPasswordToken}`
+                    url: `${req.headers.origin}/reset-password?token=${doc.local.resetPasswordToken}`
                 }, function(err, html) {
                     transporter.sendMail({
                         from: `"Gadget Catalog" <${process.env.MAILER_ADDRESS}>`,

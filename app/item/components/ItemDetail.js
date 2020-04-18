@@ -30,8 +30,8 @@ export default class ItemDetail extends React.Component {
         }
 
         const sections = [
-            { key: "Items", content: "Items", href: "#/items" },
-            { key: "Category", content: `${item.category.name}`, href: `#/items?categoryId=${item.category._id}` },
+            { key: "Items", content: "Items", href: "/items" },
+            { key: "Category", content: `${item.category.name}`, href: `/items?categoryId=${item.category._id}` },
             { key: `${item.name}`, content: `${item.name}`, active: true }
         ];
 
@@ -91,7 +91,7 @@ export default class ItemDetail extends React.Component {
                             <>
                                 <Divider section/>
 
-                                <Button color="blue" href={`#/items/${item._id}/edit`}>
+                                <Button color="blue" href={`/items/${item._id}/edit`}>
                                     <Icon name="pencil"/> Edit
                                 </Button>
                                 <Button color="red"

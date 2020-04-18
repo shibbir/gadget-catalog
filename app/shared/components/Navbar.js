@@ -11,7 +11,7 @@ class Navbar extends React.Component {
             <Menu stackable borderless>
                 <Container>
                     <Menu.Item header>
-                        <img src="images/logo.png"/>
+                        <img src="/images/logo.png"/>
                         Gadget Catalog
                     </Menu.Item>
                     <NavLink to="/" activeClassName="active" className="item">
