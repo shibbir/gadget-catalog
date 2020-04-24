@@ -1,14 +1,10 @@
 const faker = require("faker");
 const request = require("supertest");
-const passport = require("passport");
 const expect = require("chai").expect;
 
 const Brand = require("./brand.model");
 const app = require("../../../config/server/lib/express")();
 const specHelper = require("../../../config/server/spec.helper");
-
-require("../../../config/server/lib/passport")(passport);
-require("./brand.routes")(app, passport);
 
 describe("Brand Api", function() {
     let brand = {};

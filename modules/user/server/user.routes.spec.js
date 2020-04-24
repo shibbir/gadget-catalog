@@ -1,12 +1,9 @@
 const faker = require("faker");
 const request = require("supertest");
-const passport = require("passport");
 const expect = require("chai").expect;
+
 const app = require("../../../config/server/lib/express")();
 const specHelper = require("../../../config/server/spec.helper");
-
-require("../../../config/server/lib/passport")(passport);
-require("./user.routes")(app, passport);
 
 describe("User Api", function() {
     const user = specHelper.users.admin;

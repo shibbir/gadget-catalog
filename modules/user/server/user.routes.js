@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const User = require("./user.model");
+const passport = require("passport");
 
 function generateAccessToken(user, provider) {
     return jwt.sign({
@@ -42,7 +43,7 @@ function formatProfile(user) {
     return profile;
 };
 
-module.exports = function(app, passport) {
+module.exports = function(app) {
     app.post("/api/register", function(req, res) {
         const {name, email, password} = req.body;
 

@@ -1,13 +1,10 @@
 const faker = require("faker");
 const request = require("supertest");
-const passport = require("passport");
 const expect = require("chai").expect;
+
 const Category = require("./category.model");
 const app = require("../../../config/server/lib/express")();
 const specHelper = require("../../../config/server/spec.helper");
-
-require("../../../config/server/lib/passport")(passport);
-require("./category.routes")(app, passport);
 
 describe("Category Api", function() {
     let category = {};

@@ -1,7 +1,8 @@
-const User = require("../../../../modules/user/server/user.model");
+const passport = require("passport");
+const User = require("../user.model");
 const FacebookStrategy = require("passport-facebook").Strategy;
 
-module.exports = function(passport) {
+module.exports = function() {
     passport.use(new FacebookStrategy({
         graphAPIVersion: "v4.0",
         clientID: process.env.FACEBOOK_CLIENT_ID,

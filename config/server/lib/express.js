@@ -36,5 +36,9 @@ module.exports = function() {
 
     app.enable("trust proxy");
 
+    config.server.routes.forEach(function (routePath) {
+        require(path.resolve(routePath))(app);
+    });
+
     return app;
 };

@@ -1,4 +1,6 @@
-module.exports = function (app, passport) {
+const passport = require("passport");
+
+module.exports = function (app) {
     const controller = require("./brand.controller");
 
     app.route("/api/brands")

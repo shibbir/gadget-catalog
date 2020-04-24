@@ -1,7 +1,8 @@
-const User = require("../../../../modules/user/server/user.model");
+const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
+const User = require("../user.model");
 
-module.exports = function(passport) {
+module.exports = function() {
     function cookieExtractor(req) {
         let token = null;
         if (req && req.cookies) {
