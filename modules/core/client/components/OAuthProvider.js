@@ -3,7 +3,7 @@ import { Button, Segment, Icon, Divider } from "semantic-ui-react";
 
 export default function SocialAuthService() {
     return (
-        <div>
+        <>
             <Divider hidden/>
             <Segment className="stacked center aligned">
                 <Divider horizontal>or, use social service</Divider>
@@ -16,6 +16,6 @@ export default function SocialAuthService() {
                     </Button>
                 </div>
             </Segment>
-        </div>
+        </>
     );
 }

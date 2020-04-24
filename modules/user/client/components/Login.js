@@ -84,7 +84,7 @@ export default class Login extends React.Component {
                                     }}/>
 
                                     <Button fluid type="submit" className="large teal">Login</Button>
-                                    <div><Link to="#" onClick={e => this.openPasswordResetModal(e)}>Forgot password?</Link></div>
+                                    <div><button className="ui primary tertiary button" onClick={e => this.openPasswordResetModal(e)}>Forgot password?</button></div>
 
                                     <Divider hidden/>
                                     Don't have an account? <Link to="/register">Sign up</Link>.
