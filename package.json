@@ -11,7 +11,7 @@
     "pm2:production": "cross-env NODE_ENV=production pm2 start server.js",
     "webpack:production": "cross-env NODE_ENV=production webpack --progress",
     "production": "run-s webpack:production pm2:production",
-    "test": "nyc mocha --color --timeout 10000 --recursive './server/**/*spec.js'",
+    "test": "nyc mocha --color --timeout 10000 --recursive './modules/**/*spec.js'",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "seed": "node seeder.js"
   },
