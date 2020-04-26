@@ -13,8 +13,8 @@ export default function ItemRoutes() {
         <Switch>
             <PrivateRoute exact path={path} component={ItemList}/>
             <PrivateRoute path={`${path}/add`} component={ItemAddPage}/>
-            <PrivateRoute path={`${path}/:id`} component={ItemDetailContainer}/>
-            <PrivateRoute path={`${path}/:id/edit`} component={ItemEditPage}/>
+            <PrivateRoute exact path={`${path}/:id`} component={ItemDetailContainer}/>
+            <PrivateRoute exact path={`${path}/:id/edit`} component={ItemEditPage}/>
         </Switch>
     );
 }

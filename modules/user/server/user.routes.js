@@ -18,6 +18,7 @@ function generateAccessToken(user, provider) {
 
 function formatProfile(user) {
     let profile = {
+        _id: user._id,
         name: user.displayName,
         isAdmin: user.role === "admin"
     };

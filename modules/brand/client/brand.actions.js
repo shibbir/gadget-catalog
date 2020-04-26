@@ -33,7 +33,7 @@ export function updateBrand(formData, id) {
     };
 }
 
-export function fetchBrand(id) {
+export function getBrand(id) {
     return {
         type: Types.GET_BRAND,
         payload: axios({

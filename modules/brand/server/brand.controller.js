@@ -1,4 +1,5 @@
 const Brand = require("./brand.model");
+const User = require("../../user/server/user.model");
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
@@ -14,14 +15,19 @@ function getBrand(req, res) {
     });
 }
 
-function getBrands(req, res) {
-    let query = req.user.role === "admin" ? {} : {createdBy: req.user._id};
+async function getBrands(req, res) {
+    const admin = await User.findOne({role: "admin"});
 
-    Brand.find(query).sort("name").exec(function(err, docs) {
-        if(err) return res.sendStatus(500);
+    try {
+        const docs = await Brand.find({ $or: [
+            { createdBy : req.user.id },
+            { createdBy: admin.id }
+        ]}).sort("name").exec();
 
         res.json(docs);
-    });
+    } catch(err) {
+        return res.sendStatus(500);
+    }
 }
 
 function createBrand(req, res) {

@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getBrands: () => dispatch(getBrands()),
         getCategories: () => dispatch(getCategories()),
-        fetchItems: (query) => dispatch(fetchItems(query))
+        fetchItems: query => dispatch(fetchItems(query))
     };
 }
 

@@ -68,7 +68,7 @@ before(async function() {
 
 after(async function() {
     await mongoose.connection.dropDatabase();
-    mongoose.connection.close()
+    mongoose.connection.close();
 });
 
 module.exports = {

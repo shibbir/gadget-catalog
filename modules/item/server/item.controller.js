@@ -4,33 +4,27 @@ const validator = require("validator");
 const Item = require("./item.model");
 const cloudinary = require("../../../config/server/lib/cloudinary")();
 
-function getItem(req, res) {
+async function getItem(req, res) {
     let query = req.user.role === "admin" ? { _id: req.params.id } : { _id: req.params.id, createdBy: req.user._id };
 
-    Item
-        .findOne(query)
-        .populate("brand", "name")
-        .populate("category", "name")
-        .exec(function(err, doc) {
-            if(err) return res.sendStatus(500);
+    try {
+        let doc = await Item.findOne(query).populate("brand", "name").populate("category", "name").exec();
 
-            if(!doc) {
-                return res.status(400);
-            }
+        if(!doc) return res.sendStatus(400);
 
-            doc = doc.toJSON();
+        if(doc.description) {
+            doc.description = validator.unescape(doc.description);
+        }
 
-            if(doc.description) {
-                doc.description = validator.unescape(doc.description);
-            }
-
-            res.json(doc);
-    });
+        res.json(doc);
+    } catch(err) {
+        return res.status(500).send(err.stack);
+    }
 }
 
 function getItems(req, res) {
     const page = req.query.page ? +req.query.page : 1;
-    const size = req.query.size ? +req.query.size : 16;
+    const size = 20;
     const skip = page > 0 ? ((page - 1) * size) : 0;
 
     let query = req.user.role === "admin" ? {} : {createdBy: req.user._id};
@@ -52,7 +46,8 @@ function getItems(req, res) {
             res.json({
                 pagination: {
                     page,
-                    pages: Math.ceil(count / size)
+                    pages: Math.ceil(count / size),
+                    count: count
                 },
                 data: docs
             });

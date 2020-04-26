@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
-import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segment, Header, Grid } from "semantic-ui-react";
+import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segment, Header } from "semantic-ui-react";
 
 export default class ItemList extends React.Component {
     constructor(props) {
@@ -108,8 +108,8 @@ export default class ItemList extends React.Component {
             return { key: option._id, value: option._id, text: option.name };
         });
 
-        brandOptions.unshift({ key: "-1", value: "-1", text: "None" });
-        categoryOptions.unshift({ key: "-1", value: "-1", text: "None" });
+        brandOptions.unshift({ key: "-1", value: "-1", text: "Select Brand" });
+        categoryOptions.unshift({ key: "-1", value: "-1", text: "Select Category" });
 
         let cards = data.map(function(item) {
             let activeImage = item.files.filter(x => x.active)[0];
@@ -150,90 +150,99 @@ export default class ItemList extends React.Component {
         });
 
         return (
-            <Grid>
-                { cards.length > 0 &&
-                    <Grid.Column width={3}>
-                        <Form onSubmit={this.filter}>
-                            <Form.Dropdown
-                                selection search
-                                label="Category"
-                                name="categoryId"
-                                options={categoryOptions}
-                                value={categoryId}
-                                onChange={this.handleInputChange}
-                            />
-                            <Form.Dropdown
-                                selection search
-                                label="Brand"
-                                name="brandId"
-                                options={brandOptions}
-                                value={brandId}
-                                onChange={this.handleInputChange}
-                            />
+            <>
 
-                            <Button.Group>
-                                <Button type="submit" positive>
-                                    <Icon name="filter"/> Filter
-                                </Button>
-                                <Button.Or />
-                                <Button type="button" onClick={this.resetFilter}>
-                                    <Icon name="undo"/> Reset
-                                </Button>
-                            </Button.Group>
+                <Divider hidden/>
+
+                { cards.length > 0 &&
+                    <Segment raised className="stacked">
+                        <Header as="h2">
+                            <Icon name="archive" circular/>
+                            <Header.Content>
+                                Total Gadgets: {pagination.count}
+                                <Header.Subheader>Filter your gadgets by category, brand and price <Icon name="angle double down"></Icon></Header.Subheader>
+                            </Header.Content>
+                        </Header>
+
+                        <Form onSubmit={this.filter}>
+                            <Form.Group inline>
+                                <Form.Dropdown
+                                    selection
+                                    name="categoryId"
+                                    options={categoryOptions}
+                                    value={categoryId}
+                                    onChange={this.handleInputChange}
+                                />
+                                <Form.Dropdown
+                                    selection
+                                    name="brandId"
+                                    options={brandOptions}
+                                    value={brandId}
+                                    onChange={this.handleInputChange}
+                                />
+
+                                <Button.Group>
+                                    <Button type="submit" positive>
+                                        <Icon name="filter"/> Filter
+                                    </Button>
+                                    <Button.Or />
+                                    <Button type="button" onClick={this.resetFilter}>
+                                        <Icon name="undo"/> Reset
+                                    </Button>
+                                </Button.Group>
+                            </Form.Group>
                         </Form>
-                    </Grid.Column>
+                    </Segment>
                 }
 
-                <Grid.Column width={13}>
-                    {(params.categoryId || params.brandId) &&
-                        <div>
-                            {(params.categoryId && params.categoryId !== "-1") &&
-                                <Label color="blue">
-                                    Category: {categoryName} <Icon name="delete" data-id="categoryId" onClick={this.discardFilter}/>
-                                </Label>
-                            }
+                {(params.categoryId || params.brandId) &&
+                    <div>
+                        {(params.categoryId && params.categoryId !== "-1") &&
+                            <Label color="blue">
+                                Category: {categoryName} <Icon name="delete" data-id="categoryId" onClick={this.discardFilter}/>
+                            </Label>
+                        }
 
-                            {(params.brandId && params.brandId !== "-1") &&
-                                <Label color="blue">
-                                    Brand: {brandName} <Icon name="delete" data-id="brandId" onClick={this.discardFilter}/>
-                                </Label>
-                            }
+                        {(params.brandId && params.brandId !== "-1") &&
+                            <Label color="blue">
+                                Brand: {brandName} <Icon name="delete" data-id="brandId" onClick={this.discardFilter}/>
+                            </Label>
+                        }
 
-                            <Divider hidden/>
-                        </div>
-                    }
+                        <Divider hidden/>
+                    </div>
+                }
 
-                    { cards.length > 0 &&
-                        <div id="item-cards-container">
-                            <Card.Group itemsPerRow={4} stackable>
-                                {cards}
-                            </Card.Group>
+                { cards.length > 0 &&
+                    <div id="item-cards-container">
+                        <Card.Group itemsPerRow={5} stackable>
+                            {cards}
+                        </Card.Group>
 
-                            { pagination.pages !== 1 &&
-                                <div>
-                                    <Divider hidden/>
-                                    <Container textAlign="center">
-                                        <Menu pagination>
-                                            {paginationLinks}
-                                        </Menu>
-                                    </Container>
-                                </div>
-                            }
-                        </div>
-                    }
-                    { cards.length === 0 &&
-                        <Segment placeholder raised>
-                            <Header icon>
-                                <Icon name="warning sign" />
-                                You don't have any items!
-                            </Header>
-                            <Button primary>
-                                <Link to="/items/add" style={{color: "white"}}>Add New Item</Link>
-                            </Button>
-                        </Segment>
-                    }
-                </Grid.Column>
-            </Grid>
+                        { pagination.pages !== 1 &&
+                            <div>
+                                <Divider hidden/>
+                                <Container textAlign="center">
+                                    <Menu pagination>
+                                        {paginationLinks}
+                                    </Menu>
+                                </Container>
+                            </div>
+                        }
+                    </div>
+                }
+                { cards.length === 0 &&
+                    <Segment placeholder raised>
+                        <Header icon>
+                            <Icon name="warning sign" />
+                            You don't have any items!
+                        </Header>
+                        <Button primary>
+                            <Link to="/items/add" style={{color: "white"}}>Add New Item</Link>
+                        </Button>
+                    </Segment>
+                }
+            </>
         );
     }
 }

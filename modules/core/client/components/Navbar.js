@@ -13,7 +13,7 @@ export default function Navbar() {
                     <img src="/images/logo.png"/>
                     Gadget Catalog
                 </Menu.Item>
-                <NavLink to="/" activeClassName="active" className="item">
+                <NavLink exact to="/" activeClassName="active" className="item">
                     <Icon name="dashboard"/>
                     Dashboard
                 </NavLink>
@@ -41,19 +41,12 @@ export default function Navbar() {
                         }
                     </Dropdown.Menu>
                 </Dropdown>
-                <Dropdown item text="Brand">
-                    <Dropdown.Menu>
-                        <NavLink to="/brands" activeClassName="active" className="item">
-                            <Icon name="unordered list"/> Brand list
-                        </NavLink>
-                        <NavLink to="/brands/add" activeClassName="active" className="item">
-                            <Icon name="add"/> Add new brand
-                        </NavLink>
-                    </Dropdown.Menu>
-                </Dropdown>
+                <NavLink to="/brands" activeClassName="active" className="item">
+                    <Icon name="unordered list"/> Brands
+                </NavLink>
                 <div className="right item">
                     <NavLink to="/profile" className="ui button teal"><Icon name="user"/> {user.name}</NavLink>
-                    <a href="/api/logout" className="ui button primary"><Icon name="sign out"/> Sign Out</a>
+                    <a href="/api/logout" className="ui button black"><Icon name="sign out"/> Sign Out</a>
                 </div>
             </Container>
         </Menu>

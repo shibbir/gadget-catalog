@@ -23,7 +23,7 @@ class PrivateRoute extends React.Component {
                     isAuthenticated ? (
                         <>
                             <Navbar/>
-                            <Container style={{flex:1}}>
+                            <Container>
                                 <Component {...props}/>
                             </Container>
                             <Footer/>

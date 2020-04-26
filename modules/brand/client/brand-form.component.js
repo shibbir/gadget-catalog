@@ -1,15 +1,17 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Form, withFormik } from "formik";
 import { Divider, Button } from "semantic-ui-react";
-import BrandSchema from "../brand.schema";
-import { TextInput } from "../../../core/client/components/FieldInput/FieldInputs";
+import BrandSchema from "./brand.schema";
+import { createBrand, updateBrand, getBrand } from "./brand.actions";
+import { TextInput } from "../../core/client/components/FieldInput/FieldInputs";
 
 class BrandForm extends React.Component {
     constructor(props) {
         super();
 
         if(props.brandId) {
-            props.fetchBrand(props.brandId);
+            props.getBrand(props.brandId);
         }
     }
 
@@ -26,11 +28,8 @@ class BrandForm extends React.Component {
                         required: true
                     }}/>
                     <Divider hidden/>
-                    <Button.Group>
-                        <Button type="submit" positive disabled={isSubmitting}>Submit</Button>
-                        <Button.Or/>
-                        <Button type="reset" disabled={isSubmitting}>Reset</Button>
-                    </Button.Group>
+                    <Button type="submit" positive disabled={isSubmitting}>Submit</Button>
+                    <Button type="reset" disabled={isSubmitting}>Reset</Button>
                 </Form>
             </div>
         );
@@ -40,15 +39,9 @@ class BrandForm extends React.Component {
 BrandForm = withFormik({
     enableReinitialize: true,
 
-    mapPropsToValues: (props) => {
-        if(props.brandId && props.brand) {
-            return {
-                name: props.brand.name
-            };
-        }
-
+    mapPropsToValues: props => {
         return {
-            name: ""
+            name: props.brandId && props.brand ? props.brand.name : ""
         };
     },
 
@@ -68,4 +61,25 @@ BrandForm = withFormik({
     displayName: "BrandForm"
 })(BrandForm);
 
-export default BrandForm;
+const mapStateToProps = (state, props) => {
+    return {
+        brandId: props.id,
+        brand: state.brandReducer.brand
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        createBrand: (formData) => {
+            dispatch(createBrand(formData));
+        },
+        updateBrand: (formData, itemId) => {
+            dispatch(updateBrand(formData, itemId));
+        },
+        getBrand: (itemId) => {
+            dispatch(getBrand(itemId));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BrandForm);

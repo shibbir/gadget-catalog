@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Table, Segment, Icon, Divider, Header, Button } from "semantic-ui-react";
+import React, { useState, useEffect } from "react";
+import { Segment, Icon, Header, Button, Label, Modal } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBrands } from "./brand.actions";
+import BrandForm from "./brand-form.component";
 
 export default function Brands() {
     const dispatch = useDispatch();
+    const [brandId, setBrandId] = useState(undefined);
 
     useEffect(() => {
         dispatch(getBrands());
@@ -14,40 +15,51 @@ export default function Brands() {
     const user = useSelector(state => state.userReducer.user);
     const brands = useSelector(state => state.brandReducer.brands);
 
-    let cards = brands.map(function(brand) {
+    let cards = brands.map(x => {
         return (
-            <Table.Row key={brand._id}>
-                <Table.Cell>{brand.name}</Table.Cell>
-                { user && user.isAdmin &&
-                    <Table.Cell>{brand.createdBy}</Table.Cell>
+            <Button as="div" labelPosition="right" key={x._id} style={{marginBottom: "20px", marginRight: "20px"}}>
+                <Button basic color="teal" as="a" href={`/items?brandId=${x._id}`}>
+                    {x.name}
+                </Button>
+                {user && user._id && user._id === x.createdBy &&
+                    <Label as="a" basic color="teal" pointing="left" onClick={() => setBrandId(x._id)}>
+                        <Icon name="edit" color="blue"/>
+                    </Label>
                 }
-                <Table.Cell>
-                    <Link to={`/items?brandId=${brand._id}`}>View</Link> | <Link to={`/brands/${brand._id}/edit`}>Edit</Link>
-                </Table.Cell>
-            </Table.Row>
+            </Button>
         );
     });
 
     return (
         <>
-            <h2>Available brands</h2>
-            <Divider section/>
-
             { cards.length > 0 &&
-                <Table celled compact striped>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Name</Table.HeaderCell>
-                            { user && user.isAdmin &&
-                                <Table.HeaderCell>Created By</Table.HeaderCell>
-                            }
-                            <Table.HeaderCell>Action</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {cards}
-                    </Table.Body>
-                </Table>
+                <>
+                    <Segment raised className="stacked">
+                        <Header as="h2">
+                            <Icon name="archive" circular/>
+                            <Header.Content>
+                                Available Brands: {brands.length}
+                            </Header.Content>
+                        </Header>
+                        <Button onClick={() => setBrandId(null)}>Add new brand</Button>
+                    </Segment>
+
+                    {cards}
+
+                    <Modal dimmer size="tiny" open={brandId !== undefined}>
+                        <Modal.Header>Brand Form</Modal.Header>
+                        <Modal.Content>
+                            <Modal.Description>
+                                <BrandForm id={brandId}/>
+                            </Modal.Description>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button color="black" onClick={() => setBrandId(undefined)}>
+                                Close
+                            </Button>
+                        </Modal.Actions>
+                    </Modal>
+                </>
             }
 
             { cards.length === 0 &&
@@ -56,9 +68,6 @@ export default function Brands() {
                         <Icon name="warning sign"/>
                         You don't have any brands added yet!
                     </Header>
-                    <Button primary>
-                        <Link to="/brands/add" style={{color: "white"}}>Add New Brand</Link>
-                    </Button>
                 </Segment>
             }
         </>
