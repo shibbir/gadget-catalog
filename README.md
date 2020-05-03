@@ -14,6 +14,9 @@
     <a href="https://david-dm.org/shibbir/gadget-catalog">
         <img src="https://david-dm.org/shibbir/gadget-catalog.svg" alt="Dependency Status"/>
     </a>
+    <a href="https://snyk.io/test/github/shibbir/gadget-catalog?targetFile=package.json">
+        <img src="https://snyk.io/test/github/shibbir/gadget-catalog/badge.svg?targetFile=package.json" alt="Known Vulnerabilities" data-canonical-src="https://snyk.io/test/github/shibbir/gadget-catalog?targetFile=package.json" style="max-width:100%;">
+    </a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"/>
     </a>

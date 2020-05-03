@@ -28,7 +28,7 @@ class PieChart extends React.Component {
                 plotShadow: false
             },
             title: {
-                text: "Item Categories"
+                text: "Gadget Categories"
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -54,7 +54,7 @@ class PieChart extends React.Component {
             }
         }, function(chart) {
             if(data.length === 0) {
-                chart.renderer.text("Report is not generated because you don't have any items!", 140, 120).css({
+                chart.renderer.text("Report is not generated because data is not available!", 140, 120).css({
                     color: "#17A2B8",
                     fontSize: "16px"
                 }).add();
