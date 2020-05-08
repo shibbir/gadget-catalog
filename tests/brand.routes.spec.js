@@ -2,11 +2,11 @@ const faker = require("faker");
 const request = require("supertest");
 const expect = require("chai").expect;
 
-const Brand = require("./brand.model");
-const app = require("../../../config/server/lib/express")();
-const specHelper = require("../../../config/server/spec.helper");
+const Brand = require("../src/modules/brand/server/brand.model");
+const app = require("../src/config/server/lib/express")();
+const specHelper = require("./spec.helper");
 
-describe("Brand Api", function() {
+describe("Brand Routes", function() {
     let brand = {};
     const user = specHelper.users.admin;
 

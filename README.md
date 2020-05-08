@@ -5,8 +5,8 @@
 <h4 align="center">A single page application for cataloging gadgets. Built with react, express, mongodb and much more.</h4>
 
 <div align="center">
-    <a href="https://travis-ci.org/shibbir/gadget-catalog">
-        <img src="https://travis-ci.org/shibbir/gadget-catalog.svg?branch=master" alt="Build Status"/>
+    <a href="https://travis-ci.com/shibbir/gadget-catalog">
+        <img src="https://travis-ci.com/shibbir/gadget-catalog.svg?branch=master" alt="Build Status"/>
     </a>
     <a href="https://coveralls.io/github/shibbir/gadget-catalog?branch=master">
         <img src="https://coveralls.io/repos/github/shibbir/gadget-catalog/badge.svg?branch=master" alt="Coverage Status"/>
@@ -16,6 +16,9 @@
     </a>
     <a href="https://snyk.io/test/github/shibbir/gadget-catalog?targetFile=package.json">
         <img src="https://snyk.io/test/github/shibbir/gadget-catalog/badge.svg?targetFile=package.json" alt="Known Vulnerabilities" data-canonical-src="https://snyk.io/test/github/shibbir/gadget-catalog?targetFile=package.json" style="max-width:100%;">
+    </a>
+    <a href="https://sonarcloud.io/dashboard?id=shibbir_gadget-catalog">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=shibbir_gadget-catalog&metric=ncloc" alt="Lines of Code"/>
     </a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"/>

@@ -1,4 +1,4 @@
-const helpers = require("./helpers");
+const path = require("path");
 const webpackMerge = require("webpack-merge");
 const commonConfig = require("./webpack.common");
 const TerserPlugin = require("terser-webpack-plugin");
@@ -9,7 +9,7 @@ module.exports = webpackMerge(commonConfig, {
     mode: "production",
 
     output: {
-        path: helpers.root("public/bundles"),
+        path: path.join(process.cwd(), "public/bundles"),
         filename: "[name].[contenthash].js"
     },
 

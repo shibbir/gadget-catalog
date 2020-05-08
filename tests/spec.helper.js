@@ -1,8 +1,8 @@
 const path = require("path");
-const config = require("./config");
+const config = require("../src/config/server/config");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const User = require("../../modules/user/server/user.model");
+const User = require("../src/modules/user/server/user.model");
 
 process.env.NODE_ENV = "test";
 process.env.TOKEN_SECRET = "6368451b-50bc9a455e62";

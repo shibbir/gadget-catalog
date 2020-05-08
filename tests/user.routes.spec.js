@@ -2,10 +2,10 @@ const faker = require("faker");
 const request = require("supertest");
 const expect = require("chai").expect;
 
-const app = require("../../../config/server/lib/express")();
-const specHelper = require("../../../config/server/spec.helper");
+const app = require("../src/config/server/lib/express")();
+const specHelper = require("./spec.helper");
 
-describe("User Api", function() {
+describe("User Routes", function() {
     const user = specHelper.users.admin;
 
     it("Should create a basic user", async function() {
