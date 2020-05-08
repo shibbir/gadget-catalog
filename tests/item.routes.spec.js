@@ -2,11 +2,11 @@ const faker = require("faker");
 const request = require("supertest");
 const expect = require("chai").expect;
 
+const specHelper = require("./spec.helper");
 const Item = require("../src/modules/item/server/item.model");
 const Brand = require("../src/modules/brand/server/brand.model");
 const Category = require("../src/modules/category/server/category.model");
 const app = require("../src/config/server/lib/express")();
-const specHelper = require("./spec.helper");
 
 describe("Item Routes", function() {
     let category = {};

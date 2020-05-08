@@ -2,8 +2,8 @@ const faker = require("faker");
 const request = require("supertest");
 const expect = require("chai").expect;
 
-const app = require("../src/config/server/lib/express")();
 const specHelper = require("./spec.helper");
+const app = require("../src/config/server/lib/express")();
 
 describe("User Routes", function() {
     const user = specHelper.users.admin;

@@ -40,5 +40,9 @@ module.exports = function() {
         require(path.resolve(routePath))(app);
     });
 
+    config.server.strategies.forEach(function (strategy) {
+        require(path.resolve(strategy))();
+    });
+
     return app;
 };

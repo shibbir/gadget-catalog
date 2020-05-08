@@ -2,9 +2,9 @@ const faker = require("faker");
 const request = require("supertest");
 const expect = require("chai").expect;
 
+const specHelper = require("./spec.helper");
 const Category = require("../src/modules/category/server/category.model");
 const app = require("../src/config/server/lib/express")();
-const specHelper = require("./spec.helper");
 
 describe("Category Routes", function() {
     let category = {};

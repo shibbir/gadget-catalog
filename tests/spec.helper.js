@@ -1,5 +1,4 @@
 const path = require("path");
-const config = require("../src/config/server/config");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const User = require("../src/modules/user/server/user.model");
@@ -14,10 +13,6 @@ process.env.FACEBOOK_CLIENT_SECRET = "xxx";
 process.env.SMTP_HOST = "smtp.ethereal.email";
 process.env.MAILER_ADDRESS = "clyde.miller@ethereal.email";
 process.env.MAILER_PASSWORD = "db7CKmbGkRcaEJvd4s";
-
-config.server.strategies.forEach(function (strategy) {
-    require(path.resolve(strategy))();
-});
 
 const admin = {
     _id: "58e8d591a643633a109f29bc",
@@ -56,6 +51,7 @@ const basic = {
 };
 
 before(async function() {
+    console.log("start");
     mongoose.connect(process.env.MONGODB_URI, {
         useCreateIndex: true,
         useNewUrlParser: true,
@@ -67,6 +63,7 @@ before(async function() {
 });
 
 after(async function() {
+    console.log("end");
     await mongoose.connection.dropDatabase();
     mongoose.connection.close();
 });

@@ -14,9 +14,6 @@
     <a href="https://david-dm.org/shibbir/gadget-catalog">
         <img src="https://david-dm.org/shibbir/gadget-catalog.svg" alt="Dependency Status"/>
     </a>
-    <a href="https://snyk.io/test/github/shibbir/gadget-catalog?targetFile=package.json">
-        <img src="https://snyk.io/test/github/shibbir/gadget-catalog/badge.svg?targetFile=package.json" alt="Known Vulnerabilities" data-canonical-src="https://snyk.io/test/github/shibbir/gadget-catalog?targetFile=package.json" style="max-width:100%;">
-    </a>
     <a href="https://sonarcloud.io/dashboard?id=shibbir_gadget-catalog">
         <img src="https://sonarcloud.io/api/project_badges/measure?project=shibbir_gadget-catalog&metric=ncloc" alt="Lines of Code"/>
     </a>
@@ -54,7 +51,7 @@
 - [Nodemailer](https://nodemailer.com/)
 - [Passport](http://passportjs.org/)
 - [React](https://reactjs.org/)
-- [Redux](https://redux.js.org/)
+- [React Redux](https://react-redux.js.org/)
 - [Semantic-UI-React](https://react.semantic-ui.com/)
 - [Webpack](https://webpack.js.org/)
 
@@ -67,7 +64,6 @@ This application requires [Cloudinary](https://cloudinary.com/), which is a Soft
 Name | Default value | Description
 ------------ | ------------- | -------------
 **PORT** | `undefined` | On which port express server will be running to
-**SEED_DB** | `undefined` | Seed the database with default data
 **MONGODB_URI** | `mongodb://localhost/gadget-catalog` | MongoDB connection string URI. For more details visit [here](https://docs.mongodb.com/manual/reference/connection-string/).
 **TOKEN_SECRET** | - | JWT secret key. Learn more from [here](https://jwt.io/introduction/).
 **GOOGLE_CLIENT_ID** and **GOOGLE_CLIENT_SECRET** | - | These are you OAuth 2.0 client credentials from google which you will need to configure OAuth 2.0. Learn more from [here](https://developers.google.com/identity/protocols/OAuth2).
