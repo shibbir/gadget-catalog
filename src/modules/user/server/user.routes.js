@@ -14,7 +14,7 @@ function generateAccessToken(user, provider) {
         expiresIn: "2d",
         issuer: user._id.toString()
     });
-};
+}
 
 function formatProfile(user) {
     let profile = {
@@ -42,7 +42,7 @@ function formatProfile(user) {
     }
 
     return profile;
-};
+}
 
 module.exports = function(app) {
     app.post("/api/register", function(req, res) {
@@ -66,10 +66,10 @@ module.exports = function(app) {
             user.local.email = email;
             user.local.password = user.generateHash(password);
 
-            user.save(function(err, doc) {
+            user.save(function(err, user) {
                 if(err) return res.sendStatus(500);
 
-                res.cookie("access_token", generateAccessToken(doc, "local"), {
+                res.cookie("access_token", generateAccessToken(user, "local"), {
                     expires: new Date(Date.now() + 8.64e+7),
                     httpOnly: true
                 });

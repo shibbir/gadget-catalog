@@ -10,11 +10,8 @@ async function getCategory(req, res) {
 }
 
 async function getCategories(req, res) {
-    let match = req.user.role === "admin" ? {} : { createdBy: req.user._id };
-
-    const docs = await Category.find().populate({
+    const docs = await Category.find({}).populate({
         path: "items",
-        match: match,
         select: "_id",
         options: { lean: true }
     }).sort("name");
@@ -23,10 +20,6 @@ async function getCategories(req, res) {
 }
 
 function createCategory(req, res) {
-    if(req.user.role !== "admin") {
-        return res.sendStatus(401);
-    }
-
     let model = new Category({
         name: req.body.name,
         slug: convertToSlug(req.body.name),
@@ -59,15 +52,11 @@ function createCategory(req, res) {
 }
 
 function updateCategory(req, res) {
-    if(req.user.role !== "admin") {
-        return res.sendStatus(401);
-    }
-
     Category.findOne({ _id: req.params.id }, function(err, doc) {
         if(err) return res.sendStatus(500);
 
         if(!doc) {
-            return res.status(400).json({ message: "Category not found."});
+            return res.status(404).json("Category not found.");
         }
 
         doc.name = req.body.name;

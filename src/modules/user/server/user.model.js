@@ -37,7 +37,6 @@ const UserSchema = Schema({
         enum: [ "admin", "basic" ],
         default: "basic"
     },
-    permissions: Array,
     date: {
         type: Date,
         default: Date.now

@@ -17,6 +17,9 @@
     <a href="https://sonarcloud.io/dashboard?id=shibbir_gadget-catalog">
         <img src="https://sonarcloud.io/api/project_badges/measure?project=shibbir_gadget-catalog&metric=ncloc" alt="Lines of Code"/>
     </a>
+    <a href="https://deepscan.io/dashboard#view=project&tid=5649&pid=7486&bid=76909">
+        <img src="https://deepscan.io/api/teams/5649/projects/7486/branches/76909/badge/grade.svg" alt="DeepScan grade">
+    </a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"/>
     </a>

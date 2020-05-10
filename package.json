@@ -16,6 +16,7 @@
     "seed": "node seeder.js"
   },
   "dependencies": {
+    "@casl/ability": "^4.0.8",
     "async": "^3.2.0",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",

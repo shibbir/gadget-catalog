@@ -3,16 +3,18 @@ const User = require("../../user/server/user.model");
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
-function getBrand(req, res) {
-    Brand.findOne({ _id: req.params.id, createdBy: req.user._id }).exec(function(err, doc) {
-        if(err) return res.sendStatus(500);
+async function getBrand(req, res) {
+    try {
+        const doc = await Brand.findOne({ _id: req.params.id, createdBy: req.user._id }).exec();
 
         if(!doc) {
-            return res.status(400).json({ message: "Brand not found or you don't have the permission." });
+            return res.status(404).send("Brand not found.");
         }
 
         res.json(doc);
-    });
+    } catch(err) {
+        res.sendStatus(500);
+    }
 }
 
 async function getBrands(req, res) {
@@ -30,33 +32,35 @@ async function getBrands(req, res) {
     }
 }
 
-function createBrand(req, res) {
-    let model = new Brand({
-        name: req.body.name,
-        slug: convertToSlug(req.body.name),
-        createdBy: req.user._id
-    });
+async function createBrand(req, res) {
+    try {
+        let model = new Brand({
+            name: req.body.name,
+            slug: convertToSlug(req.body.name),
+            createdBy: req.user._id
+        });
 
-    model.save();
+        model = await model.save();
 
-    res.json(model);
+        res.json(model);
+    } catch(err) {
+        res.sendStatus(500);
+    }
 }
 
 function updateBrand(req, res) {
-    Brand.findOne({
-        name: { $regex: req.body.name, $options: "i" }
-    }, function(err, doc) {
+    Brand.findOne({ name: req.body.name }, function(err, doc) {
         if(err) return res.sendStatus(500);
 
         if(doc && doc._id.toString() !== req.params.id) {
-            return res.status(400);
+            return res.status(400).send("Brand name already exists.");
         }
 
         Brand.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
             if(err) return res.sendStatus(500);
 
             if(!doc) {
-                return res.status(400);
+                return res.status(404);
             }
 
             doc.name = req.body.name;

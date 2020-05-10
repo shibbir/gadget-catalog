@@ -71,7 +71,7 @@ export default class ItemList extends React.Component {
         if(this.state.categoryId === "-1" && this.state.brandId === "-1") {
             this.props.history.push({ pathname: "items" });
             return;
-        };
+        }
 
         let q = {};
 
