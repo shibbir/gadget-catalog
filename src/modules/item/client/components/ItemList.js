@@ -1,9 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
+import { connect } from "react-redux";
+import { fetchItems } from "../item.actions";
+import { getBrands } from "../../../brand/client/brand.actions";
+import { getCategories } from "../../../category/client/category.actions";
 import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segment, Header } from "semantic-ui-react";
 
-export default class ItemList extends React.Component {
+class ItemList extends React.Component {
     constructor(props) {
         super();
         props.getBrands();
@@ -151,7 +155,6 @@ export default class ItemList extends React.Component {
 
         return (
             <>
-
                 <Divider hidden/>
 
                 { cards.length > 0 &&
@@ -246,3 +249,22 @@ export default class ItemList extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state, props) => {
+    return {
+        location: props.location,
+        items: state.itemReducer.items,
+        brands: state.brandReducer.brands,
+        categories: state.categoryReducer.categories
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getBrands: () => dispatch(getBrands()),
+        getCategories: () => dispatch(getCategories()),
+        fetchItems: query => dispatch(fetchItems(query))
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemList);

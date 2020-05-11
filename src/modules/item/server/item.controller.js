@@ -10,7 +10,7 @@ async function getItem(req, res) {
     try {
         let doc = await Item.findOne(query).populate("brand", "name").populate("category", "name").exec();
 
-        if(!doc) return res.sendStatus(400);
+        if(!doc) return res.sendStatus(404);
 
         if(doc.description) {
             doc.description = validator.unescape(doc.description);
@@ -213,7 +213,7 @@ function deleteImage(req, res) {
         if(err) return res.sendStatus(500);
 
         if(!doc) {
-            return res.status(400);
+            return res.sendStatus(404);
         }
 
         let file = doc.files.id(req.params.fileId);

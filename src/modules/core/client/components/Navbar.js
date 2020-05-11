@@ -22,7 +22,7 @@ export default function Navbar() {
                         <NavLink to="/items" activeClassName="active" className="item">
                             <Icon name="unordered list"/> Item list
                         </NavLink>
-                        { user && !user.isAdmin &&
+                        { !user.isAdmin &&
                             <NavLink to="/items/add" activeClassName="active" className="item">
                                 <Icon name="add"/> Add new item
                             </NavLink>
@@ -34,7 +34,7 @@ export default function Navbar() {
                         <NavLink to="/categories" activeClassName="active" className="item">
                             <Icon name="unordered list"/> Category list
                         </NavLink>
-                        { user && user.isAdmin &&
+                        { user.isAdmin &&
                             <NavLink to="/categories/add" activeClassName="active" className="item">
                                 <Icon name="add"/> Add new category
                             </NavLink>
