@@ -5,14 +5,20 @@
 <h4 align="center">A single page application for cataloging gadgets. Built with react, express, mongodb and much more.</h4>
 
 <div align="center">
-    <a href="https://travis-ci.org/shibbir/gadget-catalog">
-        <img src="https://travis-ci.org/shibbir/gadget-catalog.svg?branch=master" alt="Build Status"/>
+    <a href="https://travis-ci.com/shibbir/gadget-catalog">
+        <img src="https://travis-ci.com/shibbir/gadget-catalog.svg?branch=master" alt="Build Status"/>
     </a>
     <a href="https://coveralls.io/github/shibbir/gadget-catalog?branch=master">
         <img src="https://coveralls.io/repos/github/shibbir/gadget-catalog/badge.svg?branch=master" alt="Coverage Status"/>
     </a>
     <a href="https://david-dm.org/shibbir/gadget-catalog">
         <img src="https://david-dm.org/shibbir/gadget-catalog.svg" alt="Dependency Status"/>
+    </a>
+    <a href="https://sonarcloud.io/dashboard?id=shibbir_gadget-catalog">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=shibbir_gadget-catalog&metric=ncloc" alt="Lines of Code"/>
+    </a>
+    <a href="https://deepscan.io/dashboard#view=project&tid=5649&pid=7486&bid=76909">
+        <img src="https://deepscan.io/api/teams/5649/projects/7486/branches/76909/badge/grade.svg" alt="DeepScan grade">
     </a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"/>
@@ -48,7 +54,7 @@
 - [Nodemailer](https://nodemailer.com/)
 - [Passport](http://passportjs.org/)
 - [React](https://reactjs.org/)
-- [Redux](https://redux.js.org/)
+- [React Redux](https://react-redux.js.org/)
 - [Semantic-UI-React](https://react.semantic-ui.com/)
 - [Webpack](https://webpack.js.org/)
 
@@ -61,7 +67,6 @@ This application requires [Cloudinary](https://cloudinary.com/), which is a Soft
 Name | Default value | Description
 ------------ | ------------- | -------------
 **PORT** | `undefined` | On which port express server will be running to
-**SEED_DB** | `undefined` | Seed the database with default data
 **MONGODB_URI** | `mongodb://localhost/gadget-catalog` | MongoDB connection string URI. For more details visit [here](https://docs.mongodb.com/manual/reference/connection-string/).
 **TOKEN_SECRET** | - | JWT secret key. Learn more from [here](https://jwt.io/introduction/).
 **GOOGLE_CLIENT_ID** and **GOOGLE_CLIENT_SECRET** | - | These are you OAuth 2.0 client credentials from google which you will need to configure OAuth 2.0. Learn more from [here](https://developers.google.com/identity/protocols/OAuth2).
