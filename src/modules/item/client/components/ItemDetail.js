@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useParams, Redirect } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { FormattedDate, FormattedNumber } from "react-intl";
 import Types from "../item.types";
 import { fetchItem, deleteItem, setAsActiveImage, deleteImage } from "../item.actions";
@@ -8,6 +8,7 @@ import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card,
 
 export default function ItemDetail() {
     const { id } = useParams();
+    const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector(state => state.userReducer.user);
     const item = useSelector(state => state.itemReducer.item);
@@ -22,7 +23,7 @@ export default function ItemDetail() {
                 const { type } = result.action;
 
                 if(type === Types.DELETE_ITEM_FULFILLED) {
-                    <Redirect to="/items"/>
+                    history.push("/items");
                 }
             });
         }
