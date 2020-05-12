@@ -11,13 +11,13 @@ const userSeeder = function(callback) {
             return callback(null, doc);
         }
 
-        let user = new User();
+        const user = new User();
 
         user.role = "admin";
         user.displayName = "Administrator";
         user.local.name = "Administrator";
         user.local.email = "admin@gadget-catalog.io";
-        user.local.password = user.generateHash("password_that_will_change");
+        user.local.password = user.generateHash("temporary-password");
 
         user.save(function(err, doc) {
             if(err) return callback(err);

@@ -1,8 +1,7 @@
 import Types from "./user.types";
 
 const initialState = {
-    user: null,
-    isLoggedIn: false
+    loggedInUser: null
 }
 
 export default function reducer(state=initialState, action) {
@@ -12,14 +11,13 @@ export default function reducer(state=initialState, action) {
         case Types.GET_PROFILE_FULFILLED: {
             return {
                 ...state,
-                user: action.payload.data,
-                isLoggedIn: true
+                loggedInUser: action.payload.data
             };
         }
         case Types.DISCONNECT_PROVIDER_FULFILLED: {
             return {
                 ...state,
-                user: action.payload.data
+                loggedInUser: action.payload.data
             };
         }
     }

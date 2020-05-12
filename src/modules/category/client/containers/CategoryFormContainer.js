@@ -4,7 +4,7 @@ import { createCategory, updateCategory, fetchCategory } from "../category.actio
 
 const mapStateToProps = (state, props) => {
     return {
-        user: state.userReducer.user,
+        user: state.userReducer.loggedInUser,
         categoryId: props.id,
         category: state.categoryReducer.category
     };

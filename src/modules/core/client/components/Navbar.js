@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Menu, Dropdown, Container, Icon } from "semantic-ui-react";
 
 export default function Navbar() {
-    const user = useSelector(state => state.userReducer.user);
+    const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
     return (
         <Menu stackable borderless>
@@ -22,7 +22,7 @@ export default function Navbar() {
                         <NavLink to="/items" activeClassName="active" className="item">
                             <Icon name="unordered list"/> Item list
                         </NavLink>
-                        { !user.isAdmin &&
+                        { !loggedInUser.isAdmin &&
                             <NavLink to="/items/add" activeClassName="active" className="item">
                                 <Icon name="add"/> Add new item
                             </NavLink>
@@ -34,7 +34,7 @@ export default function Navbar() {
                         <NavLink to="/categories" activeClassName="active" className="item">
                             <Icon name="unordered list"/> Category list
                         </NavLink>
-                        { user.isAdmin &&
+                        { loggedInUser.isAdmin &&
                             <NavLink to="/categories/add" activeClassName="active" className="item">
                                 <Icon name="add"/> Add new category
                             </NavLink>
@@ -45,7 +45,7 @@ export default function Navbar() {
                     <Icon name="unordered list"/> Brands
                 </NavLink>
                 <div className="right item">
-                    <NavLink to="/profile" className="ui button teal"><Icon name="user"/> {user.name}</NavLink>
+                    <NavLink to="/profile" className="ui button teal"><Icon name="user"/> {loggedInUser.name}</NavLink>
                     <a href="/api/logout" className="ui button black"><Icon name="sign out"/> Sign Out</a>
                 </div>
             </Container>

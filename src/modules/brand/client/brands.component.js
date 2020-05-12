@@ -12,7 +12,7 @@ export default function Brands() {
         dispatch(getBrands());
     }, []);
 
-    const user = useSelector(state => state.userReducer.user);
+    const user = useSelector(state => state.userReducer.loggedInUser);
     const brands = useSelector(state => state.brandReducer.brands);
 
     let cards = brands.map(x => {
