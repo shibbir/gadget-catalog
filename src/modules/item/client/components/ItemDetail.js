@@ -10,7 +10,7 @@ export default function ItemDetail() {
     const { id } = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
-    const user = useSelector(state => state.userReducer.user);
+    const user = useSelector(state => state.userReducer.loggedInUser);
     const item = useSelector(state => state.itemReducer.item);
 
     useEffect(() => {
