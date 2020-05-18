@@ -7,7 +7,7 @@ const compression = require("compression");
 const cookieParser = require("cookie-parser");
 
 module.exports = function() {
-    let app = express();
+    const app = express();
 
     app.locals.jsFiles = config.client.js;
     app.locals.cssFiles = config.client.css;

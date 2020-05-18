@@ -10,11 +10,11 @@ async function getCategory(req, res) {
 }
 
 async function getCategories(req, res) {
-    const docs = await Category.find({}).populate({
+    const docs = await Category.find({}, "name file").populate({
         path: "items",
         select: "_id",
         options: { lean: true }
-    }).sort("name");
+    }).sort("name").lean();
 
     res.json(docs);
 }
@@ -28,16 +28,14 @@ function createCategory(req, res) {
 
     async.waterfall([
         function(callback) {
-            if(!req.files) {
-                return callback(null);
-            }
+            if(!req.files) return callback();
 
             const file = req.files[0];
 
             cloudinary.uploader.upload(file.path, function(response) {
                 model.file = {...response, active: true};
                 fs.unlinkSync(file.path);
-                callback(null);
+                callback();
             }, { folder: "categories", invalidate: true });
         }
     ], function(err) {
@@ -56,7 +54,7 @@ function updateCategory(req, res) {
         if(err) return res.sendStatus(500);
 
         if(!doc) {
-            return res.status(404).json("Category not found.");
+            return res.status(404).send("Category not found.");
         }
 
         doc.name = req.body.name;

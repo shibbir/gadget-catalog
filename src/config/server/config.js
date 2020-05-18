@@ -2,8 +2,8 @@ const _ = require("lodash");
 const path = require("path");
 const glob = require("glob");
 
-let getGlobbedPaths = function (globPatterns, excludes) {
-    let urlRegex = new RegExp("^(?:[a-z]+:)?\/\/", "i");
+const getGlobbedPaths = function (globPatterns, excludes) {
+    const urlRegex = new RegExp("^(?:[a-z]+:)?\/\/", "i");
 
     let output = [];
 
@@ -19,7 +19,7 @@ let getGlobbedPaths = function (globPatterns, excludes) {
             if (excludes) {
                 files = files.map(function (file) {
                     if (_.isArray(excludes)) {
-                        for (let item of excludes) {
+                        for (const item of excludes) {
                             file = file.replace(item, "");
                         }
                     } else {
@@ -36,8 +36,8 @@ let getGlobbedPaths = function (globPatterns, excludes) {
 };
 
 function initGlobalConfig() {
-    let defaultAssets = require(path.join(process.cwd(), "src/config/server/assets/default"));
-    let environmentAssets = process.env.NODE_ENV === "production" ? require(path.join(process.cwd(), "src/config/server/assets/production")) : {};
+    const defaultAssets = require(path.join(process.cwd(), "src/config/server/assets/default"));
+    const environmentAssets = process.env.NODE_ENV === "production" ? require(path.join(process.cwd(), "src/config/server/assets/production")) : {};
 
     let assets = _.merge(defaultAssets, environmentAssets);
 
