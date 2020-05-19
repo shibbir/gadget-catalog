@@ -15,7 +15,7 @@ export default function Brands() {
     const user = useSelector(state => state.userReducer.loggedInUser);
     const brands = useSelector(state => state.brandReducer.brands);
 
-    let cards = brands.map(x => {
+    const labels = brands.map(x => {
         return (
             <Button as="div" labelPosition="right" key={x._id} style={{marginBottom: "20px", marginRight: "20px"}}>
                 <Button basic color="teal" as="a" href={`/items?brandId=${x._id}`}>
@@ -32,7 +32,7 @@ export default function Brands() {
 
     return (
         <>
-            { cards.length > 0 &&
+            { labels.length > 0 &&
                 <>
                     <Segment raised className="stacked">
                         <Header as="h2">
@@ -44,7 +44,7 @@ export default function Brands() {
                         <Button onClick={() => setBrandId(null)}>Add new brand</Button>
                     </Segment>
 
-                    {cards}
+                    {labels}
 
                     <Modal dimmer size="tiny" open={brandId !== undefined}>
                         <Modal.Header>Brand Form</Modal.Header>
@@ -62,7 +62,7 @@ export default function Brands() {
                 </>
             }
 
-            { cards.length === 0 &&
+            { labels.length === 0 &&
                 <Segment placeholder raised>
                     <Header icon>
                         <Icon name="warning sign"/>

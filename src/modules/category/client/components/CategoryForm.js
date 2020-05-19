@@ -1,109 +1,97 @@
-import React from "react";
-import { Form, withFormik } from "formik";
+import React, { useEffect } from "react";
+import { Form, Formik } from "formik";
+import { useSelector, useDispatch } from "react-redux";
 import { Divider, Button, Message, Icon } from "semantic-ui-react";
 import CategorySchema from "../category.schema";
+import { createCategory, updateCategory, fetchCategory } from "../category.actions";
 import { TextInput, FileInput } from "../../../core/client/components/FieldInput/FieldInputs";
 
-class CategoryForm extends React.Component {
-    constructor(props) {
-        super();
+export default function CategoryForm({id} = props) {
+    const dispatch = useDispatch();
 
-        if(props.categoryId) {
-            props.fetchCategory(props.categoryId);
-        }
+    if(id) {
+        useEffect(() => {
+            dispatch(fetchCategory(id));
+        }, []);
     }
 
-    render() {
-        const { user, handleSubmit, isSubmitting, setFieldValue } = this.props;
+    const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
+    const category = useSelector(state => state.categoryReducer.category);
 
-        const handleFileChange = e => {
-            setFieldValue("files", e.currentTarget.files);
-        }
+    return (
+        <>
+            { loggedInUser && loggedInUser.isAdmin &&
+                <Formik
+                    initialValues={{
+                        name: category ? category.name : "",
+                        files: ""
+                    }}
+                    displayName="CategoryForm"
+                    enableReinitialize={true}
+                    validationSchema={CategorySchema}
+                    onSubmit={(values, actions) => {
+                        const formData = new FormData();
 
-        return (
-            <div>
-                { user && user.isAdmin &&
-                    <Form onSubmit={handleSubmit} className="ui form">
-                        <TextInput attributes={{
-                            type: "text",
-                            name: "name",
-                            label: "Name",
-                            required: true
-                        }}/>
-                        <FileInput attributes={{
-                            type: "file",
-                            name: "files",
-                            label: "Upload",
-                            onChange: handleFileChange
-                        }}/>
-                        <Divider hidden/>
-                        <Button.Group>
-                            <Button type="submit" positive disabled={isSubmitting}>Submit</Button>
-                            <Button.Or/>
-                            <Button type="reset" disabled={isSubmitting}>Reset</Button>
-                        </Button.Group>
-                    </Form>
-                }
+                        if(values.files) {
+                            for(let index = 0; index < values.files.length; index++) {
+                                formData.append("files", values.files[index]);
+                            }
+                        }
 
-                { !user || !user.isAdmin &&
-                    <Message negative>
-                        <Message.Header>
-                            <Icon name="lock" size="large"/>
-                            You don't have the permission!
-                        </Message.Header>
-                    </Message>
-                }
-            </div>
-        );
-    }
+                        delete values.files;
+
+                        for(let key in values) {
+                            if(values.hasOwnProperty(key) && values[key]) {
+                                formData.append(key, values[key]);
+                            }
+                        }
+
+                        if(id) {
+                            dispatch(updateCategory(formData, id));
+                        } else {
+                            dispatch(createCategory(formData)).then(function() {
+                                actions.resetForm();
+                            });
+                        }
+
+                        actions.setSubmitting(false);
+                    }}
+                >
+                    {formikProps => (
+                        <Form onSubmit={formikProps.handleSubmit} className="ui form">
+                            <TextInput attributes={{
+                                type: "text",
+                                name: "name",
+                                label: "Name",
+                                required: true
+                            }}/>
+                            <FileInput attributes={{
+                                type: "file",
+                                name: "files",
+                                label: "Upload",
+                                onChange: e => {
+                                    formikProps.setFieldValue("files", e.currentTarget.files);
+                                }
+                            }}/>
+                            <Divider hidden/>
+                            <Button.Group>
+                                <Button type="submit" positive disabled={formikProps.isSubmitting}>Submit</Button>
+                                <Button.Or/>
+                                <Button type="reset" disabled={formikProps.isSubmitting}>Reset</Button>
+                            </Button.Group>
+                        </Form>
+                    )}
+                </Formik>
+            }
+
+            { !loggedInUser || !loggedInUser.isAdmin &&
+                <Message negative>
+                    <Message.Header>
+                        <Icon name="lock" size="large"/>
+                        You don't have the permission!
+                    </Message.Header>
+                </Message>
+            }
+        </>
+    );
 }
-
-CategoryForm = withFormik({
-    enableReinitialize: true,
-
-    mapPropsToValues: (props) => {
-        if(props.categoryId && props.category) {
-            return {
-                name: props.category.name
-            };
-        }
-
-        return {
-            name: "",
-            files: ""
-        };
-    },
-
-    validationSchema: CategorySchema,
-
-    handleSubmit: (formValues, { setSubmitting, resetForm, props }) => {
-        const formData = new FormData();
-
-        if(formValues.files) {
-            for(let index = 0; index < formValues.files.length; index++) {
-                formData.append("files", formValues.files[index]);
-            }
-            delete formValues.files;
-        }
-
-        for(let key in formValues) {
-            if(formValues.hasOwnProperty(key) && formValues[key]) {
-                formData.append(key, formValues[key]);
-            }
-        }
-
-        if(props.categoryId) {
-            props.updateCategory(formData, props.categoryId);
-        } else {
-            props.createCategory(formData).then(function() {
-                resetForm();
-            });
-        }
-
-        setSubmitting(false);
-    },
-
-    displayName: "CategoryForm"
-})(CategoryForm);
-
-export default CategoryForm;

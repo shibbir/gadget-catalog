@@ -10,11 +10,19 @@ async function getCategory(req, res) {
 }
 
 async function getCategories(req, res) {
-    const docs = await Category.find({}).populate({
+    const docs = await Category.find({}, "name file").populate({
         path: "items",
         select: "_id",
         options: { lean: true }
-    }).sort("name");
+    }).sort("name").lean();
+
+    docs.map(doc => {
+        if(doc.file && doc.file.public_id) {
+            doc.file.secure_url = cloudinary.v2.url(doc.file.public_id, {secure: true});
+        }
+
+        return doc;
+    });
 
     res.json(docs);
 }
@@ -28,17 +36,15 @@ function createCategory(req, res) {
 
     async.waterfall([
         function(callback) {
-            if(!req.files) {
-                return callback(null);
-            }
+            if(!req.files) return callback();
 
             const file = req.files[0];
 
             cloudinary.uploader.upload(file.path, function(response) {
                 model.file = {...response, active: true};
                 fs.unlinkSync(file.path);
-                callback(null);
-            }, { folder: "categories", invalidate: true });
+                callback();
+            }, { folder: `gadget-catalog/${req.user._id}`, invalidate: true });
         }
     ], function(err) {
         if(err) return res.sendStatus(500);
@@ -56,7 +62,7 @@ function updateCategory(req, res) {
         if(err) return res.sendStatus(500);
 
         if(!doc) {
-            return res.status(404).json("Category not found.");
+            return res.status(404).send("Category not found.");
         }
 
         doc.name = req.body.name;
@@ -65,9 +71,7 @@ function updateCategory(req, res) {
         let oldFile = null;
 
         async.waterfall([function(callback) {
-            if(!req.files) {
-                return callback(null);
-            }
+            if(!req.files) return callback();
 
             const file = req.files[0];
 
@@ -76,15 +80,13 @@ function updateCategory(req, res) {
             cloudinary.uploader.upload(file.path, function(response) {
                 doc.file = {...response, active: true};
                 fs.unlinkSync(file.path);
-                callback(null);
-            }, { folder: "categories" });
+                callback();
+            }, { folder: `gadget-catalog/${req.user._id}` });
         }, function(callback) {
-            if(!oldFile) {
-                return callback(null);
-            }
+            if(!oldFile) return callback();
 
             cloudinary.uploader.destroy(oldFile.public_id, function() {
-                callback(null);
+                callback();
             }, { invalidate: true });
 
         }], function(err) {

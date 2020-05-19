@@ -79,6 +79,8 @@ function createItem(req, res) {
                 cloudinary.v2.uploader.upload(file.path, {
                     folder: "gadgets"
                 }, function(error, result) {
+                    if(error) return callback(error);
+
                     item.files.push({
                         ...result
                     });
@@ -107,9 +109,7 @@ function updateItem(req, res) {
     Item.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
         if(err) return res.sendStatus(500);
 
-        if(!doc) {
-            return res.status(400);
-        }
+        if(!doc) return res.sendStatus(404);
 
         doc.name = req.body.name;
         doc.categoryId = req.body.categoryId;
@@ -155,9 +155,7 @@ function deleteItem(req, res) {
     Item.findOneAndRemove({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
         if(err) return res.sendStatus(500);
 
-        if(!doc) {
-            return res.status(400);
-        }
+        if(!doc) return res.sendStatus(404);
 
         if(!doc.files || !doc.files.length) {
             return res.sendStatus(200);
@@ -212,9 +210,7 @@ function deleteImage(req, res) {
     Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, function(err, doc) {
         if(err) return res.sendStatus(500);
 
-        if(!doc) {
-            return res.sendStatus(404);
-        }
+        if(!doc) return res.sendStatus(404);
 
         let file = doc.files.id(req.params.fileId);
 

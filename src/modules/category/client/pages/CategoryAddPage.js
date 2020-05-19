@@ -1,16 +1,14 @@
-import React from 'react';
-import { Divider } from 'semantic-ui-react';
-import CategoryFormContainer from '../containers/CategoryFormContainer';
+import React from "react";
+import { Divider } from "semantic-ui-react";
+import CategoryForm from "../components/CategoryForm";
 
-export default class CategoryAddPage extends React.Component {
-    render() {
-        return (
-            <div>
-                <h3>Add new category</h3>
-                <Divider section />
+export default function CategoryAddPage() {
+    return (
+        <>
+            <h3>Add new category</h3>
+            <Divider section />
 
-                <CategoryFormContainer/>
-            </div>
-        );
-    }
+            <CategoryForm/>
+        </>
+    );
 }

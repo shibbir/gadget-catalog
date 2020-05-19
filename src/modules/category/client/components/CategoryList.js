@@ -15,7 +15,7 @@ export default function CategoryList() {
     const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
     const categories = useSelector(state => state.categoryReducer.categories);
 
-    let cards = categories.map(function(category) {
+    const cards = categories.map(function(category) {
         let activeImage = category.file;
         activeImage = activeImage ? activeImage.secure_url : category.noImageUrl;
 
@@ -36,9 +36,11 @@ export default function CategoryList() {
                             {`${category.items.length} item(s)`}
                         </Link>
                     }
+
                     { category.items.length === 0 &&
                         <>You don't have any items</>
                     }
+
                     { loggedInUser && loggedInUser.isAdmin &&
                         <div className="right floated">
                             <Link to={`categories/${category._id}/edit`}>
