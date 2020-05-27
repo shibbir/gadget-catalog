@@ -73,14 +73,15 @@ Name | Default value | Description
 **FACEBOOK_CLIENT_ID** and **FACEBOOK_CLIENT_SECRET** | - | These are you OAuth 2.0 client credentials from facebook which you will need to configure OAuth 2.0. Learn more from [here](https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow).
 **CLOUDINARY_CLOUD_NAME**, **CLOUDINARY_API_KEY**, and **CLOUDINARY_API_SECRET** | - | After signing up for a free account in [Cloudinary](https://cloudinary.com/), go to your [dashboard](https://cloudinary.com/console) to obtain the required credentials to access their api. Learn more from [here](https://cloudinary.com/documentation).
 **SMTP_HOST**, **MAILER_ADDRESS**, and **MAILER_PASSWORD** | - | Your mail server's smtp address and your email credentials. Learn more from [here](https://nodemailer.com/smtp/). If you want to use gmail to send emails you have to allow non secure apps to access gmail. You can do this by going to your gmail settings [here](https://myaccount.google.com/lesssecureapps).
+**SENTRY_DSN** | `undefined` | Optional: Data Source Name(DSN) value for setting up [Sentry](https://sentry.io/welcome/)
 
 ## :rocket: Installation and bootstrapping
 > You need to have [Node.js](https://nodejs.org/en/) and optionally [Yarn](https://yarnpkg.com/lang/en/) installed on your machine before running the followings:
 
 ```bash
-$ yarn install       # install dependencies
+$ npm install        # install dependencies
 
-$ npm install        # optional: if you don't have yarn installed
+$ yarn install       # optional: if you don't have yarn installed
 
 $ npm start          # development build
 
