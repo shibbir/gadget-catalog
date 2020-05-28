@@ -2,7 +2,7 @@ import Types from "./user.types";
 
 const initialState = {
     loggedInUser: null
-}
+};
 
 export default function reducer(state=initialState, action) {
     switch (action.type) {

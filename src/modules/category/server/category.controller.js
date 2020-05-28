@@ -13,7 +13,8 @@ async function getCategories(req, res) {
     const docs = await Category.find({}, "name file").populate({
         path: "items",
         select: "_id",
-        options: { lean: true }
+        options: { lean: true },
+        match: { createdBy: req.user._id }
     }).sort("name").lean();
 
     docs.map(doc => {
