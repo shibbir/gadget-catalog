@@ -2,7 +2,7 @@ const initialState = {
     id: "",
     type: "",
     message: ""
-}
+};
 
 export default function reducer(state=initialState, action) {
     const { payload, error } = action;
