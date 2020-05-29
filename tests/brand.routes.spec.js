@@ -43,6 +43,12 @@ describe("Brand Routes", function() {
         expect(result.status).to.equal(200);
     });
 
+    it("Should get 404 for requesting an invalid brand", async function() {
+        const result = await request(app).get("/api/brands/5ed192c5709670e3e9badb4d").set("Cookie", [`access_token=${user.accessToken}`]);
+
+        expect(result.status).to.equal(404);
+    });
+
     it("Should update an existing brand", async function() {
         const result = await request(app)
             .put(`/api/brands/${brand._id}`)
