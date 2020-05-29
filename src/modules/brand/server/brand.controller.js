@@ -28,7 +28,7 @@ async function getBrands(req, res) {
 
         res.json(docs);
     } catch(err) {
-        return res.sendStatus(500);
+        res.sendStatus(500);
     }
 }
 
@@ -60,7 +60,7 @@ function updateBrand(req, res) {
             if(err) return res.sendStatus(500);
 
             if(!doc) {
-                return res.status(404);
+                return res.sendStatus(404);
             }
 
             doc.name = req.body.name;
