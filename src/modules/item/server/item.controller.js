@@ -1,6 +1,7 @@
 const fs = require("fs");
 const async = require("async");
 const validator = require("validator");
+const { format, parseISO } = require("date-fns");
 const Item = require("./item.model");
 const cloudinary = require("../../../config/server/lib/cloudinary")();
 
@@ -35,6 +36,13 @@ function getItems(req, res) {
 
     if(req.query.brandId) {
         query.brandId = req.query.brandId;
+    }
+
+    if(req.query.startDate && req.query.endDate) {
+        query.purchaseDate = {
+            $gte: format(parseISO(req.query.startDate), "y-MM-d"),
+            $lte: format(parseISO(req.query.endDate), "y-MM-d")
+        };
     }
 
     Item.where(query).countDocuments(function(err, count) {

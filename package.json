@@ -72,6 +72,7 @@
     "coveralls": "^3.1.0",
     "cross-env": "^7.0.2",
     "css-loader": "^3.5.3",
+    "eslint-plugin-react-hooks": "^4.0.4",
     "faker": "^4.1.0",
     "mini-css-extract-plugin": "^0.9.0",
     "mocha": "^7.2.0",
