@@ -1,19 +1,20 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Divider, Button } from "semantic-ui-react";
+import { useSelector, useDispatch } from "react-redux";
 import BrandSchema from "./brand.schema";
 import { createBrand, updateBrand, getBrand } from "./brand.actions";
 import { TextInput } from "../../core/client/components/FieldInput/FieldInputs";
 
-export default function BrandForm({id} = props) {
+function BrandForm({id} = props) {
     const dispatch = useDispatch();
 
-    if(id) {
-        useEffect(() => {
+    useEffect(() => {
+        if(id) {
             dispatch(getBrand(id));
-        }, []);
-    }
+        }
+    }, [id, dispatch]);
 
     const brand = useSelector(state => state.brandReducer.brand);
 
@@ -52,3 +53,9 @@ export default function BrandForm({id} = props) {
         </Formik>
     );
 }
+
+BrandForm.propTypes = {
+    id: PropTypes.string
+};
+
+export default BrandForm;
