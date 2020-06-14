@@ -3,9 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { FormattedDate, FormattedNumber } from "react-intl";
 import { Link, useParams, useHistory } from "react-router-dom";
+import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb } from "semantic-ui-react";
+
 import Types from "../item.types";
 import { fetchItem, deleteItem, setAsActiveImage, deleteImage } from "../item.actions";
-import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb } from "semantic-ui-react";
 
 export default function ItemDetail() {
     const { id } = useParams();
