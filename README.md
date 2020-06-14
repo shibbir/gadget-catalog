@@ -48,6 +48,7 @@
 - [Draft.js](https://draftjs.org/)
 - [Express](https://expressjs.com/)
 - [Formik](https://jaredpalmer.com/formik/)
+- [GraphQL](https://graphql.org/)
 - [Highcharts](https://www.highcharts.com/)
 - [Mocha](https://mochajs.org/)
 - [MongoDB](https://www.mongodb.com/)

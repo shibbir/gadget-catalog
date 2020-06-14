@@ -9,12 +9,13 @@ const BrandSchema = Schema({
     },
     slug: {
         type: String,
+        unique: true,
         required: true
     },
     createdBy: {
-        type: Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: true,
+        type: Schema.Types.ObjectId
     },
     date: {
         type: Date,

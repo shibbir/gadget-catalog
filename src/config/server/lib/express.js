@@ -3,8 +3,11 @@ const path = require("path");
 const multer = require("multer");
 const express = require("express");
 const hbs = require("express-hbs");
+const jwt = require("jsonwebtoken");
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
+const brandSchema = require("../../../modules/brand/server/brand.schema");
+const { ApolloServer, AuthenticationError } = require("apollo-server-express");
 
 module.exports = function() {
     const app = express();
@@ -36,13 +39,31 @@ module.exports = function() {
 
     app.enable("trust proxy");
 
-    config.server.routes.forEach(function (routePath) {
+    config.server.routes.forEach(function(routePath) {
         require(path.resolve(routePath))(app);
     });
 
-    config.server.strategies.forEach(function (strategy) {
+    config.server.strategies.forEach(function(strategy) {
         require(path.resolve(strategy))();
     });
+
+    const apolloServer = new ApolloServer({
+        typeDefs: [brandSchema.typeDef],
+        resolvers: [brandSchema.resolvers],
+        context: ({ req }) => {
+            if (req && req.cookies && req.cookies["access_token"]) {
+                try {
+                    const user = jwt.verify(req.cookies["access_token"], process.env.TOKEN_SECRET);
+                    req.user = user;
+                } catch(err) {
+                    throw new AuthenticationError("You must be logged in!")
+                }
+            }
+            return { req };
+        }
+    });
+
+    apolloServer.applyMiddleware({ app });
 
     return app;
 };

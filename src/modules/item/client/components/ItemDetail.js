@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
 import { FormattedDate, FormattedNumber } from "react-intl";
+import { Link, useParams, useHistory } from "react-router-dom";
 import Types from "../item.types";
 import { fetchItem, deleteItem, setAsActiveImage, deleteImage } from "../item.actions";
 import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb } from "semantic-ui-react";
@@ -51,15 +52,19 @@ export default function ItemDetail() {
         item.activeImage = item.files.find(x => x.active === true);
     }
 
-    const sections = [
-        { key: "Items", content: "Items", href: "/items" },
-        { key: "Category", content: `${item.category.name}`, href: `/items?categoryId=${item.category._id}` },
-        { key: `${item.name}`, content: `${item.name}`, active: true }
-    ];
-
     return (
         <div>
-            <Breadcrumb size="small" sections={sections}/>
+            <Breadcrumb size="small">
+                <LinkContainer to="/items">
+                    <Breadcrumb.Section>Items</Breadcrumb.Section>
+                </LinkContainer>
+                <Breadcrumb.Divider icon="right arrow"/>
+                <LinkContainer to={`/items?categoryId=${item.category._id}`}>
+                    <Breadcrumb.Section>{item.category.name}</Breadcrumb.Section>
+                </LinkContainer>
+                <Breadcrumb.Divider icon="right arrow"/>
+                <Breadcrumb.Section active>{item.name}</Breadcrumb.Section>
+            </Breadcrumb>
 
             <Divider hidden/>
 
@@ -113,9 +118,11 @@ export default function ItemDetail() {
                         <>
                             <Divider section/>
 
-                            <Button color="blue" href={`/items/${item._id}/edit`}>
-                                <Icon name="pencil"/> Edit
-                            </Button>
+                            <LinkContainer to={`/items/${item._id}/edit`}>
+                                <Button color="blue">
+                                    <Icon name="pencil"/> Edit
+                                </Button>
+                            </LinkContainer>
                             <Button color="red"
                                 onClick={() => onDeleteItem(id)}>
                                 <Icon name="trash"/> Delete

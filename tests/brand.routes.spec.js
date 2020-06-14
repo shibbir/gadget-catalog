@@ -21,42 +21,65 @@ describe("Brand Routes", function() {
     });
 
     it("Should fetch all brands", async function() {
-        const result = await request(app).get("/api/brands").set("Cookie", [`access_token=${user.accessToken}`]);
+        const response = await request(app)
+            .post("/graphql")
+            .send({ query: "query { brands { _id name createdBy }}" })
+            .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.status).to.equal(200);
     });
 
     it("Should create new brand", async function() {
-        const result = await request(app)
-            .post("/api/brands")
-            .send({
-                name: faker.company.companyName()
-            })
+        const response = await request(app)
+            .post("/graphql")
+            .send({ query: `
+                mutation {
+                    createBrand(brand: {name: "${faker.company.companyName()}" }) {
+                        _id name createdBy
+                    }
+                }
+            `})
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.body.data.createBrand).to.have.property("_id");
+        expect(response.body.data.createBrand).to.have.property("name");
+        expect(response.body.data.createBrand).to.have.property("createdBy");
     });
 
-    it("Should fetch a brand", async function() {
-        const result = await request(app).get(`/api/brands/${brand._id}`).set("Cookie", [`access_token=${user.accessToken}`]);
+    it("Should get brand by id", async function() {
+        const response = await request(app)
+            .post("/graphql")
+            .send({ query: `query { brand(_id: "${brand._id}") { _id name }}` })
+            .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.body.data.brand).to.have.property("name");
+        expect(response.body.data.brand.name).to.equal(brand.name);
+        expect(response.body.data.brand._id).to.equal(brand._id.toString());
     });
 
-    it("Should get 404 for requesting an invalid brand", async function() {
-        const result = await request(app).get("/api/brands/5ed192c5709670e3e9badb4d").set("Cookie", [`access_token=${user.accessToken}`]);
+    it("Should get null data for an invalid id", async function() {
+        const response = await request(app)
+            .post("/graphql")
+            .send({ query: `query { brand(_id: "5ed192c5709670e3e9badb4d") { _id name }}` })
+            .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(404);
+        expect(response.body.data.brand).to.be.null;
     });
 
     it("Should update an existing brand", async function() {
-        const result = await request(app)
-            .put(`/api/brands/${brand._id}`)
-            .send({
-                name: faker.company.companyName()
-            })
+        const response = await request(app)
+            .post("/graphql")
+            .send({ query: `
+                mutation {
+                    updateBrand(brand: {_id: "${brand._id}", name: "${faker.company.companyName()}" }) {
+                        _id name createdBy
+                    }
+                }
+            `})
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.body.data.updateBrand).to.have.property("_id");
+        expect(response.body.data.updateBrand).to.have.property("name");
+        expect(response.body.data.updateBrand).to.have.property("createdBy");
     });
 });
