@@ -1,7 +1,8 @@
 import React from "react";
 import { Card, Icon } from "semantic-ui-react";
-import ColumnChart from "../../../item/client/components/ColumnChart";
-import CategoryPieChart from "../../../category/client/components/CategoryPieChart";
+
+import ItemChart from "./ItemChart";
+import CategoryChart from "./CategoryChart";
 
 export default function Dashboard() {
     return (
@@ -10,11 +11,11 @@ export default function Dashboard() {
                 <Card.Content>
                     <Card.Header>
                         <Icon name="pie chart"/>
-                        Category Chart
+                        Percentage of item categories
                     </Card.Header>
                 </Card.Content>
                 <Card.Content>
-                    <CategoryPieChart/>
+                    <CategoryChart/>
                 </Card.Content>
             </Card>
 
@@ -22,11 +23,11 @@ export default function Dashboard() {
                 <Card.Content>
                     <Card.Header>
                         <Icon name="bar chart"/>
-                        Yearly report
+                        Yearly report on purchased items
                     </Card.Header>
                 </Card.Content>
                 <Card.Content>
-                    <ColumnChart/>
+                    <ItemChart/>
                 </Card.Content>
             </Card>
         </div>

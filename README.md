@@ -2,7 +2,7 @@
     :loudspeaker: Gadget Catalog
 </h1>
 
-<h4 align="center">A single page application for cataloging gadgets. Built with react, express, mongodb and much more.</h4>
+<h4 align="center">A single page application for cataloging gadgets. Built with react, node.js, graphql, mongodb and much more.</h4>
 
 <div align="center">
     <a href="https://travis-ci.com/shibbir/gadget-catalog">
