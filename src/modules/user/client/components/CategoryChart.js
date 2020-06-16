@@ -15,51 +15,54 @@ export default function CategoryChart() {
 
     const categories = useSelector(state => state.categoryReducer.categories);
 
-    if(categories.length && categories.some(x => !!x.items.length)) {
-        let data = [];
+    useEffect(() => {
+        if(categories.length && categories.some(x => !!x.items.length)) {
 
-        categories.forEach(o => {
-            if(o.items.length) {
-                data.push({
-                    name: o.name,
-                    y: o.items.length
-                });
-            }
-        });
+            let data = [];
 
-        Highcharts.chart("category-chart", {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            title: {
-                text: "Gadget Categories"
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: "pointer",
-                    dataLabels: {
-                        enabled: true
-                    },
-                    showInLegend: true
+            categories.forEach(o => {
+                if(o.items.length) {
+                    data.push({
+                        name: o.name,
+                        y: o.items.length
+                    });
                 }
-            },
-            series: [{
-                type: "pie",
-                name: "Categories",
-                colorByPoint: true,
-                data
-            }],
-            credits: {
-                enabled: false
-            }
-        });
-    }
+            });
+
+            Highcharts.chart("category-chart", {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: "Gadget Categories"
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: "pointer",
+                        dataLabels: {
+                            enabled: true
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    type: "pie",
+                    name: "Categories",
+                    colorByPoint: true,
+                    data
+                }],
+                credits: {
+                    enabled: false
+                }
+            });
+        }
+    }, [categories]);
 
     return (
         <>

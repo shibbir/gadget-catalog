@@ -20,67 +20,74 @@ export default function ItemChart() {
         dispatch(fetchItemsByYearRange(yearRange));
     }, [dispatch, yearRange]);
 
-    let years = [];
-    let itemCounts = [];
     const itemsPerYear = useSelector(state => state.itemReducer.itemsPerYear);
 
-    itemsPerYear.forEach(function(x) {
-        years.push(x.year.toString());
-        itemCounts.push(x.items);
-    });
+    useEffect(() => {
+        let years = [];
+        let itemCounts = [];
 
-    if(itemCounts.length && years.length) {
-        Highcharts.chart("item-chart", {
-            chart: {
-                type: "column"
-            },
-            title: {
-                text: `Items purchased from (${yearRange})`
-            },
-            xAxis: {
-                categories: years,
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: "Number Of Items"
-                },
-                allowDecimals: false
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y}</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: "Total Items",
-                data: itemCounts
-            }],
-            credits: {
-                enabled: false
-            },
-            legend: {
-                enabled: false
-            }
+        itemsPerYear.forEach(function(x) {
+            years.push(x.year.toString());
+            itemCounts.push(x.items);
         });
-    }
+
+        if(itemCounts.length && years.length) {
+            Highcharts.chart("item-chart", {
+                chart: {
+                    type: "column"
+                },
+                title: {
+                    text: `Items purchased from (${yearRange})`
+                },
+                xAxis: {
+                    categories: years,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: "Number Of Items"
+                    },
+                    allowDecimals: false
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: "Total Items",
+                    data: itemCounts
+                }],
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                }
+            });
+        }
+    }, [itemsPerYear]);
 
     return (
         <>
-            <Select onChange={(event, data) => {setYearRange(data.value)}} options={options} defaultValue={options[0].value}/>
-            <div id="item-chart"></div>
+            { itemsPerYear.length &&
+                <>
+                    <Select onChange={(event, data) => {setYearRange(data.value)}} options={options} defaultValue={options[0].value}/>
+                    <div id="item-chart"></div>
+                </>
+            }
 
-            { !itemCounts.length &&
+            { !itemsPerYear.length &&
                 <Segment placeholder basic>
                     <Header icon>
                         <Icon name="warning sign"/>
