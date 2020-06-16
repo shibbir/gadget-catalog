@@ -1,7 +1,7 @@
-import React from "react";
 import axios from "axios";
-import { connect } from "react-redux";
-import { withRouter, Route, Switch } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Route, Switch } from "react-router-dom";
 
 import "fomantic-ui-css/semantic.css";
 import "izitoast/dist/css/izitoast.css";
@@ -19,7 +19,7 @@ import Dashboard from "../../user/client/components/Dashboard";
 import ItemRoutes from "../../item/client/item.routes";
 import BrandRoutes from "../../brand/client/brand.routes";
 import CategoryRoutes from "../../category/client/category.routes";
-import { getProfile } from "../../user/client/user.actions";
+import { getSignedInUserProfile } from "../../user/client/user.actions";
 
 let refCount = 0;
 
@@ -50,40 +50,29 @@ axios.interceptors.response.use(response => {
     return Promise.reject(error);
 });
 
-const mapDispatchToProps = dispatch => {
-    return {
-        getProfile: function() {
-            dispatch(getProfile());
-        }
-    };
-};
+export default function App() {
+    const dispatch = useDispatch();
 
-class App extends React.Component {
-    constructor(props) {
-        super();
-        props.getProfile();
-    }
+    useEffect(() => {
+        dispatch(getSignedInUserProfile());
+    }, [dispatch]);
 
-    render() {
-        return (
-            <Switch>
-                <PublicRoute path="/login" component={Login}/>
-                <PublicRoute path="/register" component={Register}/>
-                <PublicRoute path="/reset-password" component={ResetPassword}/>
+    return (
+        <Switch>
+            <PublicRoute path="/login" component={Login}/>
+            <PublicRoute path="/register" component={Register}/>
+            <PublicRoute path="/reset-password" component={ResetPassword}/>
 
-                <PrivateRoute exact path="/" component={Dashboard}/>
-                <PrivateRoute path="/profile" component={Profile}/>
+            <PrivateRoute exact path="/" component={Dashboard}/>
+            <PrivateRoute path="/profile" component={Profile}/>
 
-                <Route path="/items" component={ItemRoutes}/>
+            <Route path="/items" component={ItemRoutes}/>
 
-                <Route path="/brands" component={BrandRoutes}/>
+            <Route path="/brands" component={BrandRoutes}/>
 
-                <Route path="/categories" component={CategoryRoutes}/>
+            <Route path="/categories" component={CategoryRoutes}/>
 
-                <Route component={NoMatch}/>
-            </Switch>
-        );
-    }
+            <Route component={NoMatch}/>
+        </Switch>
+    );
 }
-
-export default withRouter(connect(null, mapDispatchToProps)(App));

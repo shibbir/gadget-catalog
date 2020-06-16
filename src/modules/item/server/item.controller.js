@@ -247,15 +247,18 @@ function getYearRangeReport(req, res) {
     Item.find(query, "purchaseDate").exec(function(err, docs) {
         if(err) return res.sendStatus(500);
 
-        let data = {};
+        let data = [];
 
-        for(let i = startYear; i <= endYear; i++) {
-            data[i] = 0;
+        for(let year = startYear; year <= endYear; year++) {
+            data.push({
+                year: year,
+                items: 0
+            });
         }
 
-        docs.forEach(function(x) {
-            data[`${x.purchaseDate.getFullYear()}`] = data[`${x.purchaseDate.getFullYear()}`] || 0;
-            data[`${x.purchaseDate.getFullYear()}`]++;
+        docs.forEach(function(doc) {
+            const purchasedYear = data.find(x => x.year == doc.purchaseDate.getFullYear());
+            purchasedYear.items++;
         });
 
         res.json(data);

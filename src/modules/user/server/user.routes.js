@@ -138,7 +138,7 @@ module.exports = function(app) {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
             }).redirect("/");
-        })(req, res, next)
+        })(req, res, next);
     });
 
     app.post("/oauth/facebook/deauthorize_callback", function(req, res) {

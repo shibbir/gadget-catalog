@@ -41,7 +41,7 @@ export const RichEditorInput = ({ attributes }) => {
 export const DropdownInput = ({ attributes }) => {
     return (
         <Form.Field required={attributes.required}>
-            <Form.Select search {...attributes} options={attributes.options} onChange={attributes.onChange}/>
+            <Form.Select search {...attributes} options={attributes.options}/>
 
             <div className="field-validation-error">
                 <ErrorMessage name={attributes.name} />
