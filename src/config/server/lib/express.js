@@ -6,7 +6,7 @@ const hbs = require("express-hbs");
 const jwt = require("jsonwebtoken");
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
-const brandSchema = require("../../../modules/brand/server/brand.schema");
+const schema = require("../../../modules/core/server/core.schema");
 const { ApolloServer, AuthenticationError } = require("apollo-server-express");
 
 module.exports = function() {
@@ -27,13 +27,13 @@ module.exports = function() {
     app.set("view engine", "html");
     app.set("views", path.join(process.cwd(), "src/modules/core/server"));
 
-    app.use(multer({
-        dest: "./public/uploads/",
-        limits: {
-            files: 3,
-            fileSize: 1500000
-        }
-    }).array("files"));
+    // app.use(multer({
+    //     dest: "./public/uploads/",
+    //     limits: {
+    //         files: 3,
+    //         fileSize: 1500000
+    //     }
+    // }).array("files"));
 
     app.set("port", process.env.PORT);
 
@@ -48,8 +48,12 @@ module.exports = function() {
     });
 
     const apolloServer = new ApolloServer({
-        typeDefs: [brandSchema.typeDef],
-        resolvers: [brandSchema.resolvers],
+        uploads: {
+            maxFiles: 5,
+            maxFileSize: 2000000
+        },
+        typeDefs: schema.typeDefs,
+        resolvers: schema.resolvers,
         context: ({ req }) => {
             if (req && req.cookies && req.cookies["access_token"]) {
                 try {

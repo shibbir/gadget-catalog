@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { Divider, Button, Message, Icon } from "semantic-ui-react";
 import CategorySchema from "../category.schema";
-import { createCategory, updateCategory, fetchCategory } from "../category.actions";
+import { saveCategory, getCategory } from "../category.actions";
 import { TextInput, FileInput } from "../../../core/client/components/FieldInput/FieldInputs";
 
 export default function CategoryForm({id} = props) {
@@ -11,45 +11,30 @@ export default function CategoryForm({id} = props) {
 
     if(id) {
         useEffect(() => {
-            dispatch(fetchCategory(id));
+            dispatch(getCategory(id));
         }, []);
     }
 
-    const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
     const category = useSelector(state => state.categoryReducer.category);
+    const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
     return (
         <>
             { loggedInUser && loggedInUser.isAdmin &&
                 <Formik
                     initialValues={{
+                        _id: id,
                         name: category ? category.name : "",
-                        files: ""
+                        file: ""
                     }}
                     displayName="CategoryForm"
                     enableReinitialize={true}
                     validationSchema={CategorySchema}
                     onSubmit={(values, actions) => {
-                        const formData = new FormData();
-
-                        if(values.files) {
-                            for(let index = 0; index < values.files.length; index++) {
-                                formData.append("files", values.files[index]);
-                            }
-                        }
-
-                        delete values.files;
-
-                        for(let key in values) {
-                            if(values.hasOwnProperty(key) && values[key]) {
-                                formData.append(key, values[key]);
-                            }
-                        }
-
-                        if(id) {
-                            dispatch(updateCategory(formData, id));
+                        if(values._id) {
+                            dispatch(saveCategory(values));
                         } else {
-                            dispatch(createCategory(formData)).then(function() {
+                            dispatch(saveCategory(values)).then(function() {
                                 actions.resetForm();
                             });
                         }
@@ -67,10 +52,10 @@ export default function CategoryForm({id} = props) {
                             }}/>
                             <FileInput attributes={{
                                 type: "file",
-                                name: "files",
+                                name: "file",
                                 label: "Upload",
                                 onChange: e => {
-                                    formikProps.setFieldValue("files", e.currentTarget.files);
+                                    formikProps.setFieldValue("file", e.currentTarget.files[0]);
                                 }
                             }}/>
                             <Divider hidden/>

@@ -38,7 +38,7 @@ export default function CategoryList() {
                     }
 
                     { category.items.length === 0 &&
-                        <>You don't have any items</>
+                        <div>You don't have any items</div>
                     }
 
                     { loggedInUser && loggedInUser.isAdmin &&

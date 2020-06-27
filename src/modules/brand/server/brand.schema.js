@@ -1,6 +1,7 @@
+const { gql } = require("apollo-server-express");
 const repository = require("./brand.repository");
 
-const typeDef = `
+const typeDefs = gql`
     type Brand {
         _id: ID
         name: String
@@ -36,5 +37,7 @@ const resolvers = {
     }
 };
 
-exports.typeDef = typeDef;
-exports.resolvers = resolvers;
+module.exports = {
+    typeDefs,
+    resolvers
+};

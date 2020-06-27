@@ -21,40 +21,54 @@ describe("Category Routes", function() {
     });
 
     it("Should fetch all categories", async function() {
-        const result = await request(app)
-            .get("/api/categories")
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+        const response = await request(app)
+            .post("/graphql")
+            .set("Cookie", [`access_token=${user.accessToken}`])
+            .send({ query: "query { categories { _id name }}" });
 
-        expect(result.status).to.equal(200);
+        expect(response.status).to.equal(200);
     });
 
-    it("Should create a category", async function() {
-        const result = await request(app)
-            .post("/api/categories")
-            .send({
-                name: faker.commerce.productName()
-            })
+    it("Should create a new category", async function() {
+        const response = await request(app)
+            .post("/graphql")
+            .send({ query: `
+                mutation {
+                    createCategory(category: {name: "${faker.commerce.productName()}" }) {
+                        _id name
+                    }
+                }
+            `})
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.body.data.createCategory).to.have.property("_id");
+        expect(response.body.data.createCategory).to.have.property("name");
     });
 
-    it("Should fetch a category", async function() {
-        const result = await request(app)
-            .get(`/api/categories/${category._id}`)
+    it("Should get category by id", async function() {
+        const response = await request(app)
+            .post("/graphql")
+            .send({ query: `query { category(_id: "${category._id}") { _id name }}` })
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.body.data.category).to.have.property("name");
+        expect(response.body.data.category.name).to.equal(category.name);
+        expect(response.body.data.category._id).to.equal(category._id.toString());
     });
 
     it("Should update an existing category", async function() {
-        const result = await request(app)
-            .put(`/api/categories/${category._id}`)
-            .send({
-                name: faker.commerce.productName()
-            })
+        const response = await request(app)
+            .post("/graphql")
+            .send({ query: `
+                mutation {
+                    updateCategory(category: {_id: "${category._id}", name: "${faker.commerce.productName()}" }) {
+                        _id name
+                    }
+                }
+            `})
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.body.data.updateCategory).to.have.property("_id");
+        expect(response.body.data.updateCategory).to.have.property("name");
     });
 });

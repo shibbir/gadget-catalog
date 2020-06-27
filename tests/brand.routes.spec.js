@@ -23,8 +23,8 @@ describe("Brand Routes", function() {
     it("Should fetch all brands", async function() {
         const response = await request(app)
             .post("/graphql")
-            .send({ query: "query { brands { _id name createdBy }}" })
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${user.accessToken}`])
+            .send({ query: "query { brands { _id name createdBy }}" });
 
         expect(response.status).to.equal(200);
     });

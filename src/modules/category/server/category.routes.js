@@ -1,13 +1,13 @@
 const authorize = require("../../core/server/authorize");
 
 module.exports = function(app) {
-    const controller = require("./category.controller");
+    const repository = require("./category.repository");
 
     app.route("/api/categories")
-        .get(authorize(), controller.getCategories)
-        .post(authorize(["admin"]), controller.createCategory);
+        .get(authorize(), repository.getCategories)
+        .post(authorize(["admin"]), repository.createCategory);
 
     app.route("/api/categories/:id")
-        .get(authorize(["admin"]), controller.getCategory)
-        .put(authorize(["admin"]), controller.updateCategory);
+        .get(authorize(["admin"]), repository.getCategory)
+        .put(authorize(["admin"]), repository.updateCategory);
 };
