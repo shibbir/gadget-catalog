@@ -3,11 +3,8 @@ const path = require("path");
 const multer = require("multer");
 const express = require("express");
 const hbs = require("express-hbs");
-const jwt = require("jsonwebtoken");
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
-const schema = require("../../../modules/core/server/core.schema");
-const { ApolloServer, AuthenticationError } = require("apollo-server-express");
 
 module.exports = function() {
     const app = express();
@@ -27,13 +24,13 @@ module.exports = function() {
     app.set("view engine", "html");
     app.set("views", path.join(process.cwd(), "src/modules/core/server"));
 
-    // app.use(multer({
-    //     dest: "./public/uploads/",
-    //     limits: {
-    //         files: 3,
-    //         fileSize: 1500000
-    //     }
-    // }).array("files"));
+    app.use(multer({
+        dest: "./public/uploads/",
+        limits: {
+            files: 3,
+            fileSize: 1500000
+        }
+    }).array("files"));
 
     app.set("port", process.env.PORT);
 
@@ -46,28 +43,6 @@ module.exports = function() {
     config.server.strategies.forEach(function(strategy) {
         require(path.resolve(strategy))();
     });
-
-    const apolloServer = new ApolloServer({
-        uploads: {
-            maxFiles: 5,
-            maxFileSize: 2000000
-        },
-        typeDefs: schema.typeDefs,
-        resolvers: schema.resolvers,
-        context: ({ req }) => {
-            if (req && req.cookies && req.cookies["access_token"]) {
-                try {
-                    const user = jwt.verify(req.cookies["access_token"], process.env.TOKEN_SECRET);
-                    req.user = user;
-                } catch(err) {
-                    throw new AuthenticationError("You must be logged in!")
-                }
-            }
-            return { req };
-        }
-    });
-
-    apolloServer.applyMiddleware({ app });
 
     return app;
 };

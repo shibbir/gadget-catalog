@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { Divider, Button, Message, Icon } from "semantic-ui-react";
 import CategorySchema from "../category.schema";
-import { saveCategory, getCategory } from "../category.actions";
+import { createCategory, updateCategory, getCategory } from "../category.actions";
 import { TextInput, FileInput } from "../../../core/client/components/FieldInput/FieldInputs";
 
 export default function CategoryForm({id} = props) {
@@ -23,7 +23,6 @@ export default function CategoryForm({id} = props) {
             { loggedInUser && loggedInUser.isAdmin &&
                 <Formik
                     initialValues={{
-                        _id: id,
                         name: category ? category.name : "",
                         file: ""
                     }}
@@ -31,10 +30,24 @@ export default function CategoryForm({id} = props) {
                     enableReinitialize={true}
                     validationSchema={CategorySchema}
                     onSubmit={(values, actions) => {
-                        if(values._id) {
-                            dispatch(saveCategory(values));
+                        const formData = new FormData();
+
+                        if(values.file) {
+                            formData.append("file", values.file);
+                        }
+
+                        delete values.file;
+
+                        for(let key in values) {
+                            if(values.hasOwnProperty(key) && values[key]) {
+                                formData.append(key, values[key]);
+                            }
+                        }
+
+                        if(id) {
+                            dispatch(updateCategory(formData, id));
                         } else {
-                            dispatch(saveCategory(values)).then(function() {
+                            dispatch(createCategory(formData)).then(function() {
                                 actions.resetForm();
                             });
                         }

@@ -7,28 +7,28 @@ import BrandSchema from "./brand.schema";
 import { createBrand, updateBrand, getBrand } from "./brand.actions";
 import { TextInput } from "../../core/client/components/FieldInput/FieldInputs";
 
-function BrandForm({_id} = props) {
+function BrandForm({id} = props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if(_id) {
-            dispatch(getBrand(_id));
+        if(id) {
+            dispatch(getBrand(id));
         }
-    }, [_id, dispatch]);
+    }, [id, dispatch]);
 
     const brand = useSelector(state => state.brandReducer.brand);
 
     return (
         <Formik
             initialValues={{
-                name: _id && brand ? brand.name : ""
+                name: id && brand ? brand.name : ""
             }}
             displayName="BrandForm"
             enableReinitialize={true}
             validationSchema={BrandSchema}
             onSubmit={(values, actions) => {
                 if(_id) {
-                    dispatch(updateBrand({...values, _id}));
+                    dispatch(updateBrand(values, id));
                 } else {
                     dispatch(createBrand(values));
                     actions.resetForm();
@@ -55,7 +55,7 @@ function BrandForm({_id} = props) {
 }
 
 BrandForm.propTypes = {
-    _id: PropTypes.string
+    id: PropTypes.string
 };
 
 export default BrandForm;

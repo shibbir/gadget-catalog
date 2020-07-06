@@ -5,17 +5,8 @@ export function getBrands() {
     return {
         type: Types.GET_BRANDS,
         payload: axios({
-            method: "post",
-            url: "/graphql",
-            data: {
-                query: `
-                    query {
-                        brands {
-                            _id name createdBy
-                        }
-                    }
-                `
-            }
+            method: "get",
+            url: "/api/brands"
         })
     };
 }
@@ -25,63 +16,29 @@ export function createBrand(formData) {
         type: Types.POST_BRAND,
         payload: axios({
             method: "post",
-            url: "/graphql",
-            data: {
-                query: `
-                    mutation($brand: BrandInput!) {
-                        createBrand(brand: $brand) {
-                            _id name createdBy
-                        }
-                    }
-                `,
-                variables: { brand: formData }
-            },
-            headers: {
-                "Content-Type": "application/json"
-            }
+            data: formData,
+            url: "/api/brands"
         })
     };
 }
 
-export function updateBrand(formData) {
+export function updateBrand(formData, id) {
     return {
         type: Types.PUT_BRAND,
         payload: axios({
-            method: "post",
-            url: "/graphql",
-            data: {
-                query: `
-                    mutation($brand: BrandInput!) {
-                        updateBrand(brand: $brand) {
-                            _id name createdBy
-                        }
-                    }
-                `,
-                variables: { brand: formData }
-            },
-            headers: {
-                "Content-Type": "application/json"
-            }
+            method: "put",
+            data: formData,
+            url: `/api/brands/${id}`
         })
     };
 }
 
-export function getBrand(_id) {
+export function getBrand(id) {
     return {
         type: Types.GET_BRAND,
         payload: axios({
-            method: "post",
-            url: "/graphql",
-            data: {
-                query: `
-                    query($_id: ID!) {
-                        brand(_id: $_id) {
-                            _id name
-                        }
-                    }
-                `,
-                variables: { _id }
-            }
+            method: "get",
+            url: `/api/brands/${id}`
         })
     };
 }

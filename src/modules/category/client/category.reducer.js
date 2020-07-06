@@ -10,16 +10,16 @@ export default function reducer(state=initialState, action) {
         case Types.GET_CATEGORIES_FULFILLED: {
             return {
                 ...state,
-                categories: action.payload.data.data.categories
+                categories: action.payload.data
             };
         }
         case Types.GET_CATEGORY_FULFILLED: {
             return {
                 ...state,
-                category: action.payload.data.data.category
+                category: action.payload.data
             };
         }
-        case Types.UPDATE_CATEGORY_REJECTED: {
+        case Types.PUT_CATEGORY_REJECTED: {
             return state;
         }
     }

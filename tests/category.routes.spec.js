@@ -22,53 +22,39 @@ describe("Category Routes", function() {
 
     it("Should fetch all categories", async function() {
         const response = await request(app)
-            .post("/graphql")
-            .set("Cookie", [`access_token=${user.accessToken}`])
-            .send({ query: "query { categories { _id name }}" });
+            .get("/api/categories")
+            .set("Cookie", [`access_token=${user.accessToken}`]);
 
         expect(response.status).to.equal(200);
     });
 
     it("Should create a new category", async function() {
         const response = await request(app)
-            .post("/graphql")
-            .send({ query: `
-                mutation {
-                    createCategory(category: {name: "${faker.commerce.productName()}" }) {
-                        _id name
-                    }
-                }
-            `})
+            .post("/api/categories")
+            .send({
+                name: faker.commerce.productName()
+            })
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(response.body.data.createCategory).to.have.property("_id");
-        expect(response.body.data.createCategory).to.have.property("name");
+        expect(response.status).to.equal(200);
     });
 
     it("Should get category by id", async function() {
         const response = await request(app)
-            .post("/graphql")
-            .send({ query: `query { category(_id: "${category._id}") { _id name }}` })
+            .get(`/api/categories/${category._id}`)
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(response.body.data.category).to.have.property("name");
-        expect(response.body.data.category.name).to.equal(category.name);
-        expect(response.body.data.category._id).to.equal(category._id.toString());
+        expect(response.status).to.equal(200);
     });
 
     it("Should update an existing category", async function() {
         const response = await request(app)
-            .post("/graphql")
-            .send({ query: `
-                mutation {
-                    updateCategory(category: {_id: "${category._id}", name: "${faker.commerce.productName()}" }) {
-                        _id name
-                    }
-                }
-            `})
+            .put(`/api/categories/${category._id}`)
+            .send({
+                name: faker.commerce.productName()
+            })
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(response.body.data.updateCategory).to.have.property("_id");
-        expect(response.body.data.updateCategory).to.have.property("name");
+        expect(response.status).to.equal(200);
     });
 });
