@@ -33,7 +33,7 @@ export function updateCategory(formData, id) {
     };
 }
 
-export function fetchCategory(id) {
+export function getCategory(id) {
     return {
         type: Types.GET_CATEGORY,
         payload: axios({

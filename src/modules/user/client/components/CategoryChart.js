@@ -16,15 +16,15 @@ export default function CategoryChart() {
     const categories = useSelector(state => state.categoryReducer.categories);
 
     useEffect(() => {
-        if(categories.length && categories.some(x => !!x.items.length)) {
+        if(categories.length && categories.some(x => !!x.gadgets.length)) {
 
             let data = [];
 
             categories.forEach(o => {
-                if(o.items.length) {
+                if(o.gadgets.length) {
                     data.push({
                         name: o.name,
-                        y: o.items.length
+                        y: o.gadgets.length
                     });
                 }
             });
@@ -68,7 +68,7 @@ export default function CategoryChart() {
         <>
             <div id="category-chart"></div>
 
-            { !categories.length || !categories.some(x => !!x.items.length) &&
+            { !categories.length || !categories.some(x => !!x.gadgets.length) &&
                 <Segment placeholder basic>
                     <Header icon>
                         <Icon name="warning sign"/>

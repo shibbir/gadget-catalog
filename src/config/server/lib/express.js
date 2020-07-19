@@ -1,13 +1,11 @@
 const config = require("../config");
 const path = require("path");
 const multer = require("multer");
+const helmet = require("helmet");
 const express = require("express");
 const hbs = require("express-hbs");
-const jwt = require("jsonwebtoken");
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
-const brandSchema = require("../../../modules/brand/server/brand.schema");
-const { ApolloServer, AuthenticationError } = require("apollo-server-express");
 
 module.exports = function() {
     const app = express();
@@ -15,11 +13,11 @@ module.exports = function() {
     app.locals.jsFiles = config.client.js;
     app.locals.cssFiles = config.client.css;
 
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
-
+    app.use(helmet());
     app.use(compression());
     app.use(cookieParser());
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
     app.use(express.static(path.join(process.cwd(), "public")));
 
@@ -46,24 +44,6 @@ module.exports = function() {
     config.server.strategies.forEach(function(strategy) {
         require(path.resolve(strategy))();
     });
-
-    const apolloServer = new ApolloServer({
-        typeDefs: [brandSchema.typeDef],
-        resolvers: [brandSchema.resolvers],
-        context: ({ req }) => {
-            if (req && req.cookies && req.cookies["access_token"]) {
-                try {
-                    const user = jwt.verify(req.cookies["access_token"], process.env.TOKEN_SECRET);
-                    req.user = user;
-                } catch(err) {
-                    throw new AuthenticationError("You must be logged in!")
-                }
-            }
-            return { req };
-        }
-    });
-
-    apolloServer.applyMiddleware({ app });
 
     return app;
 };

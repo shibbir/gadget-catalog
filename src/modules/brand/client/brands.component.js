@@ -53,7 +53,7 @@ export default function Brands() {
                         <Modal.Header>Brand Form</Modal.Header>
                         <Modal.Content>
                             <Modal.Description>
-                                <BrandForm _id={brandId}/>
+                                <BrandForm id={brandId}/>
                             </Modal.Description>
                         </Modal.Content>
                         <Modal.Actions>

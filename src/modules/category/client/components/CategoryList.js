@@ -30,15 +30,15 @@ export default function CategoryList() {
                 </Card.Content>
 
                 <Card.Content extra>
-                    { category.items.length > 0 &&
+                    { category.gadgets.length > 0 &&
                         <Link to={`/items?categoryId=${category._id}`}>
                             <Icon color='teal' name="external alternate"/>
-                            {`${category.items.length} item(s)`}
+                            {`${category.gadgets.length} item(s)`}
                         </Link>
                     }
 
-                    { category.items.length === 0 &&
-                        <>You don't have any items</>
+                    { category.gadgets.length === 0 &&
+                        <div>You don't have any items</div>
                     }
 
                     { loggedInUser && loggedInUser.isAdmin &&

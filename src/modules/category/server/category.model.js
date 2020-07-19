@@ -25,7 +25,7 @@ const CategorySchema = Schema({
     }
 }, { toJSON: { virtuals: true } });
 
-CategorySchema.virtual("items", {
+CategorySchema.virtual("gadgets", {
     ref: "Item",
     localField: "_id",
     foreignField: "categoryId"

@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { Divider, Button, Message, Icon } from "semantic-ui-react";
 import CategorySchema from "../category.schema";
-import { createCategory, updateCategory, fetchCategory } from "../category.actions";
+import { createCategory, updateCategory, getCategory } from "../category.actions";
 import { TextInput, FileInput } from "../../../core/client/components/FieldInput/FieldInputs";
 
 export default function CategoryForm({id} = props) {
@@ -11,12 +11,12 @@ export default function CategoryForm({id} = props) {
 
     if(id) {
         useEffect(() => {
-            dispatch(fetchCategory(id));
+            dispatch(getCategory(id));
         }, []);
     }
 
-    const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
     const category = useSelector(state => state.categoryReducer.category);
+    const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
     return (
         <>
@@ -24,7 +24,7 @@ export default function CategoryForm({id} = props) {
                 <Formik
                     initialValues={{
                         name: category ? category.name : "",
-                        files: ""
+                        file: ""
                     }}
                     displayName="CategoryForm"
                     enableReinitialize={true}
@@ -32,13 +32,11 @@ export default function CategoryForm({id} = props) {
                     onSubmit={(values, actions) => {
                         const formData = new FormData();
 
-                        if(values.files) {
-                            for(let index = 0; index < values.files.length; index++) {
-                                formData.append("files", values.files[index]);
-                            }
+                        if(values.file) {
+                            formData.append("file", values.file);
                         }
 
-                        delete values.files;
+                        delete values.file;
 
                         for(let key in values) {
                             if(values.hasOwnProperty(key) && values[key]) {
@@ -67,10 +65,10 @@ export default function CategoryForm({id} = props) {
                             }}/>
                             <FileInput attributes={{
                                 type: "file",
-                                name: "files",
+                                name: "file",
                                 label: "Upload",
                                 onChange: e => {
-                                    formikProps.setFieldValue("files", e.currentTarget.files);
+                                    formikProps.setFieldValue("file", e.currentTarget.files[0]);
                                 }
                             }}/>
                             <Divider hidden/>

@@ -11,7 +11,7 @@ async function getCategory(req, res) {
 
 async function getCategories(req, res) {
     const docs = await Category.find({}, "name file").populate({
-        path: "items",
+        path: "gadgets",
         select: "_id",
         options: { lean: true },
         match: { createdBy: req.user._id }

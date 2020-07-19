@@ -21,40 +21,40 @@ describe("Category Routes", function() {
     });
 
     it("Should fetch all categories", async function() {
-        const result = await request(app)
+        const response = await request(app)
             .get("/api/categories")
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.status).to.equal(200);
     });
 
-    it("Should create a category", async function() {
-        const result = await request(app)
+    it("Should create a new category", async function() {
+        const response = await request(app)
             .post("/api/categories")
             .send({
                 name: faker.commerce.productName()
             })
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.status).to.equal(200);
     });
 
-    it("Should fetch a category", async function() {
-        const result = await request(app)
+    it("Should get category by id", async function() {
+        const response = await request(app)
             .get(`/api/categories/${category._id}`)
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.status).to.equal(200);
     });
 
     it("Should update an existing category", async function() {
-        const result = await request(app)
+        const response = await request(app)
             .put(`/api/categories/${category._id}`)
             .send({
                 name: faker.commerce.productName()
             })
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.status).to.equal(200);
     });
 });

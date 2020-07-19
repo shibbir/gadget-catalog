@@ -6,32 +6,22 @@ const Category = require("./modules/category/server/category.model");
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
 const userSeeder = function(callback) {
-    User.findOne({ role: "admin" }, function(err, doc) {
-        if(doc) {
-            return callback(null, doc);
-        }
+    const user = new User();
 
-        const user = new User();
+    user.role = "admin";
+    user.displayName = "Administrator";
+    user.local.name = "Administrator";
+    user.local.email = "admin@example-domain.com";
+    user.local.password = user.generateHash("temporary-password");
 
-        user.role = "admin";
-        user.displayName = "Administrator";
-        user.local.name = "Administrator";
-        user.local.email = "admin@gadget-catalog.io";
-        user.local.password = user.generateHash("temporary-password");
-
-        user.save(function(err, doc) {
-            if(err) return callback(err);
-            callback(null, doc);
-        });
+    user.save(function(err, doc) {
+        if(err) return callback(err);
+        callback(null, doc);
     });
 };
 
 const categorySeeder = function(user, callback) {
-    const array = [
-        "Laptop", "Motherboard", "Processor", "Mobile", "Tablet", "Memory", "Gaming console & peripheral",
-        "Networking", "PSU", "GPU", "Storage", "Monitor", "Chassis", "Audio", "Computer accessories",
-        "Optical drive", "Keyboard & Mouse"
-    ].sort();
+    const array = ["Category X", "Category Y"].sort();
 
     async.each(array, function(item, asyncCallback) {
         new Category({
@@ -47,10 +37,7 @@ const categorySeeder = function(user, callback) {
 };
 
 const brandSeeder = function(user, callback) {
-    const array = [
-        "Acer", "Apple", "Asus", "AMD", "Audio-Technica", "Cooler Master", "Corsair", "Dell", "HP", "Intel", "Microsoft", "MSI", "Nokia",
-        "Nvidia", "Samsung", "Sony", "Thermaltake", "TP-Link", "HTC", "Lenovo", "ZOTAC", "Western Digital"
-    ].sort();
+    const array = ["Brand X", "Brand Y"].sort();
 
     async.each(array, function(item, asyncCallback) {
         new Brand({

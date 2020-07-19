@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let FileSchema = Schema({
+const FileSchema = Schema({
     public_id: {
         type: String,
         required: true
