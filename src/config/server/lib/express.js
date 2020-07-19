@@ -1,6 +1,7 @@
 const config = require("../config");
 const path = require("path");
 const multer = require("multer");
+const helmet = require("helmet");
 const express = require("express");
 const hbs = require("express-hbs");
 const compression = require("compression");
@@ -12,11 +13,11 @@ module.exports = function() {
     app.locals.jsFiles = config.client.js;
     app.locals.cssFiles = config.client.css;
 
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
-
+    app.use(helmet());
     app.use(compression());
     app.use(cookieParser());
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
     app.use(express.static(path.join(process.cwd(), "public")));
 

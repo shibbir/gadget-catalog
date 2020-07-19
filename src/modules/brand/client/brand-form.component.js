@@ -27,7 +27,7 @@ function BrandForm({id} = props) {
             enableReinitialize={true}
             validationSchema={BrandSchema}
             onSubmit={(values, actions) => {
-                if(_id) {
+                if(id) {
                     dispatch(updateBrand(values, id));
                 } else {
                     dispatch(createBrand(values));

@@ -37,7 +37,7 @@ export function getCategory(id) {
     return {
         type: Types.GET_CATEGORY,
         payload: axios({
-            method: "post",
+            method: "get",
             url: `/api/categories/${id}`
         })
     };
