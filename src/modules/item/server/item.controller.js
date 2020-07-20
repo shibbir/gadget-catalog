@@ -3,7 +3,7 @@ const async = require("async");
 const validator = require("validator");
 const { format, parseISO } = require("date-fns");
 const Item = require("./item.model");
-const { cloudinary } = require("../../../config/server/lib/cloudinary");
+const cloudinary = require("../../../config/server/lib/cloudinary");
 
 async function getItem(req, res) {
     let query = req.user.role === "admin" ? { _id: req.params.id } : { _id: req.params.id, createdBy: req.user._id };

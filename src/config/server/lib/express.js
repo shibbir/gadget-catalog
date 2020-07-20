@@ -1,6 +1,5 @@
 const config = require("../config");
 const path = require("path");
-const multer = require("multer");
 const helmet = require("helmet");
 const express = require("express");
 const hbs = require("express-hbs");
@@ -24,14 +23,6 @@ module.exports = function() {
     app.engine("html", hbs.express4({ extname: ".html" }));
     app.set("view engine", "html");
     app.set("views", path.join(process.cwd(), "src/modules/core/server"));
-
-    app.use(multer({
-        dest: "./public/uploads/",
-        limits: {
-            files: 3,
-            fileSize: 1500000
-        }
-    }).array("files"));
 
     app.set("port", process.env.PORT);
 
