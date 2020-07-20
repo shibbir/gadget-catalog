@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Form, Formik } from "formik";
+import * as iziToast from "izitoast/dist/js/izitoast";
 import { useSelector, useDispatch } from "react-redux";
 import { Divider, Button, Message, Icon } from "semantic-ui-react";
 import CategorySchema from "../category.schema";
@@ -45,9 +46,20 @@ export default function CategoryForm({id} = props) {
                         }
 
                         if(id) {
-                            dispatch(updateCategory(formData, id));
+                            dispatch(updateCategory(formData, id)).then(function() {
+                                iziToast['success']({
+                                    timeout: 3000,
+                                    message: "Your changes are saved.",
+                                    position: "bottomRight"
+                                });
+                            });
                         } else {
                             dispatch(createCategory(formData)).then(function() {
+                                iziToast['success']({
+                                    timeout: 3000,
+                                    message: "Your changes are saved.",
+                                    position: "bottomRight"
+                                });
                                 actions.resetForm();
                             });
                         }

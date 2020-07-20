@@ -7,7 +7,7 @@ import { getBrands } from "../../../brand/client/brand.actions";
 import { getCategories } from "../../../category/client/category.actions";
 import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segment, Header } from "semantic-ui-react";
 
-export default function ItemList() {
+export default function Items() {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
@@ -71,11 +71,11 @@ export default function ItemList() {
     const categories = useSelector(state => state.categoryReducer.categories);
     const brands = useSelector(state => state.brandReducer.brands);
 
-    if(params.categoryId && categories && categories.length) {
+    if(params.categoryId && categories.length) {
         categoryName = categories.find(x => x._id === params.categoryId).name;
     }
 
-    if(params.brandId && brands && brands.length) {
+    if(params.brandId && brands.length) {
         brandName = brands.find(x => x._id === params.brandId).name;
     }
 

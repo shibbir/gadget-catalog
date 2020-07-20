@@ -80,7 +80,7 @@ export default function ItemChart() {
 
     return (
         <>
-            { itemsPerYear.length &&
+            { itemsPerYear.length > 0 &&
                 <>
                     <Select onChange={(event, data) => {setYearRange(data.value)}} options={options} defaultValue={options[0].value}/>
                     <div id="item-chart"></div>
