@@ -37,13 +37,11 @@ function createCategory(req, res) {
 
     async.waterfall([
         function(callback) {
-            if(!req.files) return callback();
+            if(!req.file) return callback();
 
-            const file = req.files[0];
-
-            cloudinary.uploader.upload(file.path, function(response) {
+            cloudinary.uploader.upload(req.file.path, function(response) {
                 model.file = {...response, active: true};
-                fs.unlinkSync(file.path);
+                fs.unlinkSync(req.file.path);
                 callback();
             }, { folder: `gadget-catalog/${req.user._id}`, invalidate: true });
         }
@@ -72,15 +70,13 @@ function updateCategory(req, res) {
         let oldFile = null;
 
         async.waterfall([function(callback) {
-            if(!req.files) return callback();
-
-            const file = req.files[0];
+            if(!req.file) return callback();
 
             oldFile = doc.file;
 
-            cloudinary.uploader.upload(file.path, function(response) {
+            cloudinary.uploader.upload(req.file.path, function(response) {
                 doc.file = {...response, active: true};
-                fs.unlinkSync(file.path);
+                fs.unlinkSync(req.file.path);
                 callback();
             }, { folder: `gadget-catalog/${req.user._id}` });
         }, function(callback) {

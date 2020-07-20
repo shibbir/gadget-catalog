@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Divider, Button } from "semantic-ui-react";
+import * as iziToast from "izitoast/dist/js/izitoast";
 import { useSelector, useDispatch } from "react-redux";
 import BrandSchema from "./brand.schema";
 import { createBrand, updateBrand, getBrand } from "./brand.actions";
@@ -28,10 +29,22 @@ function BrandForm({id} = props) {
             validationSchema={BrandSchema}
             onSubmit={(values, actions) => {
                 if(id) {
-                    dispatch(updateBrand(values, id));
+                    dispatch(updateBrand(values, id)).then(function() {
+                        iziToast['success']({
+                            timeout: 3000,
+                            message: "Your changes are saved.",
+                            position: "bottomRight"
+                        });
+                    });
                 } else {
-                    dispatch(createBrand(values));
-                    actions.resetForm();
+                    dispatch(createBrand(values)).then(function() {
+                        iziToast['success']({
+                            timeout: 3000,
+                            message: "Your changes are saved.",
+                            position: "bottomRight"
+                        });
+                        actions.resetForm();
+                    });
                 }
 
                 actions.setSubmitting(false);

@@ -2,8 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 
-import Notification from "./components/Notification/Notification";
-
 export default function PublicRoute({ component: Component, ...rest }) {
     const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
@@ -21,10 +19,7 @@ export default function PublicRoute({ component: Component, ...rest }) {
                         state: { from: props.location }
                     }} />
                 ) : (
-                    <>
-                        <Component {...props}/>
-                        <Notification/>
-                    </>
+                    <Component {...props}/>
                 )
             )
         }}/>

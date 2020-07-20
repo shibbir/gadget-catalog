@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { getCategories } from "../category.actions";
 
-export default function CategoryList() {
+export default function Categories() {
     const dispatch = useDispatch();
 
     useEffect(() => {

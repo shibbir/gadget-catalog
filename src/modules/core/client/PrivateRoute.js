@@ -5,7 +5,6 @@ import { Route, Redirect } from "react-router-dom";
 
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import Notification from "./components/Notification/Notification";
 
 export default function PrivateRoute({ component: Component, ...rest }) {
     const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
@@ -20,7 +19,6 @@ export default function PrivateRoute({ component: Component, ...rest }) {
                             <Component {...props}/>
                         </Container>
                         <Footer/>
-                        <Notification/>
                     </>
                 ) : (
                     <Redirect push to={{

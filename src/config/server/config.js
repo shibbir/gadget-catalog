@@ -39,9 +39,9 @@ function initGlobalConfig() {
     const defaultAssets = require(path.join(process.cwd(), "src/config/server/assets/default"));
     const environmentAssets = process.env.NODE_ENV === "production" ? require(path.join(process.cwd(), "src/config/server/assets/production")) : {};
 
-    let assets = _.merge(defaultAssets, environmentAssets);
+    const assets = _.merge(defaultAssets, environmentAssets);
 
-    let config = {
+    const config = {
         client: {
             js: getGlobbedPaths(assets.client.js, ["public/"]),
             css: getGlobbedPaths(assets.client.css, ["public/"])
