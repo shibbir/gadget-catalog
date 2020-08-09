@@ -14,7 +14,7 @@ describe("User Routes", function() {
             .send({
                 name: faker.name.findName(),
                 email: faker.internet.email(),
-                password: "password"
+                password: faker.internet.password()
             });
 
         expect(result.status).to.equal(200);
@@ -41,7 +41,7 @@ describe("User Routes", function() {
 
     it("Should allow user to update the password", async function() {
         const result = await request(app)
-            .put("/api/profile/changepassword")
+            .put("/api/profile/change-password")
             .set("Cookie", [`access_token=${user.accessToken}`])
             .send({
                 currentPassword: user.password,
@@ -53,7 +53,7 @@ describe("User Routes", function() {
 
     it("Should send an email if user forgets password", async function() {
         const result = await request(app)
-            .post("/api/forgotpassword")
+            .post("/api/forget-password")
             .set("Cookie", [`access_token=${user.accessToken}`])
             .send({
                 email: user.local.email

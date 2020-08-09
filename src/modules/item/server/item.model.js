@@ -5,25 +5,32 @@ const FileSchema = require("../../core/server/file.model");
 const ItemSchema = Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        minlength: 2,
+        maxlength: 50
     },
     description: String,
     categoryId: {
-        type: Schema.Types.ObjectId,
-        required: true
+        required: true,
+        type: Schema.Types.ObjectId
     },
     brandId: {
-        type: Schema.Types.ObjectId,
-        required: true
+        required: true,
+        type: Schema.Types.ObjectId
     },
     tags: Array,
     purchaseDate: Date,
     price: Number,
+    currency: {
+        type: String,
+        required: true,
+        enum: ["AUD", "BDT", "BGN", "CAD", "CNY", "EUR", "GBP", "INR", "JPY", "NZD", "RUB", "SGD", "USD"]
+    },
     files: [ FileSchema ],
     createdBy: {
-        type: Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: true,
+        type: Schema.Types.ObjectId
     },
     date: {
         type: Date,

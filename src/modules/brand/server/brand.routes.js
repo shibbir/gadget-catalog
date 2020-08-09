@@ -1,8 +1,7 @@
 const passport = require("passport");
+const controller = require("./brand.controller");
 
 module.exports = function (app) {
-    const controller = require("./brand.controller");
-
     app.route("/api/brands")
         .get(passport.authenticate("jwt", { session: false }), controller.getBrands)
         .post(passport.authenticate("jwt", { session: false }), controller.createBrand);

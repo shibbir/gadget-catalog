@@ -12,7 +12,7 @@ module.exports = function() {
     app.locals.jsFiles = config.client.js;
     app.locals.cssFiles = config.client.css;
 
-    app.use(helmet());
+    app.use(helmet({contentSecurityPolicy: false}));
     app.use(compression());
     app.use(cookieParser());
     app.use(express.json());
