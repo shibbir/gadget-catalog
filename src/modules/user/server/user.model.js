@@ -8,9 +8,15 @@ const UserSchema = Schema({
             type: String,
             match: [/.+\@.+\..+/]
         },
-        password: String,
+        password: {
+            type: String,
+            minlength: 8,
+            maxlength: 60
+        },
         name: {
             type: String,
+            minlength: 2,
+            maxlength: 25,
             required() { return !this.facebook && !this.google; }
         },
         resetPasswordToken: String,
@@ -30,6 +36,8 @@ const UserSchema = Schema({
     },
     displayName: {
         type: String,
+        minlength: 2,
+        maxlength: 25,
         required: true
     },
     role: {

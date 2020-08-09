@@ -44,6 +44,22 @@ export default function ItemForm() {
         return { key: option._id, value: option._id, text: option.name };
     });
 
+    const currencyOptions = [
+        { key: "AUD", text: "AUD", value: "AUD" },
+        { key: "BDT", text: "BDT", value: "BDT" },
+        { key: "BGN", text: "BGN", value: "BGN" },
+        { key: "CAD", text: "CAD", value: "CAD" },
+        { key: "CNY", text: "CNY", value: "CNY" },
+        { key: "EUR", text: "EUR", value: "EUR" },
+        { key: "GBP", text: "GBP", value: "GBP" },
+        { key: "INR", text: "INR", value: "INR" },
+        { key: "JPY", text: "JPY", value: "JPY" },
+        { key: "NZD", text: "NZD", value: "NZD" },
+        { key: "RUB", text: "RUB", value: "RUB" },
+        { key: "SGD", text: "SGD", value: "SGD" },
+        { key: "USD", text: "USD", value: "USD" }
+    ];
+
     return (
         <>
             <h3>Item form</h3>
@@ -56,6 +72,7 @@ export default function ItemForm() {
                     brandId: item ? item.brandId : "",
                     purchaseDate: item && item.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
                     price: item ? item.price : "",
+                    currency: item ? item.currency : "",
                     files: "",
                     editorState: blocksFromHTML.contentBlocks
                         ? new EditorState.createWithContent(ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap))
@@ -147,6 +164,15 @@ export default function ItemForm() {
                             type: "number",
                             name: "price",
                             label: "Price",
+                            required: true
+                        }}/>
+                        <DropdownInput attributes={{
+                            value: formikProps.values.currency,
+                            name: "currency",
+                            placeholder: "Select currency",
+                            label: "Currency",
+                            options: currencyOptions,
+                            onChange: (event, data) => {formikProps.setFieldValue(data.name, data.value)},
                             required: true
                         }}/>
                         <FileInput attributes={{

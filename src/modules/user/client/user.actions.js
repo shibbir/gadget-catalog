@@ -39,7 +39,7 @@ export function changePassword(formData) {
         payload: axios({
             method: "put",
             data: formData,
-            url: "/api/profile/changepassword"
+            url: "/api/profile/change-password"
         })
     };
 }
@@ -50,7 +50,7 @@ export function resetPassword(formData, query) {
         payload: axios({
             method: "put",
             data: formData,
-            url: `/api/resetpassword${query}`
+            url: `/api/reset-password${query}`
         })
     };
 }

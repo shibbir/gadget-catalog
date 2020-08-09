@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import { Segment, Icon, Header, Button, Label, Modal } from "semantic-ui-react";
+import { Segment, Icon, Header, Button, Label, Modal, TransitionablePortal } from "semantic-ui-react";
 import { getBrands } from "./brand.actions";
 import BrandForm from "./brand-form.component";
 
@@ -49,19 +49,21 @@ export default function Brands() {
 
                     {labels}
 
-                    <Modal dimmer size="tiny" open={brandId !== undefined}>
-                        <Modal.Header>Brand Form</Modal.Header>
-                        <Modal.Content>
-                            <Modal.Description>
-                                <BrandForm id={brandId}/>
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button color="black" onClick={() => setBrandId(undefined)}>
-                                Close
-                            </Button>
-                        </Modal.Actions>
-                    </Modal>
+                    <TransitionablePortal open={brandId !== undefined} transition={{ animation: 'scale', duration: 400 }}>
+                        <Modal dimmer size="tiny" open={true}>
+                            <Modal.Header>Brand Form</Modal.Header>
+                            <Modal.Content>
+                                <Modal.Description>
+                                    <BrandForm id={brandId}/>
+                                </Modal.Description>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button color="black" onClick={() => setBrandId(undefined)}>
+                                    Close
+                                </Button>
+                            </Modal.Actions>
+                        </Modal>
+                    </TransitionablePortal>
                 </>
             }
 

@@ -1,13 +1,15 @@
-const authorize = require("../../core/server/authorize");
+const passport = require("passport");
+const multer = require("../../../config/server/lib/multer");
+const allowRoles = require("../../core/server/authorize.middleware");
 
 module.exports = function(app) {
     const controller = require("./category.controller");
 
     app.route("/api/categories")
-        .get(authorize(), controller.getCategories)
-        .post(authorize(["admin"]), controller.createCategory);
+        .get(passport.authenticate("jwt", { session: false }), controller.getCategories)
+        .post(passport.authenticate("jwt", { session: false }), allowRoles(["admin"]), multer.single("file"), controller.createCategory);
 
     app.route("/api/categories/:id")
-        .get(authorize(["admin"]), controller.getCategory)
-        .put(authorize(["admin"]), controller.updateCategory);
+        .get(passport.authenticate("jwt", { session: false }), allowRoles(["admin"]), controller.getCategory)
+        .put(passport.authenticate("jwt", { session: false }), allowRoles(["admin"]), multer.single("file"), controller.updateCategory);
 };

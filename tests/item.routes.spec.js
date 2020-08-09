@@ -35,7 +35,8 @@ describe("Item Routes", function() {
             name: faker.commerce.productName(),
             categoryId: category._id,
             brandId: brand._id,
-            createdBy: user._id
+            createdBy: user._id,
+            currency: "USD"
         });
 
         item = await item.save();
@@ -55,7 +56,8 @@ describe("Item Routes", function() {
             .send({
                 name: faker.commerce.productName(),
                 categoryId: category._id,
-                brandId: brand._id
+                brandId: brand._id,
+                currency: "USD"
             })
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
@@ -76,7 +78,8 @@ describe("Item Routes", function() {
             .send({
                 name: faker.commerce.productName(),
                 categoryId: category._id,
-                brandId: brand._id
+                brandId: brand._id,
+                currency: "USD"
             })
             .set("Cookie", [`access_token=${user.accessToken}`]);
 

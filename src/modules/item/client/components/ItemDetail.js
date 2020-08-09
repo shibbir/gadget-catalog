@@ -97,7 +97,7 @@ export default function ItemDetail() {
                                 <div>Category: <Link to={`/items?categoryId=${item.category._id}`}>{item.category.name}</Link></div>
                                 <div>Brand: <Link to={`/items?brandId=${item.brand._id}`}>{item.brand.name}</Link></div>
                                 { item.price &&
-                                    <div>Price: <FormattedNumber value={item.price} style="currency" currency="BDT"/></div>
+                                    <div>Price: <FormattedNumber value={item.price} style="currency" currency={item.currency}/></div>
                                 }
                                 <div>Purchase Date: <FormattedDate value={item.purchaseDate} day="2-digit" month="long" year="numeric"/></div>
                             </Item.Meta>

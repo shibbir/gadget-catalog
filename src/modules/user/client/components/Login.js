@@ -99,7 +99,7 @@ export default function Login() {
                                 }}
                                 validationSchema={forgotPasswordSchema}
                                 onSubmit={(values, actions) => {
-                                    axios.post("/api/forgotpassword", {...values}).then(() => {
+                                    axios.post("/api/forget-password", {...values}).then(() => {
                                         setEmailSent(true);
                                         setForgotpasswordResponse("");
                                     }).catch(error => {
