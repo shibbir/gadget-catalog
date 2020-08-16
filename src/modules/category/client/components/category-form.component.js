@@ -1,36 +1,35 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
-import { Divider, Button } from "semantic-ui-react";
 import * as iziToast from "izitoast/dist/js/izitoast";
 import { useSelector, useDispatch } from "react-redux";
-import BrandSchema from "./brand.schema";
-import { createBrand, updateBrand, getBrand } from "./brand.actions";
-import { TextInput } from "../../core/client/components/FieldInput/FieldInputs";
+import { Divider, Button } from "semantic-ui-react";
+import CategorySchema from "../category.schema";
+import { createCategory, updateCategory, getCategory } from "../category.actions";
+import { TextInput, TextareaInput } from "../../../core/client/components/FieldInput/FieldInputs";
 
-function BrandForm({id} = props) {
+export default function CategoryForm({id} = props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
         if(id) {
-            dispatch(getBrand(id));
+            dispatch(getCategory(id));
         }
     }, [id, dispatch]);
 
-    const brand = useSelector(state => state.brandReducer.brand);
+    const category = useSelector(state => state.categoryReducer.category);
 
     return (
         <Formik
             initialValues={{
-                name: id && brand ? brand.name : "",
-                website: id && brand && brand.website ? brand.website: ""
+                name: id && category ? category.name : "",
+                description: id && category && category.description ? category.description : ""
             }}
-            displayName="BrandForm"
+            displayName="CategoryForm"
             enableReinitialize={true}
-            validationSchema={BrandSchema}
+            validationSchema={CategorySchema}
             onSubmit={(values, actions) => {
                 if(id) {
-                    dispatch(updateBrand(values, id)).then(function() {
+                    dispatch(updateCategory(values, id)).then(function() {
                         iziToast['success']({
                             timeout: 3000,
                             message: "Your changes are saved.",
@@ -38,7 +37,7 @@ function BrandForm({id} = props) {
                         });
                     });
                 } else {
-                    dispatch(createBrand(values)).then(function() {
+                    dispatch(createCategory(values)).then(function() {
                         iziToast['success']({
                             timeout: 3000,
                             message: "Your changes are saved.",
@@ -59,22 +58,18 @@ function BrandForm({id} = props) {
                         label: "Name",
                         required: true
                     }}/>
-                    <TextInput attributes={{
-                        type: "url",
-                        name: "website",
-                        label: "Website"
+                    <TextareaInput attributes={{
+                        name: "description",
+                        label: "Description"
                     }}/>
                     <Divider hidden/>
-                    <Button type="submit" positive disabled={formikProps.isSubmitting}>Save changes</Button>
-                    <Button type="reset" disabled={formikProps.isSubmitting}>Reset</Button>
+                    <Button.Group>
+                        <Button type="submit" positive disabled={formikProps.isSubmitting}>Save changes</Button>
+                        <Button.Or/>
+                        <Button type="reset" disabled={formikProps.isSubmitting}>Reset</Button>
+                    </Button.Group>
                 </Form>
             )}
         </Formik>
     );
 }
-
-BrandForm.propTypes = {
-    id: PropTypes.string
-};
-
-export default BrandForm;

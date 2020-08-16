@@ -4,33 +4,35 @@ import { Form, Formik } from "formik";
 import { Divider, Button } from "semantic-ui-react";
 import * as iziToast from "izitoast/dist/js/izitoast";
 import { useSelector, useDispatch } from "react-redux";
-import BrandSchema from "./brand.schema";
-import { createBrand, updateBrand, getBrand } from "./brand.actions";
-import { TextInput } from "../../core/client/components/FieldInput/FieldInputs";
+import VendorSchema from "./vendor.schema";
+import { createVendor, updateVendor, getVendor } from "./vendor.actions";
+import { TextInput, TextareaInput } from "../../core/client/components/FieldInput/FieldInputs";
 
-function BrandForm({id} = props) {
+function VendorForm({id} = props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
         if(id) {
-            dispatch(getBrand(id));
+            dispatch(getVendor(id));
         }
     }, [id, dispatch]);
 
-    const brand = useSelector(state => state.brandReducer.brand);
+    const vendor = useSelector(state => state.vendorReducer.vendor);
 
     return (
         <Formik
             initialValues={{
-                name: id && brand ? brand.name : "",
-                website: id && brand && brand.website ? brand.website: ""
+                name: id && vendor ? vendor.name : "",
+                email: id && vendor ? vendor.email : "",
+                website: id && vendor ? vendor.website : "",
+                address: id && vendor ? vendor.address : ""
             }}
-            displayName="BrandForm"
+            displayName="VendorForm"
             enableReinitialize={true}
-            validationSchema={BrandSchema}
+            validationSchema={VendorSchema}
             onSubmit={(values, actions) => {
                 if(id) {
-                    dispatch(updateBrand(values, id)).then(function() {
+                    dispatch(updateVendor(values, id)).then(function() {
                         iziToast['success']({
                             timeout: 3000,
                             message: "Your changes are saved.",
@@ -38,7 +40,7 @@ function BrandForm({id} = props) {
                         });
                     });
                 } else {
-                    dispatch(createBrand(values)).then(function() {
+                    dispatch(createVendor(values)).then(function() {
                         iziToast['success']({
                             timeout: 3000,
                             message: "Your changes are saved.",
@@ -60,9 +62,18 @@ function BrandForm({id} = props) {
                         required: true
                     }}/>
                     <TextInput attributes={{
+                        type: "email",
+                        name: "email",
+                        label: "Email"
+                    }}/>
+                    <TextInput attributes={{
                         type: "url",
                         name: "website",
                         label: "Website"
+                    }}/>
+                    <TextareaInput attributes={{
+                        name: "address",
+                        label: "Address"
                     }}/>
                     <Divider hidden/>
                     <Button type="submit" positive disabled={formikProps.isSubmitting}>Save changes</Button>
@@ -73,8 +84,8 @@ function BrandForm({id} = props) {
     );
 }
 
-BrandForm.propTypes = {
+VendorForm.propTypes = {
     id: PropTypes.string
 };
 
-export default BrandForm;
+export default VendorForm;

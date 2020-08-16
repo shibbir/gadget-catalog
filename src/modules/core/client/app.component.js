@@ -5,7 +5,6 @@ import { Route, Switch } from "react-router-dom";
 
 import "fomantic-ui-css/semantic.css";
 import "izitoast/dist/css/izitoast.css";
-import "draft-js/dist/Draft.css";
 import "./app.component.css";
 
 import NoMatch from "./NoMatch";
@@ -18,6 +17,7 @@ import Profile from "../../user/client/components/Profile";
 import Dashboard from "../../user/client/components/Dashboard";
 import ItemRoutes from "../../item/client/item.routes";
 import BrandRoutes from "../../brand/client/brand.routes";
+import VendorRoutes from "../../vendor/client/vendor.routes";
 import CategoryRoutes from "../../category/client/category.routes";
 import { getSignedInUserProfile } from "../../user/client/user.actions";
 
@@ -69,6 +69,8 @@ export default function App() {
             <Route path="/items" component={ItemRoutes}/>
 
             <Route path="/brands" component={BrandRoutes}/>
+
+            <Route path="/vendors" component={VendorRoutes}/>
 
             <Route path="/categories" component={CategoryRoutes}/>
 

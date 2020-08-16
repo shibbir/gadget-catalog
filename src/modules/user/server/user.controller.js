@@ -122,7 +122,7 @@ async function changePassword(req, res) {
     }
 }
 
-function forgetPassword(req, res) {
+function forgotPassword(req, res) {
     User.findOne({ $or: [
         { "facebook.email" : req.body.email },
         { "google.email": req.body.email },
@@ -204,7 +204,7 @@ exports.register = register;
 exports.login = login;
 exports.logout = logout;
 exports.changePassword = changePassword;
-exports.forgetPassword = forgetPassword;
+exports.forgotPassword = forgotPassword;
 exports.resetPassword = resetPassword;
 exports.getSignedInUserProfile = getSignedInUserProfile;
 exports.disconnect = disconnect;

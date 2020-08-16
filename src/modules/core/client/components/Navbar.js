@@ -9,7 +9,7 @@ export default function Navbar() {
     return (
         <Menu stackable borderless>
             <Container>
-                <Menu.Item header>
+                <Menu.Item header style={{paddingLeft: 0}}>
                     <img src="/images/logo.png"/>
                     Gadget Catalog
                 </Menu.Item>
@@ -29,22 +29,16 @@ export default function Navbar() {
                         }
                     </Dropdown.Menu>
                 </Dropdown>
-                <Dropdown item text="Category">
-                    <Dropdown.Menu>
-                        <NavLink to="/categories" activeClassName="active" className="item">
-                            <Icon name="unordered list"/> Category list
-                        </NavLink>
-                        { loggedInUser.isAdmin &&
-                            <NavLink to="/categories/add" activeClassName="active" className="item">
-                                <Icon name="add"/> Add new category
-                            </NavLink>
-                        }
-                    </Dropdown.Menu>
-                </Dropdown>
+                <NavLink to="/categories" activeClassName="active" className="item">
+                    <Icon name="unordered list"/> Categories
+                </NavLink>
                 <NavLink to="/brands" activeClassName="active" className="item">
                     <Icon name="unordered list"/> Brands
                 </NavLink>
-                <div className="right item">
+                <NavLink to="/vendors" activeClassName="active" className="item">
+                    <Icon name="unordered list"/> Vendors
+                </NavLink>
+                <div className="right item" style={{paddingRight: 0}}>
                     <NavLink to="/profile" className="ui button teal"><Icon name="user"/> {loggedInUser.name}</NavLink>
                     <a href="/api/logout" className="ui button black"><Icon name="sign out"/> Sign Out</a>
                 </div>

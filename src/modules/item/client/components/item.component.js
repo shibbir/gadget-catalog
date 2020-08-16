@@ -100,6 +100,7 @@ export default function ItemDetail() {
                                     <div>Price: <FormattedNumber value={item.price} style="currency" currency={item.currency}/></div>
                                 }
                                 <div>Purchase Date: <FormattedDate value={item.purchaseDate} day="2-digit" month="long" year="numeric"/></div>
+                                { item.vendorId && <div>Vendor: <Link to={`/vendors?vendorId=${item.vendor._id}`}>{item.vendor.name}</Link></div> }
                             </Item.Meta>
 
                             <Divider horizontal>Description</Divider>

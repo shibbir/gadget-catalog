@@ -60,7 +60,7 @@ module.exports = function(app) {
 
     app.put("/api/oauth/disconnect", passport.authenticate("jwt", { session: false }), controller.disconnect);
 
-    app.post("/api/forget-password", controller.forgetPassword);
+    app.post("/api/forgot-password", controller.forgotPassword);
 
     app.put("/api/reset-password", controller.resetPassword);
 };

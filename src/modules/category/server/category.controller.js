@@ -1,7 +1,6 @@
-const fs = require("fs");
-const async = require("async");
 const Category = require("./category.model");
-const cloudinary = require("../../../config/server/lib/cloudinary");
+const User = require("../../user/server/user.model");
+
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
 async function getCategory(req, res) {
@@ -10,84 +9,56 @@ async function getCategory(req, res) {
 }
 
 async function getCategories(req, res) {
-    const docs = await Category.find({}, "name file").populate({
-        path: "gadgets",
+    const admin = await User.findOne({role: "admin"});
+
+    const docs = await Category.find({ $or: [
+        { createdBy : req.user.id },
+        { createdBy: admin.id }
+    ]}).populate({
+        path: "items",
         select: "_id",
         options: { lean: true },
         match: { createdBy: req.user._id }
     }).sort("name").lean();
 
-    docs.map(doc => {
-        if(doc.file && doc.file.public_id) {
-            doc.file.secure_url = cloudinary.v2.url(doc.file.public_id, {secure: true});
-        }
-
-        return doc;
-    });
-
     res.json(docs);
 }
 
-function createCategory(req, res) {
-    let model = new Category({
-        name: req.body.name,
-        slug: convertToSlug(req.body.name),
-        createdBy: req.user._id
-    });
-
-    async.waterfall([
-        function(callback) {
-            if(!req.file) return callback();
-
-            cloudinary.uploader.upload(req.file.path, function(response) {
-                model.file = {...response, active: true};
-                fs.unlinkSync(req.file.path);
-                callback();
-            }, { folder: `gadget-catalog/${req.user._id}`, invalidate: true });
-        }
-    ], function(err) {
-        if(err) return res.sendStatus(500);
-
-        model.save(function(err, doc) {
-            if(err) return res.sendStatus(500);
-
-            res.json(doc);
+async function createCategory(req, res) {
+    try {
+        let model = new Category({
+            name: req.body.name,
+            slug: convertToSlug(req.body.name),
+            description: req.body.description,
+            createdBy: req.user._id
         });
-    });
+
+        model = await model.save();
+
+        res.json(model);
+    } catch(err) {
+        res.sendStatus(500);
+    }
 }
 
 function updateCategory(req, res) {
     Category.findOne({ _id: req.params.id }, function(err, doc) {
         if(err) return res.sendStatus(500);
 
-        if(!doc) {
-            return res.status(404).send("Category not found.");
+        if(doc && doc._id.toString() !== req.params.id) {
+            return res.status(400).send("Category name already exists.");
         }
 
-        doc.name = req.body.name;
-        doc.slug = convertToSlug(req.body.name);
-
-        let oldFile = null;
-
-        async.waterfall([function(callback) {
-            if(!req.file) return callback();
-
-            oldFile = doc.file;
-
-            cloudinary.uploader.upload(req.file.path, function(response) {
-                doc.file = {...response, active: true};
-                fs.unlinkSync(req.file.path);
-                callback();
-            }, { folder: `gadget-catalog/${req.user._id}` });
-        }, function(callback) {
-            if(!oldFile) return callback();
-
-            cloudinary.uploader.destroy(oldFile.public_id, function() {
-                callback();
-            }, { invalidate: true });
-
-        }], function(err) {
+        Category.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
             if(err) return res.sendStatus(500);
+
+            if(!doc) {
+                return res.sendStatus(404);
+            }
+
+            doc.name = req.body.name;
+            doc.slug = convertToSlug(req.body.name);
+            doc.description = req.body.description;
 
             doc.save();
             res.json(doc);

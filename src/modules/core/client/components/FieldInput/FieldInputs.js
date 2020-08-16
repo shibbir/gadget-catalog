@@ -28,6 +28,31 @@ export const TextInput = ({ attributes }) => {
     );
 };
 
+export const TextareaInput = ({ attributes }) => {
+    return (
+        <Form.Field required={attributes.required}>
+            { attributes.label && <label>{attributes.label}</label> }
+
+            { attributes.icon &&
+                <div className="ui fluid input left icon">
+                    <Icon name={attributes.icon}/>
+                    <Field type={attributes.type} name={attributes.name} placeholder={attributes.placeholder} autoComplete={attributes.autoComplete } />
+                </div>
+            }
+
+            { !attributes.icon &&
+                <div className="ui fluid input">
+                    <Field component="textarea" name={attributes.name} autoComplete={attributes.autoComplete }/>
+                </div>
+            }
+
+            <div className="field-validation-error">
+                <ErrorMessage name={attributes.name}/>
+            </div>
+        </Form.Field>
+    );
+};
+
 export const RichEditorInput = ({ attributes }) => {
     return (
         <Form.Field required={attributes.required}>

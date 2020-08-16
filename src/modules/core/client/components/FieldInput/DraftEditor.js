@@ -1,7 +1,8 @@
 import React from 'react';
 import { Editor, RichUtils } from 'draft-js';
 
-import './DraftEditor.css';
+import "draft-js/dist/Draft.css";
+import "./DraftEditor.css";
 
 export default class DraftEditor extends React.Component {
     constructor(props) {
@@ -125,8 +126,7 @@ const BLOCK_TYPES = [
     {label: 'H6', style: 'header-six'},
     {label: 'Blockquote', style: 'blockquote'},
     {label: 'UL', style: 'unordered-list-item'},
-    {label: 'OL', style: 'ordered-list-item'},
-    {label: 'Code Block', style: 'code-block'}
+    {label: 'OL', style: 'ordered-list-item'}
 ];
 
 const BlockStyleControls = (props) => {
@@ -155,8 +155,7 @@ const BlockStyleControls = (props) => {
 let INLINE_STYLES = [
     {label: 'Bold', style: 'BOLD'},
     {label: 'Italic', style: 'ITALIC'},
-    {label: 'Underline', style: 'UNDERLINE'},
-    {label: 'Monospace', style: 'CODE'}
+    {label: 'Underline', style: 'UNDERLINE'}
 ];
 
 const InlineStyleControls = (props) => {

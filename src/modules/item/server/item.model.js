@@ -26,6 +26,10 @@ const ItemSchema = Schema({
         required: true,
         enum: ["AUD", "BDT", "BGN", "CAD", "CNY", "EUR", "GBP", "INR", "JPY", "NZD", "RUB", "SGD", "USD"]
     },
+    vendorId: {
+        ref: "Vendor",
+        type: Schema.Types.ObjectId
+    },
     files: [ FileSchema ],
     createdBy: {
         ref: "User",
@@ -50,6 +54,13 @@ ItemSchema.virtual("brand", {
     justOne: true,
     foreignField: "_id",
     localField: "brandId"
+});
+
+ItemSchema.virtual("vendor", {
+    ref: "Vendor",
+    justOne: true,
+    foreignField: "_id",
+    localField: "vendorId"
 });
 
 module.exports = mongoose.model("Item", ItemSchema);

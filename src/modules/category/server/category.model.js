@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const FileSchema = require("../../core/server/file.model");
 
 const CategorySchema = Schema({
     name: {
@@ -13,7 +12,6 @@ const CategorySchema = Schema({
         unique: true,
         required: true
     },
-    file: FileSchema,
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -25,7 +23,7 @@ const CategorySchema = Schema({
     }
 }, { toJSON: { virtuals: true } });
 
-CategorySchema.virtual("gadgets", {
+CategorySchema.virtual("items", {
     ref: "Item",
     localField: "_id",
     foreignField: "categoryId"

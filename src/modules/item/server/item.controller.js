@@ -11,7 +11,7 @@ async function getItem(req, res) {
     const query = req.user.role === "admin" ? { _id: req.params.id } : { _id: req.params.id, createdBy: req.user._id };
 
     try {
-        const doc = await Item.findOne(query).populate("brand", "name").populate("category", "name").exec();
+        const doc = await Item.findOne(query).populate("brand", "name").populate("category", "name").populate("vendor", "name").exec();
 
         if(!doc) return res.sendStatus(404);
 
@@ -73,6 +73,7 @@ function createItem(req, res) {
         purchaseDate: req.body.purchaseDate,
         price: req.body.price,
         currency: req.body.currency,
+        vendorId: req.body.vendorId,
         createdBy: req.user._id
     });
 
@@ -126,6 +127,7 @@ function updateItem(req, res) {
         doc.purchaseDate = req.body.purchaseDate;
         doc.price = req.body.price;
         doc.currency = req.body.currency;
+        doc.vendorId = req.body.vendorId;
 
         if(req.body.description) {
             doc.description = validator.escape(req.body.description);

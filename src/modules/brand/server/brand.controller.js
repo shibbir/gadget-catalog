@@ -24,7 +24,12 @@ async function getBrands(req, res) {
         const docs = await Brand.find({ $or: [
             { createdBy : req.user.id },
             { createdBy: admin.id }
-        ]}).sort("name").exec();
+        ]}).populate({
+            path: "items",
+            select: "_id",
+            options: { lean: true },
+            match: { createdBy: req.user._id }
+        }).sort("name").lean();
 
         res.json(docs);
     } catch(err) {
@@ -37,6 +42,7 @@ async function createBrand(req, res) {
         let model = new Brand({
             name: req.body.name,
             slug: convertToSlug(req.body.name),
+            website: req.body.website,
             createdBy: req.user._id
         });
 
@@ -65,6 +71,7 @@ function updateBrand(req, res) {
 
             doc.name = req.body.name;
             doc.slug = convertToSlug(req.body.name);
+            doc.website = req.body.website;
 
             doc.save();
             res.json(doc);
