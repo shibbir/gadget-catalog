@@ -49,8 +49,8 @@ export default function Brands() {
         <>
             { brands.length > 0 &&
                 <>
-                    <Button floated="right" icon labelPosition="left" primary size="small" onClick={() => setBrandId(null)}>
-                        <Icon name="user"/> Add new brand
+                    <Button floated="right" primary size="small" onClick={() => setBrandId(null)}>
+                        Add new brand
                     </Button>
 
                     <Divider hidden clearing/>

@@ -56,11 +56,11 @@ ItemSchema.virtual("brand", {
     localField: "brandId"
 });
 
-ItemSchema.virtual("vendor", {
-    ref: "Vendor",
+ItemSchema.virtual("retailer", {
+    ref: "Retailer",
     justOne: true,
     foreignField: "_id",
-    localField: "vendorId"
+    localField: "retailerId"
 });
 
 module.exports = mongoose.model("Item", ItemSchema);

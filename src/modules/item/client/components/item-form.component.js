@@ -10,7 +10,7 @@ import { EditorState, ContentState, convertFromHTML } from "draft-js";
 import Types from "../item.types";
 import { itemSchema } from "../item.schema";
 import { getBrands } from "../../../brand/client/brand.actions";
-import { getVendors } from "../../../vendor/client/vendor.actions";
+import { getRetailers } from "../../../retailer/client/retailer.actions";
 import { createItem, updateItem, fetchItem } from "../item.actions";
 import { getCategories } from "../../../category/client/category.actions";
 import { TextInput, RichEditorInput, DropdownInput, FileInput } from "../../../core/client/components/FieldInput/FieldInputs";
@@ -22,7 +22,7 @@ export default function ItemForm() {
 
     useEffect(() => {
         dispatch(getBrands());
-        dispatch(getVendors());
+        dispatch(getRetailers());
         dispatch(getCategories());
     }, [dispatch]);
 
@@ -186,7 +186,7 @@ export default function ItemForm() {
                         <DropdownInput attributes={{
                             value: formikProps.values.vendorId,
                             name: "vendorId",
-                            placeholder: "Select vendor",
+                            placeholder: "Select retailer",
                             label: "Vendor",
                             options: vendorOptions,
                             onChange: (event, data) => {formikProps.setFieldValue(data.name, data.value)}

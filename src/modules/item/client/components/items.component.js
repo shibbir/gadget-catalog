@@ -131,8 +131,6 @@ export default function Items() {
 
     return (
         <>
-            <Divider hidden/>
-
             { cards.length > 0 &&
                 <Segment raised className="stacked">
                     <Header as="h2">

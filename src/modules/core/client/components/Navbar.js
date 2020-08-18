@@ -35,8 +35,8 @@ export default function Navbar() {
                 <NavLink to="/brands" activeClassName="active" className="item">
                     <Icon name="unordered list"/> Brands
                 </NavLink>
-                <NavLink to="/vendors" activeClassName="active" className="item">
-                    <Icon name="unordered list"/> Vendors
+                <NavLink to="/retailers" activeClassName="active" className="item">
+                    <Icon name="unordered list"/> Retailers
                 </NavLink>
                 <div className="right item" style={{paddingRight: 0}}>
                     <NavLink to="/profile" className="ui button teal"><Icon name="user"/> {loggedInUser.name}</NavLink>

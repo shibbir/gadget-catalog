@@ -49,8 +49,8 @@ export default function Categories() {
         <>
             { categories.length > 0 &&
                 <>
-                    <Button floated="right" icon labelPosition="left" primary size="small" onClick={() => setCategoryId(null)}>
-                        <Icon name="user"/> Add new category
+                    <Button floated="right" primary size="small" onClick={() => setCategoryId(null)}>
+                        Add new category
                     </Button>
 
                     <Divider hidden clearing/>

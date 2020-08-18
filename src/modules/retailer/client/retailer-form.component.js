@@ -4,35 +4,35 @@ import { Form, Formik } from "formik";
 import { Divider, Button } from "semantic-ui-react";
 import * as iziToast from "izitoast/dist/js/izitoast";
 import { useSelector, useDispatch } from "react-redux";
-import VendorSchema from "./vendor.schema";
-import { createVendor, updateVendor, getVendor } from "./vendor.actions";
+import RetailerSchema from "./retailer.schema";
+import { createRetailer, updateRetailer, getRetailer } from "./retailer.actions";
 import { TextInput, TextareaInput } from "../../core/client/components/FieldInput/FieldInputs";
 
-function VendorForm({id} = props) {
+function RetailerForm({id} = props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
         if(id) {
-            dispatch(getVendor(id));
+            dispatch(getRetailer(id));
         }
     }, [id, dispatch]);
 
-    const vendor = useSelector(state => state.vendorReducer.vendor);
+    const retailer = useSelector(state => state.retailerReducer.retailer);
 
     return (
         <Formik
             initialValues={{
-                name: id && vendor ? vendor.name : "",
-                email: id && vendor ? vendor.email : "",
-                website: id && vendor ? vendor.website : "",
-                address: id && vendor ? vendor.address : ""
+                name: id && retailer ? retailer.name : "",
+                email: id && retailer ? retailer.email : "",
+                website: id && retailer ? retailer.website : "",
+                address: id && retailer ? retailer.address : ""
             }}
-            displayName="VendorForm"
+            displayName="RetailerForm"
             enableReinitialize={true}
-            validationSchema={VendorSchema}
+            validationSchema={RetailerSchema}
             onSubmit={(values, actions) => {
                 if(id) {
-                    dispatch(updateVendor(values, id)).then(function() {
+                    dispatch(updateRetailer(values, id)).then(function() {
                         iziToast['success']({
                             timeout: 3000,
                             message: "Your changes are saved.",
@@ -40,7 +40,7 @@ function VendorForm({id} = props) {
                         });
                     });
                 } else {
-                    dispatch(createVendor(values)).then(function() {
+                    dispatch(createRetailer(values)).then(function() {
                         iziToast['success']({
                             timeout: 3000,
                             message: "Your changes are saved.",
@@ -84,8 +84,8 @@ function VendorForm({id} = props) {
     );
 }
 
-VendorForm.propTypes = {
+RetailerForm.propTypes = {
     id: PropTypes.string
 };
 
-export default VendorForm;
+export default RetailerForm;

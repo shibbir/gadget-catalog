@@ -11,7 +11,7 @@ async function getItem(req, res) {
     const query = req.user.role === "admin" ? { _id: req.params.id } : { _id: req.params.id, createdBy: req.user._id };
 
     try {
-        const doc = await Item.findOne(query).populate("brand", "name").populate("category", "name").populate("vendor", "name").exec();
+        const doc = await Item.findOne(query).populate("brand", "name").populate("category", "name").populate("retailer", "name").exec();
 
         if(!doc) return res.sendStatus(404);
 
