@@ -36,7 +36,7 @@ export default function Retailers() {
 
             <Divider hidden clearing/>
 
-            <Table celled selectable>
+            <Table selectable>
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>Name</Table.HeaderCell>

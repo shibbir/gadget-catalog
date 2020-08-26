@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const async = require("async");
 const validator = require("validator");
-
 const { format, parseISO } = require("date-fns");
+
 const Item = require("./item.model");
 const cloudinary = require(path.join(process.cwd(), "src/config/server/lib/cloudinary"));
 
@@ -73,7 +73,7 @@ function createItem(req, res) {
         purchaseDate: req.body.purchaseDate,
         price: req.body.price,
         currency: req.body.currency,
-        vendorId: req.body.vendorId,
+        retailerId: req.body.retailerId,
         createdBy: req.user._id
     });
 
@@ -127,7 +127,7 @@ function updateItem(req, res) {
         doc.purchaseDate = req.body.purchaseDate;
         doc.price = req.body.price;
         doc.currency = req.body.currency;
-        doc.vendorId = req.body.vendorId;
+        doc.retailerId = req.body.retailerId;
 
         if(req.body.description) {
             doc.description = validator.escape(req.body.description);
@@ -238,35 +238,26 @@ function deleteImage(req, res) {
     });
 }
 
-function getYearRangeReport(req, res) {
-    const yearRange = req.params.yearRange.split("-");
-    const startYear = yearRange[0];
-    const endYear = yearRange[1];
+async function getItemCountByYearRange(req, res) {
+    const startYear = req.query.startYear;
+    const endYear = req.query.endYear;
 
-    const query = {
-        createdBy: req.user._id,
-        purchaseDate: { $lte: new Date(endYear, 11, 31), $gte: new Date(startYear, 0, 1)}
-    };
+    try {
+        const docs = await Item.find({
+            createdBy: req.user._id,
+            purchaseDate: { $lte: new Date(endYear, 11, 31), $gte: new Date(startYear, 0, 1)}
+        }, "purchaseDate");
 
-    Item.find(query, "purchaseDate").exec(function(err, docs) {
-        if(err) return res.sendStatus(500);
-
-        let data = [];
-
-        for(let year = startYear; year <= endYear; year++) {
-            data.push({
-                year: year,
-                items: 0
-            });
-        }
+        let data = {};
 
         docs.forEach(function(doc) {
-            const purchasedYear = data.find(x => x.year == doc.purchaseDate.getFullYear());
-            purchasedYear.items++;
+            data[doc.purchaseDate.getFullYear()] = data[doc.purchaseDate.getFullYear()] !== undefined ? ++data[doc.purchaseDate.getFullYear()] : 1;
         });
 
         res.json(data);
-    });
+    } catch(err) {
+        if(err) res.sendStatus(500);
+    }
 }
 
 exports.getItem = getItem;
@@ -276,4 +267,4 @@ exports.updateItem = updateItem;
 exports.deleteItem = deleteItem;
 exports.updateImage = updateImage;
 exports.deleteImage = deleteImage;
-exports.getYearRangeReport = getYearRangeReport;
+exports.getItemCountByYearRange = getItemCountByYearRange;

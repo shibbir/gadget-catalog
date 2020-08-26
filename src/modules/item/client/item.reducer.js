@@ -2,7 +2,7 @@ import Types from "./item.types";
 
 const initialState = {
     item: null,
-    itemsPerYear: [],
+    itemsPerYear: null,
     items: { data: [], pagination: { pages: [] }}
 };
 

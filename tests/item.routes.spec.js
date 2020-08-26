@@ -88,7 +88,7 @@ describe("Item Routes", function() {
 
     it("Should fetch yearly report", async function() {
         const result = await request(app)
-            .get("/api/items/yearRange/2015-2019")
+            .get("/api/items/item-count?startYear=2015&endYear=2019")
             .set("Cookie", [`access_token=${user.accessToken}`]);
 
         expect(result.status).to.equal(200);

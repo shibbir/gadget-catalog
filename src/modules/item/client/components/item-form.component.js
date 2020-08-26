@@ -34,7 +34,7 @@ export default function ItemForm() {
 
     const item = useSelector(state => state.itemReducer.item);
     const brands = useSelector(state => state.brandReducer.brands);
-    const vendors = useSelector(state => state.vendorReducer.vendors);
+    const retailers = useSelector(state => state.retailerReducer.retailers);
     const categories = useSelector(state => state.categoryReducer.categories);
 
     const blocksFromHTML = convertFromHTML(item && item.description ? item.description : "");
@@ -47,7 +47,7 @@ export default function ItemForm() {
         return { key: option._id, value: option._id, text: option.name };
     });
 
-    const vendorOptions = vendors.map(function(option) {
+    const retailerOptions = retailers.map(function(option) {
         return { key: option._id, value: option._id, text: option.name };
     });
 
@@ -80,7 +80,7 @@ export default function ItemForm() {
                     purchaseDate: item && item.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
                     price: item ? item.price : "",
                     currency: item ? item.currency : "",
-                    vendorId: item ? item.vendorId : "",
+                    retailerId: item ? item.retailerId : "",
                     files: "",
                     editorState: blocksFromHTML.contentBlocks
                         ? new EditorState.createWithContent(ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap))
@@ -184,11 +184,11 @@ export default function ItemForm() {
                             required: true
                         }}/>
                         <DropdownInput attributes={{
-                            value: formikProps.values.vendorId,
-                            name: "vendorId",
+                            value: formikProps.values.retailerId,
+                            name: "retailerId",
                             placeholder: "Select retailer",
-                            label: "Vendor",
-                            options: vendorOptions,
+                            label: "Retailer",
+                            options: retailerOptions,
                             onChange: (event, data) => {formikProps.setFieldValue(data.name, data.value)}
                         }}/>
                         <FileInput attributes={{

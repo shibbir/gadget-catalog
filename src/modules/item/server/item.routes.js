@@ -8,15 +8,15 @@ module.exports = function(app) {
         .get(passport.authenticate("jwt", { session: false }), controller.getItems)
         .post(passport.authenticate("jwt", { session: false }), multer.array("files", 3), controller.createItem);
 
-    app.route("/api/items/:id")
-        .get(passport.authenticate("jwt", { session: false }), controller.getItem)
-        .put(passport.authenticate("jwt", { session: false }), multer.array("files", 3), controller.updateItem)
-        .delete(passport.authenticate("jwt", { session: false }), controller.deleteItem);
-
     app.route("/api/items/:itemId/images/:fileId")
         .put(passport.authenticate("jwt", { session: false }), controller.updateImage)
         .delete(passport.authenticate("jwt", { session: false }), controller.deleteImage);
 
-    app.route("/api/items/yearRange/:yearRange")
-        .get(passport.authenticate("jwt", { session: false }), controller.getYearRangeReport);
+    app.route("/api/items/item-count")
+        .get(passport.authenticate("jwt", { session: false }), controller.getItemCountByYearRange);
+
+    app.route("/api/items/:id")
+        .get(passport.authenticate("jwt", { session: false }), controller.getItem)
+        .put(passport.authenticate("jwt", { session: false }), multer.array("files", 3), controller.updateItem)
+        .delete(passport.authenticate("jwt", { session: false }), controller.deleteItem);
 };

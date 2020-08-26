@@ -18,6 +18,10 @@ const ItemSchema = Schema({
         required: true,
         type: Schema.Types.ObjectId
     },
+    retailerId: {
+        ref: "Retailer",
+        type: Schema.Types.ObjectId
+    },
     tags: Array,
     purchaseDate: Date,
     price: Number,
@@ -25,10 +29,6 @@ const ItemSchema = Schema({
         type: String,
         required: true,
         enum: ["AUD", "BDT", "BGN", "CAD", "CNY", "EUR", "GBP", "INR", "JPY", "NZD", "RUB", "SGD", "USD"]
-    },
-    vendorId: {
-        ref: "Vendor",
-        type: Schema.Types.ObjectId
     },
     files: [ FileSchema ],
     createdBy: {

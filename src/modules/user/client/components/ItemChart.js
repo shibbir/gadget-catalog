@@ -17,27 +17,30 @@ export default function ItemChart() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchItemsByYearRange(yearRange));
+        let startYear, endYear;
+        [startYear, endYear] = yearRange.split("-");
+
+        dispatch(fetchItemsByYearRange(startYear, endYear));
     }, [dispatch, yearRange]);
 
     const itemsPerYear = useSelector(state => state.itemReducer.itemsPerYear);
 
     useEffect(() => {
         let years = [];
-        let itemCounts = [];
+        let items = [];
 
-        itemsPerYear.forEach(function(x) {
-            years.push(x.year.toString());
-            itemCounts.push(x.items);
-        });
+        for (const property in itemsPerYear) {
+            years.push(property.toString());
+            items.push(itemsPerYear[property]);
+        }
 
-        if(itemCounts.length && years.length) {
+        if(items.length && years.length) {
             Highcharts.chart("item-chart", {
                 chart: {
                     type: "column"
                 },
                 title: {
-                    text: `Items purchased from (${yearRange})`
+                    text: `Items purchased between (${yearRange})`
                 },
                 xAxis: {
                     categories: years,
@@ -46,7 +49,7 @@ export default function ItemChart() {
                 yAxis: {
                     min: 0,
                     title: {
-                        text: "Number Of Items"
+                        text: "Number of Items"
                     },
                     allowDecimals: false
                 },
@@ -66,7 +69,7 @@ export default function ItemChart() {
                 },
                 series: [{
                     name: "Total Items",
-                    data: itemCounts
+                    data: items
                 }],
                 credits: {
                     enabled: false
@@ -80,14 +83,14 @@ export default function ItemChart() {
 
     return (
         <>
-            { itemsPerYear.length > 0 &&
+            { itemsPerYear &&
                 <>
                     <Select onChange={(event, data) => {setYearRange(data.value)}} options={options} defaultValue={options[0].value}/>
                     <div id="item-chart"></div>
                 </>
             }
 
-            { !itemsPerYear.length &&
+            { !itemsPerYear &&
                 <Segment placeholder basic>
                     <Header icon>
                         <Icon name="warning sign"/>

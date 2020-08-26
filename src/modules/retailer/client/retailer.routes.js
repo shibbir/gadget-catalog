@@ -3,7 +3,7 @@ import { Switch, useRouteMatch } from "react-router-dom";
 import Retailers from "./retailers.component";
 import PrivateRoute from "../../core/client/PrivateRoute";
 
-export default function VendorRoutes() {
+export default function RetailerRoutes() {
     const { path } = useRouteMatch();
 
     return (

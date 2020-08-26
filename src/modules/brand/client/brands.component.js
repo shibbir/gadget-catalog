@@ -55,7 +55,7 @@ export default function Brands() {
 
                     <Divider hidden clearing/>
 
-                    <Table celled selectable compact>
+                    <Table selectable compact>
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>#</Table.HeaderCell>
