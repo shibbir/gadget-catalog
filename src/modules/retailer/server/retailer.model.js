@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const BrandSchema = Schema({
+const RetailerSchema = Schema({
     name: {
         type: String,
         unique: true,
@@ -18,21 +18,20 @@ const BrandSchema = Schema({
         sparse: true
     },
     website: String,
+    address: String,
     createdBy: {
         ref: "User",
         required: true,
         type: Schema.Types.ObjectId
     },
-    date: {
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
         type: Date,
         default: Date.now
     }
 });
 
-BrandSchema.virtual("items", {
-    ref: "Item",
-    localField: "_id",
-    foreignField: "brandId"
-});
-
-module.exports = mongoose.model("Brand", BrandSchema);
+module.exports = mongoose.model("Retailer", RetailerSchema);

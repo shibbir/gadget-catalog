@@ -2,8 +2,8 @@ import Types from "./item.types";
 
 const initialState = {
     item: null,
-    itemsPerYear: [],
-    items: { data: [], pagination: { pages: [] }}
+    itemsPerYear: null,
+    items: { data: [], metadata: { pages: [] }}
 };
 
 export default function reducer(state=initialState, action) {
@@ -15,7 +15,7 @@ export default function reducer(state=initialState, action) {
             return { ...state, item: action.payload.data };
         }
         case Types.GET_ITEMS_FULFILLED: {
-            return { ...state, items: { data: action.payload.data.data, pagination: action.payload.data.pagination }};
+            return { ...state, items: { data: action.payload.data.data, metadata: action.payload.data.metadata }};
         }
         case Types.UPDATE_ITEM_IMAGE_FULFILLED:
         case Types.DELETE_ITEM_IMAGE_FULFILLED: {

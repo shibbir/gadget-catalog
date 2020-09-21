@@ -53,7 +53,7 @@ describe("User Routes", function() {
 
     it("Should send an email if user forgets password", async function() {
         const result = await request(app)
-            .post("/api/forget-password")
+            .post("/api/forgot-password")
             .set("Cookie", [`access_token=${user.accessToken}`])
             .send({
                 email: user.local.email

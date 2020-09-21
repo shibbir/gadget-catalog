@@ -4,13 +4,11 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const User = require("./user.model");
 
-function generateAccessToken(user, provider) {
+function generateAccessToken(user) {
     return jwt.sign({
         _id: user._id,
-        name: user.displayName,
-        email: user[provider].email
     }, process.env.TOKEN_SECRET,{
-        expiresIn: "2d",
+        expiresIn: "1d",
         issuer: user._id.toString()
     });
 }
@@ -67,7 +65,7 @@ async function register(req, res) {
         user.save(function(err, doc) {
             if(err) return res.sendStatus(500);
 
-            res.cookie("access_token", generateAccessToken(doc, "local"), {
+            res.cookie("access_token", generateAccessToken(doc), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
             });
@@ -90,7 +88,7 @@ async function login(req, res) {
             return res.status(401).send("Invalid email or password.");
         }
 
-        res.cookie("access_token", generateAccessToken(doc, "local"), {
+        res.cookie("access_token", generateAccessToken(doc), {
             expires: new Date(Date.now() + 8.64e+7),
             httpOnly: true
         });
@@ -122,7 +120,7 @@ async function changePassword(req, res) {
     }
 }
 
-function forgetPassword(req, res) {
+function forgotPassword(req, res) {
     User.findOne({ $or: [
         { "facebook.email" : req.body.email },
         { "google.email": req.body.email },
@@ -204,7 +202,7 @@ exports.register = register;
 exports.login = login;
 exports.logout = logout;
 exports.changePassword = changePassword;
-exports.forgetPassword = forgetPassword;
+exports.forgotPassword = forgotPassword;
 exports.resetPassword = resetPassword;
 exports.getSignedInUserProfile = getSignedInUserProfile;
 exports.disconnect = disconnect;

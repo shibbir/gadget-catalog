@@ -1,14 +1,14 @@
-const Brand = require("./brand.model");
+const Retailer = require("./retailer.model");
 const User = require("../../user/server/user.model");
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
-async function getBrand(req, res) {
+async function getRetailer(req, res) {
     try {
-        const doc = await Brand.findOne({ _id: req.params.id, createdBy: req.user._id }).exec();
+        const doc = await Retailer.findOne({ _id: req.params.id, createdBy: req.user._id }).exec();
 
         if(!doc) {
-            return res.status(404).send("Brand not found.");
+            return res.status(404).send("Retailer not found.");
         }
 
         res.json(doc);
@@ -17,19 +17,14 @@ async function getBrand(req, res) {
     }
 }
 
-async function getBrands(req, res) {
+async function getRetailers(req, res) {
     const admin = await User.findOne({role: "admin"});
 
     try {
-        const docs = await Brand.find({ $or: [
+        const docs = await Retailer.find({ $or: [
             { createdBy : req.user.id },
             { createdBy: admin.id }
-        ]}).populate({
-            path: "items",
-            select: "_id",
-            options: { lean: true },
-            match: { createdBy: req.user._id }
-        }).sort("name").lean();
+        ]}).sort("name").exec();
 
         res.json(docs);
     } catch(err) {
@@ -37,12 +32,14 @@ async function getBrands(req, res) {
     }
 }
 
-async function createBrand(req, res) {
+async function createRetailer(req, res) {
     try {
-        let model = new Brand({
+        let model = new Retailer({
             name: req.body.name,
             slug: convertToSlug(req.body.name),
+            email: req.body.email,
             website: req.body.website,
+            address: req.body.address,
             createdBy: req.user._id
         });
 
@@ -54,22 +51,26 @@ async function createBrand(req, res) {
     }
 }
 
-function updateBrand(req, res) {
-    Brand.findOne({ name: req.body.name }, function(err, doc) {
+function updateRetailer(req, res) {
+    Retailer.findOne({ name: req.body.name }, function(err, doc) {
         if(err) return res.sendStatus(500);
 
         if(doc && doc._id.toString() !== req.params.id) {
-            return res.status(400).send("Brand name already exists.");
+            return res.status(400).send("Retailer name already exists.");
         }
 
-        Brand.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
+        Retailer.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
             if(err) return res.sendStatus(500);
 
-            if(!doc) return res.sendStatus(404);
+            if(!doc) {
+                return res.sendStatus(404);
+            }
 
             doc.name = req.body.name;
             doc.slug = convertToSlug(req.body.name);
+            doc.email = req.body.email;
             doc.website = req.body.website;
+            doc.address = req.body.address
 
             doc.save();
             res.json(doc);
@@ -77,7 +78,7 @@ function updateBrand(req, res) {
     });
 }
 
-exports.getBrand = getBrand;
-exports.getBrands = getBrands;
-exports.createBrand = createBrand;
-exports.updateBrand = updateBrand;
+exports.getRetailer = getRetailer;
+exports.getRetailers = getRetailers;
+exports.createRetailer = createRetailer;
+exports.updateRetailer = updateRetailer;

@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom";
+import { FormattedDate } from "react-intl";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { LinkContainer } from "react-router-bootstrap";
-import { Segment, Icon, Header, Button, Label, Modal, TransitionablePortal } from "semantic-ui-react";
+import { Table, Segment, Icon, Header, Button, Modal, TransitionablePortal, Divider } from "semantic-ui-react";
 import { getBrands } from "./brand.actions";
 import BrandForm from "./brand-form.component";
 
@@ -13,43 +14,66 @@ export default function Brands() {
         dispatch(getBrands());
     }, []);
 
-    const user = useSelector(state => state.userReducer.loggedInUser);
+    const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
     const brands = useSelector(state => state.brandReducer.brands);
 
-    const labels = brands.map(x => {
+    const rows = brands.map(function(brand, index) {
         return (
-            <Button as="div" labelPosition="right" key={x._id} style={{marginBottom: "20px", marginRight: "20px"}}>
-                <LinkContainer to={`/items?brandId=${x._id}`}>
-                    <Button basic color="teal">
-                        {x.name}
-                    </Button>
-                </LinkContainer>
-                {user && user._id && user._id === x.createdBy &&
-                    <Label as="a" basic color="teal" pointing="left" onClick={() => setBrandId(x._id)}>
-                        <Icon name="edit" color="blue"/>
-                    </Label>
-                }
-            </Button>
+            <Table.Row key={brand._id}>
+                <Table.Cell>{index+1}</Table.Cell>
+                <Table.Cell>{brand.name}</Table.Cell>
+                <Table.Cell><a href={`mailto:${brand.email}`}>{brand.email}</a></Table.Cell>
+                <Table.Cell><a href={brand.website}>{brand.website}</a></Table.Cell>
+                <Table.Cell><FormattedDate value={brand.date} day="2-digit" month="long" year="numeric"/></Table.Cell>
+                <Table.Cell>
+                    <Link to={`/items?brandId=${brand._id}`}>
+                        <Icon color='teal' name="external alternate"/>
+                        {`${brand.items.length} item(s)`}
+                    </Link>
+                </Table.Cell>
+                <Table.Cell>
+                    {loggedInUser && loggedInUser._id && loggedInUser._id === brand.createdBy &&
+                        <a onClick={() => setBrandId(brand._id)}>
+                            <Icon name="edit" color="teal"/>
+                        </a>
+                    }
+                    {loggedInUser && loggedInUser._id && loggedInUser._id !== brand.createdBy &&
+                        <Icon name="lock" color="black"/>
+                    }
+                </Table.Cell>
+            </Table.Row>
         );
     });
 
     return (
         <>
-            { labels.length > 0 &&
+            { brands.length > 0 &&
                 <>
-                    <Segment raised className="stacked">
-                        <Header as="h2">
-                            <Icon name="archive" circular/>
-                            <Header.Content>
-                                Available Brands: {brands.length}
-                            </Header.Content>
-                        </Header>
-                        <Button onClick={() => setBrandId(null)}>Add new brand</Button>
-                    </Segment>
+                    <Button floated="right" primary size="small" onClick={() => setBrandId(null)}>
+                        Add new brand
+                    </Button>
 
-                    {labels}
+                    <Divider hidden clearing/>
 
-                    <TransitionablePortal open={brandId !== undefined} transition={{ animation: 'scale', duration: 400 }}>
+                    <Table selectable compact>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>#</Table.HeaderCell>
+                                <Table.HeaderCell>Name</Table.HeaderCell>
+                                <Table.HeaderCell>E-mail address</Table.HeaderCell>
+                                <Table.HeaderCell>Website</Table.HeaderCell>
+                                <Table.HeaderCell>Last Updated</Table.HeaderCell>
+                                <Table.HeaderCell>Items</Table.HeaderCell>
+                                <Table.HeaderCell>Actions</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+
+                        <Table.Body>
+                            {rows}
+                        </Table.Body>
+                    </Table>
+
+                    <TransitionablePortal open={brandId !== undefined} transition={{ animation: "scale", duration: 400 }}>
                         <Modal dimmer size="tiny" open={true}>
                             <Modal.Header>Brand Form</Modal.Header>
                             <Modal.Content>
@@ -67,11 +91,11 @@ export default function Brands() {
                 </>
             }
 
-            { labels.length === 0 &&
+            { brands.length === 0 &&
                 <Segment placeholder raised>
                     <Header icon>
                         <Icon name="warning sign"/>
-                        You don't have any brands added yet!
+                        No brands are available!
                     </Header>
                 </Segment>
             }

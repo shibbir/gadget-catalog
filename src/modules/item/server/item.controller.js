@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const async = require("async");
 const validator = require("validator");
-
 const { format, parseISO } = require("date-fns");
+
 const Item = require("./item.model");
 const cloudinary = require(path.join(process.cwd(), "src/config/server/lib/cloudinary"));
 
@@ -11,7 +11,7 @@ async function getItem(req, res) {
     const query = req.user.role === "admin" ? { _id: req.params.id } : { _id: req.params.id, createdBy: req.user._id };
 
     try {
-        const doc = await Item.findOne(query).populate("brand", "name").populate("category", "name").exec();
+        const doc = await Item.findOne(query).populate("brand", "name").populate("category", "name").populate("retailer", "name").exec();
 
         if(!doc) return res.sendStatus(404);
 
@@ -25,10 +25,10 @@ async function getItem(req, res) {
     }
 }
 
-function getItems(req, res) {
+async function getItems(req, res) {
     const page = req.query.page ? +req.query.page : 1;
-    const size = 20;
-    const skip = page > 0 ? ((page - 1) * size) : 0;
+    const limit = 20;
+    const skip = page > 0 ? ((page - 1) * limit) : 0;
 
     const query = req.user.role === "admin" ? {} : { createdBy: req.user._id };
 
@@ -47,22 +47,22 @@ function getItems(req, res) {
         };
     }
 
-    Item.where(query).countDocuments(function(err, count) {
-        if (err) return res.sendStatus(500);
+    try {
+        const count = await Item.where(query).countDocuments();
+        const docs = await Item.find(query).sort({ purchaseDate: "descending" }).skip(skip).limit(limit);
 
-        Item.find(query).sort({ purchaseDate: "descending" }).skip(skip).limit(size).exec(function(err, docs) {
-            if(err) return res.sendStatus(500);
-
-            res.json({
-                pagination: {
-                    page,
-                    pages: Math.ceil(count / size),
-                    count: count
-                },
-                data: docs
-            });
+        res.json({
+            metadata: {
+                limit,
+                currentPage: page,
+                pageCount: Math.ceil(count / limit),
+                totalCount: count
+            },
+            data: docs
         });
-    });
+    } catch (err) {
+        if(err) res.sendStatus(500);
+    }
 }
 
 function createItem(req, res) {
@@ -76,15 +76,12 @@ function createItem(req, res) {
         createdBy: req.user._id
     });
 
-    if(req.body.description) {
-        item.description = validator.escape(req.body.description);
-    }
+    if(req.body.retailerId) item.retailerId = req.body.retailerId;
+    if(req.body.description) item.description = validator.escape(req.body.description);
 
     async.waterfall([
         function(callback) {
-            if(!req.files || !req.files.length) {
-                return callback();
-            }
+            if(!req.files || !req.files.length) return callback();
 
             req.files.forEach(function(file, index) {
                 cloudinary.v2.uploader.upload(file.path, {
@@ -127,9 +124,8 @@ function updateItem(req, res) {
         doc.price = req.body.price;
         doc.currency = req.body.currency;
 
-        if(req.body.description) {
-            doc.description = validator.escape(req.body.description);
-        }
+        if(req.body.retailerId) doc.retailerId = req.body.retailerId;
+        if(req.body.description) doc.description = validator.escape(req.body.description);
 
         async.waterfall([
             function(callback) {
@@ -236,35 +232,26 @@ function deleteImage(req, res) {
     });
 }
 
-function getYearRangeReport(req, res) {
-    const yearRange = req.params.yearRange.split("-");
-    const startYear = yearRange[0];
-    const endYear = yearRange[1];
+async function getItemCountByYearRange(req, res) {
+    const startYear = req.query.startYear;
+    const endYear = req.query.endYear;
 
-    const query = {
-        createdBy: req.user._id,
-        purchaseDate: { $lte: new Date(endYear, 11, 31), $gte: new Date(startYear, 0, 1)}
-    };
+    try {
+        const docs = await Item.find({
+            createdBy: req.user._id,
+            purchaseDate: { $lte: new Date(endYear, 11, 31), $gte: new Date(startYear, 0, 1)}
+        }, "purchaseDate");
 
-    Item.find(query, "purchaseDate").exec(function(err, docs) {
-        if(err) return res.sendStatus(500);
-
-        let data = [];
-
-        for(let year = startYear; year <= endYear; year++) {
-            data.push({
-                year: year,
-                items: 0
-            });
-        }
+        let data = {};
 
         docs.forEach(function(doc) {
-            const purchasedYear = data.find(x => x.year == doc.purchaseDate.getFullYear());
-            purchasedYear.items++;
+            data[doc.purchaseDate.getFullYear()] = data[doc.purchaseDate.getFullYear()] !== undefined ? ++data[doc.purchaseDate.getFullYear()] : 1;
         });
 
         res.json(data);
-    });
+    } catch(err) {
+        if(err) res.sendStatus(500);
+    }
 }
 
 exports.getItem = getItem;
@@ -274,4 +261,4 @@ exports.updateItem = updateItem;
 exports.deleteItem = deleteItem;
 exports.updateImage = updateImage;
 exports.deleteImage = deleteImage;
-exports.getYearRangeReport = getYearRangeReport;
+exports.getItemCountByYearRange = getItemCountByYearRange;

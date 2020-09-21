@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Container } from "semantic-ui-react";
 import { Route, Redirect } from "react-router-dom";
 
-import Footer from "./components/Footer";
+import Footer from "./components/footer.component";
 import Navbar from "./components/Navbar";
 
 export default function PrivateRoute({ component: Component, ...rest }) {

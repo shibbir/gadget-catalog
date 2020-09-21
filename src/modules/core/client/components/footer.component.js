@@ -31,9 +31,6 @@ export default function Footer() {
                                 Developed by <a href="https://shibbir.io">Shibbir Ahmed</a>.
                                 Code licensed <a rel="license" href="https://github.com/shibbir/gadget-catalog/blob/master/LICENSE">MIT</a>.
                             </p>
-                            <p>
-                                Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC 3.0 BY</a>.
-                            </p>
                             <Button className="large teal" href="https://github.com/shibbir/gadget-catalog">
                                 <Icon name="github"/> Star
                             </Button>

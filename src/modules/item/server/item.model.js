@@ -18,6 +18,10 @@ const ItemSchema = Schema({
         required: true,
         type: Schema.Types.ObjectId
     },
+    retailerId: {
+        ref: "Retailer",
+        type: Schema.Types.ObjectId
+    },
     tags: Array,
     purchaseDate: Date,
     price: Number,
@@ -50,6 +54,13 @@ ItemSchema.virtual("brand", {
     justOne: true,
     foreignField: "_id",
     localField: "brandId"
+});
+
+ItemSchema.virtual("retailer", {
+    ref: "Retailer",
+    justOne: true,
+    foreignField: "_id",
+    localField: "retailerId"
 });
 
 module.exports = mongoose.model("Item", ItemSchema);

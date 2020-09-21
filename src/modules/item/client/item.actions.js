@@ -73,12 +73,12 @@ export function deleteImage(itemId, fileId) {
     };
 }
 
-export function fetchItemsByYearRange(yearRange) {
+export function fetchItemsByYearRange(startYear, endYear) {
     return {
         type: Types.GET_ITEMS_BY_YEAR,
         payload: axios({
             method: "get",
-            url: `/api/items/yearRange/${yearRange}`
+            url: `/api/items/item-count?startYear=${startYear}&endYear=${endYear}`
         })
     };
 }

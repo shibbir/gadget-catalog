@@ -1,19 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { FormattedDate, FormattedNumber } from "react-intl";
 import { Link, useParams, useHistory } from "react-router-dom";
-import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb } from "semantic-ui-react";
+import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb, Modal, TransitionablePortal } from "semantic-ui-react";
 
 import Types from "../item.types";
+import ItemForm from "./item-form.component";
 import { fetchItem, deleteItem, setAsActiveImage, deleteImage } from "../item.actions";
 
 export default function ItemDetail() {
     const { id } = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
-    const user = useSelector(state => state.userReducer.loggedInUser);
+
     const item = useSelector(state => state.itemReducer.item);
+    const user = useSelector(state => state.userReducer.loggedInUser);
+
+    const [itemFormVisibleState, setItemFormVisibleState] = useState(false);
 
     useEffect(() => {
         dispatch(fetchItem(id));
@@ -100,6 +104,7 @@ export default function ItemDetail() {
                                     <div>Price: <FormattedNumber value={item.price} style="currency" currency={item.currency}/></div>
                                 }
                                 <div>Purchase Date: <FormattedDate value={item.purchaseDate} day="2-digit" month="long" year="numeric"/></div>
+                                { item.retailerId && <div>Retailer: {item.retailer.name}</div> }
                             </Item.Meta>
 
                             <Divider horizontal>Description</Divider>
@@ -119,13 +124,11 @@ export default function ItemDetail() {
                         <>
                             <Divider section/>
 
-                            <LinkContainer to={`/items/${item._id}/edit`}>
-                                <Button color="blue">
-                                    <Icon name="pencil"/> Edit
-                                </Button>
-                            </LinkContainer>
-                            <Button color="red"
-                                onClick={() => onDeleteItem(id)}>
+                            <Button color="blue" onClick={() => setItemFormVisibleState(true)}>
+                                <Icon name="pencil"/> Edit
+                            </Button>
+
+                            <Button color="red" onClick={() => onDeleteItem(id)}>
                                 <Icon name="trash"/> Delete
                             </Button>
                         </>
@@ -174,6 +177,22 @@ export default function ItemDetail() {
                     </Card.Group>
                 </div>
             }
+
+            <TransitionablePortal open={itemFormVisibleState} transition={{ animation: "scale", duration: 400 }}>
+                <Modal dimmer size="small" open={true}>
+                    <Modal.Header>Item Form</Modal.Header>
+                    <Modal.Content>
+                        <Modal.Description>
+                            <ItemForm id={id}/>
+                        </Modal.Description>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color="black" onClick={() => setItemFormVisibleState(false)}>
+                            Close
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
+            </TransitionablePortal>
         </div>
     );
 }
