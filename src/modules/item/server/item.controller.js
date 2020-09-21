@@ -25,10 +25,10 @@ async function getItem(req, res) {
     }
 }
 
-function getItems(req, res) {
+async function getItems(req, res) {
     const page = req.query.page ? +req.query.page : 1;
-    const size = 20;
-    const skip = page > 0 ? ((page - 1) * size) : 0;
+    const limit = 20;
+    const skip = page > 0 ? ((page - 1) * limit) : 0;
 
     const query = req.user.role === "admin" ? {} : { createdBy: req.user._id };
 
@@ -47,22 +47,22 @@ function getItems(req, res) {
         };
     }
 
-    Item.where(query).countDocuments(function(err, count) {
-        if (err) return res.sendStatus(500);
+    try {
+        const count = await Item.where(query).countDocuments();
+        const docs = await Item.find(query).sort({ purchaseDate: "descending" }).skip(skip).limit(limit);
 
-        Item.find(query).sort({ purchaseDate: "descending" }).skip(skip).limit(size).exec(function(err, docs) {
-            if(err) return res.sendStatus(500);
-
-            res.json({
-                pagination: {
-                    page,
-                    pages: Math.ceil(count / size),
-                    count: count
-                },
-                data: docs
-            });
+        res.json({
+            metadata: {
+                limit,
+                currentPage: page,
+                pageCount: Math.ceil(count / limit),
+                totalCount: count
+            },
+            data: docs
         });
-    });
+    } catch (err) {
+        if(err) res.sendStatus(500);
+    }
 }
 
 function createItem(req, res) {
@@ -73,19 +73,15 @@ function createItem(req, res) {
         purchaseDate: req.body.purchaseDate,
         price: req.body.price,
         currency: req.body.currency,
-        retailerId: req.body.retailerId,
         createdBy: req.user._id
     });
 
-    if(req.body.description) {
-        item.description = validator.escape(req.body.description);
-    }
+    if(req.body.retailerId) item.retailerId = req.body.retailerId;
+    if(req.body.description) item.description = validator.escape(req.body.description);
 
     async.waterfall([
         function(callback) {
-            if(!req.files || !req.files.length) {
-                return callback();
-            }
+            if(!req.files || !req.files.length) return callback();
 
             req.files.forEach(function(file, index) {
                 cloudinary.v2.uploader.upload(file.path, {
@@ -127,11 +123,9 @@ function updateItem(req, res) {
         doc.purchaseDate = req.body.purchaseDate;
         doc.price = req.body.price;
         doc.currency = req.body.currency;
-        doc.retailerId = req.body.retailerId;
 
-        if(req.body.description) {
-            doc.description = validator.escape(req.body.description);
-        }
+        if(req.body.retailerId) doc.retailerId = req.body.retailerId;
+        if(req.body.description) doc.description = validator.escape(req.body.description);
 
         async.waterfall([
             function(callback) {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { Menu, Dropdown, Container, Icon } from "semantic-ui-react";
+import { Menu, Container, Icon } from "semantic-ui-react";
 
 export default function Navbar() {
     const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
@@ -11,36 +11,26 @@ export default function Navbar() {
             <Container>
                 <Menu.Item header style={{paddingLeft: 0}}>
                     <img src="/images/logo.png"/>
-                    Gadget Catalog
                 </Menu.Item>
                 <NavLink exact to="/" activeClassName="active" className="item">
-                    <Icon name="dashboard"/>
+                    <Icon name="dashboard" color="teal"/>
                     Dashboard
                 </NavLink>
-                <Dropdown item text="Item">
-                    <Dropdown.Menu>
-                        <NavLink to="/items" activeClassName="active" className="item">
-                            <Icon name="unordered list"/> Item list
-                        </NavLink>
-                        { !loggedInUser.isAdmin &&
-                            <NavLink to="/items/add" activeClassName="active" className="item">
-                                <Icon name="add"/> Add new item
-                            </NavLink>
-                        }
-                    </Dropdown.Menu>
-                </Dropdown>
+                <NavLink to="/items" activeClassName="active" className="item">
+                    <Icon name="desktop" color="teal"/> Manage Items
+                </NavLink>
                 <NavLink to="/categories" activeClassName="active" className="item">
-                    <Icon name="unordered list"/> Categories
+                    <Icon name="sitemap" color="teal"/> Manage Categories
                 </NavLink>
                 <NavLink to="/brands" activeClassName="active" className="item">
-                    <Icon name="unordered list"/> Brands
+                    <Icon name="apple" color="teal"/> Manage Brands
                 </NavLink>
                 <NavLink to="/retailers" activeClassName="active" className="item">
-                    <Icon name="unordered list"/> Retailers
+                    <Icon name="amazon" color="teal"/> Manage Retailers
                 </NavLink>
                 <div className="right item" style={{paddingRight: 0}}>
                     <NavLink to="/profile" className="ui button teal"><Icon name="user"/> {loggedInUser.name}</NavLink>
-                    <a href="/api/logout" className="ui button black"><Icon name="sign out"/> Sign Out</a>
+                    <a href="/api/logout" className="ui button black" style={{marginLeft: '5px'}}><Icon name="sign out"/> Sign Out</a>
                 </div>
             </Container>
         </Menu>

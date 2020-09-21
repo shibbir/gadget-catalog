@@ -47,7 +47,6 @@ async function createRetailer(req, res) {
 
         res.json(model);
     } catch(err) {
-        console.log(err);
         res.sendStatus(500);
     }
 }

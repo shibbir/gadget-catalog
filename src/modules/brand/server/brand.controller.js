@@ -65,9 +65,7 @@ function updateBrand(req, res) {
         Brand.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
             if(err) return res.sendStatus(500);
 
-            if(!doc) {
-                return res.sendStatus(404);
-            }
+            if(!doc) return res.sendStatus(404);
 
             doc.name = req.body.name;
             doc.slug = convertToSlug(req.body.name);

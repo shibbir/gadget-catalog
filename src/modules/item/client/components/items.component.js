@@ -3,14 +3,18 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { fetchItems } from "../item.actions";
+import ItemForm from "./item-form.component";
 import { getBrands } from "../../../brand/client/brand.actions";
 import { getCategories } from "../../../category/client/category.actions";
-import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segment, Header } from "semantic-ui-react";
+import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segment, Header, Modal, TransitionablePortal, Grid } from "semantic-ui-react";
 
 export default function Items() {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
+
+    const [filterModal, setFilterModal] = useState(false);
+    const [itemFormVisibleState, setItemFormVisibleState] = useState(false);
 
     useEffect(() => {
         dispatch(getBrands());
@@ -29,7 +33,7 @@ export default function Items() {
     const [endDate, setEndDate] = useState(params.endDate ? params.endDate : "");
 
     function filter(e, discard) {
-        let q = {};
+        const q = {};
 
         if(categoryId && discard !== "category") {
             q.categoryId = categoryId;
@@ -50,6 +54,8 @@ export default function Items() {
             pathname: "items",
             search: queryString.stringify(q)
         });
+
+        setFilterModal(false);
     }
 
     function resetFilter() {
@@ -67,7 +73,7 @@ export default function Items() {
     let categoryName = null;
     let dateRange = null;
 
-    const {data, pagination} = useSelector(state => state.itemReducer.items);
+    const { data, metadata } = useSelector(state => state.itemReducer.items);
     const categories = useSelector(state => state.categoryReducer.categories);
     const brands = useSelector(state => state.brandReducer.brands);
 
@@ -110,7 +116,7 @@ export default function Items() {
 
     let paginationLinks = [];
 
-    for(let idx = 1; idx <= pagination.pages; idx++) {
+    for(let idx = 1; idx <= metadata.pageCount; idx++) {
         paginationLinks.push({
             idx,
             link: {
@@ -131,75 +137,104 @@ export default function Items() {
 
     return (
         <>
-            { cards.length > 0 &&
-                <Segment raised className="stacked">
-                    <Header as="h2">
-                        <Icon name="archive" circular/>
-                        <Header.Content>
-                            Total Gadgets: {pagination.count}
-                            <Header.Subheader>Filter your gadgets by category, brand and date range <Icon name="angle double down"></Icon></Header.Subheader>
-                        </Header.Content>
-                    </Header>
+            <Segment raised stacked>
+                <Grid columns={2}>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Header as="h3">
+                                <Icon name="archive" circular/>
+                                <Header.Content>
+                                    Total Gadgets: {metadata.totalCount}
+                                    <Header.Subheader>Add, edit, sort and filter your gadgets <Icon name="angle double right"></Icon></Header.Subheader>
+                                </Header.Content>
+                            </Header>
+                        </Grid.Column>
 
-                    <Form onSubmit={filter}>
-                        <Form.Group widths="equal">
-                            <Form.Field>
-                                <label>Gadget Category</label>
-                                <Form.Select
-                                    placeholder="Choose an option"
-                                    name="categoryId"
-                                    options={categoryOptions}
-                                    value={categoryId}
-                                    onChange={(event, data) => {setCategoryId(data.value)}}
-                                />
-                            </Form.Field>
-
-                            <Form.Field>
-                                <label>Gadget Brand</label>
-                                <Form.Select
-                                    placeholder="Choose an option"
-                                    name="brandId"
-                                    options={brandOptions}
-                                    value={brandId}
-                                    onChange={(event, data) => {setBrandId(data.value)}}
-                                />
-                            </Form.Field>
-
-                            <Form.Field>
-                                <label>Start Date</label>
-                                <Form.Input
-                                    type="date"
-                                    placeholder="Choose a date"
-                                    name="startDate"
-                                    value={startDate}
-                                    onChange={(event, data) => {setStartDate(data.value)}}
-                                />
-                            </Form.Field>
-
-                            <Form.Field>
-                                <label>End Date</label>
-                                <Form.Input
-                                    type="date"
-                                    placeholder="Choose a date"
-                                    name="endDate"
-                                    value={endDate}
-                                    onChange={(event, data) => {setEndDate(data.value)}}
-                                />
-                            </Form.Field>
-                        </Form.Group>
-
-                        <Button.Group>
-                            <Button type="submit" positive>
-                                <Icon name="filter"/> Filter
+                        <Grid.Column>
+                            <Button floated="right" size="small" color="blue" onClick={() => setItemFormVisibleState(true)}>
+                                Add new item
                             </Button>
-                            <Button.Or />
-                            <Button type="button" onClick={resetFilter}>
-                                <Icon name="undo"/> Reset
+                            <Button floated="right" size="small" onClick={() => setFilterModal(true)}>
+                                <Icon color="teal" name="filter"/> Filter
                             </Button>
-                        </Button.Group>
-                    </Form>
-                </Segment>
-            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Segment>
+
+            <TransitionablePortal open={filterModal} transition={{ animation: "scale", duration: 400 }}>
+                <Modal dimmer size="small" open={true}>
+                    <Modal.Header>Filter</Modal.Header>
+                    <Modal.Content>
+                        <Modal.Description>
+                            <Form onSubmit={filter}>
+                                <Form.Group widths="equal">
+                                    <Form.Field>
+                                        <label>Category</label>
+                                        <Form.Select
+                                            placeholder="Choose an option"
+                                            name="categoryId"
+                                            options={categoryOptions}
+                                            value={categoryId}
+                                            onChange={(event, data) => {setCategoryId(data.value)}}
+                                        />
+                                    </Form.Field>
+
+                                    <Form.Field>
+                                        <label>Brand</label>
+                                        <Form.Select
+                                            placeholder="Choose an option"
+                                            name="brandId"
+                                            options={brandOptions}
+                                            value={brandId}
+                                            onChange={(event, data) => {setBrandId(data.value)}}
+                                        />
+                                    </Form.Field>
+                                </Form.Group>
+
+                                <Form.Group widths="equal">
+                                    <Form.Field>
+                                        <label>Start Date</label>
+                                        <Form.Input
+                                            type="date"
+                                            placeholder="Choose a date"
+                                            name="startDate"
+                                            value={startDate}
+                                            onChange={(event, data) => {setStartDate(data.value)}}
+                                        />
+                                    </Form.Field>
+
+                                    <Form.Field>
+                                        <label>End Date</label>
+                                        <Form.Input
+                                            type="date"
+                                            placeholder="Choose a date"
+                                            name="endDate"
+                                            value={endDate}
+                                            onChange={(event, data) => {setEndDate(data.value)}}
+                                        />
+                                    </Form.Field>
+                                </Form.Group>
+
+                                <Button.Group>
+                                    <Button type="submit" positive>
+                                        <Icon name="filter"/> Filter
+                                    </Button>
+                                    <Button.Or />
+                                    <Button type="button" onClick={resetFilter}>
+                                        <Icon name="undo"/> Reset
+                                    </Button>
+                                </Button.Group>
+                            </Form>
+                        </Modal.Description>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color="black" onClick={() => setFilterModal(false)}>
+                            Close
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
+            </TransitionablePortal>
 
             {categoryName &&
                 <Label color="blue">
@@ -227,7 +262,7 @@ export default function Items() {
                         {cards}
                     </Card.Group>
 
-                    { pagination.pages !== 1 &&
+                    { metadata.pageCount !== 1 &&
                         <div>
                             <Divider hidden/>
                             <Container textAlign="center">
@@ -246,11 +281,24 @@ export default function Items() {
                         <Icon name="warning sign" />
                         You don't have any items!
                     </Header>
-                    <Button primary>
-                        <Link to="/items/add" style={{color: "white"}}>Add New Item</Link>
-                    </Button>
                 </Segment>
             }
+
+            <TransitionablePortal open={itemFormVisibleState} transition={{ animation: "scale", duration: 400 }}>
+                <Modal dimmer size="small" open={true}>
+                    <Modal.Header>Item Form</Modal.Header>
+                    <Modal.Content>
+                        <Modal.Description>
+                            <ItemForm/>
+                        </Modal.Description>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color="black" onClick={() => setItemFormVisibleState(false)}>
+                            Close
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
+            </TransitionablePortal>
         </>
     );
 }

@@ -2,10 +2,10 @@ import { Form, Formik } from "formik";
 import React, { useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import { stateToHTML } from "draft-js-export-html";
-import { Divider, Button } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { EditorState, ContentState, convertFromHTML } from "draft-js";
+import { Divider, Button, Form as SemanticUIForm } from "semantic-ui-react";
 
 import Types from "../item.types";
 import { itemSchema } from "../item.schema";
@@ -68,82 +68,80 @@ export default function ItemForm() {
     ];
 
     return (
-        <>
-            <h3>Item form</h3>
-            <Divider section/>
+        <Formik
+            initialValues={{
+                name: item ? item.name : "",
+                categoryId: item ? item.categoryId : "",
+                brandId: item ? item.brandId : "",
+                purchaseDate: item && item.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
+                price: item ? item.price : "",
+                currency: item ? item.currency : "",
+                retailerId: item ? item.retailerId : "",
+                files: "",
+                editorState: blocksFromHTML.contentBlocks
+                    ? new EditorState.createWithContent(ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap))
+                    : new EditorState.createEmpty()
+            }}
+            displayName="ItemForm"
+            enableReinitialize={true}
+            validationSchema={itemSchema}
+            onSubmit={(values, actions) => {
+                values.description = stateToHTML(values.editorState.getCurrentContent());
 
-            <Formik
-                initialValues={{
-                    name: item ? item.name : "",
-                    categoryId: item ? item.categoryId : "",
-                    brandId: item ? item.brandId : "",
-                    purchaseDate: item && item.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
-                    price: item ? item.price : "",
-                    currency: item ? item.currency : "",
-                    retailerId: item ? item.retailerId : "",
-                    files: "",
-                    editorState: blocksFromHTML.contentBlocks
-                        ? new EditorState.createWithContent(ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap))
-                        : new EditorState.createEmpty()
-                }}
-                displayName="ItemForm"
-                enableReinitialize={true}
-                validationSchema={itemSchema}
-                onSubmit={(values, actions) => {
-                    values.description = stateToHTML(values.editorState.getCurrentContent());
+                let formData = new FormData();
 
-                    let formData = new FormData();
+                if(values.files) {
+                    for(let index = 0; index < values.files.length; index++) {
+                        formData.append("files", values.files[index]);
+                    }
+                    delete values.files;
+                }
 
-                    if(values.files) {
-                        for(let index = 0; index < values.files.length; index++) {
-                            formData.append("files", values.files[index]);
+                for(let key in values) {
+                    if(values.hasOwnProperty(key)) {
+                        formData.append(key, values[key]);
+                    }
+                }
+
+                if(id) {
+                    dispatch(updateItem(formData, id)).then(result => {
+                        const { type, payload } = result.action;
+
+                        if(type === Types.PUT_ITEM_FULFILLED) {
+                            window.location.reload();
                         }
-                        delete values.files;
-                    }
+                    });
+                } else {
+                    dispatch(createItem(formData)).then(result => {
+                        const { type, payload } = result.action;
 
-                    for(let key in values) {
-                        if(values.hasOwnProperty(key)) {
-                            formData.append(key, values[key]);
+                        if(type === Types.POST_ITEM_FULFILLED) {
+                            history.push(`/items/${payload.data._id}`);
                         }
-                    }
+                    });
+                }
 
-                    if(id) {
-                        dispatch(updateItem(formData, id)).then(result => {
-                            const { type, payload } = result.action;
+                actions.setSubmitting(false);
+            }}
+        >
+            {formikProps => (
+                <Form onSubmit={formikProps.handleSubmit} className="ui form">
+                    <TextInput attributes={{
+                        type: "text",
+                        name: "name",
+                        label: "Name",
+                        required: true
+                    }}/>
+                    <RichEditorInput attributes={{
+                        value: formikProps.values.description,
+                        name: "description",
+                        label: "Description",
+                        onChange: formikProps.setFieldValue,
+                        onBlur: formikProps.handleBlur,
+                        editorState: formikProps.values.editorState
+                    }}/>
 
-                            if(type === Types.PUT_ITEM_FULFILLED) {
-                                history.push(`/items/${payload.data._id}`);
-                            }
-                        });
-                    } else {
-                        dispatch(createItem(formData)).then(result => {
-                            const { type, payload } = result.action;
-
-                            if(type === Types.POST_ITEM_FULFILLED) {
-                                history.push(`/items/${payload.data._id}`);
-                            }
-                        });
-                    }
-
-                    actions.setSubmitting(false);
-                }}
-            >
-                {formikProps => (
-                    <Form onSubmit={formikProps.handleSubmit} className="ui form">
-                        <TextInput attributes={{
-                            type: "text",
-                            name: "name",
-                            label: "Name",
-                            required: true
-                        }}/>
-                        <RichEditorInput attributes={{
-                            value: formikProps.values.description,
-                            name: "description",
-                            label: "Description",
-                            onChange: formikProps.setFieldValue,
-                            onBlur: formikProps.handleBlur,
-                            editorState: formikProps.values.editorState
-                        }}/>
+                    <SemanticUIForm.Group widths="equal">
                         <DropdownInput attributes={{
                             value: formikProps.values.categoryId,
                             name: "categoryId",
@@ -162,18 +160,9 @@ export default function ItemForm() {
                             onChange: (event, data) => {formikProps.setFieldValue(data.name, data.value)},
                             required: true
                         }}/>
-                        <TextInput attributes={{
-                            type: "date",
-                            name: "purchaseDate",
-                            label: "Purchase date",
-                            required: true
-                        }}/>
-                        <TextInput attributes={{
-                            type: "number",
-                            name: "price",
-                            label: "Price",
-                            required: true
-                        }}/>
+                    </SemanticUIForm.Group>
+
+                    <SemanticUIForm.Group widths="equal">
                         <DropdownInput attributes={{
                             value: formikProps.values.currency,
                             name: "currency",
@@ -183,6 +172,22 @@ export default function ItemForm() {
                             onChange: (event, data) => {formikProps.setFieldValue(data.name, data.value)},
                             required: true
                         }}/>
+                        <TextInput attributes={{
+                            type: "number",
+                            name: "price",
+                            label: "Price",
+                            required: true
+                        }}/>
+                    </SemanticUIForm.Group>
+
+                    <SemanticUIForm.Group widths="equal">
+                        <TextInput attributes={{
+                            type: "date",
+                            name: "purchaseDate",
+                            label: "Purchase date",
+                            required: true
+                        }}/>
+
                         <DropdownInput attributes={{
                             value: formikProps.values.retailerId,
                             name: "retailerId",
@@ -191,22 +196,25 @@ export default function ItemForm() {
                             options: retailerOptions,
                             onChange: (event, data) => {formikProps.setFieldValue(data.name, data.value)}
                         }}/>
-                        <FileInput attributes={{
-                            type: "file",
-                            name: "files",
-                            label: "Upload images",
-                            multiple: true,
-                            onChange: event => {formikProps.setFieldValue("files", event.currentTarget.files)}
-                        }}/>
-                        <Divider hidden/>
-                        <Button.Group>
-                            <Button type="submit" positive disabled={formikProps.isSubmitting}>Save</Button>
-                            <Button.Or/>
-                            <Button type="reset" disabled={formikProps.isSubmitting}>Reset</Button>
-                        </Button.Group>
-                    </Form>
-                )}
-            </Formik>
-        </>
+                    </SemanticUIForm.Group>
+
+                    <FileInput attributes={{
+                        type: "file",
+                        name: "files",
+                        label: "Upload images",
+                        multiple: true,
+                        onChange: event => {formikProps.setFieldValue("files", event.currentTarget.files)}
+                    }}/>
+
+                    <Divider hidden/>
+
+                    <Button.Group>
+                        <Button type="submit" positive disabled={formikProps.isSubmitting}>Save changes</Button>
+                        <Button.Or/>
+                        <Button type="reset" disabled={formikProps.isSubmitting}>Reset</Button>
+                    </Button.Group>
+                </Form>
+            )}
+        </Formik>
     );
 }
