@@ -2,13 +2,11 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const controller = require("./user.controller");
 
-function generateAccessToken(user, provider) {
+function generateAccessToken(user) {
     return jwt.sign({
-        _id: user._id,
-        name: user.displayName,
-        email: user[provider].email
-    }, process.env.TOKEN_SECRET,{
-        expiresIn: "2d",
+        _id: user._id
+    }, process.env.TOKEN_SECRET, {
+        expiresIn: "1d",
         issuer: user._id.toString()
     });
 }
@@ -24,7 +22,7 @@ module.exports = function(app) {
 
     app.put("/api/profile/change-password", passport.authenticate("jwt", { session: false }), controller.changePassword);
 
-    app.get("/oauth/facebook", passport.authenticate("facebook", {scope: "email"}));
+    app.get("/oauth/facebook", passport.authenticate("facebook", { scope: "email" }));
 
     app.get("/oauth/facebook/callback", function(req, res, next) {
         passport.authenticate("facebook", function(err, user) {
@@ -32,7 +30,7 @@ module.exports = function(app) {
                 return res.redirect(`/?provider=facebook&error=${err.message}`);
             }
 
-            res.cookie("access_token", generateAccessToken(user, "facebook"), {
+            res.cookie("access_token", generateAccessToken(user), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
             }).redirect("/");
@@ -51,7 +49,7 @@ module.exports = function(app) {
                 return res.redirect(`/?provider=google&error=${err.message}`);
             }
 
-            res.cookie("access_token", generateAccessToken(user, "google"), {
+            res.cookie("access_token", generateAccessToken(user), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
             }).redirect("/");

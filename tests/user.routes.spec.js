@@ -24,8 +24,9 @@ describe("User Routes", function() {
         const result = await request(app)
             .post("/api/login")
             .send({
-                email: user.email,
-                password: user.password
+                username: user.email,
+                password: user.password,
+                grant_type: "password"
             });
 
         expect(result.status).to.equal(200);

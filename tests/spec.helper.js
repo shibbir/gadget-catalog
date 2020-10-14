@@ -5,6 +5,8 @@ const User = require(path.join(process.cwd(), "src/modules/user/server/user.mode
 
 process.env.NODE_ENV = "test";
 process.env.TOKEN_SECRET = "6368451b-50bc9a455e62";
+process.env.REFRESH_SECRET = "6368451b-50bc9a455e62";
+process.env.COOKIE_SECRET = "6368451b-50bc9a455e62";
 process.env.MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/gadget-catalog-test";
 process.env.GOOGLE_CLIENT_ID = "xxx";
 process.env.GOOGLE_CLIENT_SECRET = "xxx";
@@ -29,7 +31,7 @@ const admin = {
         _id: "58e8d591a643633a109f29bc",
         name: "Admin User",
         email: "admin@user.com"
-    }, process.env.TOKEN_SECRET, { expiresIn: "1d", issuer: "58e8d591a643633a109f29bc" })
+    }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: "58e8d591a643633a109f29bc" })
 };
 
 const basic = {
@@ -47,7 +49,7 @@ const basic = {
         _id: "58e8d591a643633a109f29bd",
         name: "Basic User",
         email: "basic@user.com"
-    }, process.env.TOKEN_SECRET, { expiresIn: "1d", issuer: "58e8d591a643633a109f29bd" })
+    }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: "58e8d591a643633a109f29bd" })
 };
 
 before(async function() {

@@ -33,7 +33,7 @@ function RetailerForm({id} = props) {
             onSubmit={(values, actions) => {
                 if(id) {
                     dispatch(updateRetailer(values, id)).then(function() {
-                        iziToast['success']({
+                        iziToast["success"]({
                             timeout: 3000,
                             message: "Your changes are saved.",
                             position: "bottomRight"
@@ -41,7 +41,7 @@ function RetailerForm({id} = props) {
                     });
                 } else {
                     dispatch(createRetailer(values)).then(function() {
-                        iziToast['success']({
+                        iziToast["success"]({
                             timeout: 3000,
                             message: "Your changes are saved.",
                             position: "bottomRight"
