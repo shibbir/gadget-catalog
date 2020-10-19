@@ -4,7 +4,7 @@ const User = require("../user.model");
 
 module.exports = function() {
     function cookieExtractor(req) {
-        let token = null;
+        let token;
         if (req && req.signedCookies) {
             token = req.signedCookies["access_token"];
         }
@@ -15,14 +15,10 @@ module.exports = function() {
         secretOrKey: process.env.TOKEN_SECRET,
         jwtFromRequest: cookieExtractor
     }, function(payload, done) {
-        User.findById(payload._id, function(err, user) {
-            if(err) {
-                return done(err, false);
-            }
+        User.findById(payload.id, function(err, user) {
+            if(err) return done(err, false);
 
-            if(user) {
-                return done(null, user);
-            }
+            if(user) return done(null, user);
 
             return done(null, false);
         });

@@ -1,27 +1,9 @@
 const axios = require("axios");
 const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const User = require("./user.model");
-
-function generateAccessToken(user) {
-    return jwt.sign({
-        _id: user._id,
-    }, process.env.TOKEN_SECRET, {
-        expiresIn: "1h",
-        issuer: user._id.toString()
-    });
-}
-
-function generateRefreshToken(doc) {
-    return jwt.sign({
-        _id: doc._id,
-    }, process.env.REFRESH_SECRET, {
-        expiresIn: "1d",
-        issuer: doc._id.toString()
-    });
-}
+const { generateAccessToken, generateRefreshToken } = require("../../core/server/authorize.middleware");
 
 function formatProfile(user) {
     const profile = {
@@ -91,7 +73,7 @@ async function register(req, res) {
 async function login(req, res) {
     try {
         let doc;
-        const { username, password, grant_type, refresh_token } = req.body;
+        const { username, password, grant_type } = req.body;
 
         if(!grant_type) {
             return res.status(401).send("Invalid credentials.");
@@ -106,23 +88,6 @@ async function login(req, res) {
 
             doc.local.refresh_token = generateRefreshToken(doc);
             await doc.save();
-        }
-
-        if(grant_type === "refresh_token") {
-            if(!refresh_token) {
-                return res.status(401).send("The refresh token is invalid or expired.");
-            }
-
-            try {
-                const decoded = jwt.verify(refresh_token, process.env.REFRESH_SECRET);
-                doc = await User.findOne({ _id: decoded._id });
-
-                if(doc.refresh_token !== refresh_token) {
-                    return res.status(401).send("The refresh token is invalid or expired.");
-                }
-            } catch(err) {
-                return res.status(401).send("The refresh token is invalid or expired.");
-            }
         }
 
         res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true, signed: true });

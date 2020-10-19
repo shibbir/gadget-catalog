@@ -1,26 +1,17 @@
-const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const controller = require("./user.controller");
-
-function generateAccessToken(user) {
-    return jwt.sign({
-        _id: user._id
-    }, process.env.TOKEN_SECRET, {
-        expiresIn: "1d",
-        issuer: user._id.toString()
-    });
-}
+const { jwtAuthentication, generateAccessToken } = require("../../core/server/authorize.middleware");
 
 module.exports = function(app) {
     app.post("/api/register", controller.register);
 
     app.post("/api/login", controller.login);
 
-    app.get("/api/logout", passport.authenticate("jwt", { session: false }), controller.logout);
+    app.get("/api/logout", jwtAuthentication, controller.logout);
 
-    app.get("/api/profile", passport.authenticate("jwt", { session: false }), controller.getSignedInUserProfile);
+    app.get("/api/profile", jwtAuthentication, controller.getSignedInUserProfile);
 
-    app.put("/api/profile/change-password", passport.authenticate("jwt", { session: false }), controller.changePassword);
+    app.put("/api/profile/change-password", jwtAuthentication, controller.changePassword);
 
     app.get("/oauth/facebook", passport.authenticate("facebook", { scope: "email" }));
 
@@ -56,7 +47,7 @@ module.exports = function(app) {
         })(req, res, next);
     });
 
-    app.put("/api/oauth/disconnect", passport.authenticate("jwt", { session: false }), controller.disconnect);
+    app.put("/api/oauth/disconnect", jwtAuthentication, controller.disconnect);
 
     app.post("/api/forgot-password", controller.forgotPassword);
 
