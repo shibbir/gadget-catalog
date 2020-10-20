@@ -30,7 +30,7 @@ export default function CategoryForm({id} = props) {
             onSubmit={(values, actions) => {
                 if(id) {
                     dispatch(updateCategory(values, id)).then(function() {
-                        iziToast['success']({
+                        iziToast["success"]({
                             timeout: 3000,
                             message: "Your changes are saved.",
                             position: "bottomRight"
@@ -38,7 +38,7 @@ export default function CategoryForm({id} = props) {
                     });
                 } else {
                     dispatch(createCategory(values)).then(function() {
-                        iziToast['success']({
+                        iziToast["success"]({
                             timeout: 3000,
                             message: "Your changes are saved.",
                             position: "bottomRight"

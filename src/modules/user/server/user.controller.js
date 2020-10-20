@@ -1,17 +1,9 @@
 const axios = require("axios");
 const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const User = require("./user.model");
-
-function generateAccessToken(user) {
-    return jwt.sign({
-        _id: user._id,
-    }, process.env.TOKEN_SECRET,{
-        expiresIn: "1d",
-        issuer: user._id.toString()
-    });
-}
+const { generateAccessToken, generateRefreshToken } = require("../../core/server/authorize.middleware");
 
 function formatProfile(user) {
     const profile = {
@@ -57,50 +49,59 @@ async function register(req, res) {
 
         const user = new User();
 
+        user._id = new mongoose.Types.ObjectId();
         user.displayName = name;
         user.local.name = name;
         user.local.email = email;
         user.local.password = user.generateHash(password);
+        user.local.refresh_token = generateRefreshToken(user);
 
-        user.save(function(err, doc) {
-            if(err) return res.sendStatus(500);
+        await user.save();
 
-            res.cookie("access_token", generateAccessToken(doc), {
-                expires: new Date(Date.now() + 8.64e+7),
-                httpOnly: true
-            });
+        res.cookie("access_token", generateAccessToken(user), { httpOnly: true, sameSite: true });
+        res.cookie("refresh_token", user.local.refresh_token, { httpOnly: true, sameSite: true });
 
-            res.json({
-                name: name,
-                isAdmin: false
-            });
+        res.json({
+            name: name,
+            isAdmin: false
         });
     } catch(err) {
-        if(err) return res.sendStatus(500);
+        res.sendStatus(500);
     }
 }
 
 async function login(req, res) {
     try {
-        const doc = await User.findOne({ "local.email": req.body.email });
+        let doc;
+        const { username, password, grant_type } = req.body;
 
-        if(!doc || !doc.validPassword(req.body.password)) {
-            return res.status(401).send("Invalid email or password.");
+        if(!grant_type) {
+            return res.status(401).send("Invalid credentials.");
         }
 
-        res.cookie("access_token", generateAccessToken(doc), {
-            expires: new Date(Date.now() + 8.64e+7),
-            httpOnly: true
-        });
+        if(grant_type === "password") {
+            doc = await User.findOne({ "local.email": username });
+
+            if(!doc || !doc.validPassword(password)) {
+                return res.status(401).send("Invalid credentials.");
+            }
+
+            doc.local.refresh_token = generateRefreshToken(doc);
+            await doc.save();
+        }
+
+        res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true });
+        res.cookie("refresh_token", doc.local.refresh_token, { httpOnly: true, sameSite: true });
 
         res.json(formatProfile(doc.toJSON()));
     } catch (err) {
-        return res.sendStatus(500);
+        res.sendStatus(500);
     }
 }
 
 function logout(req, res) {
-    res.clearCookie("access_token").redirect("/");
+    res.clearCookie("access_token");
+    res.clearCookie("refresh_token").redirect("/");
 }
 
 async function changePassword(req, res) {
@@ -116,7 +117,7 @@ async function changePassword(req, res) {
 
         res.status(200).send("Password changed successfully.");
     } catch (err) {
-        return res.sendStatus(500);
+        res.sendStatus(500);
     }
 }
 
@@ -178,7 +179,7 @@ async function resetPassword(req, res) {
 
         res.sendStatus(200);
     } catch (err) {
-        return res.sendStatus(500);
+        res.sendStatus(500);
     }
 }
 

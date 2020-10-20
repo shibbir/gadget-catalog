@@ -11,7 +11,7 @@ export default function Dashboard() {
                 <Card.Content>
                     <Card.Header>
                         <Icon name="pie chart"/>
-                        Percentage of item categories
+                        Category percentages
                     </Card.Header>
                 </Card.Content>
                 <Card.Content>

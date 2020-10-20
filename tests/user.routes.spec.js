@@ -24,8 +24,9 @@ describe("User Routes", function() {
         const result = await request(app)
             .post("/api/login")
             .send({
-                email: user.email,
-                password: user.password
+                username: user.email,
+                password: user.password,
+                grant_type: "password"
             });
 
         expect(result.status).to.equal(200);
@@ -34,7 +35,7 @@ describe("User Routes", function() {
     it("Should fetch profile for signed in user", async function() {
         const result = await request(app)
             .get("/api/profile")
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${user.accessToken};refresh_token=${user.local.refresh_token}`]);
 
         expect(result.status).to.equal(200);
     });
@@ -42,7 +43,7 @@ describe("User Routes", function() {
     it("Should allow user to update the password", async function() {
         const result = await request(app)
             .put("/api/profile/change-password")
-            .set("Cookie", [`access_token=${user.accessToken}`])
+            .set("Cookie", [`access_token=${user.accessToken};refresh_token=${user.local.refresh_token}`])
             .send({
                 currentPassword: user.password,
                 newPassword: "xxx-xxx-xxx-xxx"
@@ -54,7 +55,7 @@ describe("User Routes", function() {
     it("Should send an email if user forgets password", async function() {
         const result = await request(app)
             .post("/api/forgot-password")
-            .set("Cookie", [`access_token=${user.accessToken}`])
+            .set("Cookie", [`access_token=${user.accessToken};refresh_token=${user.local.refresh_token}`])
             .send({
                 email: user.local.email
             });

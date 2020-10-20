@@ -21,7 +21,7 @@ const userSeeder = function(callback) {
 };
 
 const categorySeeder = function(user, callback) {
-    const array = ["Category X", "Category Y"].sort();
+    const array = ["CategoryX", "CategoryY"].sort();
 
     async.each(array, function(item, asyncCallback) {
         new Category({
@@ -37,7 +37,7 @@ const categorySeeder = function(user, callback) {
 };
 
 const brandSeeder = function(user, callback) {
-    const array = ["Brand X", "Brand Y"].sort();
+    const array = ["BrandX", "BrandY"].sort();
 
     async.each(array, function(item, asyncCallback) {
         new Brand({

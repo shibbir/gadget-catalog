@@ -1,12 +1,12 @@
-const passport = require("passport");
 const controller = require("./retailer.controller");
+const { jwtAuthentication } = require("../../core/server/authorize.middleware");
 
 module.exports = function (app) {
     app.route("/api/retailers")
-        .get(passport.authenticate("jwt", { session: false }), controller.getRetailers)
-        .post(passport.authenticate("jwt", { session: false }), controller.createRetailer);
+        .get(jwtAuthentication, controller.getRetailers)
+        .post(jwtAuthentication, controller.createRetailer);
 
     app.route("/api/retailers/:id")
-        .get(passport.authenticate("jwt", { session: false }), controller.getRetailer)
-        .put(passport.authenticate("jwt", { session: false }), controller.updateRetailer);
+        .get(jwtAuthentication, controller.getRetailer)
+        .put(jwtAuthentication, controller.updateRetailer);
 };

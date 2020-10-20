@@ -3,6 +3,7 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import * as iziToast from "izitoast/dist/js/izitoast";
 import { Button, Segment, Header, Divider, Image, Modal, Message, Icon } from "semantic-ui-react";
 
 import { login } from "../user.actions";
@@ -16,17 +17,10 @@ export default function Login() {
     const [isPasswordResetModalActive, setIsPasswordResetModalActive] = useState(false);
     const [forgotpasswordResponse, setForgotpasswordResponse] = useState("");
 
-    const pageStyle = {
-        paddingTop: "85px"
-    };
-    const columnStyle = {
-        maxWidth: "450px"
-    };
-
     return (
-        <div style={pageStyle}>
+        <div style={{paddingTop: "85px"}}>
             <div className="ui middle aligned center aligned grid">
-                <div style={columnStyle}>
+                <div style={{maxWidth: "450px"}}>
                     <Header as="h2" className="teal center aligned">
                         <Image src={`images/logo.png`}/>
                         <div className="content">
@@ -43,9 +37,17 @@ export default function Login() {
                             validationSchema={loginSchema}
                             onSubmit={(values, actions) => {
                                 dispatch(login({
-                                    email: values.email,
-                                    password: values.password
-                                }));
+                                    username: values.email,
+                                    password: values.password,
+                                    grant_type: "password"
+                                })).catch(function() {
+                                    iziToast["error"]({
+                                        timeout: 3000,
+                                        title: "401",
+                                        message: "Invalid credentials.",
+                                        position: "topRight"
+                                    });
+                                });
                                 actions.setSubmitting(false);
                             }}
                         >

@@ -1,22 +1,22 @@
-const passport = require("passport");
 const multer = require("../../../config/server/lib/multer");
+const { jwtAuthentication } = require("../../core/server/authorize.middleware");
 
 module.exports = function(app) {
     const controller = require("./item.controller");
 
     app.route("/api/items")
-        .get(passport.authenticate("jwt", { session: false }), controller.getItems)
-        .post(passport.authenticate("jwt", { session: false }), multer.array("files", 3), controller.createItem);
+        .get(jwtAuthentication, controller.getItems)
+        .post(jwtAuthentication, multer.array("files", 3), controller.createItem);
 
     app.route("/api/items/:itemId/images/:fileId")
-        .put(passport.authenticate("jwt", { session: false }), controller.updateImage)
-        .delete(passport.authenticate("jwt", { session: false }), controller.deleteImage);
+        .put(jwtAuthentication, controller.updateImage)
+        .delete(jwtAuthentication, controller.deleteImage);
 
     app.route("/api/items/item-count")
-        .get(passport.authenticate("jwt", { session: false }), controller.getItemCountByYearRange);
+        .get(jwtAuthentication, controller.getItemCountByYearRange);
 
     app.route("/api/items/:id")
-        .get(passport.authenticate("jwt", { session: false }), controller.getItem)
-        .put(passport.authenticate("jwt", { session: false }), multer.array("files", 3), controller.updateItem)
-        .delete(passport.authenticate("jwt", { session: false }), controller.deleteItem);
+        .get(jwtAuthentication, controller.getItem)
+        .put(jwtAuthentication, multer.array("files", 3), controller.updateItem)
+        .delete(jwtAuthentication, controller.deleteItem);
 };

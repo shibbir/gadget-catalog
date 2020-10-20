@@ -31,7 +31,7 @@ function BrandForm({id} = props) {
             onSubmit={(values, actions) => {
                 if(id) {
                     dispatch(updateBrand(values, id)).then(function() {
-                        iziToast['success']({
+                        iziToast["success"]({
                             timeout: 3000,
                             message: "Your changes are saved.",
                             position: "bottomRight"
@@ -39,7 +39,7 @@ function BrandForm({id} = props) {
                     });
                 } else {
                     dispatch(createBrand(values)).then(function() {
-                        iziToast['success']({
+                        iziToast["success"]({
                             timeout: 3000,
                             message: "Your changes are saved.",
                             position: "bottomRight"

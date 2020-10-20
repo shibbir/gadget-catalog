@@ -105,7 +105,7 @@ export default function ItemForm() {
 
                 if(id) {
                     dispatch(updateItem(formData, id)).then(result => {
-                        const { type, payload } = result.action;
+                        const { type } = result.action;
 
                         if(type === Types.PUT_ITEM_FULFILLED) {
                             window.location.reload();

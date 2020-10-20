@@ -218,7 +218,7 @@ export default function Items() {
 
                                 <Button.Group>
                                     <Button type="submit" positive>
-                                        <Icon name="filter"/> Filter
+                                        <Icon name="filter"/> Apply
                                     </Button>
                                     <Button.Or />
                                     <Button type="button" onClick={resetFilter}>

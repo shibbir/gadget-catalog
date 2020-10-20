@@ -9,15 +9,11 @@ const cookieParser = require("cookie-parser");
 module.exports = function() {
     const app = express();
 
-    app.locals.jsFiles = config.client.js;
-    app.locals.cssFiles = config.client.css;
-
     app.use(helmet({contentSecurityPolicy: false}));
     app.use(compression());
-    app.use(cookieParser());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-
+    app.use(cookieParser());
     app.use(express.static(path.join(process.cwd(), "public")));
 
     app.engine("html", hbs.express4({ extname: ".html" }));
@@ -27,6 +23,9 @@ module.exports = function() {
     app.set("port", process.env.PORT);
 
     app.enable("trust proxy");
+
+    app.locals.jsFiles = config.client.js;
+    app.locals.cssFiles = config.client.css;
 
     config.server.routes.forEach(function(routePath) {
         require(path.resolve(routePath))(app);

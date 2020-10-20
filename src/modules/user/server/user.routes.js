@@ -1,30 +1,19 @@
-const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const controller = require("./user.controller");
-
-function generateAccessToken(user, provider) {
-    return jwt.sign({
-        _id: user._id,
-        name: user.displayName,
-        email: user[provider].email
-    }, process.env.TOKEN_SECRET,{
-        expiresIn: "2d",
-        issuer: user._id.toString()
-    });
-}
+const { jwtAuthentication, generateAccessToken } = require("../../core/server/authorize.middleware");
 
 module.exports = function(app) {
     app.post("/api/register", controller.register);
 
     app.post("/api/login", controller.login);
 
-    app.get("/api/logout", passport.authenticate("jwt", { session: false }), controller.logout);
+    app.get("/api/logout", jwtAuthentication, controller.logout);
 
-    app.get("/api/profile", passport.authenticate("jwt", { session: false }), controller.getSignedInUserProfile);
+    app.get("/api/profile", jwtAuthentication, controller.getSignedInUserProfile);
 
-    app.put("/api/profile/change-password", passport.authenticate("jwt", { session: false }), controller.changePassword);
+    app.put("/api/profile/change-password", jwtAuthentication, controller.changePassword);
 
-    app.get("/oauth/facebook", passport.authenticate("facebook", {scope: "email"}));
+    app.get("/oauth/facebook", passport.authenticate("facebook", { scope: "email" }));
 
     app.get("/oauth/facebook/callback", function(req, res, next) {
         passport.authenticate("facebook", function(err, user) {
@@ -32,7 +21,7 @@ module.exports = function(app) {
                 return res.redirect(`/?provider=facebook&error=${err.message}`);
             }
 
-            res.cookie("access_token", generateAccessToken(user, "facebook"), {
+            res.cookie("access_token", generateAccessToken(user), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
             }).redirect("/");
@@ -51,14 +40,14 @@ module.exports = function(app) {
                 return res.redirect(`/?provider=google&error=${err.message}`);
             }
 
-            res.cookie("access_token", generateAccessToken(user, "google"), {
+            res.cookie("access_token", generateAccessToken(user), {
                 expires: new Date(Date.now() + 8.64e+7),
                 httpOnly: true
             }).redirect("/");
         })(req, res, next);
     });
 
-    app.put("/api/oauth/disconnect", passport.authenticate("jwt", { session: false }), controller.disconnect);
+    app.put("/api/oauth/disconnect", jwtAuthentication, controller.disconnect);
 
     app.post("/api/forgot-password", controller.forgotPassword);
 

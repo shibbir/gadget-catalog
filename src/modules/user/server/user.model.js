@@ -19,6 +19,10 @@ const UserSchema = Schema({
             maxlength: 25,
             required() { return !this.facebook && !this.google; }
         },
+        refresh_token: {
+            type: String,
+            required() { return !this.facebook && !this.google; }
+        },
         resetPasswordToken: String,
         resetPasswordExpires: Date
     },
