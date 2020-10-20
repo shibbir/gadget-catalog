@@ -1,6 +1,5 @@
 const config = require("../config");
 const path = require("path");
-const csurf = require("csurf");
 const helmet = require("helmet");
 const express = require("express");
 const hbs = require("express-hbs");
@@ -14,8 +13,7 @@ module.exports = function() {
     app.use(compression());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-    app.use(cookieParser(process.env.COOKIE_SECRET));
-    app.use(csurf({ cookie: true }));
+    app.use(cookieParser());
     app.use(express.static(path.join(process.cwd(), "public")));
 
     app.engine("html", hbs.express4({ extname: ".html" }));

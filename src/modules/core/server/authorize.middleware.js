@@ -7,7 +7,7 @@ function generateAccessToken(doc) {
     return jwt.sign({
         id: doc._id,
     }, process.env.TOKEN_SECRET, {
-        expiresIn: 1,
+        expiresIn: "1h",
         issuer: doc._id.toString()
     });
 }
@@ -37,7 +37,7 @@ async function jwtAuthentication (req, res, next) {
 
         if (!user) {
             try {
-                const refresh_token = req.signedCookies["refresh_token"];
+                const refresh_token = req.cookies["refresh_token"];
 
                 if(!refresh_token) return res.status(401).send("Unauthorized").end();
 
@@ -47,7 +47,7 @@ async function jwtAuthentication (req, res, next) {
                 if(doc.local.refresh_token !== refresh_token) throw new Error();
 
                 req.user = doc;
-                res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true, signed: true });
+                res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true });
                 return next();
             } catch(e) {
                 res.clearCookie("access_token");

@@ -70,7 +70,6 @@ PORT | Yes | `undefined` | On which port the web server will be listen to.
 MONGODB_URI | Yes | `mongodb://localhost/gadget-catalog` | MongoDB connection string URI. For more details visit [here](https://docs.mongodb.com/manual/reference/connection-string/).
 TOKEN_SECRET | Yes | `undefined` | A secret string to generate an access token. Learn more from [here](https://jwt.io/introduction/).
 REFRESH_SECRET | Yes | `undefined` | A secret string to generate a refresh token. Learn more from [here](https://jwt.io/introduction/).
-COOKIE_SECRET | Yes | `undefined` | A secret string to enable signed cookie support.
 GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET | No | `undefined` | Your OAuth 2.0 client credentials from google. Learn more from [here](https://developers.google.com/identity/protocols/OAuth2).
 FACEBOOK_CLIENT_ID and FACEBOOK_CLIENT_SECRET | No | `undefined` | Your OAuth 2.0 client credentials from facebook. Learn more from [here](https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow).
 CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET | Yes | `undefined` | After signing up for a free account in [Cloudinary](https://cloudinary.com/), go to your [dashboard](https://cloudinary.com/console) to obtain the required credentials to access their api. Learn more from [here](https://cloudinary.com/documentation).
