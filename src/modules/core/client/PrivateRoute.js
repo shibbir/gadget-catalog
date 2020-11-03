@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Container } from "semantic-ui-react";
+import { Container, Divider } from "semantic-ui-react";
 import { Route, Redirect } from "react-router-dom";
 
 import Footer from "./components/footer.component";
@@ -17,6 +17,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
                         <Navbar/>
                         <Container>
                             <Component {...props}/>
+                            <Divider hidden/>
                         </Container>
                         <Footer/>
                     </>
