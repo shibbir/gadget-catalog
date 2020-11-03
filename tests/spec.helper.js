@@ -22,13 +22,12 @@ const admin = {
     local: {
         name: "admin",
         email: "admin@user.com",
-        password: new User().generateHash("xxx-xxx-xxx"),
+        password: new User().generateHash("P@ssword123"),
         refresh_token: jwt.sign({
             id: "58e8d591a643633a109f29bc"
         }, process.env.REFRESH_SECRET, { expiresIn: "1d", issuer: "58e8d591a643633a109f29bc" })
     },
-    email: "admin@user.com",
-    password: "xxx-xxx-xxx",
+    password: "P@ssword123",
     accessToken: jwt.sign({
         id: "58e8d591a643633a109f29bc"
     }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: "58e8d591a643633a109f29bc" })
@@ -41,13 +40,12 @@ const basic = {
     local: {
         name: "basic",
         email: "basic@user.com",
-        password: new User().generateHash("xxx-xxx-xxx"),
+        password: new User().generateHash("P@ssword123"),
         refresh_token: jwt.sign({
             id: "58e8d591a643633a109f29bd"
         }, process.env.REFRESH_SECRET, { expiresIn: "1d", issuer: "58e8d591a643633a109f29bd" })
     },
-    email: "basic@user.com",
-    password: "xxx-xxx-xxx",
+    password: "P@ssword123",
     accessToken: jwt.sign({
         id: "58e8d591a643633a109f29bd"
     }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: "58e8d591a643633a109f29bd" })
@@ -71,5 +69,11 @@ after(async function() {
 
 module.exports = {
     users: { admin, basic },
-    convertToSlug: string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-")
+    convertToSlug: string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-"),
+    generateJsonWebToken: (payload, secret, expiresIn, issuer) => {
+        return jwt.sign(payload, secret, {
+            expiresIn,
+            issuer
+        });
+    }
 };

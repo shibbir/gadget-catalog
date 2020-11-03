@@ -24,7 +24,7 @@ describe("User Routes", function() {
         const result = await request(app)
             .post("/api/login")
             .send({
-                username: user.email,
+                username: user.local.email,
                 password: user.password,
                 grant_type: "password"
             });
@@ -40,13 +40,24 @@ describe("User Routes", function() {
         expect(result.status).to.equal(200);
     });
 
+    it("Should get unauthorized error for an invalid access token", async function() {
+        const access_token = specHelper.generateJsonWebToken({ id: user._id }, process.env.TOKEN_SECRET, "-10s", user._id);
+        const refresh_token = specHelper.generateJsonWebToken({ id: user._id }, process.env.REFRESH_SECRET, "1h", user._id);
+
+        const result = await request(app)
+            .get("/api/profile")
+            .set("Cookie", [`access_token=${access_token};refresh_token=${refresh_token}`]);
+
+        expect(result.status).to.equal(401);
+    });
+
     it("Should allow user to update the password", async function() {
         const result = await request(app)
             .put("/api/profile/change-password")
             .set("Cookie", [`access_token=${user.accessToken};refresh_token=${user.local.refresh_token}`])
             .send({
                 currentPassword: user.password,
-                newPassword: "xxx-xxx-xxx-xxx"
+                newPassword: faker.internet.password()
             });
 
         expect(result.status).to.equal(200);

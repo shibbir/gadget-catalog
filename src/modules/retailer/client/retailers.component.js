@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FormattedDate } from "react-intl";
-import { Table, Icon, Button, Divider, TransitionablePortal, Modal } from "semantic-ui-react";
+import { Table, Icon, Button, Divider, TransitionablePortal, Modal, Segment, Header } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { getRetailers } from "./retailer.actions";
@@ -36,21 +36,32 @@ export default function Retailers() {
 
             <Divider hidden clearing/>
 
-            <Table selectable>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>Name</Table.HeaderCell>
-                        <Table.HeaderCell>E-mail address</Table.HeaderCell>
-                        <Table.HeaderCell>Website</Table.HeaderCell>
-                        <Table.HeaderCell>Address</Table.HeaderCell>
-                        <Table.HeaderCell>Last Updated</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
+            { rows.length > 0 &&
+                <Table selectable>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell>Name</Table.HeaderCell>
+                            <Table.HeaderCell>E-mail address</Table.HeaderCell>
+                            <Table.HeaderCell>Website</Table.HeaderCell>
+                            <Table.HeaderCell>Address</Table.HeaderCell>
+                            <Table.HeaderCell>Last Updated</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
 
-                <Table.Body>
-                    {rows}
-                </Table.Body>
-            </Table>
+                    <Table.Body>
+                        {rows}
+                    </Table.Body>
+                </Table>
+            }
+
+            { rows.length === 0 &&
+                <Segment placeholder raised>
+                    <Header icon>
+                        <Icon name="warning sign" />
+                        No data found!
+                    </Header>
+                </Segment>
+            }
 
             <TransitionablePortal open={retailerId !== undefined} transition={{ animation: "scale", duration: 400 }}>
                 <Modal dimmer size="tiny" open={true}>
