@@ -8,8 +8,8 @@ import { BrowserRouter } from "react-router-dom";
 import store from "./store";
 import App from "./app.component";
 
-if(process.env.NODE_ENV === "production") {
-    Sentry.init({dsn: process.env.SENTRY_DSN});
+if(typeof SENTRY_DSN !== "undefined" && typeof NODE_ENV !== "undefined" && NODE_ENV === "production") {
+    Sentry.init({ dsn: SENTRY_DSN });
 }
 
 ReactDOM.render(
