@@ -8,6 +8,5 @@ export default keyMirror({
     PUT_BRAND: null,
     PUT_BRAND_FULFILLED: null,
     GET_BRAND: null,
-    GET_BRAND_FULFILLED: null,
-    RESET_BRAND_STATE: null
+    GET_BRAND_FULFILLED: null
 });

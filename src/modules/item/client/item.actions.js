@@ -24,12 +24,20 @@ export function updateItem(formData, id) {
 }
 
 export function fetchItem(id) {
-    return {
-        type: Types.GET_ITEM,
-        payload: axios({
+    let payload = new Promise((resolve, reject) => {
+        resolve({ data: null });
+    });
+
+    if(id) {
+        payload = axios({
             method: "get",
             url: `/api/items/${id}`
-        })
+        });
+    }
+
+    return {
+        type: Types.GET_ITEM,
+        payload
     };
 }
 
