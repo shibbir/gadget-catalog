@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "development") {
     middlewares.push(logger);
 
     if(window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-        composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+        composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
     }
 }
 

@@ -23,5 +23,5 @@ export default function PublicRoute({ component: Component, ...rest }) {
                 )
             )
         }}/>
-    )
+    );
 }

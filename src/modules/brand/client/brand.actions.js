@@ -42,9 +42,3 @@ export function getBrand(id) {
         })
     };
 }
-
-export function resetBrandState() {
-    return {
-        type: Types.RESET_BRAND_STATE
-    };
-}

@@ -27,10 +27,8 @@ export default function ItemForm() {
     }, [dispatch]);
 
     useEffect(() => {
-        if(id) {
-            dispatch(fetchItem(id));
-        }
-    }, [id, dispatch]);
+        dispatch(fetchItem(id));
+    }, [dispatch]);
 
     const item = useSelector(state => state.itemReducer.item);
     const brands = useSelector(state => state.brandReducer.brands);
