@@ -13,7 +13,7 @@ if(fs.existsSync(path.join(process.cwd(), ".env"))) {
 }
 
 const envKeys = Object.keys(env).reduce((prev, next) => {
-    prev[`${next}`] = JSON.stringify(env[next]);
+    prev[`process.env.${next}`] = JSON.stringify(env[next]);
     return prev;
 }, {});
 
