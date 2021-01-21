@@ -1,8 +1,9 @@
 import axios from "axios";
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import ReCAPTCHA from "react-google-recaptcha";
 import * as iziToast from "izitoast/dist/js/izitoast";
 import { Button, Segment, Header, Divider, Image, Modal, Message, Icon } from "semantic-ui-react";
 
@@ -13,6 +14,7 @@ import { TextInput } from "../../../core/client/components/FieldInput/FieldInput
 
 export default function Login() {
     const dispatch = useDispatch();
+    const recaptchaRef = useRef();
     const [emailSent, setEmailSent] = useState(false);
     const [isPasswordResetModalActive, setIsPasswordResetModalActive] = useState(false);
     const [forgotpasswordResponse, setForgotpasswordResponse] = useState("");
@@ -36,19 +38,23 @@ export default function Login() {
                             }}
                             validationSchema={loginSchema}
                             onSubmit={(values, actions) => {
-                                dispatch(login({
-                                    username: values.email,
-                                    password: values.password,
-                                    grant_type: "password"
-                                })).catch(function() {
-                                    iziToast["error"]({
-                                        timeout: 3000,
-                                        title: "401",
-                                        message: "Invalid credentials.",
-                                        position: "topRight"
+                                recaptchaRef.current.executeAsync().then(recaptchaToken => {
+                                    dispatch(login({
+                                        username: values.email,
+                                        password: values.password,
+                                        grant_type: "password",
+                                        recaptchaToken
+                                    })).catch(function(err) {
+                                        iziToast["error"]({
+                                            timeout: 3000,
+                                            title: err.response.status,
+                                            message: err.response.data,
+                                            position: "topRight"
+                                        });
                                     });
+                                    recaptchaRef.current.reset();
+                                    actions.setSubmitting(false);
                                 });
-                                actions.setSubmitting(false);
                             }}
                         >
                             <Form className="ui form">
@@ -67,6 +73,12 @@ export default function Login() {
                                     placeholder: "Password",
                                     autoComplete: "current-password"
                                 }}/>
+
+                                <ReCAPTCHA
+                                    size="invisible"
+                                    ref={recaptchaRef}
+                                    sitekey={process.env.RECAPTCHA_SITE_KEY}
+                                />
 
                                 <Button fluid type="submit" className="large teal">Login</Button>
                             </Form>

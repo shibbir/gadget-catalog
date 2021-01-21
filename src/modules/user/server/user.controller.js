@@ -73,7 +73,11 @@ async function register(req, res) {
 async function login(req, res) {
     try {
         let doc;
-        const { username, password, grant_type } = req.body;
+        const { username, password, grant_type, recaptchaToken } = req.body;
+
+        const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`);
+
+        if(!response.data.success) return res.status(401).send("reCAPTCHA validation failed! Please try again.");
 
         if(!grant_type) {
             return res.status(401).send("Invalid credentials.");
