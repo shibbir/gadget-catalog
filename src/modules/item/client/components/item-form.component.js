@@ -96,7 +96,7 @@ export default function ItemForm() {
                 }
 
                 for(let key in values) {
-                    if(values.hasOwnProperty(key)) {
+                    if(values[key] && values.hasOwnProperty(key)) {
                         formData.append(key, values[key]);
                     }
                 }
