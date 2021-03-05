@@ -8,11 +8,12 @@ import { fetchItemsByYearRange } from "../../../item/client/item.actions";
 
 export default function ItemChart() {
     const options = [
+        { key: "2021-2030", value: "2021-2030", text: "2021-2030" },
         { key: "2011-2020", value: "2011-2020", text: "2011-2020" },
         { key: "2001-2010", value: "2001-2010", text: "2001-2010" }
     ];
 
-    const [yearRange, setYearRange] = useState(`${new Date().getFullYear() - 9}-${new Date().getFullYear()}`);
+    const [yearRange, setYearRange] = useState(`${new Date().getFullYear()}-${new Date().getFullYear() + 9}`);
 
     const dispatch = useDispatch();
 
