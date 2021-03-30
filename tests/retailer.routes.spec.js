@@ -1,66 +1,78 @@
+const path = require("path");
 const faker = require("faker");
+const jwt = require("jsonwebtoken");
 const request = require("supertest");
-const expect = require("chai").expect;
+const mongoose = require("mongoose");
 
-const specHelper = require("./spec.helper");
-const Retailer = require("../src/modules/retailer/server/retailer.model");
-const app = require("../src/config/server/lib/express")();
+const app = require(path.join(process.cwd(), "src/config/server/lib/express"))();
+const Retailer = require(path.join(process.cwd(), "src/modules/retailer/server/retailer.model"));
+
+const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
+const access_token = jwt.sign({ id: global.__USERID__ }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: global.__USERID__ });
 
 describe("Retailer Routes", function() {
-    let retailer = {};
-    const user = specHelper.users.admin;
+    let retailer;
 
-    before(async function() {
+    beforeAll(async () => {
+        mongoose.connect(process.env.MONGODB_URI, {
+            useCreateIndex: true,
+            useNewUrlParser: true,
+            useFindAndModify: false,
+            useUnifiedTopology: true
+        });
+
         retailer = new Retailer({
             name: faker.company.companyName(),
-            slug: specHelper.convertToSlug(faker.company.companyName()),
-            createdBy: user._id
+            slug: convertToSlug(faker.company.companyName()),
+            createdBy: global.__USERID__
         });
 
         retailer = await retailer.save();
     });
 
-    it("Should fetch all retailers", async function() {
+    afterAll(() => {
+        mongoose.connection.close();
+    });
+
+    test("Should fetch all retailers", async () => {
         const response = await request(app)
             .get("/api/retailers")
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(response.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should create new retailer", async function() {
+    test("Should create new retailer", async () => {
         const response = await request(app)
             .post("/api/retailers")
-            .send({
-                name: faker.company.companyName()
-            })
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .send({ name: faker.company.companyName() })
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(response.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should get retailer by id", async function() {
+    test("Should get retailer by id", async () => {
         const response = await request(app)
             .get(`/api/retailers/${retailer._id}`)
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(response.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should get 404 for requesting an invalid retailer", async function() {
-        const response = await request(app).get("/api/retailers/5ed192c5709670e3e9badb4d").set("Cookie", [`access_token=${user.accessToken}`]);
+    test("Should get 404 for requesting an invalid retailer", async () => {
+        const response = await request(app)
+            .get("/api/retailers/5ed192c5709670e3e9badb4d")
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(response.status).to.equal(404);
+        expect(response.statusCode).toEqual(404);
     });
 
-    it("Should update an existing retailer", async function() {
+    test("Should update an existing retailer", async () => {
         const response = await request(app)
             .put(`/api/retailers/${retailer._id}`)
-            .send({
-                name: faker.company.companyName()
-            })
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .send({ name: faker.company.companyName() })
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(response.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 });

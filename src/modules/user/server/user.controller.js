@@ -79,9 +79,7 @@ async function login(req, res) {
 
         if(!response.data.success) return res.status(401).send("reCAPTCHA validation failed! Please try again.");
 
-        if(!grant_type) {
-            return res.status(401).send("Invalid credentials.");
-        }
+        if(!grant_type) return res.status(401).send("Invalid credentials.");
 
         if(grant_type === "password") {
             doc = await User.findOne({ "local.email": username });

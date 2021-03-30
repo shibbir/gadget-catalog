@@ -1,57 +1,71 @@
+const path = require("path");
 const faker = require("faker");
+const jwt = require("jsonwebtoken");
 const request = require("supertest");
-const expect = require("chai").expect;
+const mongoose = require("mongoose");
 
-const specHelper = require("./spec.helper");
-const Item = require("../src/modules/item/server/item.model");
-const Brand = require("../src/modules/brand/server/brand.model");
-const Category = require("../src/modules/category/server/category.model");
-const app = require("../src/config/server/lib/express")();
+const app = require(path.join(process.cwd(), "src/config/server/lib/express"))();
+const Item = require(path.join(process.cwd(), "src/modules/item/server/item.model"));
+const Brand = require(path.join(process.cwd(), "src/modules/brand/server/brand.model"));
+const Category = require(path.join(process.cwd(), "src/modules/category/server/category.model"));
+
+const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
+const access_token = jwt.sign({ id: global.__USERID__ }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: global.__USERID__ });
 
 describe("Item Routes", function() {
-    let category = {};
-    let brand = {};
-    let item = {};
-    const user = specHelper.users.admin;
+    let category;
+    let brand;
+    let item;
 
-    before(async function() {
-        category = new Category({
-            name: faker.commerce.productName(),
-            slug: specHelper.convertToSlug(faker.commerce.productName()),
-            createdBy: user._id
+    beforeAll(async () => {
+        mongoose.connect(process.env.MONGODB_URI, {
+            useCreateIndex: true,
+            useNewUrlParser: true,
+            useFindAndModify: false,
+            useUnifiedTopology: true
         });
 
-        category = await category.save();
-
         brand = new Brand({
-            name: faker.commerce.productName(),
-            slug: specHelper.convertToSlug(faker.commerce.productName()),
-            createdBy: user._id
+            name: faker.company.companyName(),
+            slug: convertToSlug(faker.company.companyName()),
+            createdBy: global.__USERID__
         });
 
         brand = await brand.save();
+
+        category = new Category({
+            name: faker.commerce.productName(),
+            slug: convertToSlug(faker.commerce.productName()),
+            createdBy: global.__USERID__
+        });
+
+        category = await category.save();
 
         item = new Item({
             name: faker.commerce.productName(),
             categoryId: category._id,
             brandId: brand._id,
-            createdBy: user._id,
+            createdBy: global.__USERID__,
             currency: "USD"
         });
 
         item = await item.save();
     });
 
-    it("Should fetch all items", async function() {
-        const result = await request(app)
-            .get("/api/items")
-            .set("Cookie", [`access_token=${user.accessToken}`]);
-
-        expect(result.status).to.equal(200);
+    afterAll(() => {
+        mongoose.connection.close();
     });
 
-    it("Should create new item", async function() {
-        const result = await request(app)
+    test("Should fetch all items", async () => {
+        const response = await request(app)
+            .get("/api/items")
+            .set("Cookie", [`access_token=${access_token}`]);
+
+        expect(response.statusCode).toEqual(200);
+    });
+
+    test("Should create new item", async () => {
+        const response = await request(app)
             .post("/api/items")
             .send({
                 name: faker.commerce.productName(),
@@ -59,21 +73,21 @@ describe("Item Routes", function() {
                 brandId: brand._id,
                 currency: "USD"
             })
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should fetch an item", async function() {
-        const result = await request(app)
+    test("Should fetch an item", async () => {
+        const response = await request(app)
             .get(`/api/items/${item._id}`)
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should update an item", async function() {
-        const result = await request(app)
+    test("Should update an item", async () => {
+        const response = await request(app)
             .put(`/api/items/${item._id}`)
             .send({
                 name: faker.commerce.productName(),
@@ -81,24 +95,24 @@ describe("Item Routes", function() {
                 brandId: brand._id,
                 currency: "USD"
             })
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should fetch yearly report", async function() {
-        const result = await request(app)
+    test("Should fetch yearly report", async () => {
+        const response = await request(app)
             .get("/api/items/item-count?startYear=2015&endYear=2019")
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should delete an item", async function() {
-        const result = await request(app)
+    test("Should delete an item", async () => {
+        const response = await request(app)
             .delete(`/api/items/${item._id}`)
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 });

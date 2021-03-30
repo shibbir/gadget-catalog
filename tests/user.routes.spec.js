@@ -1,76 +1,89 @@
+const path = require("path");
 const faker = require("faker");
+const jwt = require("jsonwebtoken");
 const request = require("supertest");
-const expect = require("chai").expect;
+const mongoose = require("mongoose");
 
-const specHelper = require("./spec.helper");
-const app = require("../src/config/server/lib/express")();
+const app = require(path.join(process.cwd(), "src/config/server/lib/express"))();
+
+const access_token = jwt.sign({ id: global.__USERID__ }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: global.__USERID__ });
+const refresh_token = jwt.sign({ id: global.__USERID__ }, process.env.REFRESH_SECRET, { expiresIn: "1d", issuer: global.__USERID__ });
 
 describe("User Routes", function() {
-    const user = specHelper.users.admin;
+    beforeAll(async () => {
+        mongoose.connect(process.env.MONGODB_URI, {
+            useCreateIndex: true,
+            useNewUrlParser: true,
+            useFindAndModify: false,
+            useUnifiedTopology: true
+        });
+    });
 
-    it("Should create a basic user", async function() {
-        const result = await request(app)
+    afterAll(() => {
+        mongoose.connection.close();
+    });
+
+    test("Should create a basic user", async () => {
+        const response = await request(app)
             .post("/api/register")
             .send({
                 name: faker.name.findName(),
                 email: faker.internet.email(),
-                password: faker.internet.password()
+                password: faker.internet.password(8)
             });
 
-        expect(result.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should login with valid username and password", async function() {
-        const result = await request(app)
+    test("Should login with valid username and password", async () => {
+        const response = await request(app)
             .post("/api/login")
             .send({
-                username: user.local.email,
-                password: user.password,
+                username: global.__USERNAME__,
+                password: global.__PASSWORD__,
                 grant_type: "password"
             });
 
-        expect(result.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should fetch profile for signed in user", async function() {
-        const result = await request(app)
-            .get("/api/profile")
-            .set("Cookie", [`access_token=${user.accessToken};refresh_token=${user.local.refresh_token}`]);
-
-        expect(result.status).to.equal(200);
-    });
-
-    it("Should get unauthorized error for an invalid access token", async function() {
-        const access_token = specHelper.generateJsonWebToken({ id: user._id }, process.env.TOKEN_SECRET, "-10s", user._id);
-        const refresh_token = specHelper.generateJsonWebToken({ id: user._id }, process.env.REFRESH_SECRET, "1h", user._id);
-
-        const result = await request(app)
+    test("Should fetch profile for signed in user", async () => {
+        const response = await request(app)
             .get("/api/profile")
             .set("Cookie", [`access_token=${access_token};refresh_token=${refresh_token}`]);
 
-        expect(result.status).to.equal(401);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should allow user to update the password", async function() {
-        const result = await request(app)
+    test("Should get unauthorized error for an invalid access token", async () => {
+        const fake_access_token = jwt.sign({ id: global.__USERID__ }, process.env.TOKEN_SECRET, { expiresIn: "-10s", issuer: global.__USERID__ });
+        const fake_refresh_token = jwt.sign({ id: global.__USERID__ }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: global.__USERID__ });
+
+        const response = await request(app)
+            .get("/api/profile")
+            .set("Cookie", [`access_token=${fake_access_token};refresh_token=${fake_refresh_token}`]);
+
+        expect(response.statusCode).toEqual(401);
+    });
+
+    test("Should allow user to update the password", async () => {
+        const response = await request(app)
             .put("/api/profile/change-password")
-            .set("Cookie", [`access_token=${user.accessToken};refresh_token=${user.local.refresh_token}`])
+            .set("Cookie", [`access_token=${access_token};refresh_token=${refresh_token}`])
             .send({
-                currentPassword: user.password,
-                newPassword: faker.internet.password()
+                currentPassword: global.__PASSWORD__,
+                newPassword: faker.internet.password(8)
             });
 
-        expect(result.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should send an email if user forgets password", async function() {
-        const result = await request(app)
+    test("Should send an email if user forgets password", async () => {
+        const response = await request(app)
             .post("/api/forgot-password")
-            .set("Cookie", [`access_token=${user.accessToken};refresh_token=${user.local.refresh_token}`])
-            .send({
-                email: user.local.email
-            });
+            .send({ email: global.__USERNAME__ })
+            .set("Cookie", [`access_token=${access_token};refresh_token=${refresh_token}`]);
 
-        expect(result.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 });
