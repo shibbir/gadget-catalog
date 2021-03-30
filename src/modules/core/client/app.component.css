@@ -47,3 +47,5 @@ a[disabled] {
     width: 80%;
     margin: auto !important;
 }
+
+.grecaptcha-badge { visibility: hidden; }

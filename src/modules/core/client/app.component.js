@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
 import "fomantic-ui-css/semantic.css";
-import "izitoast/dist/css/izitoast.css";
+import "izitoast/dist/css/iziToast.css";
 import "./app.component.css";
 
 import NoMatch from "./NoMatch";

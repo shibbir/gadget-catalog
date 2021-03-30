@@ -18,11 +18,18 @@ process.env.MAILER_ADDRESS = "clyde.miller@ethereal.email";
 process.env.MAILER_PASSWORD = "db7CKmbGkRcaEJvd4s";
 process.env.RECAPTCHA_SITE_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
 process.env.RECAPTCHA_SECRET_KEY = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
-process.env.MONGODB_TEST_BASE_URL = "mongodb://localhost";
+process.env.MONGODB_TEST_BASE_URL = process.env.MONGODB_TEST_BASE_URL || "mongodb://localhost";
 process.env.MONGODB_URI = `${process.env.MONGODB_TEST_BASE_URL}/gadget-catalog-test`;
 
 module.exports = async () => {
-    const user = {
+    mongoose.connect(process.env.MONGODB_URI, {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true
+    });
+
+    await User.create({
         _id: "58e8d591a643633a109f29bc",
         displayName: faker.name.findName(),
         role: "admin",
@@ -34,16 +41,7 @@ module.exports = async () => {
                 id: "58e8d591a643633a109f29bc"
             }, process.env.REFRESH_SECRET, { expiresIn: "1d", issuer: "58e8d591a643633a109f29bc" })
         }
-    };
-
-    mongoose.connect(process.env.MONGODB_URI, {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true
     });
-
-    await User.insertMany([user]);
 
     mongoose.connection.close();
 };

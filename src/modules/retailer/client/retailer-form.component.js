@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Divider, Button } from "semantic-ui-react";
-import * as iziToast from "izitoast/dist/js/izitoast";
+import iziToast from "izitoast/dist/js/iziToast";
 import { useSelector, useDispatch } from "react-redux";
 import RetailerSchema from "./retailer.schema";
 import { createRetailer, updateRetailer, getRetailer } from "./retailer.actions";

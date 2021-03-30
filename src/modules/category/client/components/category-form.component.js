@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Form, Formik } from "formik";
-import * as iziToast from "izitoast/dist/js/izitoast";
+import iziToast from "izitoast/dist/js/iziToast";
 import { useSelector, useDispatch } from "react-redux";
 import { Divider, Button } from "semantic-ui-react";
 import CategorySchema from "../category.schema";
