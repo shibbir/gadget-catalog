@@ -22,8 +22,7 @@ function BrandForm({id} = props) {
     return (
         <Formik
             initialValues={{
-                name: id && brand ? brand.name : "",
-                website: id && brand && brand.website ? brand.website: ""
+                name: id && brand ? brand.name : ""
             }}
             displayName="BrandForm"
             enableReinitialize={true}
@@ -58,11 +57,6 @@ function BrandForm({id} = props) {
                         name: "name",
                         label: "Name",
                         required: true
-                    }}/>
-                    <TextInput attributes={{
-                        type: "url",
-                        name: "website",
-                        label: "Website"
                     }}/>
                     <Divider hidden/>
                     <Button type="submit" positive disabled={formikProps.isSubmitting}>Save changes</Button>

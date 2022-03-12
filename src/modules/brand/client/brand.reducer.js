@@ -23,7 +23,6 @@ export default function reducer(state=initialState, action) {
             const brands = state.brands.map(function(x) {
                 if(x._id === action.payload.data._id) {
                     x.name = action.payload.data.name;
-                    x.website = action.payload.data.website;
                 }
                 return x;
             });

@@ -1,33 +1,25 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Container, Divider } from "semantic-ui-react";
-import { Route, Redirect } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 
-import Footer from "./components/footer.component";
 import Navbar from "./components/Navbar";
+import Footer from "./components/footer.component";
 
-export default function PrivateRoute({ component: Component, ...rest }) {
+export default function PrivateRoute() {
+    const location = useLocation();
     const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
     return (
-        <Route {...rest} render={props => {
-            return (
-                loggedInUser ? (
-                    <>
-                        <Navbar/>
-                        <Container>
-                            <Component {...props}/>
-                            <Divider hidden/>
-                        </Container>
-                        <Footer/>
-                    </>
-                ) : (
-                    <Redirect push to={{
-                        pathname: "/login",
-                        state: { from: props.location }
-                    }}/>
-                )
-            )
-        }}/>
+        loggedInUser ?
+            <>
+                <Navbar/>
+                <Container className="site-content">
+                    <Outlet/>
+                    <Divider hidden/>
+                </Container>
+                <Footer/>
+            </>
+            : <Navigate to="/login" state={{ from: location }} replace/>
     );
 }

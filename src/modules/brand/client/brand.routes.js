@@ -1,14 +1,14 @@
 import React from "react";
-import { Switch, useRouteMatch } from "react-router-dom";
+import { Routes, useMatch } from "react-router-dom";
 import Brands from "./brands.component";
 import PrivateRoute from "../../core/client/PrivateRoute";
 
 export default function BrandRoutes() {
-    let { path } = useRouteMatch();
+    const { path } = useMatch();
 
     return (
-        <Switch>
+        <Routes>
             <PrivateRoute exact path={path} component={Brands}/>
-        </Switch>
+        </Routes>
     );
 }

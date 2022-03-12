@@ -42,7 +42,6 @@ async function createBrand(req, res) {
         let model = new Brand({
             name: req.body.name,
             slug: convertToSlug(req.body.name),
-            website: req.body.website,
             createdBy: req.user._id
         });
 
@@ -69,7 +68,6 @@ function updateBrand(req, res) {
 
             doc.name = req.body.name;
             doc.slug = convertToSlug(req.body.name);
-            doc.website = req.body.website;
 
             doc.save();
             res.json(doc);

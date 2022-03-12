@@ -29,7 +29,6 @@ async function createCategory(req, res) {
         let model = new Category({
             name: req.body.name,
             slug: convertToSlug(req.body.name),
-            description: req.body.description,
             createdBy: req.user._id
         });
 
@@ -58,7 +57,6 @@ function updateCategory(req, res) {
 
             doc.name = req.body.name;
             doc.slug = convertToSlug(req.body.name);
-            doc.description = req.body.description;
 
             doc.save();
             res.json(doc);

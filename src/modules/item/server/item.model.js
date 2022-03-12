@@ -18,10 +18,6 @@ const ItemSchema = Schema({
         required: true,
         type: Schema.Types.ObjectId
     },
-    retailerId: {
-        ref: "Retailer",
-        type: Schema.Types.ObjectId
-    },
     tags: Array,
     purchaseDate: Date,
     price: Number,
@@ -30,7 +26,8 @@ const ItemSchema = Schema({
         required: true,
         enum: ["AUD", "BDT", "BGN", "CAD", "CNY", "EUR", "GBP", "INR", "JPY", "NZD", "RUB", "SGD", "USD"]
     },
-    files: [ FileSchema ],
+    files: [FileSchema],
+    invoice: FileSchema,
     createdBy: {
         ref: "User",
         required: true,
@@ -54,13 +51,6 @@ ItemSchema.virtual("brand", {
     justOne: true,
     foreignField: "_id",
     localField: "brandId"
-});
-
-ItemSchema.virtual("retailer", {
-    ref: "Retailer",
-    justOne: true,
-    foreignField: "_id",
-    localField: "retailerId"
 });
 
 module.exports = mongoose.model("Item", ItemSchema);

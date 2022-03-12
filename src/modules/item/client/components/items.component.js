@@ -1,7 +1,7 @@
 import queryString from "query-string";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { fetchItems } from "../item.actions";
 import ItemForm from "./item-form.component";
 import { getBrands } from "../../../brand/client/brand.actions";
@@ -10,7 +10,7 @@ import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segme
 
 export default function Items() {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     const [filterModal, setFilterModal] = useState(false);
@@ -50,7 +50,7 @@ export default function Items() {
 
         if(location.search === `?${queryString.stringify(q)}`) return;
 
-        history.push({
+        navigate({
             pathname: "items",
             search: queryString.stringify(q)
         });
@@ -65,7 +65,7 @@ export default function Items() {
         setEndDate("");
 
         if(params.categoryId || params.brandId || params.startDate || params.endDate) {
-            history.push({ pathname: "items" });
+            navigate({ pathname: "items" });
         }
     }
 
@@ -89,17 +89,12 @@ export default function Items() {
         dateRange = `${startDate}-${endDate}`;
     }
 
-    const categoryOptions = categories.map(function(option) {
-        return { key: option._id, value: option._id, text: option.name };
-    });
+    const categoryOptions = categories.map(option => ({ key: option._id, value: option._id, text: option.name }));
 
-    const brandOptions = brands.map(function(option) {
-        return { key: option._id, value: option._id, text: option.name };
-    });
+    const brandOptions = brands.map((option) => ({ key: option._id, value: option._id, text: option.name }));
 
     const cards = data.map(function(item) {
-        let activeImage = item.files.filter(x => x.active)[0];
-        activeImage = activeImage ? activeImage.secure_url : null;
+        const activeImage = item.files.find(x => x.active) ? item.files.find(x => x.active).secure_url : item.files[0].secure_url;
 
         return (
             <Link key={item._id} className="ui raised card" to={`/items/${item._id}`}>

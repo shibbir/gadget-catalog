@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
+
 const CategorySchema = Schema({
     name: {
         type: String,
@@ -12,21 +14,17 @@ const CategorySchema = Schema({
         unique: true,
         required: true
     },
-    createdBy: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    },
-    date: {
-        type: Date,
-        default: Date.now
-    }
 }, { toJSON: { virtuals: true } });
 
 CategorySchema.virtual("items", {
     ref: "Item",
     localField: "_id",
     foreignField: "categoryId"
+});
+
+CategorySchema.pre("save", function (next) {
+    this.slug = convertToSlug(this.name);
+    next();
 });
 
 module.exports = mongoose.model("Category", CategorySchema);

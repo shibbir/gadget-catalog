@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import "fomantic-ui-css/semantic.css";
 import "izitoast/dist/css/iziToast.css";
@@ -17,7 +17,6 @@ import Profile from "../../user/client/components/profile.component";
 import Dashboard from "../../user/client/components/dashboard.component";
 import ItemRoutes from "../../item/client/item.routes";
 import BrandRoutes from "../../brand/client/brand.routes";
-import RetailerRoutes from "../../retailer/client/retailer.routes";
 import CategoryRoutes from "../../category/client/category.routes";
 import { getSignedInUserProfile } from "../../user/client/user.actions";
 
@@ -58,23 +57,32 @@ export default function App() {
     }, [dispatch]);
 
     return (
-        <Switch>
-            <PublicRoute path="/login" component={Login}/>
-            <PublicRoute path="/register" component={Register}/>
-            <PublicRoute path="/reset-password" component={ResetPassword}/>
+        <Routes>
+            <Route element={<PublicRoute/>}>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/register" element={<Register/>}/>
+                <Route path="/reset-password" element={<ResetPassword/>}/>
+                {/* <PublicRoute path="/login" component={Login}/>
+                <PublicRoute path="/register" component={Register}/>
+                <PublicRoute path="/reset-password" component={ResetPassword}/>
 
-            <PrivateRoute exact path="/" component={Dashboard}/>
-            <PrivateRoute path="/profile" component={Profile}/>
+                <PrivateRoute exact path="/" component={Dashboard}/>
+                <PrivateRoute path="/profile" component={Profile}/>
 
-            <Route path="/items" component={ItemRoutes}/>
+                <Route path="/items" component={ItemRoutes}/>
 
-            <Route path="/brands" component={BrandRoutes}/>
+                <Route path="/brands" component={BrandRoutes}/>
 
-            <Route path="/retailers" component={RetailerRoutes}/>
+                <Route path="/categories" component={CategoryRoutes}/>
 
-            <Route path="/categories" component={CategoryRoutes}/>
+            <Route component={NoMatch}/> */}
+            </Route>
 
-            <Route component={NoMatch}/>
-        </Switch>
+            <Route element={<PrivateRoute/>}>
+                <Route path="/" element={<Dashboard/>}/>
+                <Route path="/profile" element={<Profile/>}/>
+                <Route path="/items" element={<ItemRoutes/>}/>
+            </Route>
+        </Routes>
     );
 }

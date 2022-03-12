@@ -23,9 +23,7 @@ process.env.MONGODB_URI = `${process.env.MONGODB_TEST_BASE_URL}/gadget-catalog-t
 
 module.exports = async () => {
     mongoose.connect(process.env.MONGODB_URI, {
-        useCreateIndex: true,
         useNewUrlParser: true,
-        useFindAndModify: false,
         useUnifiedTopology: true
     });
 

@@ -80,8 +80,13 @@ export const FileInput = ({ attributes }) => {
         <Form.Field required={attributes.required}>
             { attributes.label && <label>{attributes.label}</label> }
 
-            <Form.Input type="file" name={attributes.name} multiple={attributes.multiple} accept="image/*" onChange={attributes.onChange}/>
-            <small>Max number of files is 3</small> | <small>Max file size is 1.5 MB</small>
+            <div className="field" style={{margin: 0}}>
+                <div className="ui input">
+                    <input type="file" name={attributes.name} multiple={attributes.multiple} accept="image/*" onChange={attributes.onChange}/>
+                </div>
+            </div>
+
+            <small>{attributes.info}</small>
 
             <div className="field-validation-error">
                 <ErrorMessage name={attributes.name}/>

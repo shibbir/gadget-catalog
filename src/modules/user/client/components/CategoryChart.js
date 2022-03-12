@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
 import Highcharts from "highcharts";
 import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Icon, Segment, Header, Button } from "semantic-ui-react";
 
@@ -16,15 +16,19 @@ export default function CategoryChart() {
     const categories = useSelector(state => state.categoryReducer.categories);
 
     useEffect(() => {
-        if(categories.length && categories.some(x => !!x.items.length)) {
-
+        if(categories.length) {
             let data = [];
 
             categories.forEach(o => {
-                if(o.items.length) {
+                if(o.items && o.items.length) {
                     data.push({
                         name: o.name,
                         y: o.items.length
+                    });
+                } else {
+                    data.push({
+                        name: o.name,
+                        y: 0
                     });
                 }
             });
@@ -68,7 +72,7 @@ export default function CategoryChart() {
         <>
             <div id="category-chart"></div>
 
-            { !categories.length || !categories.some(x => !!x.items.length) &&
+            { !categories.length &&
                 <Segment placeholder basic>
                     <Header icon>
                         <Icon name="warning sign"/>

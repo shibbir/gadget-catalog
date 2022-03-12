@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import Highcharts from "highcharts";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
@@ -84,22 +85,16 @@ export default function ItemChart() {
 
     return (
         <>
-            { itemsPerYear &&
-                <>
-                    <Select onChange={(event, data) => {setYearRange(data.value)}} options={options} defaultValue={options[0].value}/>
-                    <div id="item-chart"></div>
-                </>
-            }
+            <Select onChange={(event, data) => {setYearRange(data.value)}} options={options} defaultValue={options[0].value}/>
 
-            { !itemsPerYear &&
+            <div id="item-chart"></div>
+
+            { isEmpty(itemsPerYear) &&
                 <Segment placeholder basic>
                     <Header icon>
                         <Icon name="warning sign"/>
-                        Not enough data is available to generate this report.
+                        Not enough data is available to generate the report.
                     </Header>
-                    <Button primary>
-                        <Link to="/items/add" style={{color: "white"}}>Add New Item</Link>
-                    </Button>
                 </Segment>
             }
         </>

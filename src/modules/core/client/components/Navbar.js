@@ -25,9 +25,6 @@ export default function Navbar() {
                 <NavLink to="/brands" activeClassName="active" className="item">
                     <Icon name="apple" color="teal"/> Manage Brands
                 </NavLink>
-                <NavLink to="/retailers" activeClassName="active" className="item">
-                    <Icon name="amazon" color="teal"/> Manage Retailers
-                </NavLink>
                 <div className="right item" style={{paddingRight: 0}}>
                     <NavLink to="/profile" className="ui button teal"><Icon name="user"/> {loggedInUser.name}</NavLink>
                     <a href="/api/logout" className="ui button black" style={{marginLeft: '5px'}}><Icon name="sign out"/> Sign Out</a>

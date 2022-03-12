@@ -52,4 +52,15 @@ module.exports = function(app) {
     app.post("/api/forgot-password", controller.forgotPassword);
 
     app.put("/api/reset-password", controller.resetPassword);
+
+    app.post("/oauth/facebook/data-deletion-request-callback", function(req, res) {
+        const { signed_request } = req.body;
+
+        const [ encoded_signature, payload ] = signed_request.split(".", 2);
+
+        res.json({
+            url: "https://gadget-catalog-io.herokuapp.com/",
+            confirmation_code: ""
+        });
+    });
 };

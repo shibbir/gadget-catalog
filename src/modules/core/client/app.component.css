@@ -49,3 +49,7 @@ a[disabled] {
 }
 
 .grecaptcha-badge { visibility: hidden; }
+
+.site-content {
+    flex: 1;
+}

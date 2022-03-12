@@ -1,17 +1,18 @@
 const fs = require("fs");
 const path = require("path");
 const async = require("async");
+const mongoose = require("mongoose");
 const validator = require("validator");
 const { format, parseISO } = require("date-fns");
 
 const Item = require("./item.model");
-const cloudinary = require(path.join(process.cwd(), "src/config/server/lib/cloudinary"));
+const { uploadToCloudinary } = require(path.join(process.cwd(), "src/config/server/lib/cloudinary"));
 
 async function getItem(req, res) {
     const query = req.user.role === "admin" ? { _id: req.params.id } : { _id: req.params.id, createdBy: req.user._id };
 
     try {
-        const doc = await Item.findOne(query).populate("brand", "name").populate("category", "name").populate("retailer", "name").exec();
+        const doc = await Item.findOne(query).populate("brand", "name").populate("category", "name").exec();
 
         if(!doc) return res.sendStatus(404);
 
@@ -21,11 +22,11 @@ async function getItem(req, res) {
 
         res.json(doc);
     } catch(err) {
-        return res.status(500).send(err.stack);
+        res.sendStatus(500);
     }
 }
 
-async function getItems(req, res) {
+async function getItems(req, res, next) {
     const page = req.query.page ? +req.query.page : 1;
     const limit = 20;
     const skip = page > 0 ? ((page - 1) * limit) : 0;
@@ -60,55 +61,52 @@ async function getItems(req, res) {
             },
             data: docs
         });
-    } catch (err) {
-        if(err) res.sendStatus(500);
+    } catch(err) {
+        res.sendStatus(500);
     }
 }
 
-function createItem(req, res) {
-    const item = new Item({
-        name: req.body.name,
-        categoryId: req.body.categoryId,
-        brandId: req.body.brandId,
-        purchaseDate: req.body.purchaseDate,
-        price: req.body.price,
-        currency: req.body.currency,
-        createdBy: req.user._id
-    });
+async function createItem(req, res, next) {
+    try {
+        const _id = new mongoose.Types.ObjectId;
 
-    if(req.body.retailerId) item.retailerId = req.body.retailerId;
-    if(req.body.description) item.description = validator.escape(req.body.description);
-
-    async.waterfall([
-        function(callback) {
-            if(!req.files || !req.files.length) return callback();
-
-            req.files.forEach(function(file, index) {
-                cloudinary.v2.uploader.upload(file.path, {
-                    folder: "gadgets"
-                }, function(error, result) {
-                    if(error) return callback(error);
-
-                    item.files.push({ ...result });
-
-                    fs.unlinkSync(file.path);
-
-                    if(index === req.files.length -1) {
-                        item.files[0].active = true;
-                        callback();
-                    }
-                });
-            });
-        }
-    ], function(err) {
-        if(err) return res.sendStatus(500);
-
-        item.save(function(err, doc) {
-            if(err) return res.sendStatus(500);
-
-            res.json(doc);
+        const item = new Item({
+            _id,
+            name: req.body.name,
+            categoryId: req.body.categoryId,
+            brandId: req.body.brandId,
+            purchaseDate: req.body.purchaseDate,
+            price: req.body.price,
+            currency: req.body.currency,
+            createdBy: req.user._id
         });
-    });
+
+        if(req.body.description) item.description = validator.escape(req.body.description);
+
+        for(let i = 0; i < req.files.images.length; i++) {
+            const file = req.files.images[i];
+            const result = await uploadToCloudinary(file.path, { folder: `gadget-catalog/${_id}` });
+
+            item.files.push({ ...result });
+
+            fs.unlinkSync(file.path);
+        }
+
+        for(let i = 0; i < req.files.invoice.length; i++) {
+            const file = req.files.invoice[i];
+            const result = await uploadToCloudinary(file.path, { folder: `gadget-catalog/${_id}` });
+
+            item.invoice = result;
+
+            fs.unlinkSync(file.path);
+        }
+
+        const doc = await item.save();
+
+        res.json(doc);
+    } catch(err) {
+        next(err);
+    }
 }
 
 function updateItem(req, res) {
@@ -124,7 +122,6 @@ function updateItem(req, res) {
         doc.price = req.body.price;
         doc.currency = req.body.currency;
 
-        if(req.body.retailerId) doc.retailerId = req.body.retailerId;
         if(req.body.description) doc.description = validator.escape(req.body.description);
 
         async.waterfall([
@@ -133,9 +130,9 @@ function updateItem(req, res) {
                     return callback();
                 }
 
-                req.files.forEach(function(file, index) {
-                    cloudinary.v2.uploader.upload(file.path, {
-                        folder: "gadgets"
+                req.files.images.forEach(function(file, index) {
+                    cloudinary.uploader.upload(file.path, {
+                        folder: `gadget-catalog/${doc._id}`
                     }, function(error, result) {
                         doc.files.push({
                             ...result
@@ -143,7 +140,7 @@ function updateItem(req, res) {
 
                         fs.unlinkSync(file.path);
 
-                        if(index === req.files.length -1) {
+                        if(index === req.files.images.length - 1) {
                             doc.files[0].active = true;
                             callback();
                         }
@@ -158,78 +155,105 @@ function updateItem(req, res) {
 }
 
 function deleteItem(req, res) {
-    Item.findOneAndRemove({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
-        if(err) return res.sendStatus(500);
-
-        if(!doc) return res.sendStatus(404);
-
-        if(!doc.files || !doc.files.length) {
-            return res.sendStatus(200);
-        }
-
-        let files = [];
-
-        doc.files.forEach(function(file) {
-            files.push(file.public_id);
-        });
-
-        cloudinary.v2.api.delete_resources(files, function(err) {
+    try {
+        Item.findOneAndRemove({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
             if(err) return res.sendStatus(500);
 
-            res.sendStatus(200);
+            if(!doc) return res.sendStatus(404);
+
+            const public_ids = [];
+
+            doc.files.forEach(function(file) {
+                public_ids.push(file.public_id);
+            });
+
+            if(doc.invoice) {
+                public_ids.push(doc.invoice.public_id);
+            }
+
+            if(!public_ids.length) return res.sendStatus(200);
+
+            async.waterfall([
+                function(callback) {
+                    cloudinary.api.delete_resources(public_ids, function(err) {
+                        if(err) return callback(err);
+                        callback();
+                    });
+                },
+                function(callback) {
+                    cloudinary.api.delete_folder(`gadget-catalog/${doc._id}`, function(err) {
+                        if(err) return callback(err);
+                        callback();
+                    });
+                }
+            ], function(err) {
+                if(err) return res.sendStatus(500);
+
+                res.sendStatus(200);
+            });
         });
-    });
+    } catch(err) {
+        res.sendStatus(500);
+    }
 }
 
 function updateImage(req, res) {
-    async.waterfall([
-        function(callback) {
-            Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, "files", function(err, doc) {
-                if(err) return callback(err);
+    try {
+        async.waterfall([
+            function(callback) {
+                Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, "files", function(err, doc) {
+                    if(err) return callback(err);
 
-                if(!doc) return callback();
+                    if(!doc) return callback();
 
-                doc.files = doc.files.map(function(x) {
-                    x.active = false;
-                    return x;
+                    doc.files = doc.files.map(function(x) {
+                        x.active = false;
+                        return x;
+                    });
+
+                    doc.save(function() {
+                        callback();
+                    });
                 });
-
-                doc.save(function() {
-                    callback();
+            }, function(callback) {
+                Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, "files._id": req.params.fileId }, {
+                    $set: { "files.$.active": true }
+                }, { new: true }, function(err, doc) {
+                    if(err) return callback(err);
+                    callback(null, doc);
                 });
-            });
-        }, function(callback) {
-            Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, "files._id": req.params.fileId }, {
-                $set: { "files.$.active": true }
-            }, { new: true }, function(err, doc) {
-                if(err) return callback(err);
-                callback(null, doc);
-            });
-        }
-    ], function(err, result) {
-        if(err) return res.sendStatus(500);
-        res.json(result);
-    });
+            }
+        ], function(err, result) {
+            if(err) return res.sendStatus(500);
+            res.json(result);
+        });
+    } catch(err) {
+        res.sendStatus(500);
+    }
 }
 
 function deleteImage(req, res) {
-    Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, function(err, doc) {
-        if(err) return res.sendStatus(500);
-
-        if(!doc) return res.sendStatus(404);
-
-        let file = doc.files.id(req.params.fileId);
-
-        cloudinary.v2.uploader.destroy(file.public_id, {
-            invalidate: true
-        }, function(err) {
+    try {
+        Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, function(err, doc) {
             if(err) return res.sendStatus(500);
 
-            doc.files.id(req.params.fileId).remove();
-            doc.save();
-            res.json(doc);
+            if(!doc) return res.sendStatus(404);
+
+            const file = doc.files.id(req.params.fileId);
+
+            cloudinary.uploader.destroy(file.public_id, {
+                invalidate: true
+            }, function(err) {
+                if(err) return res.sendStatus(500);
+
+                doc.files.id(req.params.fileId).remove();
+                doc.save();
+                res.json(doc);
+            });
         });
-    });
+    } catch(err) {
+        res.sendStatus(500);
+    }
 }
 
 async function getItemCountByYearRange(req, res) {
@@ -242,6 +266,8 @@ async function getItemCountByYearRange(req, res) {
             purchaseDate: { $lte: new Date(endYear, 11, 31), $gte: new Date(startYear, 0, 1)}
         }, "purchaseDate");
 
+        if(!docs) return res.sendStatus(203);
+
         let data = {};
 
         docs.forEach(function(doc) {
@@ -250,7 +276,7 @@ async function getItemCountByYearRange(req, res) {
 
         res.json(data);
     } catch(err) {
-        if(err) res.sendStatus(500);
+        res.sendStatus(500);
     }
 }
 

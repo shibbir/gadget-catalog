@@ -46,15 +46,19 @@ module.exports = {
                 loader: "babel-loader"
             },
             {
-                test: /\.css$/,
+                test: /\.css$/i,
                 use: [
                     MiniCssExtractPlugin.loader,
                     "css-loader"
                 ]
             },
             {
-                test: /\.(png|ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-                loader: "url-loader"
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: "asset/resource"
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: "asset/resource"
             }
         ]
     }

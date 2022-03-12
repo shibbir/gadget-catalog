@@ -49,13 +49,13 @@
 - [Express](https://expressjs.com/)
 - [Formik](https://jaredpalmer.com/formik/)
 - [Highcharts](https://www.highcharts.com/)
-- [Mocha](https://mochajs.org/)
+- [Jest](https://jestjs.io/)
 - [MongoDB](https://www.mongodb.com/)
 - [Nodemailer](https://nodemailer.com/)
-- [Passport](http://passportjs.org/)
+- [Passport](https://www.passportjs.org/)
 - [React](https://reactjs.org/)
 - [React Redux](https://react-redux.js.org/)
-- [Semantic-UI-React](https://react.semantic-ui.com/)
+- [Semantic UI React](https://react.semantic-ui.com/)
 - [Webpack](https://webpack.js.org/)
 
 ## :cloud: Configuring Cloudinary
@@ -103,4 +103,4 @@ If you find a bug, kindly open an issue [here](https://github.com/shibbir/gadget
 If you'd like to request a new feature, feel free to do so by opening an issue [here](https://github.com/shibbir/gadget-catalog/issues/new).
 
 ## :memo: License
-<a href="https://opensource.org/licenses/MIT">The MIT License.</a> Copyright &copy; 2020 [Shibbir Ahmed.](https://shibbir.io/)
+<a href="https://opensource.org/licenses/MIT">The MIT License.</a> Copyright &copy; 2021 [Shibbir Ahmed.](https://shibbir.io/)
