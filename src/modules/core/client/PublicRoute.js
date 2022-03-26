@@ -1,12 +1,27 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 
-export default function PublicRoute() {
-    const location = useLocation();
+export default function PublicRoute({ component: Component, ...rest }) {
     const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
 
     return (
-        loggedInUser ? <Navigate to="/" state={{ from: location }} replace/> : <Outlet/>
+        <Route {...rest} render={props => {
+            return (
+                loggedInUser ? (
+                    <Redirect push to={{
+                        pathname: props.location.state
+                            ? props.location.state.from.pathname
+                            : "/",
+                        search: props.location.state
+                            ? props.location.state.from.search
+                            : "",
+                        state: { from: props.location }
+                    }} />
+                ) : (
+                    <Component {...props}/>
+                )
+            )
+        }}/>
     );
 }

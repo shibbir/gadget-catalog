@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { FormattedDate, FormattedNumber } from "react-intl";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb, Modal, TransitionablePortal } from "semantic-ui-react";
 
 import Types from "../item.types";
@@ -11,7 +11,7 @@ import { fetchItem, deleteItem, setAsActiveImage, deleteImage } from "../item.ac
 
 export default function ItemDetail() {
     const { id } = useParams();
-    const navigate = useNavigate();
+    const history = useHistory();
     const dispatch = useDispatch();
 
     const item = useSelector(state => state.itemReducer.item);
@@ -29,7 +29,7 @@ export default function ItemDetail() {
                 const { type } = result.action;
 
                 if(type === Types.DELETE_ITEM_FULFILLED) {
-                    navigate("/items");
+                    history.push("/items");
                 }
             });
         }

@@ -1,7 +1,7 @@
 import queryString from "query-string";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { fetchItems } from "../item.actions";
 import ItemForm from "./item-form.component";
 import { getBrands } from "../../../brand/client/brand.actions";
@@ -10,7 +10,7 @@ import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segme
 
 export default function Items() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const history = useHistory();
     const location = useLocation();
 
     const [filterModal, setFilterModal] = useState(false);
@@ -50,7 +50,7 @@ export default function Items() {
 
         if(location.search === `?${queryString.stringify(q)}`) return;
 
-        navigate({
+        history.push({
             pathname: "items",
             search: queryString.stringify(q)
         });
@@ -65,7 +65,7 @@ export default function Items() {
         setEndDate("");
 
         if(params.categoryId || params.brandId || params.startDate || params.endDate) {
-            navigate({ pathname: "items" });
+            history.push({ pathname: "items" });
         }
     }
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Route, Routes } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import "fomantic-ui-css/semantic.css";
 import "izitoast/dist/css/iziToast.css";
@@ -57,32 +57,21 @@ export default function App() {
     }, [dispatch]);
 
     return (
-        <Routes>
-            <Route element={<PublicRoute/>}>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/register" element={<Register/>}/>
-                <Route path="/reset-password" element={<ResetPassword/>}/>
-                {/* <PublicRoute path="/login" component={Login}/>
-                <PublicRoute path="/register" component={Register}/>
-                <PublicRoute path="/reset-password" component={ResetPassword}/>
+        <Switch>
+            <PublicRoute path="/login" component={Login}/>
+            <PublicRoute path="/register" component={Register}/>
+            <PublicRoute path="/reset-password" component={ResetPassword}/>
 
-                <PrivateRoute exact path="/" component={Dashboard}/>
-                <PrivateRoute path="/profile" component={Profile}/>
+            <PrivateRoute exact path="/" component={Dashboard}/>
+            <PrivateRoute path="/profile" component={Profile}/>
 
-                <Route path="/items" component={ItemRoutes}/>
+            <Route path="/items" component={ItemRoutes}/>
 
-                <Route path="/brands" component={BrandRoutes}/>
+            <Route path="/brands" component={BrandRoutes}/>
 
-                <Route path="/categories" component={CategoryRoutes}/>
+            <Route path="/categories" component={CategoryRoutes}/>
 
-            <Route component={NoMatch}/> */}
-            </Route>
-
-            <Route element={<PrivateRoute/>}>
-                <Route path="/" element={<Dashboard/>}/>
-                <Route path="/profile" element={<Profile/>}/>
-                <Route path="/items" element={<ItemRoutes/>}/>
-            </Route>
-        </Routes>
+            <Route component={NoMatch}/>
+        </Switch>
     );
 }

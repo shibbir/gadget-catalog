@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import { stateToHTML } from "draft-js-export-html";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { EditorState, ContentState, convertFromHTML } from "draft-js";
 import { Divider, Button, Form as SemanticUIForm } from "semantic-ui-react";
 
@@ -16,7 +16,7 @@ import { TextInput, RichEditorInput, DropdownInput, FileInput } from "../../../c
 
 export default function ItemForm() {
     const { id } = useParams();
-    const navigate = useNavigate();
+    const history = useHistory();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -112,7 +112,7 @@ export default function ItemForm() {
                         const { type, payload } = result.action;
 
                         if(type === Types.POST_ITEM_FULFILLED) {
-                            navigate(`/items/${payload.data._id}`);
+                            history.push(`/items/${payload.data._id}`);
                         }
                     });
                 }
