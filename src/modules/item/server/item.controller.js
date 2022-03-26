@@ -83,22 +83,26 @@ async function createItem(req, res, next) {
 
         if(req.body.description) item.description = validator.escape(req.body.description);
 
-        for(let i = 0; i < req.files.images.length; i++) {
-            const file = req.files.images[i];
-            const result = await uploadToCloudinary(file.path, { folder: `gadget-catalog/${_id}` });
+        if(req.files && req.files.images) {
+            for(let i = 0; i < req.files.images.length; i++) {
+                const file = req.files.images[i];
+                const result = await uploadToCloudinary(file.path, { folder: `gadget-catalog/${_id}` });
 
-            item.files.push({ ...result });
+                item.files.push({ ...result });
 
-            fs.unlinkSync(file.path);
+                fs.unlinkSync(file.path);
+            }
         }
 
-        for(let i = 0; i < req.files.invoice.length; i++) {
-            const file = req.files.invoice[i];
-            const result = await uploadToCloudinary(file.path, { folder: `gadget-catalog/${_id}` });
+        if(req.files && req.files.invoice) {
+            for(let i = 0; i < req.files.invoice.length; i++) {
+                const file = req.files.invoice[i];
+                const result = await uploadToCloudinary(file.path, { folder: `gadget-catalog/${_id}` });
 
-            item.invoice = result;
+                item.invoice = result;
 
-            fs.unlinkSync(file.path);
+                fs.unlinkSync(file.path);
+            }
         }
 
         const doc = await item.save();

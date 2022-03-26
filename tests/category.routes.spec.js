@@ -14,12 +14,7 @@ describe("Category Routes", function() {
     let category;
 
     beforeAll(async () => {
-        mongoose.connect(process.env.MONGODB_URI, {
-            useCreateIndex: true,
-            useNewUrlParser: true,
-            useFindAndModify: false,
-            useUnifiedTopology: true
-        });
+        mongoose.connect(process.env.MONGODB_URI);
 
         category = new Category({
             name: faker.commerce.productName(),

@@ -18,12 +18,7 @@ describe("Item Routes", function() {
     let item;
 
     beforeAll(async () => {
-        mongoose.connect(process.env.MONGODB_URI, {
-            useCreateIndex: true,
-            useNewUrlParser: true,
-            useFindAndModify: false,
-            useUnifiedTopology: true
-        });
+        mongoose.connect(process.env.MONGODB_URI);
 
         brand = new Brand({
             name: faker.company.companyName(),
@@ -56,7 +51,7 @@ describe("Item Routes", function() {
         mongoose.connection.close();
     });
 
-    test("Should fetch all items", async () => {
+    test("Should fetch all the items", async () => {
         const response = await request(app)
             .get("/api/items")
             .set("Cookie", [`access_token=${access_token}`]);
@@ -64,7 +59,7 @@ describe("Item Routes", function() {
         expect(response.statusCode).toEqual(200);
     });
 
-    test("Should create new item", async () => {
+    test("Should create a new item", async () => {
         const response = await request(app)
             .post("/api/items")
             .send({

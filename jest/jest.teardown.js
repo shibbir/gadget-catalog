@@ -5,12 +5,7 @@ process.env.MONGODB_TEST_BASE_URL = process.env.MONGODB_TEST_BASE_URL || "mongod
 process.env.MONGODB_URI = `${process.env.MONGODB_TEST_BASE_URL}/gadget-catalog-test`;
 
 module.exports = async () => {
-    mongoose.connect(process.env.MONGODB_URI, {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true
-    });
+    mongoose.connect(process.env.MONGODB_URI);
 
     await mongoose.connection.dropDatabase();
     mongoose.connection.close();

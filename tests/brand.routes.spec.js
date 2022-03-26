@@ -14,12 +14,7 @@ describe("Brand Routes", function() {
     let brand;
 
     beforeAll(async () => {
-        mongoose.connect(process.env.MONGODB_URI, {
-            useCreateIndex: true,
-            useNewUrlParser: true,
-            useFindAndModify: false,
-            useUnifiedTopology: true
-        });
+        mongoose.connect(process.env.MONGODB_URI);
 
         brand = new Brand({
             name: faker.company.companyName(),

@@ -11,12 +11,7 @@ const refresh_token = jwt.sign({ id: global.__USERID__ }, process.env.REFRESH_SE
 
 describe("User Routes", function() {
     beforeAll(async () => {
-        mongoose.connect(process.env.MONGODB_URI, {
-            useCreateIndex: true,
-            useNewUrlParser: true,
-            useFindAndModify: false,
-            useUnifiedTopology: true
-        });
+        mongoose.connect(process.env.MONGODB_URI);
     });
 
     afterAll(() => {
