@@ -48,7 +48,9 @@ a[disabled] {
     margin: auto !important;
 }
 
-.grecaptcha-badge { visibility: hidden; }
+.grecaptcha-badge {
+    visibility: hidden;
+}
 
 .site-content {
     flex: 1;

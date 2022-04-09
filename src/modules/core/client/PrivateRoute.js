@@ -15,7 +15,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
                 loggedInUser ? (
                     <>
                         <Navbar/>
-                        <Container>
+                        <Container className="site-content">
                             <Component {...props}/>
                             <Divider hidden/>
                         </Container>
