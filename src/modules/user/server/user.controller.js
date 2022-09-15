@@ -70,7 +70,7 @@ async function register(req, res) {
     }
 }
 
-async function login(req, res) {
+async function login(req, res, next) {
     try {
         let doc;
         const { username, password, grant_type, recaptchaToken } = req.body;
@@ -97,7 +97,7 @@ async function login(req, res) {
 
         res.json(formatProfile(doc.toJSON()));
     } catch (err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
@@ -123,7 +123,7 @@ async function changePassword(req, res) {
     }
 }
 
-function forgotPassword(req, res) {
+function forgotPassword(req, res, next) {
     User.findOne({ $or: [
         { "facebook.email" : req.body.email },
         { "google.email": req.body.email },
@@ -154,7 +154,7 @@ function forgotPassword(req, res) {
                     subject: "[Gadget Catalog] Password Reset Request",
                     html: html
                 }, function (err) {
-                    if(err) return res.sendStatus(500);
+                    if(err) return next(err);//res.sendStatus(500);
 
                     res.sendStatus(200);
                 });

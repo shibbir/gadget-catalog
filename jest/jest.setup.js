@@ -14,11 +14,11 @@ process.env.GOOGLE_CLIENT_SECRET = "xxx";
 process.env.FACEBOOK_CLIENT_ID = "xxx";
 process.env.FACEBOOK_CLIENT_SECRET = "xxx";
 process.env.SMTP_HOST = "smtp.ethereal.email";
-process.env.MAILER_ADDRESS = "clyde.miller@ethereal.email";
-process.env.MAILER_PASSWORD = "db7CKmbGkRcaEJvd4s";
+process.env.MAILER_ADDRESS = "myah22@ethereal.email";
+process.env.MAILER_PASSWORD = "fH8vctmKeCtHk338HC";
 process.env.RECAPTCHA_SITE_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
 process.env.RECAPTCHA_SECRET_KEY = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
-process.env.MONGODB_TEST_BASE_URL = process.env.MONGODB_TEST_BASE_URL || "mongodb://localhost";
+process.env.MONGODB_TEST_BASE_URL = process.env.MONGODB_TEST_BASE_URL || "mongodb://127.0.0.1";
 process.env.MONGODB_URI = `${process.env.MONGODB_TEST_BASE_URL}/gadget-catalog-test`;
 
 module.exports = async () => {

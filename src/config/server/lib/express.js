@@ -1,6 +1,5 @@
 const config = require("../config");
 const path = require("path");
-const helmet = require("helmet");
 const express = require("express");
 const hbs = require("express-hbs");
 const compression = require("compression");
@@ -8,8 +7,7 @@ const cookieParser = require("cookie-parser");
 
 module.exports = function() {
     const app = express();
-
-    app.use(helmet({contentSecurityPolicy: false}));
+    
     app.use(compression());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));

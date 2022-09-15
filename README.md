@@ -67,7 +67,7 @@ This application requires [Cloudinary](https://cloudinary.com/), which is a Soft
 Name | Mandatory | Default value | Description
 ------------ | ------------- | ------------- | -------------
 PORT | Yes | `undefined` | On which port the web server will be listen to.
-MONGODB_URI | Yes | `mongodb://localhost/gadget-catalog` | MongoDB connection string URI. For more details visit [here](https://docs.mongodb.com/manual/reference/connection-string/).
+MONGODB_URI | Yes | `mongodb://127.0.0.1/gadget-catalog` | MongoDB connection string URI. For more details visit [here](https://docs.mongodb.com/manual/reference/connection-string/).
 TOKEN_SECRET | Yes | `undefined` | A secret string to generate an access token. Learn more from [here](https://jwt.io/introduction/).
 REFRESH_SECRET | Yes | `undefined` | A secret string to generate a refresh token. Learn more from [here](https://jwt.io/introduction/).
 GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET | No | `undefined` | Your OAuth 2.0 client credentials from google. Learn more from [here](https://developers.google.com/identity/protocols/OAuth2).
