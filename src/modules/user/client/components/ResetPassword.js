@@ -14,69 +14,58 @@ export default function ResetPassword() {
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const pageStyle = {
-        paddingTop: "85px"
-    };
-
-    const columnStyle = {
-        maxWidth: "450px"
-    };
-
     return (
-        <div style={pageStyle}>
-            <div className="ui middle aligned center aligned grid">
+        <div className="ui middle aligned center aligned grid">
+            <div style={{ maxWidth: "450px" }}>
+                <Header as="h2" className="teal center aligned">
+                    <Image src={`images/logo.png`}/>
+                    <div className="content">
+                        Reset your password
+                    </div>
+                </Header>
 
-                <div style={columnStyle}>
-                    <Header as="h2" className="teal center aligned">
-                        <Image src={`images/logo.png`}/>
-                        <div className="content">
-                            Reset your password
-                        </div>
-                    </Header>
+                { isPasswordReset &&
+                    <Message info>
+                        Your password is changed. Please <Link to="/login">sign in</Link> to your account.
+                    </Message>
+                }
 
-                    { isPasswordReset &&
-                        <Message info>
-                            Your password is changed. Please <Link to="/login">sign in</Link> to your account.
-                        </Message>
-                    }
+                <Formik
+                    initialValues={{
+                        newPassword: "",
+                        confirmNewPassword: ""
+                    }}
+                    validationSchema={resetPasswordSchema}
+                    onSubmit={(values, actions) => {
+                        dispatch(resetPassword(values, location.search)).then(() => {
+                            setPasswordResetStatus(true);
+                        });
 
-                    <Formik
-                        initialValues={{
-                            newPassword: "",
-                            confirmNewPassword: ""
-                        }}
-                        validationSchema={resetPasswordSchema}
-                        onSubmit={(values, actions) => {
-                            dispatch(resetPassword(values, location.search)).then(() => {
-                                setPasswordResetStatus(true);
-                            });
+                        actions.resetForm();
+                        actions.setSubmitting(false);
+                    }}
+                >
+                    <Form className="ui form large">
+                        <Segment className="stacked">
+                            <TextInput attributes={{
+                                type: "password",
+                                name: "newPassword",
+                                label: "New password",
+                                autoComplete: "new-password"
+                            }}/>
+                            <TextInput attributes={{
+                                type: "password",
+                                name: "confirmNewPassword",
+                                label: "Confirm new password",
+                                autoComplete: "new-password"
+                            }}/>
 
-                            actions.resetForm();
-                            actions.setSubmitting(false);
-                        }}
-                    >
-                        <Form className="ui form large">
-                            <Segment className="stacked">
-                                <TextInput attributes={{
-                                    type: "password",
-                                    name: "newPassword",
-                                    label: "New password",
-                                    autoComplete: "new-password"
-                                }}/>
-                                <TextInput attributes={{
-                                    type: "password",
-                                    name: "confirmNewPassword",
-                                    label: "Confirm new password",
-                                    autoComplete: "new-password"
-                                }}/>
-
-                                <Button fluid type="submit" className="large teal">Reset password</Button>
-                                <Divider hidden/>
-                                Remembered you password? <Link to="/login">Sign in</Link>.
-                            </Segment>
-                        </Form>
-                    </Formik>
-                </div>
+                            <Button fluid type="submit" className="large teal">Reset password</Button>
+                            <Divider hidden/>
+                            Remembered you password? <Link to="/login">Sign in</Link>.
+                        </Segment>
+                    </Form>
+                </Formik>
             </div>
         </div>
     );

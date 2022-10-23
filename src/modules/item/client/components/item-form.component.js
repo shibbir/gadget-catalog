@@ -67,6 +67,7 @@ export default function ItemForm() {
                 purchaseDate: item && item.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
                 price: item ? item.price : "",
                 currency: item ? item.currency : "",
+                payee: item ? item.payee : "",
                 images: "",
                 invoice: "",
                 editorState: blocksFromHTML.contentBlocks
@@ -182,6 +183,12 @@ export default function ItemForm() {
                             name: "purchaseDate",
                             label: "Purchase date",
                             required: true
+                        }}/>
+
+                        <TextInput attributes={{
+                            type: "text",
+                            name: "payee",
+                            label: "Payee"
                         }}/>
                     </SemanticUIForm.Group>
 

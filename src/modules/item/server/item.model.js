@@ -26,6 +26,11 @@ const ItemSchema = Schema({
         required: true,
         enum: ["AUD", "BDT", "BGN", "CAD", "CNY", "EUR", "GBP", "INR", "JPY", "NZD", "RUB", "SGD", "USD"]
     },
+    payee: {
+        type: String,
+        minlength: 2,
+        maxlength: 30
+    },
     files: [FileSchema],
     invoice: FileSchema,
     createdBy: {

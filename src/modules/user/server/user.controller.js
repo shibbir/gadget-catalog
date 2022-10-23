@@ -129,7 +129,7 @@ function forgotPassword(req, res, next) {
         { "google.email": req.body.email },
         { "local.email": req.body.email }
     ]}, function(err, doc) {
-        if(err) return res.sendStatus(500);
+        if(err) return next(err);
 
         if(!doc) return res.status(404).send("No account is associated with this email address.");
 
@@ -146,6 +146,7 @@ function forgotPassword(req, res, next) {
 
         doc.save().then(function() {
             res.render("password-reset.html", {
+                name: doc.displayName,
                 url: `${req.headers.origin}/reset-password?token=${doc.local.resetPasswordToken}`
             }, function(err, html) {
                 transporter.sendMail({
@@ -154,7 +155,7 @@ function forgotPassword(req, res, next) {
                     subject: "[Gadget Catalog] Password Reset Request",
                     html: html
                 }, function (err) {
-                    if(err) return next(err);//res.sendStatus(500);
+                    if(err) return next(err);
 
                     res.sendStatus(200);
                 });

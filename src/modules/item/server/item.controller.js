@@ -8,7 +8,7 @@ const { format, parseISO } = require("date-fns");
 const Item = require("./item.model");
 const { uploadToCloudinary } = require(path.join(process.cwd(), "src/config/server/lib/cloudinary"));
 
-async function getItem(req, res) {
+async function getItem(req, res, next) {
     const query = req.user.role === "admin" ? { _id: req.params.id } : { _id: req.params.id, createdBy: req.user._id };
 
     try {
@@ -22,7 +22,7 @@ async function getItem(req, res) {
 
         res.json(doc);
     } catch(err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
@@ -62,7 +62,7 @@ async function getItems(req, res, next) {
             data: docs
         });
     } catch(err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
@@ -78,6 +78,7 @@ async function createItem(req, res, next) {
             purchaseDate: req.body.purchaseDate,
             price: req.body.price,
             currency: req.body.currency,
+            payee: req.body.payee,
             createdBy: req.user._id
         });
 
@@ -125,6 +126,7 @@ function updateItem(req, res) {
         doc.purchaseDate = req.body.purchaseDate;
         doc.price = req.body.price;
         doc.currency = req.body.currency;
+        doc.payee = req.body.payee;
 
         if(req.body.description) doc.description = validator.escape(req.body.description);
 

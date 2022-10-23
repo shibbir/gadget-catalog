@@ -23,34 +23,9 @@ const userSeeder = function(callback) {
 
 const categorySeeder = function(callback) {
     const categories = [
-        { name: "Desktop Cases", slug: convertToSlug("Cases") },
-        { name: "Computer Accessories", slug: convertToSlug("Computer Accessories") },
-        { name: "UPS Systems", slug: convertToSlug("UPS Systems") },
-        { name: "Power Supplies", slug: convertToSlug("Power Supplies") },
-        { name: "Optical Drives", slug: convertToSlug("Optical Drives") },
-
-        { name: "CPU", slug: convertToSlug("CPU") },
-        { name: "Motherboards", slug: convertToSlug("Motherboards") },
-        { name: "Memory", slug: convertToSlug("Memory") },
-        { name: "Monitors", slug: convertToSlug("Monitors") },
-        { name: "Graphics Cards", slug: convertToSlug("Graphics Cards") },
-        { name: "Sound Cards", slug: convertToSlug("Sound Cards") },
-
-        { name: "Routers", slug: convertToSlug("Routers") },
-        { name: "Gaming", slug: convertToSlug("Gaming") },
-
-        { name: "Headphones", slug: convertToSlug("Headphones") },
-        { name: "Keyboards", slug: convertToSlug("Keyboards") },
-        { name: "Mice", slug: convertToSlug("Mice") },
-        { name: "Microphones", slug: convertToSlug("Microphones") },
-        { name: "Speakers", slug: convertToSlug("Speakers") },
-        { name: "Webcams", slug: convertToSlug("Webcams") },
-        { name: "Printers", slug: convertToSlug("Printers") },
-
-        { name: "Mobile Phones", slug: convertToSlug("Mobile Phones") },
-        { name: "Storage", slug: convertToSlug("Storage") },
-        { name: "Wearables", slug: convertToSlug("Wearables") }
-    ];
+        { name: "Category X", slug: convertToSlug("Category X") },
+        { name: "Category Y", slug: convertToSlug("Category Y") }
+    ].sort();
 
     async.each(categories, function(category, asyncCallback) {
         new Category(category).save(function() {
@@ -62,7 +37,7 @@ const categorySeeder = function(callback) {
 };
 
 const brandSeeder = function(user, callback) {
-    const array = ["BrandX", "BrandY"].sort();
+    const array = ["Brand X", "Brand Y"].sort();
 
     async.each(array, function(item, asyncCallback) {
         new Brand({

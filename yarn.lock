@@ -2061,6 +2061,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@reduxjs/toolkit@npm:^1.8.5":
+  version: 1.8.5
+  resolution: "@reduxjs/toolkit@npm:1.8.5"
+  dependencies:
+    immer: ^9.0.7
+    redux: ^4.1.2
+    redux-thunk: ^2.4.1
+    reselect: ^4.1.5
+  peerDependencies:
+    react: ^16.9.0 || ^17.0.0 || ^18
+    react-redux: ^7.2.1 || ^8.0.2
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-redux:
+      optional: true
+  checksum: 831b5c74779262351d20efa0f4c06f794702bd55b14bd8f69362e29f82f7ad43aee66f39518914345ad9e9c6c93611acdeb576a70deda260733c3f098875aaca
+  languageName: node
+  linkType: hard
+
 "@semantic-ui-react/event-stack@npm:^3.1.3":
   version: 3.1.3
   resolution: "@semantic-ui-react/event-stack@npm:3.1.3"
@@ -4320,13 +4340,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deep-diff@npm:^0.3.5":
-  version: 0.3.8
-  resolution: "deep-diff@npm:0.3.8"
-  checksum: 8a0fb6cbe468e50211836f8daa1c14798b2d7436bfbcb7d8eb0902e0d61bf1dfd48d5b9edd46a10596182b90ad25f87461b8e55111ff9257b6067ad0676f79c9
-  languageName: node
-  linkType: hard
-
 "deep-is@npm:^0.1.3, deep-is@npm:~0.1.3":
   version: 0.1.4
   resolution: "deep-is@npm:0.1.4"
@@ -5393,12 +5406,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fomantic-ui-css@npm:^2.8.8":
-  version: 2.8.8
-  resolution: "fomantic-ui-css@npm:2.8.8"
+"fomantic-ui-css@npm:^2.9.0":
+  version: 2.9.0
+  resolution: "fomantic-ui-css@npm:2.9.0"
   dependencies:
     jquery: ^3.4.0
-  checksum: 0d3c9074746eaca309a9bfcb1da4243787536fc911c68c8544afb660f984d7dd7dc752162d2ad0951b063f6688080445813dc11ceb88acc271d9c28bf0adeab6
+  checksum: 96e381742d4d349d8dc7fbd412d8aee9018cbd268348228b18432d429f15169586023a408ce686bb806e7b589cfefdf5f9eebe146a1570641eb306a654b367b8
   languageName: node
   linkType: hard
 
@@ -5566,6 +5579,7 @@ __metadata:
     "@babel/preset-env": ^7.19.0
     "@babel/preset-react": ^7.18.6
     "@casl/ability": ^6.1.1
+    "@reduxjs/toolkit": ^1.8.5
     "@sentry/browser": ^7.12.1
     "@sentry/node": ^7.12.1
     async: ^3.2.4
@@ -5591,7 +5605,7 @@ __metadata:
     express: ^4.18.1
     express-hbs: ^2.4.0
     faker: 5.5.3
-    fomantic-ui-css: ^2.8.8
+    fomantic-ui-css: ^2.9.0
     formik: ^2.2.9
     glob: ^8.0.3
     highcharts: ^10.2.1
@@ -5620,7 +5634,6 @@ __metadata:
     react-router-bootstrap: rr-v4
     react-router-dom: 5.3.0
     redux: ^4.2.0
-    redux-logger: ^3.0.6
     redux-promise-middleware: ^6.1.2
     redux-thunk: ^2.4.1
     semantic-ui-react: ^2.1.3
@@ -6158,6 +6171,13 @@ __metadata:
   version: 5.2.0
   resolution: "ignore@npm:5.2.0"
   checksum: 6b1f926792d614f64c6c83da3a1f9c83f6196c2839aa41e1e32dd7b8d174cef2e329d75caabb62cb61ce9dc432f75e67d07d122a037312db7caa73166a1bdb77
+  languageName: node
+  linkType: hard
+
+"immer@npm:^9.0.7":
+  version: 9.0.15
+  resolution: "immer@npm:9.0.15"
+  checksum: 92e3d63e810e3c3c2bb61b70c45443e37ef983ad12924e3edaf03725ae5979618f5b473439bb3bb4a8c4769f25132f18dec10ea15c40f0b20da5691ff96ff611
   languageName: node
   linkType: hard
 
@@ -9798,15 +9818,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux-logger@npm:^3.0.6":
-  version: 3.0.6
-  resolution: "redux-logger@npm:3.0.6"
-  dependencies:
-    deep-diff: ^0.3.5
-  checksum: c40f63c44c6475cf6374ae0eaa810d913f142614cb80692a0beacaf135c5dc3eb3e2cdd4296f01446ba48cb69b82e81363b84d829f1f6659382c991022a814ac
-  languageName: node
-  linkType: hard
-
 "redux-promise-middleware@npm:^6.1.2":
   version: 6.1.2
   resolution: "redux-promise-middleware@npm:6.1.2"
@@ -9825,7 +9836,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux@npm:^4.2.0":
+"redux@npm:^4.1.2, redux@npm:^4.2.0":
   version: 4.2.0
   resolution: "redux@npm:4.2.0"
   dependencies:
@@ -9973,6 +9984,13 @@ __metadata:
   version: 2.0.1
   resolution: "require-package-name@npm:2.0.1"
   checksum: 00f4e9e467ebe2bbced2b4198a165de11c83b5ee9f4c20b05a8782659b92bcb544dbd50be9a3eed746d05ecd875453e258c079eb3a79604b50a27cf8ab0798b5
+  languageName: node
+  linkType: hard
+
+"reselect@npm:^4.1.5":
+  version: 4.1.6
+  resolution: "reselect@npm:4.1.6"
+  checksum: 3ea1058422904063ec93c8f4693fe33dcb2178bbf417ace8db5b2c797a5875cf357d9308d11ed3942ee22507dd34ecfbf1f3a21340a4f31c206cab1d36ceef31
   languageName: node
   linkType: hard
 

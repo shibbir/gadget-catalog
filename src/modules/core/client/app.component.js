@@ -1,5 +1,3 @@
-__webpack_nonce__ = "c29tZSBjb29sIHN0cmluZyB3aWxsIHBvcCB1cCAxMjM=";
-
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";

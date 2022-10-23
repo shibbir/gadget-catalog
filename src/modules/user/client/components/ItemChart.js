@@ -1,9 +1,8 @@
 import { isEmpty } from "lodash";
 import Highcharts from "highcharts";
-import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Select, Icon, Segment, Header, Button } from "semantic-ui-react";
+import { Select, Icon, Segment, Header } from "semantic-ui-react";
 
 import { fetchItemsByYearRange } from "../../../item/client/item.actions";
 

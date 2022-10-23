@@ -6,7 +6,7 @@ export default function SocialAuthService() {
         <>
             <Divider hidden/>
             <Segment className="stacked center aligned">
-                <Divider horizontal>or, use social service</Divider>
+                <Divider horizontal>or, use third party providers</Divider>
                 <div>
                     <Button color="facebook" href="/oauth/facebook">
                         <Icon name="facebook"/> Facebook
