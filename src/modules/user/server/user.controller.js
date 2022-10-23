@@ -147,7 +147,8 @@ function forgotPassword(req, res, next) {
         doc.save().then(function() {
             res.render("password-reset.html", {
                 name: doc.displayName,
-                url: `${req.headers.origin}/reset-password?token=${doc.local.resetPasswordToken}`
+                origin_url: req.headers.origin,
+                password_reset_url: `${req.headers.origin}/reset-password?token=${doc.local.resetPasswordToken}`
             }, function(err, html) {
                 transporter.sendMail({
                     from: `"Gadget Catalog" <${process.env.MAILER_ADDRESS}>`,
