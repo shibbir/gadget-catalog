@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
-import { FormattedDate } from "react-intl";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Icon, Divider, Segment, Button, Table, Modal, Header, TransitionablePortal } from "semantic-ui-react";
+import { Icon, Divider, Segment, Button, Modal, Header, TransitionablePortal, Card } from "semantic-ui-react";
 
 import CategoryForm from "./category-form.component";
 import { getCategories } from "../category.actions";
@@ -18,30 +17,27 @@ export default function Categories() {
     const loggedInUser = useSelector(state => state.userReducer.loggedInUser);
     const categories = useSelector(state => state.categoryReducer.categories);
 
-    const rows = categories.map(function(category, index) {
+    const cards = categories.map(function(category) {
         return (
-            <Table.Row key={category._id}>
-                <Table.Cell>{index+1}</Table.Cell>
-                <Table.Cell>{category.name}</Table.Cell>
-                <Table.Cell>{category.description}</Table.Cell>
-                <Table.Cell><FormattedDate value={category.date} day="2-digit" month="long" year="numeric"/></Table.Cell>
-                <Table.Cell>
-                    <Link to={`/items?categoryId=${category._id}`}>
-                        <Icon color="teal" name="external alternate"/>
-                        {`${category.items.length} item(s)`}
+            <Card key={category._id}>
+                <Card.Content>
+                    <Card.Header>{category.name}</Card.Header>
+                    <Card.Meta>{category.items ? category.items.length : 0} Items</Card.Meta>
+                    <Card.Description>
+                        Steve wants to add you to the group <strong>best friends</strong>
+                    </Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                    <Link to={`/items?categoryId=${category._id}`} className="ui button basic blue">
+                        <Icon name="external alternate" color="teal"/> Show Items
                     </Link>
-                </Table.Cell>
-                <Table.Cell>
-                    {loggedInUser && loggedInUser._id && loggedInUser._id === category.createdBy &&
-                        <a onClick={() => setCategoryId(category._id)}>
-                            <Icon name="edit" color="teal"/>
+                    {loggedInUser && loggedInUser.isAdmin &&
+                        <a onClick={() => setCategoryId(category._id)} className="ui button">
+                            <Icon name="pencil" color="teal"/> Edit
                         </a>
                     }
-                    {loggedInUser && loggedInUser._id && loggedInUser._id !== category.createdBy &&
-                        <Icon name="lock" color="black"/>
-                    }
-                </Table.Cell>
-            </Table.Row>
+                </Card.Content>
+            </Card>
         );
     });
 
@@ -49,28 +45,17 @@ export default function Categories() {
         <>
             { categories.length > 0 &&
                 <>
-                    <Button floated="right" primary size="small" onClick={() => setCategoryId(null)}>
-                        Add new category
-                    </Button>
+                    {loggedInUser && loggedInUser.isAdmin &&
+                        <Button floated="right" primary size="small" onClick={() => setCategoryId(null)}>
+                            Add new category
+                        </Button>
+                    }
 
                     <Divider hidden clearing/>
 
-                    <Table selectable compact>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>#</Table.HeaderCell>
-                                <Table.HeaderCell>Name</Table.HeaderCell>
-                                <Table.HeaderCell>Description</Table.HeaderCell>
-                                <Table.HeaderCell>Last Updated</Table.HeaderCell>
-                                <Table.HeaderCell>Items</Table.HeaderCell>
-                                <Table.HeaderCell>Actions</Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
-
-                        <Table.Body>
-                            {rows}
-                        </Table.Body>
-                    </Table>
+                    <Card.Group itemsPerRow={4} stackable>
+                        {cards}
+                    </Card.Group>
 
                     <TransitionablePortal open={categoryId !== undefined} transition={{ animation: "scale", duration: 400 }}>
                         <Modal dimmer size="tiny" open={true}>

@@ -1,7 +1,8 @@
 const async = require("async");
-const User = require("./modules/user/server/user.model");
-const Brand = require("./modules/brand/server/brand.model");
-const Category = require("./modules/category/server/category.model");
+const mongoose = require("./src/config/server/lib/mongoose");
+const User = require("./src/modules/user/server/user.model");
+const Brand = require("./src/modules/brand/server/brand.model");
+const Category = require("./src/modules/category/server/category.model");
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
@@ -12,7 +13,7 @@ const userSeeder = function(callback) {
     user.displayName = "Administrator";
     user.local.name = "Administrator";
     user.local.email = "admin@example-domain.com";
-    user.local.password = user.generateHash("temporary-password");
+    user.local.password = user.generateHash("P@ssw0rd");
 
     user.save(function(err, doc) {
         if(err) return callback(err);
@@ -20,24 +21,23 @@ const userSeeder = function(callback) {
     });
 };
 
-const categorySeeder = function(user, callback) {
-    const array = ["CategoryX", "CategoryY"].sort();
+const categorySeeder = function(callback) {
+    const categories = [
+        { name: "Category X", slug: convertToSlug("Category X") },
+        { name: "Category Y", slug: convertToSlug("Category Y") }
+    ].sort();
 
-    async.each(array, function(item, asyncCallback) {
-        new Category({
-            name: item,
-            slug: convertToSlug(item),
-            createdBy: user._id
-        }).save(function() {
+    async.each(categories, function(category, asyncCallback) {
+        new Category(category).save(function() {
             asyncCallback();
         });
     }, function() {
-        callback(null, user);
+        callback(null);
     });
 };
 
 const brandSeeder = function(user, callback) {
-    const array = ["BrandX", "BrandY"].sort();
+    const array = ["Brand X", "Brand Y"].sort();
 
     async.each(array, function(item, asyncCallback) {
         new Brand({
@@ -55,7 +55,7 @@ const brandSeeder = function(user, callback) {
 require("dotenv").config();
 
 mongoose.connect(function() {
-    async.waterfall([ userSeeder, categorySeeder, brandSeeder ], function(err) {
+    async.waterfall([ categorySeeder, userSeeder, brandSeeder ], function(err) {
         if(err) console.error(err);
         else console.info("DB seed completed!");
         process.exit();

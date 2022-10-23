@@ -2,6 +2,7 @@
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    justify-content: center;
 }
 
 .footer.segment {
@@ -46,4 +47,12 @@ a[disabled] {
 .image-wrapper {
     width: 80%;
     margin: auto !important;
+}
+
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
+.site-content {
+    flex: 1;
 }

@@ -43,7 +43,7 @@ export default class DraftEditor extends React.Component {
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.
         let className = 'RichEditor-editor';
-        let contentState = editorState.getCurrentContent();
+        const contentState = editorState.getCurrentContent();
         if (!contentState.hasText()) {
             if (contentState.getBlockMap().first().getType() !== 'unstyled') {
                 className += ' RichEditor-hidePlaceholder';
@@ -124,7 +124,6 @@ const BLOCK_TYPES = [
     {label: 'H4', style: 'header-four'},
     {label: 'H5', style: 'header-five'},
     {label: 'H6', style: 'header-six'},
-    {label: 'Blockquote', style: 'blockquote'},
     {label: 'UL', style: 'unordered-list-item'},
     {label: 'OL', style: 'ordered-list-item'}
 ];
@@ -152,14 +151,14 @@ const BlockStyleControls = (props) => {
     );
 };
 
-let INLINE_STYLES = [
+const INLINE_STYLES = [
     {label: 'Bold', style: 'BOLD'},
     {label: 'Italic', style: 'ITALIC'},
     {label: 'Underline', style: 'UNDERLINE'}
 ];
 
 const InlineStyleControls = (props) => {
-    let currentStyle = props.editorState.getCurrentInlineStyle();
+    const currentStyle = props.editorState.getCurrentInlineStyle();
     return (
         <div className="RichEditor-controls">
             {INLINE_STYLES.map(type =>

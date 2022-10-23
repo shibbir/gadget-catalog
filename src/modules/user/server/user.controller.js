@@ -70,7 +70,7 @@ async function register(req, res) {
     }
 }
 
-async function login(req, res) {
+async function login(req, res, next) {
     try {
         let doc;
         const { username, password, grant_type, recaptchaToken } = req.body;
@@ -79,9 +79,7 @@ async function login(req, res) {
 
         if(!response.data.success) return res.status(401).send("reCAPTCHA validation failed! Please try again.");
 
-        if(!grant_type) {
-            return res.status(401).send("Invalid credentials.");
-        }
+        if(!grant_type) return res.status(401).send("Invalid credentials.");
 
         if(grant_type === "password") {
             doc = await User.findOne({ "local.email": username });
@@ -99,7 +97,7 @@ async function login(req, res) {
 
         res.json(formatProfile(doc.toJSON()));
     } catch (err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
@@ -125,13 +123,13 @@ async function changePassword(req, res) {
     }
 }
 
-function forgotPassword(req, res) {
+function forgotPassword(req, res, next) {
     User.findOne({ $or: [
         { "facebook.email" : req.body.email },
         { "google.email": req.body.email },
         { "local.email": req.body.email }
     ]}, function(err, doc) {
-        if(err) return res.sendStatus(500);
+        if(err) return next(err);
 
         if(!doc) return res.status(404).send("No account is associated with this email address.");
 
@@ -148,7 +146,9 @@ function forgotPassword(req, res) {
 
         doc.save().then(function() {
             res.render("password-reset.html", {
-                url: `${req.headers.origin}/reset-password?token=${doc.local.resetPasswordToken}`
+                name: doc.displayName,
+                origin_url: req.headers.origin,
+                password_reset_url: `${req.headers.origin}/reset-password?token=${doc.local.resetPasswordToken}`
             }, function(err, html) {
                 transporter.sendMail({
                     from: `"Gadget Catalog" <${process.env.MAILER_ADDRESS}>`,
@@ -156,7 +156,7 @@ function forgotPassword(req, res) {
                     subject: "[Gadget Catalog] Password Reset Request",
                     html: html
                 }, function (err) {
-                    if(err) return res.sendStatus(500);
+                    if(err) return next(err);
 
                     res.sendStatus(200);
                 });

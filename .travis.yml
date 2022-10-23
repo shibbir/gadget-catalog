@@ -1,10 +1,10 @@
 language: node_js
 node_js:
-  - "14"
+  - "16"
 
 sudo: false
 
 branches:
   only: master
 
-after_success: npm run coverage
+after_success: jest --detectOpenHandles --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage

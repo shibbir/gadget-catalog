@@ -22,13 +22,11 @@ export default function Brands() {
             <Table.Row key={brand._id}>
                 <Table.Cell>{index+1}</Table.Cell>
                 <Table.Cell>{brand.name}</Table.Cell>
-                <Table.Cell><a href={`mailto:${brand.email}`}>{brand.email}</a></Table.Cell>
-                <Table.Cell><a href={brand.website}>{brand.website}</a></Table.Cell>
                 <Table.Cell><FormattedDate value={brand.date} day="2-digit" month="long" year="numeric"/></Table.Cell>
                 <Table.Cell>
                     <Link to={`/items?brandId=${brand._id}`}>
                         <Icon color='teal' name="external alternate"/>
-                        {`${brand.items.length} item(s)`}
+                        {brand.items ? brand.items.length : 0} item(s)
                     </Link>
                 </Table.Cell>
                 <Table.Cell>
@@ -60,8 +58,6 @@ export default function Brands() {
                             <Table.Row>
                                 <Table.HeaderCell>#</Table.HeaderCell>
                                 <Table.HeaderCell>Name</Table.HeaderCell>
-                                <Table.HeaderCell>E-mail address</Table.HeaderCell>
-                                <Table.HeaderCell>Website</Table.HeaderCell>
                                 <Table.HeaderCell>Last Updated</Table.HeaderCell>
                                 <Table.HeaderCell>Items</Table.HeaderCell>
                                 <Table.HeaderCell>Actions</Table.HeaderCell>

@@ -6,4 +6,13 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-module.exports = cloudinary;
+function uploadToCloudinary(file_path, options) {
+    return new Promise((resolve, reject) => {
+        cloudinary.v2.uploader.upload(file_path, options, (err, url) => {
+            if (err) return reject(err);
+            return resolve(url);
+        });
+    });
+}
+
+exports.uploadToCloudinary = uploadToCloudinary;

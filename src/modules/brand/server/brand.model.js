@@ -12,12 +12,6 @@ const BrandSchema = Schema({
         unique: true,
         required: true
     },
-    email: {
-        type: String,
-        unique: true,
-        sparse: true
-    },
-    website: String,
     createdBy: {
         ref: "User",
         required: true,

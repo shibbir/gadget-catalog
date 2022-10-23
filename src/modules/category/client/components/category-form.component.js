@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
 import { Form, Formik } from "formik";
-import * as iziToast from "izitoast/dist/js/izitoast";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import iziToast from "izitoast/dist/js/iziToast";
 import { Divider, Button } from "semantic-ui-react";
+import { useSelector, useDispatch } from "react-redux";
+
 import CategorySchema from "../category.schema";
 import { createCategory, updateCategory, getCategory } from "../category.actions";
-import { TextInput, TextareaInput } from "../../../core/client/components/FieldInput/FieldInputs";
+import { TextInput } from "../../../core/client/components/FieldInput/FieldInputs";
 
 export default function CategoryForm({id} = props) {
     const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export default function CategoryForm({id} = props) {
         <Formik
             initialValues={{
                 name: id && category ? category.name : "",
-                description: id && category && category.description ? category.description : ""
+                group: id && category ? category.group : ""
             }}
             displayName="CategoryForm"
             enableReinitialize={true}
@@ -57,10 +58,6 @@ export default function CategoryForm({id} = props) {
                         name: "name",
                         label: "Name",
                         required: true
-                    }}/>
-                    <TextareaInput attributes={{
-                        name: "description",
-                        label: "Description"
                     }}/>
                     <Divider hidden/>
                     <Button.Group>

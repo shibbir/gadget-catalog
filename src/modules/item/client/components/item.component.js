@@ -39,7 +39,7 @@ export default function ItemDetail() {
         if(confirm("Are you sure you want to delete this image?")) {
             dispatch(deleteImage(itemId, fileId));
         }
-    }
+    };
 
     if(!item) {
         return (
@@ -58,7 +58,7 @@ export default function ItemDetail() {
     }
 
     return (
-        <div>
+        <>
             <Breadcrumb size="small">
                 <LinkContainer to="/items">
                     <Breadcrumb.Section>Items</Breadcrumb.Section>
@@ -78,6 +78,7 @@ export default function ItemDetail() {
                     { item.activeImage &&
                         <Image src={item.activeImage.secure_url} alt={item.name}/>
                     }
+
                     { item.files && item.files.length === 0 &&
                         <Message warning icon>
                         <Icon name="warning sign" size="large"/>
@@ -104,10 +105,12 @@ export default function ItemDetail() {
                                     <div>Price: <FormattedNumber value={item.price} style="currency" currency={item.currency}/></div>
                                 }
                                 <div>Purchase Date: <FormattedDate value={item.purchaseDate} day="2-digit" month="long" year="numeric"/></div>
-                                { item.retailerId && <div>Retailer: {item.retailer.name}</div> }
+                                { item.invoice &&
+                                    <a href={`https://res.cloudinary.com/shibbir/image/upload/fl_attachment:invoice-${item._id}/${item.invoice.public_id}`}>Download invoice</a>
+                                }
                             </Item.Meta>
 
-                            <Divider horizontal>Description</Divider>
+                            <Divider horizontal>Specifications</Divider>
 
                             <Item.Description>
                                 { item.description &&
@@ -193,6 +196,6 @@ export default function ItemDetail() {
                     </Modal.Actions>
                 </Modal>
             </TransitionablePortal>
-        </div>
+        </>
     );
 }

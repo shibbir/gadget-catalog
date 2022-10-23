@@ -89,17 +89,12 @@ export default function Items() {
         dateRange = `${startDate}-${endDate}`;
     }
 
-    const categoryOptions = categories.map(function(option) {
-        return { key: option._id, value: option._id, text: option.name };
-    });
+    const categoryOptions = categories.map(option => ({ key: option._id, value: option._id, text: option.name }));
 
-    const brandOptions = brands.map(function(option) {
-        return { key: option._id, value: option._id, text: option.name };
-    });
+    const brandOptions = brands.map((option) => ({ key: option._id, value: option._id, text: option.name }));
 
     const cards = data.map(function(item) {
-        let activeImage = item.files.filter(x => x.active)[0];
-        activeImage = activeImage ? activeImage.secure_url : null;
+        const activeImage = item.files.find(x => x.active) ? item.files.find(x => x.active).secure_url : item.files[0].secure_url;
 
         return (
             <Link key={item._id} className="ui raised card" to={`/items/${item._id}`}>

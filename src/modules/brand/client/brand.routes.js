@@ -4,7 +4,7 @@ import Brands from "./brands.component";
 import PrivateRoute from "../../core/client/PrivateRoute";
 
 export default function BrandRoutes() {
-    let { path } = useRouteMatch();
+    const { path } = useRouteMatch();
 
     return (
         <Switch>

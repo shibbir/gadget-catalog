@@ -1,60 +1,65 @@
+const path = require("path");
 const faker = require("faker");
+const jwt = require("jsonwebtoken");
 const request = require("supertest");
-const expect = require("chai").expect;
+const mongoose = require("mongoose");
 
-const specHelper = require("./spec.helper");
-const Category = require("../src/modules/category/server/category.model");
-const app = require("../src/config/server/lib/express")();
+const app = require(path.join(process.cwd(), "src/config/server/lib/express"))();
+const Category = require(path.join(process.cwd(), "src/modules/category/server/category.model"));
+
+const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
+const access_token = jwt.sign({ id: global.__USERID__ }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: global.__USERID__ });
 
 describe("Category Routes", function() {
-    let category = {};
-    const user = specHelper.users.admin;
+    let category;
 
-    before(async function() {
+    beforeAll(async () => {
+        mongoose.connect(process.env.MONGODB_URI);
+
         category = new Category({
             name: faker.commerce.productName(),
-            slug: specHelper.convertToSlug(faker.commerce.productName()),
-            createdBy: user._id
+            slug: convertToSlug(faker.commerce.productName()),
+            createdBy: global.__USERID__
         });
 
         category = await category.save();
     });
 
-    it("Should fetch all categories", async function() {
+    afterAll(() => {
+        mongoose.connection.close();
+    });
+
+    test("Should fetch all categories", async () => {
         const response = await request(app)
             .get("/api/categories")
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(response.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should create a new category", async function() {
+    test("Should create a new category", async () => {
         const response = await request(app)
             .post("/api/categories")
-            .send({
-                name: faker.commerce.productName()
-            })
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .send({ name: faker.commerce.productName() })
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(response.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should get category by id", async function() {
+    test("Should get category by id", async () => {
         const response = await request(app)
             .get(`/api/categories/${category._id}`)
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(response.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 
-    it("Should update an existing category", async function() {
+    test("Should update an existing category", async () => {
         const response = await request(app)
             .put(`/api/categories/${category._id}`)
-            .send({
-                name: faker.commerce.productName()
-            })
-            .set("Cookie", [`access_token=${user.accessToken}`]);
+            .send({ name: faker.commerce.productName() })
+            .set("Cookie", [`access_token=${access_token}`]);
 
-        expect(response.status).to.equal(200);
+        expect(response.statusCode).toEqual(200);
     });
 });

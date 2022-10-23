@@ -17,10 +17,10 @@ export default function Footer() {
                         <h4 className="ui inverted header">Technology stack</h4>
                         <div className="ui inverted link list">
                             <a className="item" href="https://reactjs.org/">React</a>
-                            <a className="item" href="https://redux.js.org/">Redux</a>
+                            <a className="item" href="https://react-redux.js.org/">Redux</a>
                             <a className="item" href="https://expressjs.com/">Express</a>
                             <a className="item" href="https://www.mongodb.com/">MongoDB</a>
-                            <a className="item" href="http://www.passportjs.org/">Passport</a>
+                            <a className="item" href="https://www.passportjs.org/">Passport</a>
                         </div>
                     </div>
                     <div className="eight wide right floated column">

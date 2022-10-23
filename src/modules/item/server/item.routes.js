@@ -6,7 +6,10 @@ module.exports = function(app) {
 
     app.route("/api/items")
         .get(jwtAuthentication, controller.getItems)
-        .post(jwtAuthentication, multer.array("files", 3), controller.createItem);
+        .post(jwtAuthentication, multer.fields([
+            { name: "images", maxCount: 3 },
+            { name: "invoice", maxCount: 1 }
+        ]), controller.createItem);
 
     app.route("/api/items/:itemId/images/:fileId")
         .put(jwtAuthentication, controller.updateImage)
@@ -17,6 +20,6 @@ module.exports = function(app) {
 
     app.route("/api/items/:id")
         .get(jwtAuthentication, controller.getItem)
-        .put(jwtAuthentication, multer.array("files", 3), controller.updateItem)
+        .put(jwtAuthentication, multer.array("images", 3), controller.updateItem)
         .delete(jwtAuthentication, controller.deleteItem);
 };

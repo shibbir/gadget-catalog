@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
 import "fomantic-ui-css/semantic.css";
-import "izitoast/dist/css/izitoast.css";
+import "izitoast/dist/css/iziToast.css";
 import "./app.component.css";
 
 import NoMatch from "./NoMatch";
@@ -17,7 +17,6 @@ import Profile from "../../user/client/components/profile.component";
 import Dashboard from "../../user/client/components/dashboard.component";
 import ItemRoutes from "../../item/client/item.routes";
 import BrandRoutes from "../../brand/client/brand.routes";
-import RetailerRoutes from "../../retailer/client/retailer.routes";
 import CategoryRoutes from "../../category/client/category.routes";
 import { getSignedInUserProfile } from "../../user/client/user.actions";
 
@@ -69,8 +68,6 @@ export default function App() {
             <Route path="/items" component={ItemRoutes}/>
 
             <Route path="/brands" component={BrandRoutes}/>
-
-            <Route path="/retailers" component={RetailerRoutes}/>
 
             <Route path="/categories" component={CategoryRoutes}/>
 

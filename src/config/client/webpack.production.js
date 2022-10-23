@@ -22,7 +22,7 @@ module.exports = merge(commonConfig, {
             cssProcessorPluginOptions: {
                 preset: ["default", { discardComments: { removeAll: true } }]
             }
-        }),
+        })
     ],
 
     optimization: {

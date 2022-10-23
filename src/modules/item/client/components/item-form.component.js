@@ -10,7 +10,6 @@ import { Divider, Button, Form as SemanticUIForm } from "semantic-ui-react";
 import Types from "../item.types";
 import { itemSchema } from "../item.schema";
 import { getBrands } from "../../../brand/client/brand.actions";
-import { getRetailers } from "../../../retailer/client/retailer.actions";
 import { createItem, updateItem, fetchItem } from "../item.actions";
 import { getCategories } from "../../../category/client/category.actions";
 import { TextInput, RichEditorInput, DropdownInput, FileInput } from "../../../core/client/components/FieldInput/FieldInputs";
@@ -22,7 +21,6 @@ export default function ItemForm() {
 
     useEffect(() => {
         dispatch(getBrands());
-        dispatch(getRetailers());
         dispatch(getCategories());
     }, [dispatch]);
 
@@ -32,7 +30,6 @@ export default function ItemForm() {
 
     const item = useSelector(state => state.itemReducer.item);
     const brands = useSelector(state => state.brandReducer.brands);
-    const retailers = useSelector(state => state.retailerReducer.retailers);
     const categories = useSelector(state => state.categoryReducer.categories);
 
     const blocksFromHTML = convertFromHTML(item && item.description ? item.description : "");
@@ -42,10 +39,6 @@ export default function ItemForm() {
     });
 
     const brandOptions = brands.map(function(option) {
-        return { key: option._id, value: option._id, text: option.name };
-    });
-
-    const retailerOptions = retailers.map(function(option) {
         return { key: option._id, value: option._id, text: option.name };
     });
 
@@ -74,8 +67,9 @@ export default function ItemForm() {
                 purchaseDate: item && item.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
                 price: item ? item.price : "",
                 currency: item ? item.currency : "",
-                retailerId: item ? item.retailerId : "",
-                files: "",
+                payee: item ? item.payee : "",
+                images: "",
+                invoice: "",
                 editorState: blocksFromHTML.contentBlocks
                     ? new EditorState.createWithContent(ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap))
                     : new EditorState.createEmpty()
@@ -88,11 +82,16 @@ export default function ItemForm() {
 
                 let formData = new FormData();
 
-                if(values.files) {
-                    for(let index = 0; index < values.files.length; index++) {
-                        formData.append("files", values.files[index]);
+                if(values.images) {
+                    for(let index = 0; index < values.images.length; index++) {
+                        formData.append("images", values.images[index]);
                     }
-                    delete values.files;
+                    delete values.images;
+                }
+
+                if(values.invoice) {
+                    formData.append("invoice", values.invoice);
+                    delete values.invoice;
                 }
 
                 for(let key in values) {
@@ -161,6 +160,12 @@ export default function ItemForm() {
                     </SemanticUIForm.Group>
 
                     <SemanticUIForm.Group widths="equal">
+                        <TextInput attributes={{
+                            type: "number",
+                            name: "price",
+                            label: "Price",
+                            required: true
+                        }}/>
                         <DropdownInput attributes={{
                             value: formikProps.values.currency,
                             name: "currency",
@@ -168,12 +173,6 @@ export default function ItemForm() {
                             label: "Currency",
                             options: currencyOptions,
                             onChange: (event, data) => {formikProps.setFieldValue(data.name, data.value)},
-                            required: true
-                        }}/>
-                        <TextInput attributes={{
-                            type: "number",
-                            name: "price",
-                            label: "Price",
                             required: true
                         }}/>
                     </SemanticUIForm.Group>
@@ -186,22 +185,28 @@ export default function ItemForm() {
                             required: true
                         }}/>
 
-                        <DropdownInput attributes={{
-                            value: formikProps.values.retailerId,
-                            name: "retailerId",
-                            placeholder: "Select retailer",
-                            label: "Retailer",
-                            options: retailerOptions,
-                            onChange: (event, data) => {formikProps.setFieldValue(data.name, data.value)}
+                        <TextInput attributes={{
+                            type: "text",
+                            name: "payee",
+                            label: "Payee"
                         }}/>
                     </SemanticUIForm.Group>
 
                     <FileInput attributes={{
                         type: "file",
-                        name: "files",
+                        name: "images",
                         label: "Upload images",
                         multiple: true,
-                        onChange: event => {formikProps.setFieldValue("files", event.currentTarget.files)}
+                        info: "You can upload a maximum of 3 files at a time. The max file size limit is 1.5 MB.",
+                        onChange: event => {formikProps.setFieldValue("images", event.currentTarget.files)}
+                    }}/>
+
+                    <FileInput attributes={{
+                        type: "file",
+                        name: "invoice",
+                        label: "Upload invoice",
+                        info: "The max file size limit is 1.5 MB.",
+                        onChange: event => {formikProps.setFieldValue("invoice", event.currentTarget.files[0])}
                     }}/>
 
                     <Divider hidden/>
