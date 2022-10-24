@@ -1,12 +1,11 @@
 const fs = require("fs");
 const path = require("path");
-const async = require("async");
 const mongoose = require("mongoose");
 const validator = require("validator");
 const { format, parseISO } = require("date-fns");
 
 const Item = require("./item.model");
-const { uploadToCloudinary } = require(path.join(process.cwd(), "src/config/server/lib/cloudinary"));
+const { uploadToCloudinary, destroyFromCloudinary, deleteResourcesFromCloudinary, deleteFolderFromCloudinary } = require(path.join(process.cwd(), "src/config/server/lib/cloudinary"));
 
 async function getItem(req, res, next) {
     const query = req.user.role === "admin" ? { _id: req.params.id } : { _id: req.params.id, createdBy: req.user._id };
@@ -91,7 +90,7 @@ async function createItem(req, res, next) {
 
                 item.files.push({ ...result });
 
-                fs.unlinkSync(file.path);
+                fs.unlink(file.path);
             }
         }
 
@@ -102,7 +101,7 @@ async function createItem(req, res, next) {
 
                 item.invoice = result;
 
-                fs.unlinkSync(file.path);
+                fs.unlink(file.path);
             }
         }
 
@@ -114,9 +113,9 @@ async function createItem(req, res, next) {
     }
 }
 
-function updateItem(req, res) {
-    Item.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
-        if(err) return res.sendStatus(500);
+async function updateItem(req, res, next) {
+    try {
+        const doc = await Item.findOne({ _id: req.params.id, createdBy: req.user._id });
 
         if(!doc) return res.sendStatus(404);
 
@@ -130,139 +129,92 @@ function updateItem(req, res) {
 
         if(req.body.description) doc.description = validator.escape(req.body.description);
 
-        async.waterfall([
-            function(callback) {
-                if(!req.files || !req.files.length) {
-                    return callback();
-                }
+        if(req.files && req.files.images) {
+            for(let i = 0; i < req.files.images.length; i++) {
+                const file = req.files.images[i];
+                const result = await uploadToCloudinary(file.path, { folder: `gadget-catalog/${req.params.id}` });
 
-                req.files.images.forEach(function(file, index) {
-                    cloudinary.uploader.upload(file.path, {
-                        folder: `gadget-catalog/${doc._id}`
-                    }, function(error, result) {
-                        doc.files.push({
-                            ...result
-                        });
+                doc.files.push({ ...result });
 
-                        fs.unlinkSync(file.path);
-
-                        if(index === req.files.images.length - 1) {
-                            doc.files[0].active = true;
-                            callback();
-                        }
-                    });
-                });
+                fs.unlink(file.path);
             }
-        ], function() {
-            doc.save();
-            res.json(doc);
-        });
-    });
-}
+        }
 
-function deleteItem(req, res) {
-    try {
-        Item.findOneAndRemove({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
-            if(err) return res.sendStatus(500);
-
-            if(!doc) return res.sendStatus(404);
-
-            const public_ids = [];
-
-            doc.files.forEach(function(file) {
-                public_ids.push(file.public_id);
-            });
-
-            if(doc.invoice) {
-                public_ids.push(doc.invoice.public_id);
-            }
-
-            if(!public_ids.length) return res.sendStatus(200);
-
-            async.waterfall([
-                function(callback) {
-                    cloudinary.api.delete_resources(public_ids, function(err) {
-                        if(err) return callback(err);
-                        callback();
-                    });
-                },
-                function(callback) {
-                    cloudinary.api.delete_folder(`gadget-catalog/${doc._id}`, function(err) {
-                        if(err) return callback(err);
-                        callback();
-                    });
-                }
-            ], function(err) {
-                if(err) return res.sendStatus(500);
-
-                res.sendStatus(200);
-            });
-        });
+        await doc.save();
+        res.json(doc);
     } catch(err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
-function updateImage(req, res) {
+async function deleteItem(req, res, next) {
     try {
-        async.waterfall([
-            function(callback) {
-                Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, "files", function(err, doc) {
-                    if(err) return callback(err);
+        const doc = await Item.findOneAndRemove({ _id: req.params.id, createdBy: req.user._id });
 
-                    if(!doc) return callback();
+        if(!doc) return res.sendStatus(404);
 
-                    doc.files = doc.files.map(function(x) {
-                        x.active = false;
-                        return x;
-                    });
+        const public_ids = [];
 
-                    doc.save(function() {
-                        callback();
-                    });
-                });
-            }, function(callback) {
-                Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, "files._id": req.params.fileId }, {
-                    $set: { "files.$.active": true }
-                }, { new: true }, function(err, doc) {
-                    if(err) return callback(err);
-                    callback(null, doc);
-                });
-            }
-        ], function(err, result) {
-            if(err) return res.sendStatus(500);
-            res.json(result);
+        doc.files.forEach(function(file) {
+            public_ids.push(file.public_id);
         });
+
+        if(doc.invoice) {
+            public_ids.push(doc.invoice.public_id);
+        }
+
+        if(!public_ids.length) return res.sendStatus(200);
+
+        await deleteResourcesFromCloudinary(public_ids);
+        await deleteFolderFromCloudinary(`gadget-catalog/${doc._id}`);
     } catch(err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
-function deleteImage(req, res) {
+async function updateImage(req, res, next) {
     try {
-        Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, function(err, doc) {
-            if(err) return res.sendStatus(500);
+        let doc = await Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, "files");
 
-            if(!doc) return res.sendStatus(404);
+        if(!doc) return res.sendStatus(404);
 
-            const file = doc.files.id(req.params.fileId);
-
-            cloudinary.uploader.destroy(file.public_id, {
-                invalidate: true
-            }, function(err) {
-                if(err) return res.sendStatus(500);
-
-                doc.files.id(req.params.fileId).remove();
-                doc.save();
-                res.json(doc);
-            });
+        doc.files = doc.files.map(function(x) {
+            x.active = false;
+            return x;
         });
+
+        await doc.save();
+
+        doc = await Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, "files._id": req.params.fileId }, {
+            $set: { "files.$.active": true }
+        }, { new: true });
+
+        res.json(doc);
     } catch(err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
-async function getItemCountByYearRange(req, res) {
+async function deleteImage(req, res, next) {
+    try {
+        const doc = await Item.findOne({ _id: req.params.itemId, createdBy: req.user._id });
+
+        if(!doc || !req.params.fileId) return res.sendStatus(404);
+
+        const file = doc.files.id(req.params.fileId);
+
+        await destroyFromCloudinary(file.public_id, { invalidate: true });
+
+        doc.files.id(req.params.fileId).remove();
+        await doc.save();
+
+        res.json(doc);
+    } catch(err) {
+        next(err);
+    }
+}
+
+async function getItemCountByYearRange(req, res, next) {
     const startYear = req.query.startYear;
     const endYear = req.query.endYear;
 
@@ -282,7 +234,7 @@ async function getItemCountByYearRange(req, res) {
 
         res.json(data);
     } catch(err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
