@@ -77,6 +77,7 @@
     "coveralls": "^3.1.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
     "eslint": "^8.49.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
