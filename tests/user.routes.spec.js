@@ -1,8 +1,8 @@
 const path = require("path");
-const faker = require("faker");
 const jwt = require("jsonwebtoken");
 const request = require("supertest");
 const mongoose = require("mongoose");
+const { faker } = require("@faker-js/faker");
 
 const app = require(path.join(process.cwd(), "src/config/server/lib/express"))();
 
@@ -22,9 +22,9 @@ describe("User Routes", function() {
         const response = await request(app)
             .post("/api/register")
             .send({
-                name: faker.name.findName(),
+                name: faker.person.fullName(),
                 email: faker.internet.email(),
-                password: faker.internet.password(8)
+                password: faker.internet.password({ length: 8 })
             });
 
         expect(response.statusCode).toEqual(200);
@@ -67,7 +67,7 @@ describe("User Routes", function() {
             .set("Cookie", [`access_token=${access_token};refresh_token=${refresh_token}`])
             .send({
                 currentPassword: global.__PASSWORD__,
-                newPassword: faker.internet.password(8)
+                newPassword: faker.internet.password({ length: 8 })
             });
 
         expect(response.statusCode).toEqual(200);

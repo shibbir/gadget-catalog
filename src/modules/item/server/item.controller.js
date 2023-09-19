@@ -1,11 +1,11 @@
-const fs = require("fs");
 const path = require("path");
+const fs = require("fs/promises");
 const mongoose = require("mongoose");
 const validator = require("validator");
 const { format, parseISO } = require("date-fns");
 
 const Item = require("./item.model");
-const { uploadToCloudinary, destroyFromCloudinary, deleteResourcesFromCloudinary, deleteFolderFromCloudinary } = require(path.join(process.cwd(), "src/config/server/lib/cloudinary"));
+const { upload, destroy, deleteResources, deleteFolder } = require(path.join(process.cwd(), "src/config/server/lib/cloudinary"));
 
 async function getItem(req, res, next) {
     const query = req.user.role === "admin" ? { _id: req.params.id } : { _id: req.params.id, createdBy: req.user._id };
@@ -48,8 +48,8 @@ async function getItems(req, res, next) {
     }
 
     try {
-        const count = await Item.where(query).countDocuments();
-        const docs = await Item.find(query).sort({ purchaseDate: "descending" }).skip(skip).limit(limit);
+        const count = await Item.where(query).setOptions({ sanitizeFilter: true }).countDocuments();
+        const docs = await Item.find(query).setOptions({ sanitizeFilter: true }).sort({ purchaseDate: "descending" }).skip(skip).limit(limit);
 
         res.json({
             metadata: {
@@ -86,22 +86,22 @@ async function createItem(req, res, next) {
         if(req.files && req.files.images) {
             for(let i = 0; i < req.files.images.length; i++) {
                 const file = req.files.images[i];
-                const result = await uploadToCloudinary(file.path, { folder: `gadget-catalog/${_id}` });
+                const result = await upload(file.path, { folder: `gadget-catalog/${_id}` });
 
-                item.files.push({ ...result });
+                item.files.push({ ...result, active: i === 0 ? true : false });
 
-                fs.unlink(file.path);
+                await fs.unlink(file.path);
             }
         }
 
         if(req.files && req.files.invoice) {
             for(let i = 0; i < req.files.invoice.length; i++) {
                 const file = req.files.invoice[i];
-                const result = await uploadToCloudinary(file.path, { folder: `gadget-catalog/${_id}` });
+                const result = await upload(file.path, { folder: `gadget-catalog/${_id}` });
 
                 item.invoice = result;
 
-                fs.unlink(file.path);
+                await fs.unlink(file.path);
             }
         }
 
@@ -132,11 +132,11 @@ async function updateItem(req, res, next) {
         if(req.files && req.files.images) {
             for(let i = 0; i < req.files.images.length; i++) {
                 const file = req.files.images[i];
-                const result = await uploadToCloudinary(file.path, { folder: `gadget-catalog/${req.params.id}` });
+                const result = await upload(file.path, { folder: `gadget-catalog/${req.params.id}` });
 
                 doc.files.push({ ...result });
 
-                fs.unlink(file.path);
+                await fs.unlink(file.path);
             }
         }
 
@@ -165,8 +165,10 @@ async function deleteItem(req, res, next) {
 
         if(!public_ids.length) return res.sendStatus(200);
 
-        await deleteResourcesFromCloudinary(public_ids);
-        await deleteFolderFromCloudinary(`gadget-catalog/${doc._id}`);
+        await deleteResources(public_ids);
+        await deleteFolder(`gadget-catalog/${doc._id}`);
+
+        res.sendStatus(200);
     } catch(err) {
         next(err);
     }
@@ -203,9 +205,9 @@ async function deleteImage(req, res, next) {
 
         const file = doc.files.id(req.params.fileId);
 
-        await destroyFromCloudinary(file.public_id, { invalidate: true });
+        await destroy(file.public_id, { invalidate: true });
 
-        doc.files.id(req.params.fileId).remove();
+        doc.files.id(req.params.fileId).deleteOne();
         await doc.save();
 
         res.json(doc);

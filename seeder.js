@@ -32,7 +32,7 @@ const categorySeeder = function(callback) {
             asyncCallback();
         });
     }, function() {
-        callback(null);
+        callback();
     });
 };
 

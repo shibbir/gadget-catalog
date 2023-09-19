@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 
 module.exports = function() {
     const app = express();
-    
+
     app.use(compression());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
@@ -19,8 +19,6 @@ module.exports = function() {
     app.set("views", path.join(process.cwd(), "src/modules/core/server"));
 
     app.set("port", process.env.PORT);
-
-    app.enable("trust proxy");
 
     app.locals.jsFiles = config.client.js;
     app.locals.cssFiles = config.client.css;

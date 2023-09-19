@@ -6,7 +6,7 @@ module.exports = {
     testEnvironment: "node",
     globals: {
         __USERID__: "58e8d591a643633a109f29bc",
-        __USERNAME__: "admin@user.com",
-        __PASSWORD__: "P@ssword123"
+        __USERNAME__: "admin@gadgetcatalog.com",
+        __PASSWORD__: "P@ssw0rd"
     }
 };

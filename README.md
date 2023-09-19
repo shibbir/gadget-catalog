@@ -97,4 +97,4 @@ If you find a bug, kindly open an issue [here](https://github.com/shibbir/gadget
 If you'd like to request a new feature, feel free to do so by opening an issue [here](https://github.com/shibbir/gadget-catalog/issues/new).
 
 ## :memo: License
-<a href="https://opensource.org/licenses/MIT">The MIT License.</a> Copyright &copy; 2022 [Shibbir Ahmed.](https://shibbir.io/)
+<a href="https://opensource.org/licenses/MIT">The MIT License.</a> Copyright &copy; 2023 [Shibbir Ahmed.](https://shibbir.io/)

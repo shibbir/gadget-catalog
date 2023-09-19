@@ -1,8 +1,8 @@
 const path = require("path");
-const faker = require("faker");
 const jwt = require("jsonwebtoken");
 const request = require("supertest");
 const mongoose = require("mongoose");
+const { faker } = require("@faker-js/faker");
 
 const app = require(path.join(process.cwd(), "src/config/server/lib/express"))();
 const Item = require(path.join(process.cwd(), "src/modules/item/server/item.model"));
@@ -21,8 +21,8 @@ describe("Item Routes", function() {
         mongoose.connect(process.env.MONGODB_URI);
 
         brand = new Brand({
-            name: faker.company.companyName(),
-            slug: convertToSlug(faker.company.companyName()),
+            name: faker.company.name(),
+            slug: convertToSlug(faker.company.name()),
             createdBy: global.__USERID__
         });
 

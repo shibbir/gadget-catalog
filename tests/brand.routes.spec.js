@@ -1,8 +1,8 @@
 const path = require("path");
-const faker = require("faker");
 const jwt = require("jsonwebtoken");
 const request = require("supertest");
 const mongoose = require("mongoose");
+const { faker } = require("@faker-js/faker");
 
 const app = require(path.join(process.cwd(), "src/config/server/lib/express"))();
 const Brand = require(path.join(process.cwd(), "src/modules/brand/server/brand.model"));
@@ -17,8 +17,8 @@ describe("Brand Routes", function() {
         mongoose.connect(process.env.MONGODB_URI);
 
         brand = new Brand({
-            name: faker.company.companyName(),
-            slug: convertToSlug(faker.company.companyName()),
+            name: faker.company.name(),
+            slug: convertToSlug(faker.company.name()),
             createdBy: global.__USERID__
         });
 
@@ -40,7 +40,7 @@ describe("Brand Routes", function() {
     test("Should create new brand", async () => {
         const response = await request(app)
             .post("/api/brands")
-            .send({ name: faker.company.companyName() })
+            .send({ name: faker.company.name() })
             .set("Cookie", [`access_token=${access_token}`]);
 
         expect(response.statusCode).toEqual(200);
@@ -65,7 +65,7 @@ describe("Brand Routes", function() {
     test("Should update an existing brand", async () => {
         const response = await request(app)
             .put(`/api/brands/${brand._id}`)
-            .send({ name: faker.company.companyName() })
+            .send({ name: faker.company.name() })
             .set("Cookie", [`access_token=${access_token}`]);
 
         expect(response.statusCode).toEqual(200);

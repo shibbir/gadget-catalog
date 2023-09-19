@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { EditorState, ContentState, convertFromHTML } from "draft-js";
 import { Divider, Button, Form as SemanticUIForm } from "semantic-ui-react";
+import Dropzone from 'react-dropzone';
 
 import Types from "../item.types";
 import { itemSchema } from "../item.schema";
@@ -70,6 +71,7 @@ export default function ItemForm() {
                 payee: item ? item.payee : "",
                 images: "",
                 invoice: "",
+                // images: [],
                 editorState: blocksFromHTML.contentBlocks
                     ? new EditorState.createWithContent(ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap))
                     : new EditorState.createEmpty()
@@ -94,7 +96,7 @@ export default function ItemForm() {
                     delete values.invoice;
                 }
 
-                for(let key in values) {
+                for(const key in values) {
                     if(values[key] && values.hasOwnProperty(key)) {
                         formData.append(key, values[key]);
                     }
@@ -122,7 +124,7 @@ export default function ItemForm() {
             }}
         >
             {formikProps => (
-                <Form onSubmit={formikProps.handleSubmit} className="ui form">
+                <Form onSubmit={formikProps.handleSubmit} className="ui form" encType="multipart/form-data">
                     <TextInput attributes={{
                         type: "text",
                         name: "name",
@@ -197,9 +199,26 @@ export default function ItemForm() {
                         name: "images",
                         label: "Upload images",
                         multiple: true,
-                        info: "You can upload a maximum of 3 files at a time. The max file size limit is 1.5 MB.",
+                        info: "You can upload a maximum of 3 images at a time. The max file size limit is 1.5 MB.",
                         onChange: event => {formikProps.setFieldValue("images", event.currentTarget.files)}
                     }}/>
+
+                    {/* <Dropzone
+                        multiple
+                        onDrop={acceptedFiles => {
+                            if (acceptedFiles.length === 0) return;
+                            formikProps.setFieldValue("images", formikProps.values.images.concat(acceptedFiles));
+                        }}
+                    >
+                        {({getRootProps, getInputProps}) => (
+                            <section>
+                                <div {...getRootProps()}>
+                                    <input {...getInputProps()} />
+                                    <p>Drag 'n' drop some files here, or click to select files</p>
+                                </div>
+                            </section>
+                        )}
+                    </Dropzone> */}
 
                     <FileInput attributes={{
                         type: "file",

@@ -1,8 +1,8 @@
 const path = require("path");
-const faker = require("faker");
 const jwt = require("jsonwebtoken");
 const request = require("supertest");
 const mongoose = require("mongoose");
+const { faker } = require("@faker-js/faker");
 
 const app = require(path.join(process.cwd(), "src/config/server/lib/express"))();
 const Category = require(path.join(process.cwd(), "src/modules/category/server/category.model"));

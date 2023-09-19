@@ -3,28 +3,36 @@ const User = require("../../user/server/user.model");
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
-async function getCategory(req, res) {
-    const doc = await Category.findOne({ _id: req.params.id });
-    res.json(doc);
+async function getCategory(req, res, next) {
+    try {
+        const doc = await Category.findOne({ _id: req.params.id });
+        res.json(doc);
+    } catch(err) {
+        next(err);
+    }
 }
 
-async function getCategories(req, res) {
-    const admin = await User.findOne({role: "admin"});
+async function getCategories(req, res, next) {
+    try {
+        const admin = await User.findOne({role: "admin"});
 
-    const docs = await Category.find({ $or: [
-        { createdBy : req.user.id },
-        { createdBy: admin.id }
-    ]}).populate({
-        path: "items",
-        select: "_id",
-        options: { lean: true },
-        match: { createdBy: req.user._id }
-    }).sort("name").lean();
+        const docs = await Category.find({ $or: [
+            { createdBy : req.user.id },
+            { createdBy: admin.id }
+        ]}).populate({
+            path: "items",
+            select: "_id",
+            options: { lean: true },
+            match: { createdBy: req.user._id }
+        }).sort("name").lean();
 
-    res.json(docs);
+        res.json(docs);
+    } catch(err) {
+        next(err);
+    }
 }
 
-async function createCategory(req, res) {
+async function createCategory(req, res, next) {
     try {
         let model = new Category({
             name: req.body.name,
@@ -36,32 +44,32 @@ async function createCategory(req, res) {
 
         res.json(model);
     } catch(err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
-function updateCategory(req, res) {
-    Category.findOne({ _id: req.params.id }, function(err, doc) {
-        if(err) return res.sendStatus(500);
+async function updateCategory(req, res, next) {
+    try {
+        let doc = await Category.findOne({ name: req.body.name });
 
         if(doc && doc._id.toString() !== req.params.id) {
             return res.status(400).send("Category name already exists.");
         }
 
-        Category.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
-            if(err) return res.sendStatus(500);
+        doc = await Category.findOne({ _id: req.params.id });
 
-            if(!doc) {
-                return res.sendStatus(404);
-            }
+        if(!doc) {
+            return res.sendStatus(404);
+        }
 
-            doc.name = req.body.name;
-            doc.slug = convertToSlug(req.body.name);
+        doc.name = req.body.name;
+        doc.slug = convertToSlug(req.body.name);
 
-            doc.save();
-            res.json(doc);
-        });
-    });
+        await doc.save();
+        res.json(doc);
+    } catch(err) {
+        next(err);
+    }
 }
 
 exports.getCategory = getCategory;

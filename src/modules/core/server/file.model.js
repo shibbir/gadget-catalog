@@ -14,6 +14,10 @@ const FileSchema = Schema({
         type: String,
         required: true
     },
+    version: {
+        type: String,
+        required: true
+    },
     format: {
         type: String,
         required: true

@@ -5,6 +5,8 @@ process.env.MONGODB_TEST_BASE_URL = process.env.MONGODB_TEST_BASE_URL || "mongod
 process.env.MONGODB_URI = `${process.env.MONGODB_TEST_BASE_URL}/gadget-catalog-test`;
 
 module.exports = async () => {
+    mongoose.Promise = global.Promise;
+    mongoose.set("strictQuery", true);
     mongoose.connect(process.env.MONGODB_URI);
 
     await mongoose.connection.dropDatabase();

@@ -123,13 +123,13 @@ async function changePassword(req, res) {
     }
 }
 
-function forgotPassword(req, res, next) {
-    User.findOne({ $or: [
-        { "facebook.email" : req.body.email },
-        { "google.email": req.body.email },
-        { "local.email": req.body.email }
-    ]}, function(err, doc) {
-        if(err) return next(err);
+async function forgotPassword(req, res, next) {
+    try {
+        const doc = await User.findOne({ $or: [
+            { "facebook.email" : req.body.email },
+            { "google.email": req.body.email },
+            { "local.email": req.body.email }
+        ]});
 
         if(!doc) return res.status(404).send("No account is associated with this email address.");
 
@@ -162,7 +162,9 @@ function forgotPassword(req, res, next) {
                 });
             });
         });
-    });
+    } catch(err) {
+        next(err);
+    }
 }
 
 async function resetPassword(req, res) {
