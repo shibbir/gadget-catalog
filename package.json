@@ -13,7 +13,7 @@
     "production": "run-s webpack:production pm2:production",
     "test": "jest --detectOpenHandles --coverage",
     "seed": "node seeder.js",
-    "eslint": "eslint src/**"
+    "eslint": "eslint src/**/*.js"
   },
   "dependencies": {
     "@casl/ability": "^6.1.1",
@@ -74,7 +74,6 @@
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-react-html-attrs": "^3.0.5",
     "clean-webpack-plugin": "^4.0.0",
-    "coveralls": "^3.1.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",

@@ -126,7 +126,7 @@ async function changePassword(req, res) {
 async function forgotPassword(req, res, next) {
     try {
         const doc = await User.findOne({ $or: [
-            { "facebook.email" : req.body.email },
+            { "facebook.email": req.body.email },
             { "google.email": req.body.email },
             { "local.email": req.body.email }
         ]});
@@ -144,22 +144,22 @@ async function forgotPassword(req, res, next) {
         doc.local.resetPasswordToken = crypto.randomBytes(20).toString("hex");
         doc.local.resetPasswordExpires = Date.now() + 3600000;
 
-        doc.save().then(function() {
-            res.render("password-reset.html", {
-                name: doc.displayName,
-                origin_url: req.headers.origin,
-                password_reset_url: `${req.headers.origin}/reset-password?token=${doc.local.resetPasswordToken}`
-            }, function(err, html) {
-                transporter.sendMail({
-                    from: `"Gadget Catalog" <${process.env.MAILER_ADDRESS}>`,
-                    to: req.body.email,
-                    subject: "[Gadget Catalog] Password Reset Request",
-                    html: html
-                }, function (err) {
-                    if(err) return next(err);
+        await doc.save();
 
-                    res.sendStatus(200);
-                });
+        res.render("password-reset.html", {
+            name: doc.displayName,
+            origin_url: req.headers.origin,
+            password_reset_url: `${req.headers.origin}/reset-password?token=${doc.local.resetPasswordToken}`
+        }, function(err, html) {
+            transporter.sendMail({
+                from: `"Gadget Catalog" <${process.env.MAILER_ADDRESS}>`,
+                to: req.body.email,
+                subject: "[Gadget Catalog] Password Reset Request",
+                html: html
+            }, function (err) {
+                if(err) return next(err);
+
+                res.sendStatus(200);
             });
         });
     } catch(err) {
