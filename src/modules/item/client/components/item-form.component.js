@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import { stateToHTML } from "draft-js-export-html";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { EditorState, ContentState, convertFromHTML } from "draft-js";
 import { Divider, Button, Form as SemanticUIForm } from "semantic-ui-react";
 import Dropzone from 'react-dropzone';
@@ -17,7 +17,7 @@ import { TextInput, RichEditorInput, DropdownInput, FileInput } from "../../../c
 
 export default function ItemForm() {
     const { id } = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function ItemForm() {
     const brands = useSelector(state => state.brandReducer.brands);
     const categories = useSelector(state => state.categoryReducer.categories);
 
-    const blocksFromHTML = convertFromHTML(item && item.description ? item.description : "");
+    const blocksFromHTML = convertFromHTML(item?.description ?? "");
 
     const categoryOptions = categories.map(function(option) {
         return { key: option._id, value: option._id, text: option.name };
@@ -65,7 +65,7 @@ export default function ItemForm() {
                 name: item ? item.name : "",
                 categoryId: item ? item.categoryId : "",
                 brandId: item ? item.brandId : "",
-                purchaseDate: item && item.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
+                purchaseDate: item?.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
                 price: item ? item.price : "",
                 currency: item ? item.currency : "",
                 payee: item ? item.payee : "",
@@ -115,7 +115,7 @@ export default function ItemForm() {
                         const { type, payload } = result.action;
 
                         if(type === Types.POST_ITEM_FULFILLED) {
-                            history.push(`/items/${payload.data._id}`);
+                            navigate(`/items/${payload.data._id}`);
                         }
                     });
                 }

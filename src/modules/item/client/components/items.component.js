@@ -1,8 +1,8 @@
 import queryString from "query-string";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useLocation, useHistory } from "react-router-dom";
-import { fetchItems } from "../item.actions";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getItems } from "../item.actions";
 import ItemForm from "./item-form.component";
 import { getBrands } from "../../../brand/client/brand.actions";
 import { getCategories } from "../../../category/client/category.actions";
@@ -10,7 +10,7 @@ import { Label, Form, Button, Card, Divider, Icon, Menu, Container, Image, Segme
 
 export default function Items() {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     const [filterModal, setFilterModal] = useState(false);
@@ -22,7 +22,7 @@ export default function Items() {
     }, []);
 
     useEffect(() => {
-        dispatch(fetchItems(location.search));
+        dispatch(getItems(location.search));
     }, [location.search]);
 
     const params = queryString.parse(location.search);
@@ -50,8 +50,8 @@ export default function Items() {
 
         if(location.search === `?${queryString.stringify(q)}`) return;
 
-        history.push({
-            pathname: "items",
+        navigate({
+            pathname: "/items",
             search: queryString.stringify(q)
         });
 
@@ -65,7 +65,7 @@ export default function Items() {
         setEndDate("");
 
         if(params.categoryId || params.brandId || params.startDate || params.endDate) {
-            history.push({ pathname: "items" });
+            navigate("items");
         }
     }
 
@@ -97,7 +97,7 @@ export default function Items() {
         const activeImage = item.files.find(x => x.active) ? item.files.find(x => x.active).secure_url : item.files[0].secure_url;
 
         return (
-            <Link key={item._id} className="ui raised card" to={`/items/${item._id}`}>
+            <Link key={item._id} className="ui raised card" to={item._id}>
                 <Card.Content header={item.name} className="ui center aligned"/>
                 <Card.Content className="ui center aligned image-wrapper">
                     { activeImage
@@ -231,19 +231,19 @@ export default function Items() {
                 </Modal>
             </TransitionablePortal>
 
-            {categoryName &&
+            { categoryName &&
                 <Label color="blue">
                     Category: {categoryName} <Icon name="delete" onClick={(e) => { setCategoryId(""); filter(e, "category"); }}/>
                 </Label>
             }
 
-            {brandName &&
+            { brandName &&
                 <Label color="blue">
                     Brand: {brandName} <Icon name="delete" onClick={(e) => { setBrandId(""); filter(e, "brand"); }}/>
                 </Label>
             }
 
-            {dateRange &&
+            { dateRange &&
                 <Label color="blue">
                     Date Range: {dateRange} <Icon name="delete" onClick={(e) => { setStartDate(""); setEndDate(""); filter(e, "date"); }}/>
                 </Label>

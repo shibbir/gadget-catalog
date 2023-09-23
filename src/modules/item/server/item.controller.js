@@ -83,26 +83,22 @@ async function createItem(req, res, next) {
 
         if(req.body.description) item.description = validator.escape(req.body.description);
 
-        if(req.files && req.files.images) {
-            for(let i = 0; i < req.files.images.length; i++) {
-                const file = req.files.images[i];
-                const result = await upload(file.path, { folder: `gadget-catalog/${_id}` });
+        for(let i = 0; i < req.files?.images?.length; i++) {
+            const file = req.files.images[i];
+            const result = await upload(file.path, { folder: `gadget-catalog/${_id}` });
 
-                item.files.push({ ...result, active: i === 0 ? true : false });
+            item.files.push({ ...result, active: i === 0 ? true : false });
 
-                await fs.unlink(file.path);
-            }
+            await fs.unlink(file.path);
         }
 
-        if(req.files && req.files.invoice) {
-            for(let i = 0; i < req.files.invoice.length; i++) {
-                const file = req.files.invoice[i];
-                const result = await upload(file.path, { folder: `gadget-catalog/${_id}` });
+        for(let i = 0; i < req.files?.invoice?.length; i++) {
+            const file = req.files.invoice[i];
+            const result = await upload(file.path, { folder: `gadget-catalog/${_id}` });
 
-                item.invoice = result;
+            item.invoice = result;
 
-                await fs.unlink(file.path);
-            }
+            await fs.unlink(file.path);
         }
 
         const doc = await item.save();
@@ -129,15 +125,13 @@ async function updateItem(req, res, next) {
 
         if(req.body.description) doc.description = validator.escape(req.body.description);
 
-        if(req.files && req.files.images) {
-            for(let i = 0; i < req.files.images.length; i++) {
-                const file = req.files.images[i];
-                const result = await upload(file.path, { folder: `gadget-catalog/${req.params.id}` });
+        for(let i = 0; i < req.files?.images?.length; i++) {
+            const file = req.files.images[i];
+            const result = await upload(file.path, { folder: `gadget-catalog/${req.params.id}` });
 
-                doc.files.push({ ...result });
+            doc.files.push({ ...result });
 
-                await fs.unlink(file.path);
-            }
+            await fs.unlink(file.path);
         }
 
         await doc.save();
@@ -217,8 +211,8 @@ async function deleteImage(req, res, next) {
 }
 
 async function getItemCountByYearRange(req, res, next) {
-    const startYear = req.query.startYear;
-    const endYear = req.query.endYear;
+    const startYear = req.query.start_year;
+    const endYear = req.query.end_year;
 
     try {
         const docs = await Item.find({

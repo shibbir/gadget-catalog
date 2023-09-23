@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { LinkContainer } from "react-router-bootstrap";
 import { FormattedDate, FormattedNumber } from "react-intl";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb, Modal, TransitionablePortal } from "semantic-ui-react";
 
 import Types from "../item.types";
 import ItemForm from "./item-form.component";
-import { fetchItem, deleteItem, setAsActiveImage, deleteImage } from "../item.actions";
+import { getItem, deleteItem, setAsActiveImage, deleteImage } from "../item.actions";
 
-export default function ItemDetail() {
+export default function ItemDetails() {
     const { id } = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const item = useSelector(state => state.itemReducer.item);
@@ -20,7 +19,7 @@ export default function ItemDetail() {
     const [itemFormVisibleState, setItemFormVisibleState] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchItem(id));
+        dispatch(getItem(id));
     }, []);
 
     const onDeleteItem = id => {
@@ -29,7 +28,7 @@ export default function ItemDetail() {
                 const { type } = result.action;
 
                 if(type === Types.DELETE_ITEM_FULFILLED) {
-                    history.push("/items");
+                    navigate("/items");
                 }
             });
         }
@@ -53,20 +52,20 @@ export default function ItemDetail() {
         );
     }
 
-    if(item.files && item.files.length) {
+    if(item.files?.length) {
         item.activeImage = item.files.find(x => x.active === true);
     }
 
     return (
         <>
             <Breadcrumb size="small">
-                <LinkContainer to="/items">
+                <Link to="/items">
                     <Breadcrumb.Section>Items</Breadcrumb.Section>
-                </LinkContainer>
+                </Link>
                 <Breadcrumb.Divider icon="right arrow"/>
-                <LinkContainer to={`/items?categoryId=${item.category._id}`}>
+                <Link to={`/items?categoryId=${item.category._id}`}>
                     <Breadcrumb.Section>{item.category.name}</Breadcrumb.Section>
-                </LinkContainer>
+                </Link>
                 <Breadcrumb.Divider icon="right arrow"/>
                 <Breadcrumb.Section active>{item.name}</Breadcrumb.Section>
             </Breadcrumb>

@@ -1,24 +1,26 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import "fomantic-ui-css/semantic.css";
 import "izitoast/dist/css/iziToast.css";
 import "./app.component.css";
 
 import NoMatch from "./NoMatch";
-import PublicRoute from "./PublicRoute";
-import PrivateRoute from "./PrivateRoute";
+import PublicLayoutRoute from "./PublicLayoutRoute";
+import PrivateLayoutRoute from "./PrivateLayoutRoute";
 import Login from "../../user/client/components/login.component";
 import Register from "../../user/client/components/register.component";
 import ResetPassword from "../../user/client/components/ResetPassword";
 import Profile from "../../user/client/components/profile.component";
 import Dashboard from "../../user/client/components/dashboard.component";
-import ItemRoutes from "../../item/client/item.routes";
-import BrandRoutes from "../../brand/client/brand.routes";
-import CategoryRoutes from "../../category/client/category.routes";
 import { getSignedInUserProfile } from "../../user/client/user.actions";
+
+import Item from "../../item/client/components/item.component";
+import Items from "../../item/client/components/items.component";
+import Brands from "../../brand/client/brands.component";
+import Categories from "../../category/client/components/categories.component";
 
 let refCount = 0;
 
@@ -57,21 +59,23 @@ export default function App() {
     }, [dispatch]);
 
     return (
-        <Switch>
-            <PublicRoute path="/login" component={Login}/>
-            <PublicRoute path="/register" component={Register}/>
-            <PublicRoute path="/reset-password" component={ResetPassword}/>
+        <Routes>
+            <Route element={<PublicLayoutRoute/>}>
+                <Route path="login" element={<Login/>}/>
+                <Route path="register" element={<Register/>}/>
+                <Route path="reset-password" element={<ResetPassword/>}/>
+            </Route>
 
-            <PrivateRoute exact path="/" component={Dashboard}/>
-            <PrivateRoute path="/profile" component={Profile}/>
+            <Route element={<PrivateLayoutRoute/>}>
+                <Route path="/" element={<Dashboard/>}/>
+                <Route path="profile" element={<Profile/>}/>
+                <Route path="items" element={<Items/>}/>
+                <Route path="items/:id" element={<Item/>}/>
+                <Route path="brands" element={<Brands/>}/>
+                <Route path="categories" element={<Categories/>}/>
+            </Route>
 
-            <Route path="/items" component={ItemRoutes}/>
-
-            <Route path="/brands" component={BrandRoutes}/>
-
-            <Route path="/categories" component={CategoryRoutes}/>
-
-            <Route component={NoMatch}/>
-        </Switch>
+            <Route path="*" element={<NoMatch/>}/>
+        </Routes>
     );
 }

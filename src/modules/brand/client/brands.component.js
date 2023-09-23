@@ -30,12 +30,13 @@ export default function Brands() {
                     </Link>
                 </Table.Cell>
                 <Table.Cell>
-                    {loggedInUser && loggedInUser._id && loggedInUser._id === brand.createdBy &&
+                    { loggedInUser?._id === brand.createdBy &&
                         <a onClick={() => setBrandId(brand._id)}>
                             <Icon name="edit" color="teal"/>
                         </a>
                     }
-                    {loggedInUser && loggedInUser._id && loggedInUser._id !== brand.createdBy &&
+
+                    { loggedInUser?._id !== brand.createdBy &&
                         <Icon name="lock" color="black"/>
                     }
                 </Table.Cell>

@@ -23,21 +23,13 @@ export function updateItem(formData, id) {
     };
 }
 
-export function fetchItem(id) {
-    let payload = new Promise((resolve, reject) => {
-        resolve({ data: null });
-    });
-
-    if(id) {
-        payload = axios({
-            method: "get",
-            url: `/api/items/${id}`
-        });
-    }
-
+export function getItem(id) {
     return {
         type: Types.GET_ITEM,
-        payload
+        payload: axios({
+            method: "get",
+            url: `/api/items/${id}`
+        })
     };
 }
 
@@ -51,7 +43,7 @@ export function deleteItem(id) {
     };
 }
 
-export function fetchItems(query = "") {
+export function getItems(query = "") {
     return {
         type: Types.GET_ITEMS,
         payload: axios({
@@ -86,7 +78,7 @@ export function fetchItemsByYearRange(startYear, endYear) {
         type: Types.GET_ITEMS_BY_YEAR,
         payload: axios({
             method: "get",
-            url: `/api/items/item-count?startYear=${startYear}&endYear=${endYear}`
+            url: `/api/items/item-count?start_year=${startYear}&end_year=${endYear}`
         })
     };
 }
