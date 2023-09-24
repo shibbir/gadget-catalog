@@ -34,13 +34,11 @@ async function getCategories(req, res, next) {
 
 async function createCategory(req, res, next) {
     try {
-        let model = new Category({
+        const model = await Category.create({
             name: req.body.name,
             slug: convertToSlug(req.body.name),
             createdBy: req.user._id
         });
-
-        model = await model.save();
 
         res.json(model);
     } catch(err) {

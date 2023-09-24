@@ -87,7 +87,7 @@ async function createItem(req, res, next) {
             const file = req.files.images[i];
             const result = await upload(file.path, { folder: `gadget-catalog/${_id}` });
 
-            item.files.push({ ...result, active: i === 0 ? true : false });
+            item.files.push({ ...result, active: i ? false : true });
 
             await fs.unlink(file.path);
         }

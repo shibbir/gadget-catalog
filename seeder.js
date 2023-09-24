@@ -13,12 +13,15 @@ mongoose.connect(process.env.MONGODB_URI);
 
 (async function() {
     try {
-        let user = new User();
+        let user = new User({
+            role: "admin",
+            displayName: "John Doe",
+            local: {
+                name: "John Doe",
+                email: "admin@example-domain.com"
+            }
+        });
 
-        user.role = "admin";
-        user.displayName = "Administrator";
-        user.local.name = "Administrator";
-        user.local.email = "admin@example-domain.com";
         user.local.password = user.generateHash("P@ssw0rd");
 
         user = await user.save();
