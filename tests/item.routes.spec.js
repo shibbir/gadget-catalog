@@ -2,6 +2,7 @@ const path = require("path");
 const jwt = require("jsonwebtoken");
 const request = require("supertest");
 const mongoose = require("mongoose");
+const cookie = require("cookie-signature");
 const { faker } = require("@faker-js/faker");
 
 const app = require(path.join(process.cwd(), "src/config/server/lib/express"))();
@@ -11,6 +12,7 @@ const Category = require(path.join(process.cwd(), "src/modules/category/server/c
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 const access_token = jwt.sign({ id: global.__USERID__ }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: global.__USERID__ });
+const signed_access_token = cookie.sign(access_token, process.env.COOKIE_SECRET);
 
 describe("Item Routes", function() {
     let category;
@@ -54,7 +56,7 @@ describe("Item Routes", function() {
     test("Should fetch all the items", async () => {
         const response = await request(app)
             .get("/api/items")
-            .set("Cookie", [`access_token=${access_token}`]);
+            .set("Cookie", [`access_token=s:${signed_access_token}`]);
 
         expect(response.statusCode).toEqual(200);
     });
@@ -68,7 +70,7 @@ describe("Item Routes", function() {
                 brandId: brand._id,
                 currency: "USD"
             })
-            .set("Cookie", [`access_token=${access_token}`]);
+            .set("Cookie", [`access_token=s:${signed_access_token}`]);
 
         expect(response.statusCode).toEqual(200);
     });
@@ -76,7 +78,7 @@ describe("Item Routes", function() {
     test("Should fetch an item", async () => {
         const response = await request(app)
             .get(`/api/items/${item._id}`)
-            .set("Cookie", [`access_token=${access_token}`]);
+            .set("Cookie", [`access_token=s:${signed_access_token}`]);
 
         expect(response.statusCode).toEqual(200);
     });
@@ -90,7 +92,7 @@ describe("Item Routes", function() {
                 brandId: brand._id,
                 currency: "USD"
             })
-            .set("Cookie", [`access_token=${access_token}`]);
+            .set("Cookie", [`access_token=s:${signed_access_token}`]);
 
         expect(response.statusCode).toEqual(200);
     });
@@ -98,7 +100,7 @@ describe("Item Routes", function() {
     test("Should fetch yearly report", async () => {
         const response = await request(app)
             .get("/api/items/item-count?start_year=2015&end_year=2019")
-            .set("Cookie", [`access_token=${access_token}`]);
+            .set("Cookie", [`access_token=s:${signed_access_token}`]);
 
         expect(response.statusCode).toEqual(200);
     });
@@ -106,7 +108,7 @@ describe("Item Routes", function() {
     test("Should delete an item", async () => {
         const response = await request(app)
             .delete(`/api/items/${item._id}`)
-            .set("Cookie", [`access_token=${access_token}`]);
+            .set("Cookie", [`access_token=s:${signed_access_token}`]);
 
         expect(response.statusCode).toEqual(200);
     });

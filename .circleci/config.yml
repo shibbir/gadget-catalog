@@ -13,4 +13,3 @@ jobs:
           command: yarn test
           name: Run tests
       - coveralls/upload
-workflows: null

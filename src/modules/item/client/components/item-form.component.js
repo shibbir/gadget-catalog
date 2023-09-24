@@ -11,7 +11,7 @@ import Dropzone from 'react-dropzone';
 import Types from "../item.types";
 import { itemSchema } from "../item.schema";
 import { getBrands } from "../../../brand/client/brand.actions";
-import { createItem, updateItem, fetchItem } from "../item.actions";
+import { createItem, updateItem, getItem } from "../item.actions";
 import { getCategories } from "../../../category/client/category.actions";
 import { TextInput, RichEditorInput, DropdownInput, FileInput } from "../../../core/client/components/FieldInput/FieldInputs";
 
@@ -26,7 +26,7 @@ export default function ItemForm() {
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(fetchItem(id));
+        dispatch(getItem(id));
     }, [dispatch]);
 
     const item = useSelector(state => state.itemReducer.item);

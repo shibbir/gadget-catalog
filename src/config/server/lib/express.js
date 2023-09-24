@@ -11,7 +11,7 @@ module.exports = function() {
     app.use(compression());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-    app.use(cookieParser());
+    app.use(cookieParser(process.env.COOKIE_SECRET));
     app.use(express.static(path.join(process.cwd(), "public")));
 
     app.engine("html", hbs.express4({ extname: ".html" }));

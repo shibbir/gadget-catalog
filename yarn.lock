@@ -4034,6 +4034,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie-signature@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "cookie-signature@npm:1.2.1"
+  checksum: bb464aacac390b5d7d8ead2d6fff7c1c3b7378c7d0250921f48923fe889688e081ab33950448929db5f24d4f9f1506589a7ee1c685de8f12a3fdb30c49667ec5
+  languageName: node
+  linkType: hard
+
 "cookie@npm:0.4.1":
   version: 0.4.1
   resolution: "cookie@npm:0.4.1"
@@ -5651,6 +5658,7 @@ __metadata:
     cloudinary: ^1.40.0
     compression: ^1.7.4
     cookie-parser: ^1.4.6
+    cookie-signature: ^1.2.1
     cross-env: ^7.0.3
     css-loader: ^6.8.1
     css-minimizer-webpack-plugin: ^5.0.1

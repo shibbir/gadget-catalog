@@ -2,6 +2,7 @@ const path = require("path");
 const jwt = require("jsonwebtoken");
 const request = require("supertest");
 const mongoose = require("mongoose");
+const cookie = require("cookie-signature");
 const { faker } = require("@faker-js/faker");
 
 const app = require(path.join(process.cwd(), "src/config/server/lib/express"))();
@@ -9,6 +10,7 @@ const Category = require(path.join(process.cwd(), "src/modules/category/server/c
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 const access_token = jwt.sign({ id: global.__USERID__ }, process.env.TOKEN_SECRET, { expiresIn: "1h", issuer: global.__USERID__ });
+const signed_access_token = cookie.sign(access_token, process.env.COOKIE_SECRET);
 
 describe("Category Routes", function() {
     let category;
@@ -32,7 +34,7 @@ describe("Category Routes", function() {
     test("Should fetch all categories", async () => {
         const response = await request(app)
             .get("/api/categories")
-            .set("Cookie", [`access_token=${access_token}`]);
+            .set("Cookie", [`access_token=s:${signed_access_token}`]);
 
         expect(response.statusCode).toEqual(200);
     });
@@ -41,7 +43,7 @@ describe("Category Routes", function() {
         const response = await request(app)
             .post("/api/categories")
             .send({ name: faker.commerce.productName() })
-            .set("Cookie", [`access_token=${access_token}`]);
+            .set("Cookie", [`access_token=s:${signed_access_token}`]);
 
         expect(response.statusCode).toEqual(200);
     });
@@ -49,7 +51,7 @@ describe("Category Routes", function() {
     test("Should get category by id", async () => {
         const response = await request(app)
             .get(`/api/categories/${category._id}`)
-            .set("Cookie", [`access_token=${access_token}`]);
+            .set("Cookie", [`access_token=s:${signed_access_token}`]);
 
         expect(response.statusCode).toEqual(200);
     });
@@ -58,7 +60,7 @@ describe("Category Routes", function() {
         const response = await request(app)
             .put(`/api/categories/${category._id}`)
             .send({ name: faker.commerce.productName() })
-            .set("Cookie", [`access_token=${access_token}`]);
+            .set("Cookie", [`access_token=s:${signed_access_token}`]);
 
         expect(response.statusCode).toEqual(200);
     });

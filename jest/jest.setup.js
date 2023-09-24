@@ -7,8 +7,9 @@ const { faker } = require("@faker-js/faker");
 const User = require(path.join(process.cwd(), "src/modules/user/server/user.model"));
 
 process.env.NODE_ENV = "test";
-process.env.TOKEN_SECRET = "6368451b-50bc9a455e62";
-process.env.REFRESH_SECRET = "6368451b-50bc9a455e62";
+process.env.TOKEN_SECRET = "79ea079a-830c-424f-ae02-af38d491198c";
+process.env.REFRESH_SECRET = "51817ec2-89bc-44cc-ae48-d219fe2d8e19";
+process.env.COOKIE_SECRET = "2eb6aeb4-5ac8-4313-8121-6e0966b6cecb";
 process.env.GOOGLE_CLIENT_ID = "xxx";
 process.env.GOOGLE_CLIENT_SECRET = "xxx";
 process.env.FACEBOOK_CLIENT_ID = "xxx";

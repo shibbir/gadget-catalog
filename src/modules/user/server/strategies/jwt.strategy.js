@@ -5,8 +5,8 @@ const User = require("../user.model");
 module.exports = function() {
     function cookieExtractor(req) {
         let token;
-        if (req?.cookies) {
-            token = req.cookies["access_token"];
+        if (req?.signedCookies) {
+            token = req.signedCookies["access_token"];
         }
         return token;
     }
