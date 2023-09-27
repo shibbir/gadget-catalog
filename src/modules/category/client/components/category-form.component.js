@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import CategorySchema from "../category.schema";
 import { createCategory, updateCategory, getCategory } from "../category.actions";
-import { TextInput } from "../../../core/client/components/FieldInput/FieldInputs";
+import { TextInput } from "../../../core/client/components/FieldInputs";
 
 export default function CategoryForm({id} = props) {
     const dispatch = useDispatch();

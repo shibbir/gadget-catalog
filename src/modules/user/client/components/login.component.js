@@ -10,7 +10,7 @@ import { Button, Segment, Header, Divider, Image, Modal, Message, Icon } from "s
 import { login } from "../user.actions";
 import { loginSchema, forgotPasswordSchema } from "../user.schema";
 import OAuthProvider from "../../../core/client/components/OAuthProvider";
-import { TextInput } from "../../../core/client/components/FieldInput/FieldInputs";
+import { TextInput } from "../../../core/client/components/FieldInputs";
 
 export default function Login() {
     const dispatch = useDispatch();

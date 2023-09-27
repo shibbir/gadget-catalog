@@ -6,7 +6,7 @@ import { Divider, Button, Segment, Header, Image, Message } from "semantic-ui-re
 
 import { resetPassword } from "../user.actions";
 import { resetPasswordSchema } from "../user.schema";
-import { TextInput } from "../../../core/client/components/FieldInput/FieldInputs";
+import { TextInput } from "../../../core/client/components/FieldInputs";
 
 export default function ResetPassword() {
     const [isPasswordReset, setPasswordResetStatus] = useState(false);

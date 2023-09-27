@@ -1,10 +1,8 @@
 import { Form, Formik } from "formik";
 import React, { useEffect } from "react";
 import { format, parseISO } from "date-fns";
-import { stateToHTML } from "draft-js-export-html";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { EditorState, ContentState, convertFromHTML } from "draft-js";
 import { Divider, Button, Form as SemanticUIForm } from "semantic-ui-react";
 import Dropzone from 'react-dropzone';
 
@@ -13,7 +11,7 @@ import { itemSchema } from "../item.schema";
 import { getBrands } from "../../../brand/client/brand.actions";
 import { createItem, updateItem, getItem } from "../item.actions";
 import { getCategories } from "../../../category/client/category.actions";
-import { TextInput, RichEditorInput, DropdownInput, FileInput } from "../../../core/client/components/FieldInput/FieldInputs";
+import { TextInput, RichEditorInput, DropdownInput, FileInput } from "../../../core/client/components/FieldInputs";
 
 export default function ItemForm() {
     const { id } = useParams();
@@ -26,14 +24,12 @@ export default function ItemForm() {
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(getItem(id));
-    }, [dispatch]);
+        if(id) dispatch(getItem(id));
+    }, [id, dispatch]);
 
     const item = useSelector(state => state.itemReducer.item);
     const brands = useSelector(state => state.brandReducer.brands);
     const categories = useSelector(state => state.categoryReducer.categories);
-
-    const blocksFromHTML = convertFromHTML(item?.description ?? "");
 
     const categoryOptions = categories.map(function(option) {
         return { key: option._id, value: option._id, text: option.name };
@@ -63,6 +59,7 @@ export default function ItemForm() {
         <Formik
             initialValues={{
                 name: item ? item.name : "",
+                description: item ? item.description : "",
                 categoryId: item ? item.categoryId : "",
                 brandId: item ? item.brandId : "",
                 purchaseDate: item?.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
@@ -70,18 +67,13 @@ export default function ItemForm() {
                 currency: item ? item.currency : "",
                 payee: item ? item.payee : "",
                 images: "",
-                invoice: "",
-                // images: [],
-                editorState: blocksFromHTML.contentBlocks
-                    ? new EditorState.createWithContent(ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap))
-                    : new EditorState.createEmpty()
+                invoice: ""
+                // images: []
             }}
             displayName="ItemForm"
             enableReinitialize={true}
             validationSchema={itemSchema}
             onSubmit={(values, actions) => {
-                values.description = stateToHTML(values.editorState.getCurrentContent());
-
                 let formData = new FormData();
 
                 if(values.images) {
@@ -135,9 +127,8 @@ export default function ItemForm() {
                         value: formikProps.values.description,
                         name: "description",
                         label: "Description",
-                        onChange: formikProps.setFieldValue,
-                        onBlur: formikProps.handleBlur,
-                        editorState: formikProps.values.editorState
+                        placeholder: "Item description goes here...",
+                        setFieldValue: formikProps.setFieldValue
                     }}/>
 
                     <SemanticUIForm.Group widths="equal">

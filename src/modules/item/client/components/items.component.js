@@ -102,7 +102,7 @@ export default function Items() {
                 <Card.Content className="ui center aligned image-wrapper">
                     { activeImage
                         ? <Image src={activeImage} alt={item.name}/>
-                        : "Image Not Available!"
+                        : "Image not available!"
                     }
                 </Card.Content>
             </Link>
