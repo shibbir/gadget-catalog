@@ -9,7 +9,7 @@ import { Button, Segment, Header, Divider, Image, Modal, Message, Icon } from "s
 
 import { login } from "../user.actions";
 import { loginSchema, forgotPasswordSchema } from "../user.schema";
-import OAuthProvider from "../../../core/client/components/OAuthProvider";
+import IdentityProviders from "../../../core/client/components/IdentityProviders";
 import { TextInput } from "../../../core/client/components/FieldInputs";
 
 export default function Login() {
@@ -163,7 +163,7 @@ export default function Login() {
 
                 This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.
 
-                <OAuthProvider/>
+                <IdentityProviders/>
             </div>
         </div>
     );

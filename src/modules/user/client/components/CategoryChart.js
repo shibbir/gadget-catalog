@@ -63,6 +63,9 @@ export default function CategoryChart() {
                 }],
                 credits: {
                     enabled: false
+                },
+                accessibility: {
+                    enabled: false
                 }
             });
         }

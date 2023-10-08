@@ -5,8 +5,11 @@
 <h4 align="center">A single page application for cataloging gadgets. Built with react, node.js, mongodb and much more.</h4>
 
 <div align="center">
+    <a href="https://github.com/shibbir/gadget-catalog/actions/workflows/node.js.yml">
+        <img src="https://github.com/shibbir/gadget-catalog/actions/workflows/node.js.yml/badge.svg" alt="Node.js CI"/>
+    </a>
     <a href="https://dl.circleci.com/status-badge/redirect/gh/shibbir/gadget-catalog/tree/master">
-        <img src="https://dl.circleci.com/status-badge/img/gh/shibbir/gadget-catalog/tree/master.svg?style=shield" alt="Build Status"/>
+        <img src="https://dl.circleci.com/status-badge/img/gh/shibbir/gadget-catalog/tree/master.svg?style=shield" alt="Circle CI"/>
     </a>
     <a href="https://coveralls.io/github/shibbir/gadget-catalog?branch=master">
         <img src="https://coveralls.io/repos/github/shibbir/gadget-catalog/badge.svg?branch=master" alt="Coverage Status"/>

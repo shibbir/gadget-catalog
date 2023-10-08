@@ -3,6 +3,7 @@ const path = require("path");
 const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 let env;
 
@@ -18,8 +19,6 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 }, {});
 
 module.exports = {
-    devtool: "eval-source-map",
-
     entry: {
         app: "./src/modules/core/client/main.js"
     },
@@ -47,10 +46,7 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    "css-loader"
-                ]
+                use: [ MiniCssExtractPlugin.loader, "css-loader" ]
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -61,5 +57,20 @@ module.exports = {
                 type: "asset/resource"
             }
         ]
+    },
+
+    optimization: {
+        moduleIds: "deterministic",
+        runtimeChunk: "single",
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "vendors",
+                    chunks: "all",
+                },
+            },
+        },
+        minimizer: [new CssMinimizerPlugin()]
     }
 };

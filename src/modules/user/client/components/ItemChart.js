@@ -77,6 +77,9 @@ export default function ItemChart() {
                 },
                 legend: {
                     enabled: false
+                },
+                accessibility: {
+                    enabled: false
                 }
             });
         }

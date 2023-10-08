@@ -7,38 +7,36 @@ module.exports = function() {
         graphAPIVersion: "v4.0",
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-        callbackURL: "/oauth/facebook/callback",
+        callbackURL: "/auth/facebook/callback",
         profileFields: ["id", "displayName", "email"]
     }, function(accessToken, refreshToken, profile, done) {
         const { id, name, email } = profile._json;
 
-        process.nextTick(function() {
-            User.findOne({ $or: [
-                { "facebook.id" : id },
-                { "google.email": email },
-                { "local.email": email }
-            ]}, function(err, user) {
-                if(err) return done(err);
+        process.nextTick(async function() {
+            try {
+                const user = await User.findOne({ $or: [
+                    { "facebook.id" : id },
+                    { "google.email": email },
+                    { "local.email": email }
+                ]});
 
                 if(user) {
                     user.facebook = { id, name, email, accessToken};
 
-                    user.save(function(err) {
-                        if(err) return done(err);
-                        done(null, user);
-                    });
+                    await user.save();
+                    done(null, user);
                 } else {
-                    const newUser = new User({
+                    let user = new User({
                         displayName: name,
                         facebook: { id, name, email, accessToken }
                     });
 
-                    newUser.save(function(err) {
-                        if(err) throw err;
-                        done(null, newUser);
-                    });
+                    user = await user.save();
+                    done(null, user);
                 }
-            });
+            } catch(err) {
+                done(err);
+            }
         });
     }));
 };

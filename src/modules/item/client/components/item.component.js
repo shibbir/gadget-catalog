@@ -20,7 +20,7 @@ export default function ItemDetails() {
 
     useEffect(() => {
         dispatch(getItem(id));
-    }, []);
+    }, [dispatch]);
 
     const onDeleteItem = id => {
         if(confirm("Are you sure? All images associated with this item will be removed too.")) {

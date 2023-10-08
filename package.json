@@ -11,7 +11,7 @@
     "pm2:production": "cross-env NODE_ENV=production pm2 start server.js --name gadget-catalog",
     "webpack:production": "cross-env NODE_ENV=production webpack --progress",
     "production": "run-s webpack:production pm2:production",
-    "test": "jest --detectOpenHandles --coverage",
+    "test": "jest --detectOpenHandles",
     "seed": "node seeder.js",
     "eslint": "eslint src/**/*.js"
   },

@@ -37,7 +37,7 @@ async function jwtAuthentication (req, res, next) {
 
         if (!user) {
             try {
-                const refresh_token = req.cookies["refresh_token"];
+                const refresh_token = req.signedCookies["refresh_token"];
 
                 if(!refresh_token) return res.status(401).send("Unauthorized").end();
 
@@ -47,7 +47,7 @@ async function jwtAuthentication (req, res, next) {
                 if(doc.local.refresh_token !== refresh_token) throw new Error();
 
                 req.user = doc;
-                res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true });
+                res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true, signed: true });
                 return next();
             } catch(e) {
                 res.clearCookie("access_token");

@@ -58,8 +58,8 @@ async function register(req, res) {
 
         await user.save();
 
-        res.cookie("access_token", generateAccessToken(user), { httpOnly: true, sameSite: true });
-        res.cookie("refresh_token", user.local.refresh_token, { httpOnly: true, sameSite: true });
+        res.cookie("access_token", generateAccessToken(user), { httpOnly: true, sameSite: true, signed: true });
+        res.cookie("refresh_token", user.local.refresh_token, { httpOnly: true, sameSite: true, signed: true });
 
         res.json({
             name: name,
@@ -92,8 +92,8 @@ async function login(req, res, next) {
             await doc.save();
         }
 
-        res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true });
-        res.cookie("refresh_token", doc.local.refresh_token, { httpOnly: true, sameSite: true });
+        res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true, signed: true });
+        res.cookie("refresh_token", doc.local.refresh_token, { httpOnly: true, sameSite: true, signed: true });
 
         res.json(formatProfile(doc.toJSON()));
     } catch (err) {
@@ -193,15 +193,22 @@ function getSignedInUserProfile(req, res) {
     res.json(formatProfile(req.user.toJSON()));
 }
 
-function disconnect(req, res) {
-    if(!req.query.provider) return res.sendStatus(400);
+async function disconnect(req, res, next) {
+    try {
+        if(!req.query.provider) return res.sendStatus(400);
 
-    if(req.query.provider === "facebook") {
-        axios.delete(`https://graph.facebook.com/${req.user.facebook.id}/permissions?access_token=${req.user.facebook.accessToken}`).then(() => {
-            User.findOneAndUpdate({_id: req.user._id}, {$unset: {facebook: 1 }}, {new: true}, (err, doc) => res.json(formatProfile(doc.toJSON())));
-        }).catch(() => res.sendStatus(500));
-    } else {
-        User.findOneAndUpdate({_id: req.user._id}, {$unset: {google: 1 }}, {new: true}, (err, doc) => res.json(formatProfile(doc.toJSON())));
+        if(req.query.provider === "facebook") {
+            await axios.delete(`https://graph.facebook.com/${req.user.facebook.id}/permissions?access_token=${req.user.facebook.accessToken}`);
+            const doc = await User.findOneAndUpdate({_id: req.user._id}, {$unset: {facebook: 1 }}, {new: true});
+
+            res.json(formatProfile(doc.toJSON()));
+        } else {
+            const doc = await User.findOneAndUpdate({_id: req.user._id}, {$unset: {google: 1 }}, {new: true});
+
+            res.json(formatProfile(doc.toJSON()));
+        }
+    } catch(err) {
+        next(err);
     }
 }
 
