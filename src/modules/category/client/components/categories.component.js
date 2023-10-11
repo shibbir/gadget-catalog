@@ -31,7 +31,7 @@ export default function Categories() {
                     <Link to={`/items?categoryId=${category._id}`} className="ui button basic blue">
                         <Icon name="external alternate" color="teal"/> Show Items
                     </Link>
-                    {loggedInUser && loggedInUser.isAdmin &&
+                    { loggedInUser?.isAdmin &&
                         <a onClick={() => setCategoryId(category._id)} className="ui button">
                             <Icon name="pencil" color="teal"/> Edit
                         </a>
@@ -45,7 +45,7 @@ export default function Categories() {
         <>
             { categories.length > 0 &&
                 <>
-                    {loggedInUser && loggedInUser.isAdmin &&
+                    { loggedInUser?.isAdmin &&
                         <Button floated="right" primary size="small" onClick={() => setCategoryId(null)}>
                             Add new category
                         </Button>

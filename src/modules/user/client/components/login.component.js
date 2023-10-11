@@ -1,16 +1,16 @@
 import axios from "axios";
 import { Form, Formik } from "formik";
-import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ReCAPTCHA from "react-google-recaptcha";
+import React, { useRef, useState } from "react";
 import iziToast from "izitoast/dist/js/iziToast";
 import { Button, Segment, Header, Divider, Image, Modal, Message, Icon } from "semantic-ui-react";
 
 import { login } from "../user.actions";
 import { loginSchema, forgotPasswordSchema } from "../user.schema";
-import OAuthProvider from "../../../core/client/components/OAuthProvider";
-import { TextInput } from "../../../core/client/components/FieldInput/FieldInputs";
+import IdentityProviders from "../../../core/client/components/IdentityProviders";
+import { TextInput } from "../../../core/client/components/FieldInputs";
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -163,7 +163,7 @@ export default function Login() {
 
                 This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.
 
-                <OAuthProvider/>
+                <IdentityProviders/>
             </div>
         </div>
     );

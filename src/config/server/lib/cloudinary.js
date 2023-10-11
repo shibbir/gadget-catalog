@@ -1,4 +1,4 @@
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -6,43 +6,23 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-function uploadToCloudinary(file_path, options) {
-    return new Promise((resolve, reject) => {
-        cloudinary.v2.uploader.upload(file_path, options, (err, url) => {
-            if (err) return reject(err);
-            return resolve(url);
-        });
-    });
+async function upload(file_path, options) {
+    return await cloudinary.uploader.upload(file_path, options);
 }
 
-function destroyFromCloudinary(public_id, options) {
-    return new Promise((resolve, reject) => {
-        cloudinary.v2.uploader.destroy(public_id, options, (err) => {
-            if (err) return reject(err);
-            return resolve();
-        });
-    });
+async function destroy(public_id, options) {
+    await cloudinary.uploader.destroy(public_id, options);
 }
 
-function deleteResourcesFromCloudinary(public_ids) {
-    return new Promise((resolve, reject) => {
-        cloudinary.v2.api.delete_resources(public_ids, (err) => {
-            if (err) return reject(err);
-            return resolve();
-        });
-    });
+async function deleteResources(public_ids) {
+    await cloudinary.api.delete_resources(public_ids);
 }
 
-function deleteFolderFromCloudinary(folder_path) {
-    return new Promise((resolve, reject) => {
-        cloudinary.v2.api.delete_folder(folder_path, (err) => {
-            if (err) return reject(err);
-            return resolve();
-        });
-    });
+async function deleteFolder(folder_path) {
+    await cloudinary.api.delete_folder(folder_path);
 }
 
-exports.uploadToCloudinary = uploadToCloudinary;
-exports.destroyFromCloudinary = destroyFromCloudinary;
-exports.deleteResourcesFromCloudinary = deleteResourcesFromCloudinary;
-exports.deleteFolderFromCloudinary = deleteFolderFromCloudinary;
+exports.upload = upload;
+exports.destroy = destroy;
+exports.deleteResources = deleteResources;
+exports.deleteFolder = deleteFolder;

@@ -41,7 +41,7 @@ export default function ItemChart() {
                     type: "column"
                 },
                 title: {
-                    text: `Items purchased between (${yearRange})`
+                    text: `Items purchased between year (${yearRange})`
                 },
                 xAxis: {
                     categories: years,
@@ -76,6 +76,9 @@ export default function ItemChart() {
                     enabled: false
                 },
                 legend: {
+                    enabled: false
+                },
+                accessibility: {
                     enabled: false
                 }
             });

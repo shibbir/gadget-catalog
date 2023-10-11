@@ -13,9 +13,9 @@ module.exports = function(app) {
 
     app.put("/api/profile/change-password", jwtAuthentication, controller.changePassword);
 
-    app.get("/oauth/facebook", passport.authenticate("facebook", { scope: "email" }));
+    app.get("/auth/facebook", passport.authenticate("facebook", { scope: "email" }));
 
-    app.get("/oauth/facebook/callback", function(req, res, next) {
+    app.get("/auth/facebook/callback", function(req, res, next) {
         passport.authenticate("facebook", function(err, user) {
             if(err) {
                 return res.redirect(`/?provider=facebook&error=${err.message}`);
@@ -23,18 +23,19 @@ module.exports = function(app) {
 
             res.cookie("access_token", generateAccessToken(user), {
                 expires: new Date(Date.now() + 8.64e+7),
-                httpOnly: true
+                httpOnly: true,
+                signed: true
             }).redirect("/");
         })(req, res, next);
     });
 
-    app.post("/oauth/facebook/deauthorize-callback", function(req, res) {
+    app.post("/auth/facebook/deauthorize-callback", function(req, res) {
         res.sendStatus(200);
     });
 
-    app.get("/oauth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+    app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-    app.get("/oauth/google/callback", function(req, res, next) {
+    app.get("/auth/google/callback", function(req, res, next) {
         passport.authenticate("google", function(err, user) {
             if(err) {
                 return res.redirect(`/?provider=google&error=${err.message}`);
@@ -42,18 +43,19 @@ module.exports = function(app) {
 
             res.cookie("access_token", generateAccessToken(user), {
                 expires: new Date(Date.now() + 8.64e+7),
-                httpOnly: true
+                httpOnly: true,
+                signed: true
             }).redirect("/");
         })(req, res, next);
     });
 
-    app.put("/api/oauth/disconnect", jwtAuthentication, controller.disconnect);
+    app.put("/api/auth/disconnect", jwtAuthentication, controller.disconnect);
 
     app.post("/api/forgot-password", controller.forgotPassword);
 
     app.put("/api/reset-password", controller.resetPassword);
 
-    app.post("/oauth/facebook/data-deletion-request-callback", function(req, res) {
+    app.post("/auth/facebook/data-deletion-request-callback", function(req, res) {
         const { signed_request } = req.body;
 
         const [ encoded_signature, payload ] = signed_request.split(".", 2);

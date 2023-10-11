@@ -60,7 +60,7 @@ export function removeOauthProvider(provider) {
         type: Types.DISCONNECT_PROVIDER,
         payload: axios({
             method: "put",
-            url: `/api/oauth/disconnect?provider=${provider}`
+            url: `/api/auth/disconnect?provider=${provider}`
         })
     };
 }

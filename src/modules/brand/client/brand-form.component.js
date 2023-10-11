@@ -6,7 +6,7 @@ import iziToast from "izitoast/dist/js/iziToast";
 import { useSelector, useDispatch } from "react-redux";
 import BrandSchema from "./brand.schema";
 import { createBrand, updateBrand, getBrand } from "./brand.actions";
-import { TextInput } from "../../core/client/components/FieldInput/FieldInputs";
+import { TextInput } from "../../core/client/components/FieldInputs";
 
 function BrandForm({id} = props) {
     const dispatch = useDispatch();

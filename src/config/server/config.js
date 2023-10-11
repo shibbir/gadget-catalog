@@ -1,5 +1,4 @@
 const _ = require("lodash");
-const path = require("path");
 const glob = require("glob");
 
 const getGlobbedPaths = function (globPatterns, excludes) {
@@ -36,10 +35,23 @@ const getGlobbedPaths = function (globPatterns, excludes) {
 };
 
 function initGlobalConfig() {
-    const defaultAssets = require(path.join(process.cwd(), "src/config/server/assets/default"));
-    const environmentAssets = process.env.NODE_ENV === "production" ? require(path.join(process.cwd(), "src/config/server/assets/production")) : {};
-
-    const assets = _.merge(defaultAssets, environmentAssets);
+    const assets = {
+        client: {
+            css: [
+                "public/bundles/vendors*.css",
+                "public/bundles/app*.css"
+            ],
+            js: [
+                "public/bundles/runtime*.js",
+                "public/bundles/vendors*.js",
+                "public/bundles/app*.js"
+            ]
+        },
+        server: {
+            routes: ["src/modules/!(core)/server/**/*.routes.js", "src/modules/core/server/**/*.routes.js"],
+            strategies: ["src/modules/**/*.strategy.js"]
+        }
+    };
 
     const config = {
         client: {

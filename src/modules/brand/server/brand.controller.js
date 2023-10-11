@@ -3,7 +3,7 @@ const User = require("../../user/server/user.model");
 
 const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").replace(/ +/g, "-");
 
-async function getBrand(req, res) {
+async function getBrand(req, res, next) {
     try {
         const doc = await Brand.findOne({ _id: req.params.id, createdBy: req.user._id }).exec();
 
@@ -13,12 +13,12 @@ async function getBrand(req, res) {
 
         res.json(doc);
     } catch(err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
-async function getBrands(req, res) {
-    const admin = await User.findOne({role: "admin"});
+async function getBrands(req, res, next) {
+    const admin = await User.findOne({ role: "admin" });
 
     try {
         const docs = await Brand.find({ $or: [
@@ -33,46 +33,44 @@ async function getBrands(req, res) {
 
         res.json(docs);
     } catch(err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
-async function createBrand(req, res) {
+async function createBrand(req, res, next) {
     try {
-        let model = new Brand({
+        const model = await Brand.create({
             name: req.body.name,
             slug: convertToSlug(req.body.name),
             createdBy: req.user._id
         });
 
-        model = await model.save();
-
         res.json(model);
     } catch(err) {
-        res.sendStatus(500);
+        next(err);
     }
 }
 
-function updateBrand(req, res) {
-    Brand.findOne({ name: req.body.name }, function(err, doc) {
-        if(err) return res.sendStatus(500);
+async function updateBrand(req, res, next) {
+    try {
+        let doc = await Brand.findOne({ name: req.body.name });
 
         if(doc && doc._id.toString() !== req.params.id) {
             return res.status(400).send("Brand name already exists.");
         }
 
-        Brand.findOne({ _id: req.params.id, createdBy: req.user._id }, function(err, doc) {
-            if(err) return res.sendStatus(500);
+        doc = await Brand.findOne({ _id: req.params.id, createdBy: req.user._id });
 
-            if(!doc) return res.sendStatus(404);
+        if(!doc) return res.sendStatus(404);
 
-            doc.name = req.body.name;
-            doc.slug = convertToSlug(req.body.name);
+        doc.name = req.body.name;
+        doc.slug = convertToSlug(req.body.name);
 
-            doc.save();
-            res.json(doc);
-        });
-    });
+        doc.save();
+        res.json(doc);
+    } catch(err) {
+        next(err);
+    }
 }
 
 exports.getBrand = getBrand;

@@ -20,7 +20,7 @@ export default function CategoryChart() {
             let data = [];
 
             categories.forEach(o => {
-                if(o.items && o.items.length) {
+                if(o.items?.length) {
                     data.push({
                         name: o.name,
                         y: o.items.length
@@ -62,6 +62,9 @@ export default function CategoryChart() {
                     data
                 }],
                 credits: {
+                    enabled: false
+                },
+                accessibility: {
                     enabled: false
                 }
             });

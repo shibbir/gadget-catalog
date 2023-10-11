@@ -5,7 +5,7 @@ import { Divider, Button } from "semantic-ui-react";
 
 import { changePasswordSchema } from "../user.schema";
 import { changePassword } from "../user.actions";
-import { TextInput } from "../../../core/client/components/FieldInput/FieldInputs";
+import { TextInput } from "../../../core/client/components/FieldInputs";
 
 export default function ChangePassword() {
     const dispatch = useDispatch();

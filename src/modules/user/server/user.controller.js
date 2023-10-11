@@ -58,8 +58,8 @@ async function register(req, res) {
 
         await user.save();
 
-        res.cookie("access_token", generateAccessToken(user), { httpOnly: true, sameSite: true });
-        res.cookie("refresh_token", user.local.refresh_token, { httpOnly: true, sameSite: true });
+        res.cookie("access_token", generateAccessToken(user), { httpOnly: true, sameSite: true, signed: true });
+        res.cookie("refresh_token", user.local.refresh_token, { httpOnly: true, sameSite: true, signed: true });
 
         res.json({
             name: name,
@@ -92,8 +92,8 @@ async function login(req, res, next) {
             await doc.save();
         }
 
-        res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true });
-        res.cookie("refresh_token", doc.local.refresh_token, { httpOnly: true, sameSite: true });
+        res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true, signed: true });
+        res.cookie("refresh_token", doc.local.refresh_token, { httpOnly: true, sameSite: true, signed: true });
 
         res.json(formatProfile(doc.toJSON()));
     } catch (err) {
@@ -123,13 +123,13 @@ async function changePassword(req, res) {
     }
 }
 
-function forgotPassword(req, res, next) {
-    User.findOne({ $or: [
-        { "facebook.email" : req.body.email },
-        { "google.email": req.body.email },
-        { "local.email": req.body.email }
-    ]}, function(err, doc) {
-        if(err) return next(err);
+async function forgotPassword(req, res, next) {
+    try {
+        const doc = await User.findOne({ $or: [
+            { "facebook.email": req.body.email },
+            { "google.email": req.body.email },
+            { "local.email": req.body.email }
+        ]});
 
         if(!doc) return res.status(404).send("No account is associated with this email address.");
 
@@ -144,25 +144,27 @@ function forgotPassword(req, res, next) {
         doc.local.resetPasswordToken = crypto.randomBytes(20).toString("hex");
         doc.local.resetPasswordExpires = Date.now() + 3600000;
 
-        doc.save().then(function() {
-            res.render("password-reset.html", {
-                name: doc.displayName,
-                origin_url: req.headers.origin,
-                password_reset_url: `${req.headers.origin}/reset-password?token=${doc.local.resetPasswordToken}`
-            }, function(err, html) {
-                transporter.sendMail({
-                    from: `"Gadget Catalog" <${process.env.MAILER_ADDRESS}>`,
-                    to: req.body.email,
-                    subject: "[Gadget Catalog] Password Reset Request",
-                    html: html
-                }, function (err) {
-                    if(err) return next(err);
+        await doc.save();
 
-                    res.sendStatus(200);
-                });
+        res.render("password-reset.html", {
+            name: doc.displayName,
+            origin_url: req.headers.origin,
+            password_reset_url: `${req.headers.origin}/reset-password?token=${doc.local.resetPasswordToken}`
+        }, function(err, html) {
+            transporter.sendMail({
+                from: `"Gadget Catalog" <${process.env.MAILER_ADDRESS}>`,
+                to: req.body.email,
+                subject: "[Gadget Catalog] Password Reset Request",
+                html: html
+            }, function (err) {
+                if(err) return next(err);
+
+                res.sendStatus(200);
             });
         });
-    });
+    } catch(err) {
+        next(err);
+    }
 }
 
 async function resetPassword(req, res) {
@@ -191,15 +193,22 @@ function getSignedInUserProfile(req, res) {
     res.json(formatProfile(req.user.toJSON()));
 }
 
-function disconnect(req, res) {
-    if(!req.query.provider) return res.sendStatus(400);
+async function disconnect(req, res, next) {
+    try {
+        if(!req.query.provider) return res.sendStatus(400);
 
-    if(req.query.provider === "facebook") {
-        axios.delete(`https://graph.facebook.com/${req.user.facebook.id}/permissions?access_token=${req.user.facebook.accessToken}`).then(() => {
-            User.findOneAndUpdate({_id: req.user._id}, {$unset: {facebook: 1 }}, {new: true}, (err, doc) => res.json(formatProfile(doc.toJSON())));
-        }).catch(() => res.sendStatus(500));
-    } else {
-        User.findOneAndUpdate({_id: req.user._id}, {$unset: {google: 1 }}, {new: true}, (err, doc) => res.json(formatProfile(doc.toJSON())));
+        if(req.query.provider === "facebook") {
+            await axios.delete(`https://graph.facebook.com/${req.user.facebook.id}/permissions?access_token=${req.user.facebook.accessToken}`);
+            const doc = await User.findOneAndUpdate({_id: req.user._id}, {$unset: {facebook: 1 }}, {new: true});
+
+            res.json(formatProfile(doc.toJSON()));
+        } else {
+            const doc = await User.findOneAndUpdate({_id: req.user._id}, {$unset: {google: 1 }}, {new: true});
+
+            res.json(formatProfile(doc.toJSON()));
+        }
+    } catch(err) {
+        next(err);
     }
 }
 

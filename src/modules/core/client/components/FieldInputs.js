@@ -1,7 +1,7 @@
 import React from "react";
-import { Form, Icon } from "semantic-ui-react";
 import { Field, ErrorMessage } from "formik";
-import DraftEditor from "./DraftEditor";
+import { Form, Icon } from "semantic-ui-react";
+import { Editor } from "@tinymce/tinymce-react";
 
 export const TextInput = ({ attributes }) => {
     return (
@@ -58,7 +58,28 @@ export const RichEditorInput = ({ attributes }) => {
         <Form.Field required={attributes.required}>
             { attributes.label && <label>{attributes.label}</label> }
 
-            <DraftEditor {...attributes}/>
+            <Editor
+                apiKey={process.env.TINYCLOUD_API_KEY}
+                value={attributes.value}
+                init={{
+                    height: 400,
+                    menubar: false,
+                    plugins: [
+                        'advlist', 'autolink', 'lists', 'link',
+                        'anchor', 'visualblocks', 'code',
+                        'insertdatetime', 'table'
+                    ],
+                    toolbar: 'blocks | ' +
+                        'bold italic forecolor | ' +
+                        'bullist numlist | ' +
+                        'removeformat',
+                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                    placeholder: attributes.placeholder
+                }}
+                onEditorChange={(content) => {
+                    attributes.setFieldValue(attributes.name, content);
+                }}
+            />
         </Form.Field>
     );
 };

@@ -6,8 +6,8 @@ import { Button, Segment, Header, Divider, Image } from "semantic-ui-react";
 
 import { register } from "../user.actions";
 import { registerSchema } from "../user.schema";
-import OAuthProvider from "../../../core/client/components/OAuthProvider";
-import { TextInput } from "../../../core/client/components/FieldInput/FieldInputs";
+import IdentityProviders from "../../../core/client/components/IdentityProviders";
+import { TextInput } from "../../../core/client/components/FieldInputs";
 
 export default function Register() {
     const dispatch = useDispatch();
@@ -75,7 +75,7 @@ export default function Register() {
 
                 This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.
 
-                <OAuthProvider/>
+                <IdentityProviders/>
             </div>
         </div>
     );

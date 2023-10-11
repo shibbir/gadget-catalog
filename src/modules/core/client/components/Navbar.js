@@ -12,17 +12,17 @@ export default function Navbar() {
                 <Menu.Item header style={{paddingLeft: 0}}>
                     <img src="/images/logo.png"/>
                 </Menu.Item>
-                <NavLink exact to="/" activeClassName="active" className="item">
+                <NavLink to="/" className={({ isActive }) => "item" + (isActive ? " active" : "")}>
                     <Icon name="dashboard" color="teal"/>
                     Dashboard
                 </NavLink>
-                <NavLink to="/items" activeClassName="active" className="item">
+                <NavLink to="/items" className={({ isActive }) => "item" + (isActive ? " active" : "")}>
                     <Icon name="desktop" color="teal"/> Manage Items
                 </NavLink>
-                <NavLink to="/categories" activeClassName="active" className="item">
+                <NavLink to="/categories" className={({ isActive }) => "item" + (isActive ? " active" : "")}>
                     <Icon name="sitemap" color="teal"/> Manage Categories
                 </NavLink>
-                <NavLink to="/brands" activeClassName="active" className="item">
+                <NavLink to="/brands" className={({ isActive }) => "item" + (isActive ? " active" : "")}>
                     <Icon name="apple" color="teal"/> Manage Brands
                 </NavLink>
                 <div className="right item" style={{paddingRight: 0}}>

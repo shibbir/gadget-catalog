@@ -1,22 +1,21 @@
 import { Form, Formik } from "formik";
 import React, { useEffect } from "react";
 import { format, parseISO } from "date-fns";
-import { stateToHTML } from "draft-js-export-html";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
-import { EditorState, ContentState, convertFromHTML } from "draft-js";
+import { useParams, useNavigate } from "react-router-dom";
 import { Divider, Button, Form as SemanticUIForm } from "semantic-ui-react";
+import Dropzone from 'react-dropzone';
 
 import Types from "../item.types";
 import { itemSchema } from "../item.schema";
 import { getBrands } from "../../../brand/client/brand.actions";
-import { createItem, updateItem, fetchItem } from "../item.actions";
+import { createItem, updateItem, getItem } from "../item.actions";
 import { getCategories } from "../../../category/client/category.actions";
-import { TextInput, RichEditorInput, DropdownInput, FileInput } from "../../../core/client/components/FieldInput/FieldInputs";
+import { TextInput, RichEditorInput, DropdownInput, FileInput } from "../../../core/client/components/FieldInputs";
 
 export default function ItemForm() {
     const { id } = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -25,14 +24,12 @@ export default function ItemForm() {
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(fetchItem(id));
-    }, [dispatch]);
+        if(id) dispatch(getItem(id));
+    }, [id, dispatch]);
 
     const item = useSelector(state => state.itemReducer.item);
     const brands = useSelector(state => state.brandReducer.brands);
     const categories = useSelector(state => state.categoryReducer.categories);
-
-    const blocksFromHTML = convertFromHTML(item && item.description ? item.description : "");
 
     const categoryOptions = categories.map(function(option) {
         return { key: option._id, value: option._id, text: option.name };
@@ -62,24 +59,21 @@ export default function ItemForm() {
         <Formik
             initialValues={{
                 name: item ? item.name : "",
+                description: item ? item.description : "",
                 categoryId: item ? item.categoryId : "",
                 brandId: item ? item.brandId : "",
-                purchaseDate: item && item.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
+                purchaseDate: item?.purchaseDate ? format(parseISO(item.purchaseDate), "y-MM-d") : "",
                 price: item ? item.price : "",
                 currency: item ? item.currency : "",
                 payee: item ? item.payee : "",
                 images: "",
-                invoice: "",
-                editorState: blocksFromHTML.contentBlocks
-                    ? new EditorState.createWithContent(ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap))
-                    : new EditorState.createEmpty()
+                invoice: ""
+                // images: []
             }}
             displayName="ItemForm"
             enableReinitialize={true}
             validationSchema={itemSchema}
             onSubmit={(values, actions) => {
-                values.description = stateToHTML(values.editorState.getCurrentContent());
-
                 let formData = new FormData();
 
                 if(values.images) {
@@ -94,7 +88,7 @@ export default function ItemForm() {
                     delete values.invoice;
                 }
 
-                for(let key in values) {
+                for(const key in values) {
                     if(values[key] && values.hasOwnProperty(key)) {
                         formData.append(key, values[key]);
                     }
@@ -113,7 +107,7 @@ export default function ItemForm() {
                         const { type, payload } = result.action;
 
                         if(type === Types.POST_ITEM_FULFILLED) {
-                            history.push(`/items/${payload.data._id}`);
+                            navigate(`/items/${payload.data._id}`);
                         }
                     });
                 }
@@ -122,7 +116,7 @@ export default function ItemForm() {
             }}
         >
             {formikProps => (
-                <Form onSubmit={formikProps.handleSubmit} className="ui form">
+                <Form onSubmit={formikProps.handleSubmit} className="ui form" encType="multipart/form-data">
                     <TextInput attributes={{
                         type: "text",
                         name: "name",
@@ -133,9 +127,8 @@ export default function ItemForm() {
                         value: formikProps.values.description,
                         name: "description",
                         label: "Description",
-                        onChange: formikProps.setFieldValue,
-                        onBlur: formikProps.handleBlur,
-                        editorState: formikProps.values.editorState
+                        placeholder: "Item description goes here...",
+                        setFieldValue: formikProps.setFieldValue
                     }}/>
 
                     <SemanticUIForm.Group widths="equal">
@@ -197,9 +190,26 @@ export default function ItemForm() {
                         name: "images",
                         label: "Upload images",
                         multiple: true,
-                        info: "You can upload a maximum of 3 files at a time. The max file size limit is 1.5 MB.",
+                        info: "You can upload a maximum of 3 images at a time. The max file size limit is 1.5 MB.",
                         onChange: event => {formikProps.setFieldValue("images", event.currentTarget.files)}
                     }}/>
+
+                    {/* <Dropzone
+                        multiple
+                        onDrop={acceptedFiles => {
+                            if (acceptedFiles.length === 0) return;
+                            formikProps.setFieldValue("images", formikProps.values.images.concat(acceptedFiles));
+                        }}
+                    >
+                        {({getRootProps, getInputProps}) => (
+                            <section>
+                                <div {...getRootProps()}>
+                                    <input {...getInputProps()} />
+                                    <p>Drag 'n' drop some files here, or click to select files</p>
+                                </div>
+                            </section>
+                        )}
+                    </Dropzone> */}
 
                     <FileInput attributes={{
                         type: "file",

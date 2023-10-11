@@ -6,42 +6,41 @@ module.exports = function() {
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "/oauth/google/callback"
+        callbackURL: "/auth/google/callback"
     }, function(accessToken, refreshToken, profile, done) {
         const { id, displayName, emails } = profile;
         const email = emails[0].value;
 
-        process.nextTick(function() {
-            User.findOne({ $or: [
-                { "google.id": id },
-                { "facebook.email": email },
-                { "local.email": email }
-            ]}, function(err, user) {
-                if(err) return done(err);
+        process.nextTick(async function() {
+            try {
+                const user = await User.findOne({ $or: [
+                    { "google.id": id },
+                    { "facebook.email": email },
+                    { "local.email": email }
+                ]});
 
                 if(user) {
-                    user.google = { id, email, accessToken };
-                    user.google.name = displayName;
+                    user.google = { id, email, accessToken, name: displayName };
 
-                    user.save(function(err) {
-                        if(err) {
-                            return done(err);
-                        }
-                        done(null, user);
-                    });
+                    await user.save();
+                    done(null, user);
                 } else {
-                    let newUser = new User();
-
-                    newUser.displayName = displayName;
-                    newUser.google = { id, email, accessToken };
-                    newUser.google.name = displayName;
-
-                    newUser.save(function(err) {
-                        if(err) return done(err);
-                        done(null, newUser);
+                    let user = new User({
+                        displayName: displayName,
+                        google: {
+                            id,
+                            email,
+                            accessToken,
+                            name: displayName
+                        }
                     });
+
+                    user = await user.save();
+                    done(null, user);
                 }
-            });
+            } catch(err) {
+                done(err);
+            }
         });
     }));
 };

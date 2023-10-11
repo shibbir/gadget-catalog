@@ -1,21 +1,20 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.0.2
+    node: circleci/node@5.1.0
+    coveralls: coveralls/coveralls@2.2.1
 jobs:
-  build-and-test:
-    executor:
-      name: node/default
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: yarn
-      - run:
-          command: yarn install
-          name: Install dependencies
-      - run:
-          command: yarn test
-          name: Run tests
+    build_test_job:
+        executor: node/default
+        steps:
+            - checkout
+            - node/install-packages:
+                pkg-manager: yarn
+            - run:
+                command: yarn test
+            - store_test_results:
+                path: test_results
+            - coveralls/upload
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
+    build_test_workflow:
+        jobs:
+            - build_test_job
