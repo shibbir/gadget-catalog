@@ -53,22 +53,22 @@ export function getItems(query = "") {
     };
 }
 
-export function setAsActiveImage(itemId, fileId) {
+export function setAsActiveImage(itemId, assetId) {
     return {
         type: Types.UPDATE_ITEM_IMAGE,
         payload: axios({
             method: "put",
-            url: `/api/items/${itemId}/images/${fileId}`
+            url: `/api/items/${itemId}/images/${assetId}`
         })
     };
 }
 
-export function deleteImage(itemId, fileId) {
+export function deleteImage(itemId, assetId) {
     return {
         type: Types.DELETE_ITEM_IMAGE,
         payload: axios({
             method: "delete",
-            url: `/api/items/${itemId}/images/${fileId}`
+            url: `/api/items/${itemId}/images/${assetId}`
         })
     };
 }

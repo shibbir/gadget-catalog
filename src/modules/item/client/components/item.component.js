@@ -23,7 +23,7 @@ export default function ItemDetails() {
     }, [dispatch]);
 
     const onDeleteItem = id => {
-        if(confirm("Are you sure? All images associated with this item will be removed too.")) {
+        if(confirm("Are you sure? All assets associated with this item will be removed too.")) {
             dispatch(deleteItem(id)).then(function(result) {
                 const { type } = result.action;
 
@@ -35,7 +35,7 @@ export default function ItemDetails() {
     };
 
     const onDeleteImage = (itemId, fileId) => {
-        if(confirm("Are you sure you want to delete this image?")) {
+        if(confirm("Are you sure you want to delete this asset?")) {
             dispatch(deleteImage(itemId, fileId));
         }
     };
@@ -52,8 +52,8 @@ export default function ItemDetails() {
         );
     }
 
-    if(item.files?.length) {
-        item.activeImage = item.files.find(x => x.active === true);
+    if(item.assets?.length) {
+        item.activeImage = item.assets.find(x => x.active === true);
     }
 
     return (
@@ -83,7 +83,7 @@ export default function ItemDetails() {
                         <Icon name="warning sign" size="large"/>
                             <Message.Content>
                                 <Message.Header>Warning!</Message.Header>
-                                No images are found for this item. <Link to={`/items/${item._id}/edit`}>Consider editing the item</Link>.
+                                No assets are found for this item. <Link to={`/items/${item._id}/edit`}>Consider editing the item</Link>.
                             </Message.Content>
                         </Message>
                     }
@@ -138,35 +138,35 @@ export default function ItemDetails() {
                 </Grid.Column>
             </Grid>
 
-            { item.files && item.files.length > 0 &&
+            { item.assets && item.assets.length > 0 &&
                 <div>
                     <Divider hidden/>
-                    <h2>Manage images</h2>
+                    <h2>Manage assets</h2>
                     <Divider section/>
 
                     <Card.Group>
-                        { item.files.map((file) => {
+                        { item.assets.map((asset) => {
                             return (
-                                <Card key={file._id} raised>
-                                    { file.active &&
+                                <Card key={asset._id} raised>
+                                    { asset.active &&
                                         <Label color="teal" corner="right" size="small">
                                             <Icon name="pin"/>
                                         </Label>
                                     }
 
                                     <Card.Content className="ui center aligned">
-                                        <Image src={file.secure_url} size="small"/>
+                                        <Image src={asset.secure_url} size="small"/>
                                     </Card.Content>
 
                                     { user && !user.isAdmin &&
                                         <Card.Content extra>
-                                            <a onClick={() => dispatch(setAsActiveImage(item._id, file._id))} disabled={file.active}>
+                                            <a onClick={() => dispatch(setAsActiveImage(item._id, asset._id))} disabled={asset.active}>
                                                 <Icon color="teal" name="checkmark"/>
                                                 Set as active
                                             </a>
 
                                             <div className="right floated">
-                                                <a onClick={() => onDeleteImage(item._id, file._id)}>
+                                                <a onClick={() => onDeleteImage(item._id, asset._id)}>
                                                     <Icon color="red" name="delete"/>
                                                     Discard
                                                 </a>

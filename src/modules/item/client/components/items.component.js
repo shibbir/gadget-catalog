@@ -94,7 +94,7 @@ export default function Items() {
     const brandOptions = brands.map((option) => ({ key: option._id, value: option._id, text: option.name }));
 
     const cards = data.map(function(item) {
-        const activeImage = item.files.find(x => x.active) ? item.files.find(x => x.active).secure_url : item.files[0]?.secure_url;
+        const activeImage = item.assets.find(x => x.active) ? item.assets.find(x => x.active).secure_url : item.assets[0]?.secure_url;
 
         return (
             <Link key={item._id} className="ui raised card" to={item._id}>
