@@ -1,6 +1,38 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const FileSchema = require("../../core/server/file.model");
+
+const FileSchema = Schema({
+    public_id: {
+        type: String,
+        required: true
+    },
+    resource_type: {
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        required: true
+    },
+    version: {
+        type: String
+    },
+    format: {
+        type: String,
+        required: true
+    },
+    secure_url: {
+        type: String,
+        required: true
+    },
+    created_at: {
+        type: Date
+    },
+    active: {
+        type: Boolean,
+        default: false
+    }
+});
 
 const ItemSchema = Schema({
     name: {
@@ -31,7 +63,7 @@ const ItemSchema = Schema({
         minlength: 2,
         maxlength: 30
     },
-    files: [FileSchema],
+    assets: [FileSchema],
     invoice: FileSchema,
     createdBy: {
         ref: "User",

@@ -6,8 +6,8 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-async function upload(file_path, options) {
-    return await cloudinary.uploader.upload(file_path, options);
+async function upload(asset_path, options) {
+    return await cloudinary.uploader.upload(asset_path, options);
 }
 
 async function destroy(public_id, options) {

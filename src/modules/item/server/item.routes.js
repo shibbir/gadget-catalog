@@ -11,7 +11,7 @@ module.exports = function(app) {
             { name: "invoice", maxCount: 1 }
         ]), controller.createItem);
 
-    app.route("/api/items/:itemId/images/:fileId")
+    app.route("/api/items/:itemId/images/:assetId")
         .put(jwtAuthentication, controller.updateImage)
         .delete(jwtAuthentication, controller.deleteImage);
 

@@ -78,25 +78,26 @@ async function createItem(req, res, next) {
             price: req.body.price,
             currency: req.body.currency,
             payee: req.body.payee,
+            description: req.body.description?.validator.escape(req.body.description),
             createdBy: req.user._id
         });
 
-        if(req.body.description) item.description = validator.escape(req.body.description);
-
         for(let i = 0; i < req.files?.images?.length; i++) {
             const file = req.files.images[i];
-            const result = await upload(file.path, { folder: `gadget-catalog/${_id}` });
+            const fileId = new mongoose.Types.ObjectId;
+            const result = await upload(file.path, { public_id: fileId, folder: `gadget-catalog/${_id}` });
 
-            item.files.push({ ...result, active: i ? false : true });
+            item.assets.push({ _id: fileId, ...result, active: i ? false : true });
 
             await fs.unlink(file.path);
         }
 
         for(let i = 0; i < req.files?.invoice?.length; i++) {
             const file = req.files.invoice[i];
-            const result = await upload(file.path, { folder: `gadget-catalog/${_id}` });
+            const fileId = new mongoose.Types.ObjectId;
+            const result = await upload(file.path, { public_id: fileId, folder: `gadget-catalog/${_id}` });
 
-            item.invoice = result;
+            item.invoice = { _id: fileId, ...result };
 
             await fs.unlink(file.path);
         }
@@ -122,14 +123,14 @@ async function updateItem(req, res, next) {
         doc.price = req.body.price;
         doc.currency = req.body.currency;
         doc.payee = req.body.payee;
-
-        if(req.body.description) doc.description = validator.escape(req.body.description);
+        doc.description = req.body.description?.validator.escape(req.body.description);
 
         for(let i = 0; i < req.files?.images?.length; i++) {
             const file = req.files.images[i];
-            const result = await upload(file.path, { folder: `gadget-catalog/${req.params.id}` });
+            const fileId = new mongoose.Types.ObjectId;
+            const result = await upload(file.path, { public_id: fileId, folder: `gadget-catalog/${req.params.id}` });
 
-            doc.files.push({ ...result });
+            doc.assets.push({ _id: fileId, ...result });
 
             await fs.unlink(file.path);
         }
@@ -149,8 +150,8 @@ async function deleteItem(req, res, next) {
 
         const public_ids = [];
 
-        doc.files.forEach(function(file) {
-            public_ids.push(file.public_id);
+        doc.assets.forEach(function(asset) {
+            public_ids.push(asset.public_id);
         });
 
         if(doc.invoice) {
@@ -170,19 +171,19 @@ async function deleteItem(req, res, next) {
 
 async function updateImage(req, res, next) {
     try {
-        let doc = await Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, "files");
+        let doc = await Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, "assets");
 
         if(!doc) return res.sendStatus(404);
 
-        doc.files = doc.files.map(function(x) {
+        doc.assets = doc.assets.map(function(x) {
             x.active = false;
             return x;
         });
 
         await doc.save();
 
-        doc = await Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, "files._id": req.params.fileId }, {
-            $set: { "files.$.active": true }
+        doc = await Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, "assets._id": req.params.assetId }, {
+            $set: { "assets.$.active": true }
         }, { new: true });
 
         res.json(doc);
@@ -195,13 +196,13 @@ async function deleteImage(req, res, next) {
     try {
         const doc = await Item.findOne({ _id: req.params.itemId, createdBy: req.user._id });
 
-        if(!doc || !req.params.fileId) return res.sendStatus(404);
+        if(!doc || !req.params.assetId) return res.sendStatus(404);
 
-        const file = doc.files.id(req.params.fileId);
+        const asset = doc.assets.id(req.params.assetId);
 
-        await destroy(file.public_id, { invalidate: true });
+        await destroy(asset.public_id, { invalidate: true });
 
-        doc.files.id(req.params.fileId).deleteOne();
+        doc.assets.id(req.params.assetId).deleteOne();
         await doc.save();
 
         res.json(doc);
