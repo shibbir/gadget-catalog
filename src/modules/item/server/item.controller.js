@@ -78,7 +78,7 @@ async function createItem(req, res, next) {
             price: req.body.price,
             currency: req.body.currency,
             payee: req.body.payee,
-            description: req.body.description?.validator.escape(req.body.description),
+            description: req.body.description ? validator.escape(req.body.description) : null,
             createdBy: req.user._id
         });
 
@@ -123,7 +123,7 @@ async function updateItem(req, res, next) {
         doc.price = req.body.price;
         doc.currency = req.body.currency;
         doc.payee = req.body.payee;
-        doc.description = req.body.description?.validator.escape(req.body.description);
+        doc.description = req.body.description ? validator.escape(req.body.description) : null;
 
         for(let i = 0; i < req.files?.images?.length; i++) {
             const file = req.files.images[i];

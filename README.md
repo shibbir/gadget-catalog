@@ -96,7 +96,7 @@ $ yarn coverage   # generate coverage report
 ```
 
 ## :flashlight: Demo
-Here is a working live demo :  https://gadget-catalog-io.herokuapp.com/
+Here is a working live demo :  https://gadget-catalog.onrender.com/
 
 ## :beetle: Bugs or Feature Requests
 If you find a bug, kindly open an issue [here](https://github.com/shibbir/gadget-catalog/issues/new) by including your step by step to reproduce the issue.
