@@ -1,5 +1,5 @@
 import Highcharts from "highcharts";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Icon, Segment, Header, Button } from "semantic-ui-react";

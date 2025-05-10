@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import React, { useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
 import { Divider, Button, Form as SemanticUIForm } from "semantic-ui-react";
 import Dropzone from 'react-dropzone';
 
@@ -66,9 +66,8 @@ export default function ItemForm() {
                 price: item ? item.price : "",
                 currency: item ? item.currency : "",
                 payee: item ? item.payee : "",
-                images: "",
-                invoice: ""
-                // images: []
+                invoice: "",
+                images: []
             }}
             displayName="ItemForm"
             enableReinitialize={true}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Formik } from "formik";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useDispatch } from "react-redux";
 import { Button, Segment, Header, Divider, Image } from "semantic-ui-react";
 

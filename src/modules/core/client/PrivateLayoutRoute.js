@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Container, Divider } from "semantic-ui-react";
-import { Outlet, Navigate, useLocation } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/footer.component";

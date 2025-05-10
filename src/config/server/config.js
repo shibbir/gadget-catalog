@@ -1,29 +1,25 @@
 const _ = require("lodash");
 const glob = require("glob");
 
-const getGlobbedPaths = function (globPatterns, excludes) {
+const getGlobbedPaths = function (globPatterns, exclude) {
     const urlRegex = new RegExp("^(?:[a-z]+:)?\/\/", "i");
 
     let output = [];
 
     if (_.isArray(globPatterns)) {
         globPatterns.forEach(function (globPattern) {
-            output = _.union(output, getGlobbedPaths(globPattern, excludes));
+            output = _.union(output, getGlobbedPaths(globPattern, exclude));
         });
     } else if (_.isString(globPatterns)) {
         if (urlRegex.test(globPatterns)) {
             output.push(globPatterns);
         } else {
             let files = glob.sync(globPatterns);
-            if (excludes) {
+
+            if (exclude) {
                 files = files.map(function (file) {
-                    if (_.isArray(excludes)) {
-                        for (const item of excludes) {
-                            file = file.replace(item, "");
-                        }
-                    } else {
-                        file = file.replace(excludes, "");
-                    }
+                    file = file.replace(/\\/g, "/");
+                    file = file.replace(exclude, "");
                     return file;
                 });
             }
@@ -55,8 +51,8 @@ function initGlobalConfig() {
 
     const config = {
         client: {
-            js: getGlobbedPaths(assets.client.js, ["public/"]),
-            css: getGlobbedPaths(assets.client.css, ["public/"])
+            js: getGlobbedPaths(assets.client.js, "public/"),
+            css: getGlobbedPaths(assets.client.css, "public/")
         },
         server: {
             routes: getGlobbedPaths(assets.server.routes),

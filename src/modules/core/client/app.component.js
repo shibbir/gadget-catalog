@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router";
 
 import "fomantic-ui-css/semantic.css";
 import "izitoast/dist/css/iziToast.css";

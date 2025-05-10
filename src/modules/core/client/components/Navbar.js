@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { Menu, Container, Icon } from "semantic-ui-react";
 
 export default function Navbar() {

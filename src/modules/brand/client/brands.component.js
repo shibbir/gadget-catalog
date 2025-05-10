@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { FormattedDate } from "react-intl";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
