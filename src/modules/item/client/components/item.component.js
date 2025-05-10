@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FormattedDate, FormattedNumber } from "react-intl";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router";
 import { Label, Message, Icon, Divider, Grid, Image, Item, Button, Header, Card, Breadcrumb, Modal, TransitionablePortal } from "semantic-ui-react";
 
 import Types from "../item.types";

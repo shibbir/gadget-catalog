@@ -20,6 +20,9 @@ module.exports = function(app) {
 
     app.route("/api/items/:id")
         .get(jwtAuthentication, controller.getItem)
-        .put(jwtAuthentication, multer.array("images", 3), controller.updateItem)
+        .put(jwtAuthentication, multer.fields([
+            { name: "images", maxCount: 3 },
+            { name: "invoice", maxCount: 1 }
+        ]), controller.updateItem)
         .delete(jwtAuthentication, controller.deleteItem);
 };

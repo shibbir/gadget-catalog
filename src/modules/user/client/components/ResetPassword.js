@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import { Form, Formik } from "formik";
 import { Divider, Button, Segment, Header, Image, Message } from "semantic-ui-react";
 

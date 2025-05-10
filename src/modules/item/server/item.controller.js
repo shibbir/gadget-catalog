@@ -144,7 +144,7 @@ async function updateItem(req, res, next) {
 
 async function deleteItem(req, res, next) {
     try {
-        const doc = await Item.findOneAndRemove({ _id: req.params.id, createdBy: req.user._id });
+        const doc = await Item.findOneAndDelete({ _id: req.params.id, createdBy: req.user._id });
 
         if(!doc) return res.sendStatus(404);
 
