@@ -81,18 +81,18 @@ SENTRY_DSN | No | Data Source Name(DSN) value for enabling [Sentry](https://sent
 > You need to have [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/lang/en/) installed on your machine before running the followings:
 
 ```bash
-$ yarn install     # install dependencies
+$ yarn install      # install dependencies
 
-$ yarn start       # development build
+$ yarn start        # development build
 
-$ yarn production  # production build
+$ yarn production   # production build
 ```
 
 ## :heavy_check_mark: Running Tests
 ```bash
-$ yarn test       # run unit tests
+$ yarn test         # run unit tests
 
-$ yarn coverage   # generate coverage report
+$ yarn coverage     # generate coverage report
 ```
 
 ## :flashlight: Demo
