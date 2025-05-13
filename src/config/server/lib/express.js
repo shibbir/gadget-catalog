@@ -20,6 +20,8 @@ module.exports = function() {
 
     app.set("port", process.env.PORT);
 
+    app.enable("trust proxy");
+
     app.locals.jsFiles = config.client.js;
     app.locals.cssFiles = config.client.css;
 
