@@ -1,20 +1,19 @@
 import axios from "axios";
-import { Form, Formik } from "formik";
 import { Link } from "react-router";
+import { Form, Formik } from "formik";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import ReCAPTCHA from "react-google-recaptcha";
-import React, { useRef, useState } from "react";
 import iziToast from "izitoast/dist/js/iziToast";
 import { Button, Segment, Header, Divider, Image, Modal, Message, Icon } from "semantic-ui-react";
 
 import { login } from "../user.actions";
+import { executeRecaptcha } from "../../../core/client/recaptcha";
 import { loginSchema, forgotPasswordSchema } from "../user.schema";
-import IdentityProviders from "../../../core/client/components/IdentityProviders";
 import { TextInput } from "../../../core/client/components/FieldInputs";
+import IdentityProviders from "../../../core/client/components/IdentityProviders";
 
 export default function Login() {
     const dispatch = useDispatch();
-    const recaptchaRef = useRef();
     const [emailSent, setEmailSent] = useState(false);
     const [isPasswordResetModalActive, setIsPasswordResetModalActive] = useState(false);
     const [forgotpasswordResponse, setForgotpasswordResponse] = useState("");
@@ -31,29 +30,24 @@ export default function Login() {
 
                 <Segment className="stacked">
                     <Formik
-                        initialValues={{
-                            email: "",
-                            password: ""
-                        }}
+                        initialValues={{ email: "", password: "" }}
                         validationSchema={loginSchema}
-                        onSubmit={(values, actions) => {
-                            recaptchaRef.current.executeAsync().then(recaptchaToken => {
-                                dispatch(login({
-                                    username: values.email,
-                                    password: values.password,
-                                    grant_type: "password",
-                                    recaptchaToken
-                                })).catch(function(err) {
-                                    iziToast["error"]({
-                                        timeout: 3000,
-                                        title: err.response.status,
-                                        message: err.response.data,
-                                        position: "topRight"
-                                    });
+                        onSubmit={async(values, actions) => {
+                            dispatch(login({
+                                username: values.email,
+                                password: values.password,
+                                grant_type: "password",
+                                recaptcha_token: await executeRecaptcha("Login")
+                            })).catch(err => {
+                                iziToast.error({
+                                    timeout: 3000,
+                                    title: err.response.status,
+                                    message: err.response.data,
+                                    position: "topRight"
                                 });
-                                recaptchaRef.current.reset();
-                                actions.setSubmitting(false);
                             });
+
+                            actions.setSubmitting(false);
                         }}
                     >
                         <Form className="ui form">
@@ -72,12 +66,6 @@ export default function Login() {
                                 placeholder: "Password",
                                 autoComplete: "current-password"
                             }}/>
-
-                            <ReCAPTCHA
-                                size="invisible"
-                                ref={recaptchaRef}
-                                sitekey={process.env.RECAPTCHA_SITE_KEY}
-                            />
 
                             <Button fluid type="submit" className="large teal">Login</Button>
                         </Form>
@@ -107,9 +95,7 @@ export default function Login() {
                         }
 
                         <Formik
-                            initialValues={{
-                                email: ""
-                            }}
+                            initialValues={{ email: "" }}
                             validationSchema={forgotPasswordSchema}
                             onSubmit={(values, actions) => {
                                 axios.post("/api/forgot-password", {...values}).then(() => {
@@ -127,7 +113,7 @@ export default function Login() {
                                 <Modal.Header>Reset Your Password</Modal.Header>
                                 <Modal.Content>
                                     <Modal.Description>
-                                        <p>Enter your email address and we'll send you a link to reset your password.</p>
+                                        <p>Enter your email address to receive a link to reset your password.</p>
                                         <Form id="passwordResetForm">
                                             <TextInput attributes={{
                                                 name: "email",
@@ -158,7 +144,7 @@ export default function Login() {
                     </Modal>
 
                     <Divider hidden/>
-                    Don't have an account? <Link to="/register">Sign up</Link>.
+                    Don&apos;t have an account? <Link to="/register">Sign up</Link>.
                 </Segment>
 
                 This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.

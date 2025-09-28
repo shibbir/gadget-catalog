@@ -24,6 +24,7 @@ module.exports = function() {
 
     app.locals.jsFiles = config.client.js;
     app.locals.cssFiles = config.client.css;
+    app.locals.RECAPTCHA_ENTERPRISE_SITE_KEY = process.env.RECAPTCHA_ENTERPRISE_SITE_KEY;
 
     config.server.routes.forEach(function(routePath) {
         require(path.resolve(routePath))(app);

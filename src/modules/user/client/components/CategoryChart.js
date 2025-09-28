@@ -17,7 +17,7 @@ export default function CategoryChart() {
 
     useEffect(() => {
         if(categories.length) {
-            let data = [];
+            const data = [];
 
             categories.forEach(o => {
                 if(o.items?.length) {

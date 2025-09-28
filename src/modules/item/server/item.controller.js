@@ -223,7 +223,7 @@ async function getItemCountByYearRange(req, res, next) {
 
         if(!docs) return res.sendStatus(203);
 
-        let data = {};
+        const data = {};
 
         docs.forEach(function(doc) {
             data[doc.purchaseDate.getFullYear()] = data[doc.purchaseDate.getFullYear()] !== undefined ? ++data[doc.purchaseDate.getFullYear()] : 1;

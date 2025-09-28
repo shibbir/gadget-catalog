@@ -65,7 +65,7 @@ async function register(req, res) {
             name: name,
             isAdmin: false
         });
-    } catch(err) {
+    } catch {
         res.sendStatus(500);
     }
 }
@@ -73,11 +73,17 @@ async function register(req, res) {
 async function login(req, res, next) {
     try {
         let doc;
-        const { username, password, grant_type, recaptchaToken } = req.body;
+        const { username, password, grant_type, recaptcha_token } = req.body;
 
-        const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`);
+        const { data } = await axios.post(`https://recaptchaenterprise.googleapis.com/v1/projects/gadget-catalog/assessments?key=${process.env.RECAPTCHA_ENTERPRISE_API_KEY}`, {
+            event: {
+                token: recaptcha_token,
+                expectedAction: "Login",
+                siteKey: process.env.RECAPTCHA_ENTERPRISE_SITE_KEY
+            }
+        });
 
-        if(!response.data.success) return res.status(401).send("reCAPTCHA validation failed! Please try again.");
+        if(!data.tokenProperties.valid || data.tokenProperties.action !== "Login" || data.riskAnalysis.score < 0.5) return res.status(401).send("Security validation failed. Please try again.");
 
         if(!grant_type) return res.status(401).send("Invalid credentials.");
 
@@ -118,7 +124,7 @@ async function changePassword(req, res) {
         doc.save();
 
         res.status(200).send("Password changed successfully.");
-    } catch (err) {
+    } catch {
         res.sendStatus(500);
     }
 }
@@ -184,7 +190,7 @@ async function resetPassword(req, res) {
         doc.save();
 
         res.sendStatus(200);
-    } catch (err) {
+    } catch {
         res.sendStatus(500);
     }
 }

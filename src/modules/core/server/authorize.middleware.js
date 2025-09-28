@@ -49,7 +49,7 @@ async function jwtAuthentication (req, res, next) {
                 req.user = doc;
                 res.cookie("access_token", generateAccessToken(doc), { httpOnly: true, sameSite: true, signed: true });
                 return next();
-            } catch(e) {
+            } catch {
                 res.clearCookie("access_token");
                 res.clearCookie("refresh_token");
                 return res.status(401).send("Unauthorized").end();

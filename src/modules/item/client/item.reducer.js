@@ -8,9 +8,6 @@ const initialState = {
 
 export default function reducer(state=initialState, action) {
     switch(action.type) {
-        case Types.GET_ITEM_PENDING: {
-            return { ...state };
-        }
         case Types.GET_ITEM_FULFILLED: {
             return { ...state, item: action.payload.data };
         }
@@ -22,10 +19,7 @@ export default function reducer(state=initialState, action) {
             return { ...state, item: { ...state.item, files: action.payload.data.files }};
         }
         case Types.GET_ITEMS_BY_YEAR_FULFILLED: {
-            return {
-                ...state,
-                itemsPerYear: action.payload.data
-            };
+            return { ...state, itemsPerYear: action.payload.data };
         }
     }
     return state;

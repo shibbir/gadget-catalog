@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const glob = require("glob");
 
 const getGlobbedPaths = function (globPatterns, exclude) {
@@ -6,11 +5,11 @@ const getGlobbedPaths = function (globPatterns, exclude) {
 
     let output = [];
 
-    if (_.isArray(globPatterns)) {
+    if (Array.isArray(globPatterns)) {
         globPatterns.forEach(function (globPattern) {
-            output = _.union(output, getGlobbedPaths(globPattern, exclude));
+            output = Array.from(new Set([...output, ...getGlobbedPaths(globPattern, exclude)]));
         });
-    } else if (_.isString(globPatterns)) {
+    } else if (typeof globPatterns === "string") {
         if (urlRegex.test(globPatterns)) {
             output.push(globPatterns);
         } else {
@@ -23,7 +22,8 @@ const getGlobbedPaths = function (globPatterns, exclude) {
                     return file;
                 });
             }
-            output = _.union(output, files);
+
+            output = Array.from(new Set([...output, ...files]));
         }
     }
 

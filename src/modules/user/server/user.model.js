@@ -6,7 +6,7 @@ const UserSchema = Schema({
     local: {
         email: {
             type: String,
-            match: [/.+\@.+\..+/],
+            match: [/.+@.+\..+/],
             required() { return !this.facebook && !this.google; }
         },
         password: {

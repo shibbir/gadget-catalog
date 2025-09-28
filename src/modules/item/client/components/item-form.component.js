@@ -73,7 +73,7 @@ export default function ItemForm() {
             enableReinitialize={true}
             validationSchema={itemSchema}
             onSubmit={(values, actions) => {
-                let formData = new FormData();
+                const formData = new FormData();
 
                 if(values.images) {
                     for(let index = 0; index < values.images.length; index++) {
