@@ -274,7 +274,7 @@ export default function Items() {
                 <Segment placeholder raised>
                     <Header icon>
                         <Icon name="warning sign" />
-                        You don't have any items!
+                        You do not have any items!
                     </Header>
                 </Segment>
             }

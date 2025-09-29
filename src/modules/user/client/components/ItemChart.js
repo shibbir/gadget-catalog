@@ -1,4 +1,3 @@
-import { isEmpty } from "lodash";
 import Highcharts from "highcharts";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,17 +17,16 @@ export default function ItemChart() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        let startYear, endYear;
-        [startYear, endYear] = yearRange.split("-");
-
+        const [startYear, endYear] = yearRange.split("-");
         dispatch(fetchItemsByYearRange(startYear, endYear));
     }, [dispatch, yearRange]);
 
-    const itemsPerYear = useSelector(state => state.itemReducer.itemsPerYear);
+    const itemsPerYear = useSelector(state => state.itemReducer.itemsPerYear) || {};
+    const isEmpty = obj => Object.keys(obj).length === 0;
 
     useEffect(() => {
-        let years = [];
-        let items = [];
+        const years = [];
+        const items = [];
 
         for (const property in itemsPerYear) {
             years.push(property.toString());

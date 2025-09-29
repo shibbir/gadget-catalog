@@ -52,10 +52,6 @@ export default function ItemDetails() {
         );
     }
 
-    if(item.assets?.length) {
-        item.activeImage = item.assets.find(x => x.active === true);
-    }
-
     return (
         <>
             <Breadcrumb size="small">
@@ -74,19 +70,20 @@ export default function ItemDetails() {
 
             <Grid>
                 <Grid.Column width={10}>
-                    { item.activeImage &&
-                        <Image src={item.activeImage.secure_url} alt={item.name}/>
-                    }
-
-                    { item.files && item.files.length === 0 &&
+                    {item.assets?.length > 0 ? (
+                        <Image
+                            src={(item.assets.find(x => x.active) || item.assets[0]).secure_url}
+                            alt={item.name}
+                        />
+                    ) : (
                         <Message warning icon>
-                        <Icon name="warning sign" size="large"/>
+                            <Icon name="warning sign" size="large"/>
                             <Message.Content>
                                 <Message.Header>Warning!</Message.Header>
                                 No assets are found for this item. <Link to={`/items/${item._id}/edit`}>Consider editing the item</Link>.
                             </Message.Content>
                         </Message>
-                    }
+                    )}
                 </Grid.Column>
 
                 <Grid.Column width={6}>
@@ -94,8 +91,6 @@ export default function ItemDetails() {
                         <Item.Content>
                             <Header as="h3">{item.name}</Header>
                             <Divider hidden/>
-
-                            <Divider horizontal>Meta Informations</Divider>
 
                             <Item.Meta>
                                 <div>Category: <Link to={`/items?categoryId=${item.category._id}`}>{item.category.name}</Link></div>
