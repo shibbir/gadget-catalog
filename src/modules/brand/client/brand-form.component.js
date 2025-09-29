@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { Divider, Button } from "semantic-ui-react";
 import iziToast from "izitoast/dist/js/iziToast";
@@ -66,9 +65,5 @@ function BrandForm({id} = props) {
         </Formik>
     );
 }
-
-BrandForm.propTypes = {
-    id: PropTypes.string
-};
 
 export default BrandForm;

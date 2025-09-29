@@ -4,7 +4,6 @@ import { format, parseISO } from "date-fns";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router";
 import { Divider, Button, Form as SemanticUIForm } from "semantic-ui-react";
-import Dropzone from 'react-dropzone';
 
 import Types from "../item.types";
 import { itemSchema } from "../item.schema";
@@ -190,25 +189,11 @@ export default function ItemForm() {
                         label: "Upload images",
                         multiple: true,
                         info: "You can upload a maximum of 3 images at a time. The max file size limit is 1.5 MB.",
-                        onChange: event => {formikProps.setFieldValue("images", event.currentTarget.files)}
+                        onChange: event => {
+                            const filesArray = Array.from(event.currentTarget.files).slice(0, 3);
+                            formikProps.setFieldValue("images", filesArray);
+                        }
                     }}/>
-
-                    {/* <Dropzone
-                        multiple
-                        onDrop={acceptedFiles => {
-                            if (acceptedFiles.length === 0) return;
-                            formikProps.setFieldValue("images", formikProps.values.images.concat(acceptedFiles));
-                        }}
-                    >
-                        {({getRootProps, getInputProps}) => (
-                            <section>
-                                <div {...getRootProps()}>
-                                    <input {...getInputProps()} />
-                                    <p>Drag 'n' drop some files here, or click to select files</p>
-                                </div>
-                            </section>
-                        )}
-                    </Dropzone> */}
 
                     <FileInput attributes={{
                         type: "file",

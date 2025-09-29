@@ -67,7 +67,7 @@ async function getItems(req, res, next) {
 
 async function createItem(req, res, next) {
     try {
-        const _id = new mongoose.Types.ObjectId;
+        const _id = new mongoose.Types.ObjectId();
 
         const item = new Item({
             _id,
@@ -82,19 +82,17 @@ async function createItem(req, res, next) {
             createdBy: req.user._id
         });
 
-        for(let i = 0; i < req.files?.images?.length; i++) {
-            const file = req.files.images[i];
-            const fileId = new mongoose.Types.ObjectId;
+        const assets = await Promise.all(req.files?.images?.map(async (file, i) => {
+            const fileId = new mongoose.Types.ObjectId();
             const result = await upload(file.path, { public_id: fileId, folder: `gadget-catalog/${_id}` });
-
-            item.assets.push({ _id: fileId, ...result, active: i ? false : true });
-
             await fs.unlink(file.path);
-        }
+            return { _id: fileId, ...result, active: i === 0 };
+        }));
+        item.assets = assets;
 
-        for(let i = 0; i < req.files?.invoice?.length; i++) {
-            const file = req.files.invoice[i];
-            const fileId = new mongoose.Types.ObjectId;
+        if(req.files?.invoice?.[0]) {
+            const file = req.files.invoice[0];
+            const fileId = new mongoose.Types.ObjectId();
             const result = await upload(file.path, { public_id: fileId, folder: `gadget-catalog/${_id}` });
 
             item.invoice = { _id: fileId, ...result };
@@ -125,15 +123,14 @@ async function updateItem(req, res, next) {
         doc.payee = req.body.payee;
         doc.description = req.body.description ? validator.escape(req.body.description) : null;
 
-        for(let i = 0; i < req.files?.images?.length; i++) {
-            const file = req.files.images[i];
-            const fileId = new mongoose.Types.ObjectId;
+        const images = req.files?.images || [];
+        const newAssets = await Promise.all(images.map(async (file, i) => {
+            const fileId = new mongoose.Types.ObjectId();
             const result = await upload(file.path, { public_id: fileId, folder: `gadget-catalog/${req.params.id}` });
-
-            doc.assets.push({ _id: fileId, ...result });
-
             await fs.unlink(file.path);
-        }
+            return { _id: fileId, ...result, active: doc.assets.length === 0 && i === 0 };
+        }));
+        doc.assets.push(...newAssets);
 
         await doc.save();
         res.json(doc);
@@ -145,23 +142,17 @@ async function updateItem(req, res, next) {
 async function deleteItem(req, res, next) {
     try {
         const doc = await Item.findOneAndDelete({ _id: req.params.id, createdBy: req.user._id });
-
         if(!doc) return res.sendStatus(404);
 
-        const public_ids = [];
+        const public_ids = [
+            ...doc.assets.map(asset => asset.public_id),
+            ...(doc.invoice ? [doc.invoice.public_id] : [])
+        ];
 
-        doc.assets.forEach(function(asset) {
-            public_ids.push(asset.public_id);
-        });
-
-        if(doc.invoice) {
-            public_ids.push(doc.invoice.public_id);
+        if(public_ids.length) {
+            await deleteResources(public_ids);
+            await deleteFolder(`gadget-catalog/${doc._id}`);
         }
-
-        if(!public_ids.length) return res.sendStatus(200);
-
-        await deleteResources(public_ids);
-        await deleteFolder(`gadget-catalog/${doc._id}`);
 
         res.sendStatus(200);
     } catch(err) {
@@ -171,23 +162,24 @@ async function deleteItem(req, res, next) {
 
 async function updateImage(req, res, next) {
     try {
-        let doc = await Item.findOne({ _id: req.params.itemId, createdBy: req.user._id }, "assets");
+        const doc = await Item.findOneAndUpdate(
+            { _id: req.params.itemId, createdBy: req.user._id },
+            {
+                $set: { "assets.$[a].active": false, "assets.$[b].active": true }
+            },
+            {
+                new: true,
+                arrayFilters: [
+                    { "a.active": true },
+                    { "b._id": req.params.assetId }
+                ]
+            }
+        );
 
-        if(!doc) return res.sendStatus(404);
-
-        doc.assets = doc.assets.map(function(x) {
-            x.active = false;
-            return x;
-        });
-
-        await doc.save();
-
-        doc = await Item.findOneAndUpdate({ _id: req.params.itemId, createdBy: req.user._id, "assets._id": req.params.assetId }, {
-            $set: { "assets.$.active": true }
-        }, { new: true });
+        if (!doc) return res.sendStatus(404);
 
         res.json(doc);
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
 }
