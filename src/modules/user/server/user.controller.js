@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const User = require("./user.model");
+const { verifyRecaptcha } = require("../../core/server/recaptcha");
 const { generateAccessToken, generateRefreshToken } = require("../../core/server/authorize.middleware");
 
 function formatProfile(user) {
@@ -75,13 +76,7 @@ async function login(req, res, next) {
         let doc;
         const { username, password, grant_type, recaptcha_token } = req.body;
 
-        const { data } = await axios.post(`https://recaptchaenterprise.googleapis.com/v1/projects/gadget-catalog/assessments?key=${process.env.RECAPTCHA_ENTERPRISE_API_KEY}`, {
-            event: {
-                token: recaptcha_token,
-                expectedAction: "Login",
-                siteKey: process.env.RECAPTCHA_ENTERPRISE_SITE_KEY
-            }
-        });
+        const data = await verifyRecaptcha(recaptcha_token, "Login");
 
         if(!data.tokenProperties.valid || data.tokenProperties.action !== "Login" || data.riskAnalysis.score < 0.5) return res.status(401).send("Security validation failed. Please try again.");
 

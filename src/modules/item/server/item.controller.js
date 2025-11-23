@@ -82,7 +82,7 @@ async function createItem(req, res, next) {
             createdBy: req.user._id
         });
 
-        const assets = await Promise.all(req.files?.images?.map(async (file, i) => {
+        const assets = await Promise.all((req.files?.images || []).map(async (file, i) => {
             const fileId = new mongoose.Types.ObjectId();
             const result = await upload(file.path, { public_id: fileId, folder: `gadget-catalog/${_id}` });
             await fs.unlink(file.path);
