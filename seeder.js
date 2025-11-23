@@ -7,7 +7,6 @@ const convertToSlug = string => string.toLowerCase().replace(/[^\w ]+/g, "").rep
 
 require("dotenv").config();
 
-mongoose.Promise = global.Promise;
 mongoose.set("strictQuery", true);
 mongoose.connect(process.env.MONGODB_URI);
 
